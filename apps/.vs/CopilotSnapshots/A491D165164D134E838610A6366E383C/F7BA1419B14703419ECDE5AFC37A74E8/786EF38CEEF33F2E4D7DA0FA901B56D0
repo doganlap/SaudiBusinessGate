@@ -1,0 +1,389 @@
+﻿// =================================================================
+// SECURE QUERY BUILDER SERVICE - IMPLEMENTATION
+// =================================================================
+// This service provides a secure, whitelist-based query builder
+// that eliminates SQL injection risks by using predefined queries.
+// =================================================================
+
+import { Pool } from 'pg';
+
+const pool = new Pool({
+    user: process.env.DB_USER || 'postgres',
+    host: process.env.DB_HOST || 'localhost',
+    database: process.env.DB_NAME || 'production',
+    password: process.env.DB_PASSWORD || 'password',
+    port: process.env.DB_PORT || 5432,
+});
+
+// --- Interfaces ---
+interface QueryTemplate {
+    id: string;
+    name: string;
+    description: string;
+    category: string;
+    sql: string;
+    parameters: QueryParameter[];
+}
+
+interface QueryParameter {
+    name: string;
+    type: 'string' | 'number' | 'date' | 'boolean';
+    required: boolean;
+    default?: any;
+}
+
+interface QueryResult {
+    columns: string[];
+    rows: any[];
+    rowCount: number;
+    executionTime: number;
+}
+
+// --- Secure Query Builder Service ---
+export class SecureQueryBuilderService {
+    
+    // Predefined safe query templates
+    private queryTemplates: Map<string, QueryTemplate> = new Map([
+        // Financial Reports
+        ['revenue_by_month', {
+            id: 'revenue_by_month',
+            name: 'Revenue by Month',
+            description: 'Shows monthly revenue breakdown',
+            category: 'financial',
+            sql: `
+                SELECT 
+                    DATE_TRUNC('month', created_at) as month,
+                    COUNT(*) as transaction_count,
+                    SUM(amount) as total_revenue,
+                    AVG(amount) as avg_transaction
+                FROM transactions
+                WHERE organization_id = $1
+                  AND created_at >= $2
+                  AND created_at <= $3
+                GROUP BY DATE_TRUNC('month', created_at)
+                ORDER BY month DESC
+            `,
+            parameters: [
+                { name: 'organization_id', type: 'number', required: true },
+                { name: 'start_date', type: 'date', required: true },
+                { name: 'end_date', type: 'date', required: true }
+            ]
+        }],
+        
+        ['top_customers', {
+            id: 'top_customers',
+            name: 'Top Customers by Revenue',
+            description: 'Lists top customers by total revenue',
+            category: 'customer',
+            sql: `
+                SELECT 
+                    u.id,
+                    u.full_name as customer_name,
+                    u.email,
+                    COUNT(t.id) as transaction_count,
+                    SUM(t.amount) as total_revenue
+                FROM users u
+                INNER JOIN transactions t ON t.user_id = u.id
+                WHERE u.organization_id = $1
+                  AND t.created_at >= $2
+                GROUP BY u.id, u.full_name, u.email
+                ORDER BY total_revenue DESC
+                LIMIT $3
+            `,
+            parameters: [
+                { name: 'organization_id', type: 'number', required: true },
+                { name: 'start_date', type: 'date', required: true },
+                { name: 'limit', type: 'number', required: false, default: 10 }
+            ]
+        }],
+        
+        ['user_activity', {
+            id: 'user_activity',
+            name: 'User Activity Report',
+            description: 'Shows user activity metrics',
+            category: 'user',
+            sql: `
+                SELECT 
+                    u.id,
+                    u.full_name,
+                    u.email,
+                    u.last_login,
+                    COUNT(a.id) as activity_count,
+                    MAX(a.created_at) as last_activity
+                FROM users u
+                LEFT JOIN audit_logs a ON a.user_id = u.id AND a.created_at >= $2
+                WHERE u.organization_id = $1
+                GROUP BY u.id, u.full_name, u.email, u.last_login
+                ORDER BY activity_count DESC
+                LIMIT $3
+            `,
+            parameters: [
+                { name: 'organization_id', type: 'number', required: true },
+                { name: 'start_date', type: 'date', required: true },
+                { name: 'limit', type: 'number', required: false, default: 50 }
+            ]
+        }],
+        
+        ['system_audit', {
+            id: 'system_audit',
+            name: 'System Audit Log',
+            description: 'Security and audit events',
+            category: 'security',
+            sql: `
+                SELECT 
+                    a.id,
+                    a.action_type,
+                    a.resource_type,
+                    a.resource_id,
+                    u.full_name as user_name,
+                    a.ip_address,
+                    a.created_at
+                FROM audit_logs a
+                LEFT JOIN users u ON u.id = a.user_id
+                WHERE a.organization_id = $1
+                  AND a.created_at >= $2
+                  AND a.created_at <= $3
+                ORDER BY a.created_at DESC
+                LIMIT $4
+            `,
+            parameters: [
+                { name: 'organization_id', type: 'number', required: true },
+                { name: 'start_date', type: 'date', required: true },
+                { name: 'end_date', type: 'date', required: true },
+                { name: 'limit', type: 'number', required: false, default: 100 }
+            ]
+        }],
+
+        ['kpi_summary', {
+            id: 'kpi_summary',
+            name: 'KPI Summary Dashboard',
+            description: 'Key performance indicators overview',
+            category: 'analytics',
+            sql: `
+                SELECT 
+                    COUNT(DISTINCT u.id) as total_users,
+                    COUNT(DISTINCT CASE WHEN u.last_login >= NOW() - INTERVAL '7 days' THEN u.id END) as active_users_7d,
+                    COUNT(DISTINCT CASE WHEN u.last_login >= NOW() - INTERVAL '30 days' THEN u.id END) as active_users_30d,
+                    COUNT(t.id) as total_transactions,
+                    SUM(t.amount) as total_revenue,
+                    AVG(t.amount) as avg_transaction_value
+                FROM users u
+                LEFT JOIN transactions t ON t.user_id = u.id AND t.created_at >= $2
+                WHERE u.organization_id = $1
+            `,
+            parameters: [
+                { name: 'organization_id', type: 'number', required: true },
+                { name: 'start_date', type: 'date', required: true }
+            ]
+        }]
+    ]);
+
+    /**
+     * Get all available query templates
+     */
+    getAvailableTemplates(category?: string): QueryTemplate[] {
+        const templates = Array.from(this.queryTemplates.values());
+        
+        if (category) {
+            return templates.filter(t => t.category === category);
+        }
+        
+        return templates;
+    }
+
+    /**
+     * Get a specific template by ID
+     */
+    getTemplate(templateId: string): QueryTemplate | null {
+        return this.queryTemplates.get(templateId) || null;
+    }
+
+    /**
+     * Execute a query using a predefined template
+     */
+    async executeTemplate(
+        templateId: string,
+        parameters: Record<string, any>
+    ): Promise<QueryResult> {
+        console.log(`🔍 Secure Query Builder: Executing template "${templateId}"...`);
+
+        const template = this.queryTemplates.get(templateId);
+        
+        if (!template) {
+            throw new Error(`Query template "${templateId}" not found`);
+        }
+
+        // Validate and prepare parameters
+        const paramValues = this.validateAndPrepareParameters(template, parameters);
+
+        // Execute query safely with parameterized values
+        const startTime = Date.now();
+        
+        try {
+            const result = await pool.query(template.sql, paramValues);
+            const executionTime = Date.now() - startTime;
+
+            console.log(`✅ Query executed successfully in ${executionTime}ms (${result.rows.length} rows)`);
+
+            return {
+                columns: result.fields.map(f => f.name),
+                rows: result.rows,
+                rowCount: result.rows.length,
+                executionTime
+            };
+
+        } catch (error: any) {
+            console.error(`❌ Query execution failed:`, error.message);
+            throw new Error(`Query execution failed: ${error.message}`);
+        }
+    }
+
+    /**
+     * Build a custom query using safe building blocks
+     */
+    async buildAndExecuteQuery(
+        organizationId: number,
+        config: {
+            table: string;
+            columns: string[];
+            filters?: Array<{ column: string; operator: string; value: any }>;
+            groupBy?: string[];
+            orderBy?: Array<{ column: string; direction: 'ASC' | 'DESC' }>;
+            limit?: number;
+        }
+    ): Promise<QueryResult> {
+        console.log(`🔍 Secure Query Builder: Building custom query...`);
+
+        // Whitelist of allowed tables and columns
+        const allowedTables = ['users', 'transactions', 'audit_logs', 'organizations'];
+        const allowedColumns: Record<string, string[]> = {
+            'users': ['id', 'full_name', 'email', 'last_login', 'created_at', 'status'],
+            'transactions': ['id', 'amount', 'currency', 'type', 'status', 'created_at'],
+            'audit_logs': ['id', 'action_type', 'resource_type', 'created_at', 'ip_address'],
+            'organizations': ['id', 'name', 'created_at', 'status']
+        };
+
+        // Validate table
+        if (!allowedTables.includes(config.table)) {
+            throw new Error(`Table "${config.table}" is not allowed`);
+        }
+
+        // Validate columns
+        const validColumns = allowedColumns[config.table];
+        for (const col of config.columns) {
+            if (!validColumns.includes(col)) {
+                throw new Error(`Column "${col}" is not allowed for table "${config.table}"`);
+            }
+        }
+
+        // Build safe SQL
+        let sql = `SELECT ${config.columns.join(', ')} FROM ${config.table} WHERE organization_id = $1`;
+        const params: any[] = [organizationId];
+        let paramIndex = 2;
+
+        // Add filters safely
+        if (config.filters && config.filters.length > 0) {
+            for (const filter of config.filters) {
+                if (!validColumns.includes(filter.column)) {
+                    throw new Error(`Filter column "${filter.column}" is not allowed`);
+                }
+                
+                const allowedOperators = ['=', '>', '<', '>=', '<=', '!=', 'LIKE', 'IN'];
+                if (!allowedOperators.includes(filter.operator)) {
+                    throw new Error(`Operator "${filter.operator}" is not allowed`);
+                }
+
+                sql += ` AND ${filter.column} ${filter.operator} $${paramIndex}`;
+                params.push(filter.value);
+                paramIndex++;
+            }
+        }
+
+        // Add GROUP BY
+        if (config.groupBy && config.groupBy.length > 0) {
+            sql += ` GROUP BY ${config.groupBy.join(', ')}`;
+        }
+
+        // Add ORDER BY
+        if (config.orderBy && config.orderBy.length > 0) {
+            const orderClauses = config.orderBy.map(o => `${o.column} ${o.direction}`);
+            sql += ` ORDER BY ${orderClauses.join(', ')}`;
+        }
+
+        // Add LIMIT
+        if (config.limit) {
+            sql += ` LIMIT $${paramIndex}`;
+            params.push(config.limit);
+        }
+
+        // Execute query
+        const startTime = Date.now();
+        
+        try {
+            const result = await pool.query(sql, params);
+            const executionTime = Date.now() - startTime;
+
+            return {
+                columns: result.fields.map(f => f.name),
+                rows: result.rows,
+                rowCount: result.rows.length,
+                executionTime
+            };
+
+        } catch (error: any) {
+            console.error(`❌ Custom query execution failed:`, error.message);
+            throw new Error(`Query execution failed: ${error.message}`);
+        }
+    }
+
+    // --- Private Helper Methods ---
+
+    private validateAndPrepareParameters(
+        template: QueryTemplate,
+        parameters: Record<string, any>
+    ): any[] {
+        const paramValues: any[] = [];
+
+        for (const param of template.parameters) {
+            let value = parameters[param.name];
+
+            // Check required parameters
+            if (param.required && (value === undefined || value === null)) {
+                throw new Error(`Required parameter "${param.name}" is missing`);
+            }
+
+            // Use default if not provided
+            if (value === undefined || value === null) {
+                value = param.default;
+            }
+
+            // Validate and convert types
+            switch (param.type) {
+                case 'number':
+                    value = Number(value);
+                    if (isNaN(value)) {
+                        throw new Error(`Parameter "${param.name}" must be a number`);
+                    }
+                    break;
+                case 'date':
+                    value = new Date(value);
+                    if (isNaN(value.getTime())) {
+                        throw new Error(`Parameter "${param.name}" must be a valid date`);
+                    }
+                    break;
+                case 'boolean':
+                    value = Boolean(value);
+                    break;
+                case 'string':
+                    value = String(value);
+                    break;
+            }
+
+            paramValues.push(value);
+        }
+
+        return paramValues;
+    }
+}
+
+export const secureQueryBuilderService = new SecureQueryBuilderService();

@@ -1,0 +1,14 @@
+# General
+.DS_Store
+node_modules
+__pycache__/
+.env
+dist
+build
+.coverage
+*.pyc
+*.pyo
+*.pyd
+pip-wheel-metadata
+.idea
+.vscode

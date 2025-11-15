@@ -1,0 +1,66 @@
+﻿'use client';
+
+// =================================================================
+// COMPONENT: BUSINESS KPI DASHBOARD
+// =================================================================
+// A client-side component to display business KPIs fetched from the API.
+// =================================================================
+
+import { useState, useEffect } from 'react';
+
+// --- Interfaces ---
+interface Kpi {
+    name: string;
+    value: number | string;
+    trend: 'up' | 'down' | 'stable';
+}
+
+export default function BusinessKpiDashboard() {
+    const [kpis, setKpis] = useState<Kpi[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        async function fetchKpis() {
+            try {
+                const response = await fetch('/api/analytics/kpis/business');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch KPIs.');
+                }
+                const data = await response.json();
+                setKpis(data);
+            } catch (err: any) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchKpis();
+    }, []);
+
+    if (loading) {
+        return <div className="text-center p-8">Loading KPIs...</div>;
+    }
+
+    if (error) {
+        return <div className="text-center p-8 text-red-500">Error: {error}</div>;
+    }
+
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+            {kpis.map((kpi) => (
+                <div key={kpi.name} className="bg-white shadow rounded-lg p-6">
+                    <h3 className="text-gray-500 text-sm font-medium">{kpi.name}</h3>
+                    <p className="text-3xl font-semibold text-gray-900">{kpi.value}</p>
+                    {/* Simple trend indicator - FIXED */}
+                    <p className={`text-sm font-medium ${
+                        kpi.trend === 'up' ? 'text-green-500' : kpi.trend === 'down' ? 'text-red-500' : 'text-gray-500'
+                    }`}>
+                        {kpi.trend === 'up' ? '?' : kpi.trend === 'down' ? '?' : '?'} Trend is {kpi.trend}
+                    </p>
+                </div>
+            ))}
+        </div>
+    );
+}

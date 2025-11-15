@@ -1,0 +1,142 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-11-12 12:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: ar\n"
+
+# Common
+msgid "common.loading"
+msgstr "جاري التحميل..."
+
+msgid "common.save"
+msgstr "حفظ"
+
+msgid "common.cancel"
+msgstr "إلغاء"
+
+msgid "common.delete"
+msgstr "حذف"
+
+msgid "common.edit"
+msgstr "تعديل"
+
+msgid "common.add"
+msgstr "إضافة"
+
+msgid "common.search"
+msgstr "بحث"
+
+msgid "common.close"
+msgstr "إغلاق"
+
+msgid "common.submit"
+msgstr "إرسال"
+
+msgid "common.yes"
+msgstr "نعم"
+
+msgid "common.no"
+msgstr "لا"
+
+# App
+msgid "app.title"
+msgstr "منصة دوغان هب للمؤسسات"
+
+msgid "app.description"
+msgstr "منصة الأعمال المتكاملة للمؤسسات"
+
+# Dashboard
+msgid "dashboard.title"
+msgstr "لوحة القيادة"
+
+msgid "dashboard.overview"
+msgstr "نظرة عامة"
+
+msgid "dashboard.analytics"
+msgstr "التحليلات"
+
+msgid "dashboard.reports"
+msgstr "التقارير"
+
+# Auth
+msgid "auth.login"
+msgstr "تسجيل الدخول"
+
+msgid "auth.logout"
+msgstr "تسجيل الخروج"
+
+msgid "auth.signup"
+msgstr "إنشاء حساب"
+
+msgid "auth.email"
+msgstr "البريد الإلكتروني"
+
+msgid "auth.password"
+msgstr "كلمة المرور"
+
+msgid "auth.forgotPassword"
+msgstr "نسيت كلمة المرور؟"
+
+# Navigation
+msgid "nav.home"
+msgstr "الرئيسية"
+
+msgid "nav.dashboard"
+msgstr "لوحة القيادة"
+
+msgid "nav.billing"
+msgstr "الفواتير"
+
+msgid "nav.settings"
+msgstr "الإعدادات"
+
+msgid "nav.profile"
+msgstr "الملف الشخصي"
+
+# Billing
+msgid "billing.title"
+msgstr "الفواتير والاشتراكات"
+
+msgid "billing.plans"
+msgstr "الخطط"
+
+msgid "billing.invoices"
+msgstr "الفواتير"
+
+msgid "billing.paymentMethod"
+msgstr "طريقة الدفع"
+
+msgid "billing.subscribe"
+msgstr "اشترك"
+
+# Settings
+msgid "settings.title"
+msgstr "الإعدادات"
+
+msgid "settings.general"
+msgstr "عام"
+
+msgid "settings.language"
+msgstr "اللغة"
+
+msgid "settings.theme"
+msgstr "المظهر"
+
+msgid "settings.notifications"
+msgstr "الإشعارات"
+
+# Errors
+msgid "error.generic"
+msgstr "حدث خطأ"
+
+msgid "error.notFound"
+msgstr "غير موجود"
+
+msgid "error.unauthorized"
+msgstr "غير مصرح"
+
+msgid "error.serverError"
+msgstr "خطأ في الخادم"

@@ -1,0 +1,142 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-11-12 12:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+
+# Common
+msgid "common.loading"
+msgstr "Loading..."
+
+msgid "common.save"
+msgstr "Save"
+
+msgid "common.cancel"
+msgstr "Cancel"
+
+msgid "common.delete"
+msgstr "Delete"
+
+msgid "common.edit"
+msgstr "Edit"
+
+msgid "common.add"
+msgstr "Add"
+
+msgid "common.search"
+msgstr "Search"
+
+msgid "common.close"
+msgstr "Close"
+
+msgid "common.submit"
+msgstr "Submit"
+
+msgid "common.yes"
+msgstr "Yes"
+
+msgid "common.no"
+msgstr "No"
+
+# App
+msgid "app.title"
+msgstr "DoganHub Enterprise Platform"
+
+msgid "app.description"
+msgstr "Integrated Business Platform for Enterprises"
+
+# Dashboard
+msgid "dashboard.title"
+msgstr "Dashboard"
+
+msgid "dashboard.overview"
+msgstr "Overview"
+
+msgid "dashboard.analytics"
+msgstr "Analytics"
+
+msgid "dashboard.reports"
+msgstr "Reports"
+
+# Auth
+msgid "auth.login"
+msgstr "Login"
+
+msgid "auth.logout"
+msgstr "Logout"
+
+msgid "auth.signup"
+msgstr "Sign Up"
+
+msgid "auth.email"
+msgstr "Email"
+
+msgid "auth.password"
+msgstr "Password"
+
+msgid "auth.forgotPassword"
+msgstr "Forgot Password?"
+
+# Navigation
+msgid "nav.home"
+msgstr "Home"
+
+msgid "nav.dashboard"
+msgstr "Dashboard"
+
+msgid "nav.billing"
+msgstr "Billing"
+
+msgid "nav.settings"
+msgstr "Settings"
+
+msgid "nav.profile"
+msgstr "Profile"
+
+# Billing
+msgid "billing.title"
+msgstr "Billing & Subscriptions"
+
+msgid "billing.plans"
+msgstr "Plans"
+
+msgid "billing.invoices"
+msgstr "Invoices"
+
+msgid "billing.paymentMethod"
+msgstr "Payment Method"
+
+msgid "billing.subscribe"
+msgstr "Subscribe"
+
+# Settings
+msgid "settings.title"
+msgstr "Settings"
+
+msgid "settings.general"
+msgstr "General"
+
+msgid "settings.language"
+msgstr "Language"
+
+msgid "settings.theme"
+msgstr "Theme"
+
+msgid "settings.notifications"
+msgstr "Notifications"
+
+# Errors
+msgid "error.generic"
+msgstr "An error occurred"
+
+msgid "error.notFound"
+msgstr "Not found"
+
+msgid "error.unauthorized"
+msgstr "Unauthorized"
+
+msgid "error.serverError"
+msgstr "Server error"

@@ -1,0 +1,41 @@
+/**
+ * Test Database Management Scripts
+ * Package.json test scripts for database operations
+ */
+
+// Add these scripts to package.json:
+{
+  "scripts": {
+    "test": "jest --config __tests__/jest.config.js",
+    "test:watch": "jest --config __tests__/jest.config.js --watch",
+    "test:coverage": "jest --config __tests__/jest.config.js --coverage",
+    "test:ci": "jest --config __tests__/jest.config.js --ci --coverage --watchAll=false",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
+    "test:all": "npm run test:ci && npm run test:e2e",
+    
+    "db:test:setup": "NODE_ENV=test npx prisma db push --force-reset",
+    "db:test:migrate": "NODE_ENV=test npx prisma migrate deploy",
+    "db:test:seed": "NODE_ENV=test node __tests__/scripts/seed-test-data.js",
+    "db:test:cleanup": "NODE_ENV=test node __tests__/scripts/cleanup-test-data.js",
+    
+    "lint:test": "eslint '__tests__/**/*.{js,jsx,ts,tsx}'",
+    "format:test": "prettier --write '__tests__/**/*.{js,jsx,ts,tsx}'"
+  },
+  
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.5.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "@babel/preset-env": "^7.23.3",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
+    "babel-jest": "^29.7.0",
+    "node-mocks-http": "^1.13.0"
+  }
+}

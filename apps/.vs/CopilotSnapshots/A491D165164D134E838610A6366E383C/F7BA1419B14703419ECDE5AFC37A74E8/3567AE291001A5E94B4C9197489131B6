@@ -1,0 +1,300 @@
+﻿// =================================================================
+// WORKFLOW AUTOMATION ENGINE - IMPLEMENTATION
+// =================================================================
+// This service provides workflow automation capabilities including
+// workflow execution, triggers, and actions.
+// =================================================================
+
+import { Pool } from 'pg';
+
+const pool = new Pool({
+    user: process.env.DB_USER || 'postgres',
+    host: process.env.DB_HOST || 'localhost',
+    database: process.env.DB_NAME || 'production',
+    password: process.env.DB_PASSWORD || 'password',
+    port: parseInt(process.env.DB_PORT || '5432', 10),
+});
+
+// --- Interfaces ---
+interface WorkflowDefinition {
+    id?: number;
+    organization_id: number;
+    name: string;
+    description?: string;
+    trigger: WorkflowTrigger;
+    actions: WorkflowAction[];
+    conditions?: WorkflowCondition[];
+    is_active: boolean;
+}
+
+interface WorkflowTrigger {
+    type: 'event' | 'schedule' | 'webhook' | 'manual';
+    config: Record<string, any>;
+}
+
+interface WorkflowAction {
+    type: 'email' | 'webhook' | 'database' | 'notification' | 'custom';
+    config: Record<string, any>;
+    order: number;
+}
+
+interface WorkflowCondition {
+    field: string;
+    operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'contains';
+    value: any;
+}
+
+interface WorkflowExecution {
+    id?: number;
+    workflow_id: number;
+    status: 'pending' | 'running' | 'completed' | 'failed';
+    started_at?: Date;
+    completed_at?: Date;
+    error_message?: string;
+    context: Record<string, any>;
+}
+
+// --- Workflow Automation Engine ---
+export class WorkflowAutomationEngine {
+
+    /**
+     * Create a new workflow
+     */
+    async createWorkflow(workflow: WorkflowDefinition): Promise<WorkflowDefinition> {
+        console.log(`🔄 Workflow Engine: Creating new workflow "${workflow.name}"...`);
+
+        const result = await pool.query(`
+            INSERT INTO workflows 
+            (organization_id, name, description, trigger, actions, conditions, is_active, created_at)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+            RETURNING *
+        `, [
+            workflow.organization_id,
+            workflow.name,
+            workflow.description,
+            JSON.stringify(workflow.trigger),
+            JSON.stringify(workflow.actions),
+            JSON.stringify(workflow.conditions || []),
+            workflow.is_active
+        ]);
+
+        return this.parseWorkflowRow(result.rows[0]);
+    }
+
+    /**
+     * Get all workflows for an organization
+     */
+    async getWorkflows(organizationId: number): Promise<WorkflowDefinition[]> {
+        console.log(`🔄 Workflow Engine: Fetching workflows for org ${organizationId}...`);
+
+        const result = await pool.query(`
+            SELECT * FROM workflows
+            WHERE organization_id = $1
+            ORDER BY created_at DESC
+        `, [organizationId]);
+
+        return result.rows.map(row => this.parseWorkflowRow(row));
+    }
+
+    /**
+     * Execute a workflow
+     */
+    async executeWorkflow(workflowId: number, context: Record<string, any> = {}): Promise<WorkflowExecution> {
+        console.log(`🔄 Workflow Engine: Executing workflow ${workflowId}...`);
+
+        // Create execution record
+        const executionResult = await pool.query(`
+            INSERT INTO workflow_executions 
+            (workflow_id, status, context, started_at, created_at)
+            VALUES ($1, 'running', $2, NOW(), NOW())
+            RETURNING *
+        `, [workflowId, JSON.stringify(context)]);
+
+        const execution: WorkflowExecution = {
+            id: executionResult.rows[0].id,
+            workflow_id: workflowId,
+            status: 'running',
+            started_at: new Date(),
+            context
+        };
+
+        try {
+            // Fetch workflow definition
+            const workflowResult = await pool.query(`
+                SELECT * FROM workflows WHERE id = $1
+            `, [workflowId]);
+
+            if (workflowResult.rows.length === 0) {
+                throw new Error(`Workflow ${workflowId} not found`);
+            }
+
+            const workflow = this.parseWorkflowRow(workflowResult.rows[0]);
+
+            // Check if workflow is active
+            if (!workflow.is_active) {
+                throw new Error(`Workflow ${workflowId} is not active`);
+            }
+
+            // Evaluate conditions
+            if (workflow.conditions && workflow.conditions.length > 0) {
+                const conditionsMet = this.evaluateConditions(workflow.conditions, context);
+                if (!conditionsMet) {
+                    console.log(`⚠️ Workflow ${workflowId}: Conditions not met, skipping execution.`);
+                    await this.updateExecutionStatus(execution.id!, 'completed', 'Conditions not met');
+                    return { ...execution, status: 'completed' };
+                }
+            }
+
+            // Execute actions in order
+            const sortedActions = workflow.actions.sort((a, b) => a.order - b.order);
+            
+            for (const action of sortedActions) {
+                console.log(`🔄 Executing action: ${action.type}`);
+                await this.executeAction(action, context);
+            }
+
+            // Mark execution as completed
+            await this.updateExecutionStatus(execution.id!, 'completed');
+            execution.status = 'completed';
+            execution.completed_at = new Date();
+
+            console.log(`✅ Workflow ${workflowId} execution completed successfully.`);
+            return execution;
+
+        } catch (error: any) {
+            console.error(`❌ Workflow ${workflowId} execution failed:`, error);
+            await this.updateExecutionStatus(execution.id!, 'failed', error.message);
+            execution.status = 'failed';
+            execution.error_message = error.message;
+            return execution;
+        }
+    }
+
+    /**
+     * Trigger workflows based on events
+     */
+    async triggerEventWorkflows(organizationId: number, eventType: string, eventData: Record<string, any>): Promise<void> {
+        console.log(`🔄 Workflow Engine: Triggering workflows for event "${eventType}" in org ${organizationId}...`);
+
+        const result = await pool.query(`
+            SELECT * FROM workflows
+            WHERE organization_id = $1
+              AND is_active = true
+              AND trigger->>'type' = 'event'
+              AND trigger->>'config'->>'eventType' = $2
+        `, [organizationId, eventType]);
+
+        for (const row of result.rows) {
+            const workflow = this.parseWorkflowRow(row);
+            await this.executeWorkflow(workflow.id!, eventData);
+        }
+    }
+
+    // --- Private Helper Methods ---
+
+    private parseWorkflowRow(row: any): WorkflowDefinition {
+        return {
+            id: row.id,
+            organization_id: row.organization_id,
+            name: row.name,
+            description: row.description,
+            trigger: typeof row.trigger === 'string' ? JSON.parse(row.trigger) : row.trigger,
+            actions: typeof row.actions === 'string' ? JSON.parse(row.actions) : row.actions,
+            conditions: typeof row.conditions === 'string' ? JSON.parse(row.conditions) : row.conditions,
+            is_active: row.is_active
+        };
+    }
+
+    private evaluateConditions(conditions: WorkflowCondition[], context: Record<string, any>): boolean {
+        for (const condition of conditions) {
+            const value = context[condition.field];
+            
+            switch (condition.operator) {
+                case 'equals':
+                    if (value !== condition.value) return false;
+                    break;
+                case 'not_equals':
+                    if (value === condition.value) return false;
+                    break;
+                case 'greater_than':
+                    if (value <= condition.value) return false;
+                    break;
+                case 'less_than':
+                    if (value >= condition.value) return false;
+                    break;
+                case 'contains':
+                    if (!String(value).includes(condition.value)) return false;
+                    break;
+            }
+        }
+        return true;
+    }
+
+    private async executeAction(action: WorkflowAction, context: Record<string, any>): Promise<void> {
+        switch (action.type) {
+            case 'email':
+                await this.executeEmailAction(action.config, context);
+                break;
+            case 'webhook':
+                await this.executeWebhookAction(action.config, context);
+                break;
+            case 'database':
+                await this.executeDatabaseAction(action.config, context);
+                break;
+            case 'notification':
+                await this.executeNotificationAction(action.config, context);
+                break;
+            default:
+                console.log(`⚠️ Unknown action type: ${action.type}`);
+        }
+    }
+
+    private async executeEmailAction(config: Record<string, any>, context: Record<string, any>): Promise<void> {
+        console.log(`📧 Sending email to ${config.to}...`);
+        // TODO: Integrate with your email service (nodemailer)
+        // For now, just log
+        console.log(`Email would be sent: Subject="${config.subject}", To="${config.to}"`);
+    }
+
+    private async executeWebhookAction(config: Record<string, any>, context: Record<string, any>): Promise<void> {
+        console.log(`🌐 Calling webhook ${config.url}...`);
+        // TODO: Make actual HTTP request
+        try {
+            const response = await fetch(config.url, {
+                method: config.method || 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...config.headers
+                },
+                body: JSON.stringify(context)
+            });
+            console.log(`Webhook response: ${response.status}`);
+        } catch (error) {
+            console.error(`Webhook call failed:`, error);
+        }
+    }
+
+    private async executeDatabaseAction(config: Record<string, any>, context: Record<string, any>): Promise<void> {
+        console.log(`💾 Executing database action...`);
+        // TODO: Execute safe database operations based on config
+        console.log(`Database action would execute: ${config.operation}`);
+    }
+
+    private async executeNotificationAction(config: Record<string, any>, context: Record<string, any>): Promise<void> {
+        console.log(`🔔 Sending notification to user ${config.userId}...`);
+        // TODO: Integrate with notification system
+        console.log(`Notification would be sent: "${config.message}"`);
+    }
+
+    private async updateExecutionStatus(executionId: number, status: string, errorMessage?: string): Promise<void> {
+        await pool.query(`
+            UPDATE workflow_executions
+            SET status = $1, 
+                completed_at = NOW(),
+                error_message = $2
+            WHERE id = $3
+        `, [status, errorMessage || null, executionId]);
+    }
+}
+
+export const workflowAutomationEngine = new WorkflowAutomationEngine();

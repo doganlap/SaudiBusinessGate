@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Home/Home/AppStore"
+		}
+	],
+	"settings": {
+		"powershell.cwd": "DoganHubStore"
+	}
+}

@@ -1,0 +1,96 @@
+API_ID,Module,Endpoint,HTTP_Method,File_Path,Database_Connected,Tables_Used,UI_Component,UI_File_Path,Description,Status
+1,Authentication,/api/auth/[...nextauth],POST/GET,app/api/auth/[...nextauth]/route.ts,YES,"users,accounts,sessions,verification_tokens",Login Page,app/auth/signin/page.tsx,NextAuth authentication handler,Active
+2,Authentication,/api/auth/login,POST,app/api/auth/login/route.ts,YES,"users,audit_logs",Login Form,app/auth/signin/components/LoginForm.tsx,User login endpoint,Active
+3,Authentication,/api/auth/me,GET,app/api/auth/me/route.ts,YES,"users,organizations",Header Navigation,components/layout/Header.tsx,Get current user info,Active
+4,Authentication,/api/auth/sync-user,POST,app/api/auth/sync-user/route.ts,YES,users,N/A,N/A,Sync user data,Active
+5,Authentication,/api/auth/register,POST,app/api/auth/register/route.ts,YES,"users,organizations",Registration Form,app/auth/register/page.tsx,User registration,Active
+6,Analytics,/api/analytics/kpis/business,GET,app/api/analytics/kpis/business/route.ts,YES,"transactions,users,organizations",BusinessKpiDashboard,app/dashboard/components/BusinessKpiDashboard.tsx,Business KPI metrics,Active
+7,Analytics,/api/analytics/forecast/sales,GET,app/api/analytics/forecast/sales/route.ts,YES,transactions,Sales Forecast Widget,app/dashboard/components/SalesForecastWidget.tsx,Sales forecasting with AI,Active
+8,Analytics,/api/analytics/customer-analytics,GET,app/api/analytics/customer-analytics/route.ts,YES,"users,transactions,audit_logs",Customer Analytics Dashboard,app/analytics/customers/page.tsx,Customer behavior analysis,Active
+9,Analytics,/api/analytics/financial-analytics,GET,app/api/analytics/financial-analytics/route.ts,YES,"transactions,invoices,payments",Financial Dashboard,app/analytics/financial/page.tsx,Financial metrics and trends,Active
+10,Analytics,/api/analytics/ai-insights,POST,app/api/analytics/ai-insights/route.ts,YES,Multiple tables,AI Insights Panel,app/dashboard/components/AIInsightsPanel.tsx,AI-powered insights,Active
+11,Analytics,/api/analytics/real-time,GET,app/api/analytics/real-time/route.ts,YES,"transactions,audit_logs",Real-time Dashboard,app/dashboard/components/RealTimeDashboard.tsx,Real-time analytics stream,Active
+12,Analytics,/api/analytics/churn-prediction,POST,app/api/analytics/churn-prediction/route.ts,YES,"users,transactions",Churn Analysis,app/analytics/churn/page.tsx,Customer churn prediction,Active
+13,Analytics,/api/analytics/lead-scoring,POST,app/api/analytics/lead-scoring/route.ts,YES,"contacts,deals",Lead Scoring Widget,app/crm/components/LeadScoreWidget.tsx,AI lead scoring,Active
+14,Analytics,/api/analytics/anomaly-detection,POST,app/api/analytics/anomaly-detection/route.ts,YES,transactions,Anomaly Alerts,app/dashboard/components/AnomalyAlerts.tsx,Detect unusual patterns,Active
+15,Analytics,/api/analytics/trend-analysis,GET,app/api/analytics/trend-analysis/route.ts,YES,transactions,Trend Charts,app/analytics/trends/page.tsx,Historical trend analysis,Active
+16,Reports,/api/reports/templates,GET,app/api/reports/templates/route.ts,NO,N/A,Report Builder Step 1,app/reports/builder/components/ReportBuilderForm.tsx,List report templates,Active
+17,Reports,/api/reports/preview,POST,app/api/reports/preview/route.ts,YES,Varies by template,Report Builder Step 4,app/reports/builder/components/ReportBuilderForm.tsx,Preview report before save,Active
+18,Reports,/api/reports,GET,app/api/reports/route.ts,YES,custom_reports,Reports List,app/reports/page.tsx,List all saved reports,Active
+19,Reports,/api/reports,POST,app/api/reports/route.ts,YES,custom_reports,Report Builder,app/reports/builder/page.tsx,Create new report,Active
+20,Reports,/api/reports/[reportId]/execute,POST,app/api/reports/[reportId]/execute/route.ts,YES,Varies by report,Report Viewer,app/reports/[reportId]/components/ReportViewer.tsx,Execute saved report,Active
+21,Reports,/api/reports/[reportId],GET,app/api/reports/[reportId]/route.ts,YES,custom_reports,Report Details,app/reports/[reportId]/page.tsx,Get report metadata,Active
+22,Reports,/api/reports/[reportId],PUT,app/api/reports/[reportId]/route.ts,YES,custom_reports,Report Editor,app/reports/[reportId]/edit/page.tsx,Update report definition,Active
+23,Reports,/api/reports/[reportId],DELETE,app/api/reports/[reportId]/route.ts,YES,custom_reports,Reports List,app/reports/page.tsx,Delete report,Active
+24,Reports,/api/reports/export/[format],POST,app/api/reports/export/[format]/route.ts,YES,custom_reports,Report Viewer,app/reports/[reportId]/components/ReportViewer.tsx,Export report (PDF/Excel),Active
+25,Finance,/api/finance/invoices,GET,app/api/finance/invoices/route.ts,YES,"invoices,invoice_line_items",Financial Hub,app/finance/hub/components/FinancialHubClient.tsx,List all invoices,Active
+26,Finance,/api/finance/invoices,POST,app/api/finance/invoices/route.ts,YES,"invoices,invoice_line_items,deals",Invoice Creator,app/finance/invoices/create/page.tsx,Create new invoice,Active
+27,Finance,/api/finance/invoices/[id],GET,app/api/finance/invoices/[id]/route.ts,YES,"invoices,invoice_line_items",Invoice Details,app/finance/invoices/[id]/page.tsx,Get invoice details,Active
+28,Finance,/api/finance/accounts,GET,app/api/finance/accounts/route.ts,YES,chart_of_accounts,Chart of Accounts,app/finance/accounts/page.tsx,List all accounts,Active
+29,Finance,/api/finance/accounts,POST,app/api/finance/accounts/route.ts,YES,chart_of_accounts,Account Creator,app/finance/accounts/create/page.tsx,Create new account,Active
+30,Finance,/api/finance/budgets,GET,app/api/finance/budgets/route.ts,YES,budgets,Budget Dashboard,app/finance/budgets/page.tsx,List all budgets,Active
+31,Finance,/api/finance/budgets,POST,app/api/finance/budgets/route.ts,YES,budgets,Budget Creator,app/finance/budgets/create/page.tsx,Create new budget,Active
+32,Finance,/api/finance/transactions,GET,app/api/finance/transactions/route.ts,YES,transactions,Transaction List,app/finance/transactions/page.tsx,List all transactions,Active
+33,Finance,/api/finance/transactions,POST,app/api/finance/transactions/route.ts,YES,transactions,Transaction Form,app/finance/transactions/create/page.tsx,Create transaction,Active
+34,Finance,/api/finance/journal-entries,GET,app/api/finance/journal-entries/route.ts,YES,journal_entries,Journal Entries,app/finance/journal/page.tsx,List journal entries,Active
+35,Finance,/api/finance/journal-entries,POST,app/api/finance/journal-entries/route.ts,YES,journal_entries,Journal Entry Form,app/finance/journal/create/page.tsx,Create journal entry,Active
+36,Finance,/api/finance/stats,GET,app/api/finance/stats/route.ts,YES,"transactions,invoices",Finance Dashboard,app/finance/dashboard/page.tsx,Financial statistics,Active
+37,Finance,/api/finance/reports,GET,app/api/finance/reports/route.ts,YES,Multiple tables,Finance Reports,app/finance/reports/page.tsx,Financial reports,Active
+38,CRM,/api/crm/contacts,GET,app/api/crm/contacts/route.ts,YES,contacts,Contacts List,app/crm/contacts/page.tsx,List all contacts,Active
+39,CRM,/api/crm/contacts,POST,app/api/crm/contacts/route.ts,YES,contacts,Contact Form,app/crm/contacts/create/page.tsx,Create new contact,Active
+40,CRM,/api/crm/contacts/[id],GET,app/api/crm/contacts/[id]/route.ts,YES,contacts,Contact Details,app/crm/contacts/[id]/page.tsx,Get contact details,Active
+41,CRM,/api/crm/pipeline,GET,app/api/crm/pipeline/route.ts,YES,deals,Pipeline Board,app/crm/pipeline/components/PipelineBoard.tsx,Get deals pipeline,Active
+42,CRM,/api/crm/deals,GET,app/api/crm/deals/route.ts,YES,deals,Deals List,app/crm/deals/page.tsx,List all deals,Active
+43,CRM,/api/crm/deals,POST,app/api/crm/deals/route.ts,YES,deals,Deal Creator,app/crm/deals/create/page.tsx,Create new deal,Active
+44,CRM,/api/crm/deals/[dealId]/stage,PATCH,app/api/crm/deals/[dealId]/stage/route.ts,YES,deals,Pipeline Board,app/crm/pipeline/components/PipelineBoard.tsx,Update deal stage (triggers workflow),Active
+45,CRM,/api/crm/deals/[dealId]/quote,POST,app/api/crm/deals/[dealId]/quote/route.ts,YES,"quotes,quote_line_items",Quote Creator,app/crm/deals/[dealId]/components/QuoteForm.tsx,Create quote for deal,Active
+46,CRM,/api/crm/activities,GET,app/api/crm/activities/route.ts,YES,activities,Activity Timeline,app/crm/components/ActivityTimeline.tsx,List activities,Active
+47,CRM,/api/crm/activities,POST,app/api/crm/activities/route.ts,YES,activities,Activity Logger,app/crm/components/ActivityForm.tsx,Create activity,Active
+48,CRM,/api/crm/customers,GET,app/api/crm/customers/route.ts,YES,customers,Customer List,app/crm/customers/page.tsx,List customers,Active
+49,CRM,/api/crm/customers,POST,app/api/crm/customers/route.ts,YES,customers,Customer Form,app/crm/customers/create/page.tsx,Create customer,Active
+50,Billing,/api/billing/plans,GET,app/api/billing/plans/route.ts,NO,N/A,Pricing Page,app/billing/pricing/page.tsx,List subscription plans,Active
+51,Billing,/api/billing/checkout,POST,app/api/billing/checkout/route.ts,YES,subscriptions,Checkout Page,app/billing/checkout/page.tsx,Create checkout session,Active
+52,Billing,/api/billing/portal,GET,app/api/billing/portal/route.ts,YES,subscriptions,Billing Portal,app/billing/portal/page.tsx,Customer portal URL,Active
+53,Billing,/api/billing/activate,POST,app/api/billing/activate/route.ts,YES,licenses,Activation Page,app/billing/activate/page.tsx,Activate license,Active
+54,Billing,/api/billing/send-activation,POST,app/api/billing/send-activation/route.ts,YES,licenses,Admin Panel,app/admin/licenses/page.tsx,Send activation email,Active
+55,Billing,/api/billing/subscription/[tenantId],GET,app/api/billing/subscription/[tenantId]/route.ts,YES,subscriptions,Settings Page,app/settings/billing/page.tsx,Get subscription status,Active
+56,License,/api/license/check,GET,app/api/license/check/route.ts,YES,licenses,All Protected Pages,hooks/useLicensedDashboard.ts,Check license validity,Active
+57,License,/api/license/tenant/[tenantId],GET,app/api/license/tenant/[tenantId]/route.ts,YES,licenses,License Dashboard,app/admin/licenses/page.tsx,Get tenant license,Active
+58,License,/api/license/usage/[tenantId],GET,app/api/license/usage/[tenantId]/route.ts,YES,license_usage_logs,Usage Dashboard,app/admin/usage/page.tsx,Get license usage stats,Active
+59,License,/api/licensing,POST,app/api/licensing/route.ts,YES,licenses,License Manager,app/admin/licenses/create/page.tsx,Create/update license,Active
+60,GRC,/api/grc/controls,GET,app/api/grc/controls/route.ts,YES,grc_controls,Controls List,app/grc/controls/page.tsx,List compliance controls,Active
+61,GRC,/api/grc/controls,POST,app/api/grc/controls/route.ts,YES,grc_controls,Control Creator,app/grc/controls/create/page.tsx,Create new control,Active
+62,GRC,/api/grc/controls/[id],GET,app/api/grc/controls/[id]/route.ts,YES,grc_controls,Control Details,app/grc/controls/[id]/page.tsx,Get control details,Active
+63,GRC,/api/grc/frameworks,GET,app/api/grc/frameworks/route.ts,YES,grc_frameworks,Frameworks List,app/grc/frameworks/page.tsx,List compliance frameworks,Active
+64,GRC,/api/grc/frameworks/[id]/sections,GET,app/api/grc/frameworks/[id]/sections/route.ts,YES,grc_framework_sections,Framework Details,app/grc/frameworks/[id]/page.tsx,Get framework sections,Active
+65,GRC,/api/grc/tests,GET,app/api/grc/tests/route.ts,YES,grc_tests,Tests List,app/grc/tests/page.tsx,List compliance tests,Active
+66,GRC,/api/grc/tests,POST,app/api/grc/tests/route.ts,YES,grc_tests,Test Creator,app/grc/tests/create/page.tsx,Create compliance test,Active
+67,GRC,/api/grc/tests/[id]/execute,POST,app/api/grc/tests/[id]/execute/route.ts,YES,"grc_tests,grc_test_results",Test Executor,app/grc/tests/[id]/page.tsx,Execute compliance test,Active
+68,GRC,/api/grc/exceptions,GET,app/api/grc/exceptions/route.ts,YES,grc_exceptions,Exceptions List,app/grc/exceptions/page.tsx,List exceptions,Active
+69,GRC,/api/grc/exceptions,POST,app/api/grc/exceptions/route.ts,YES,grc_exceptions,Exception Form,app/grc/exceptions/create/page.tsx,Create exception,Active
+70,GRC,/api/grc/alerts,GET,app/api/grc/alerts/route.ts,YES,grc_alerts,Alerts Dashboard,app/grc/alerts/page.tsx,List GRC alerts,Active
+71,GRC,/api/grc/analytics,GET,app/api/grc/analytics/route.ts,YES,Multiple GRC tables,GRC Dashboard,app/grc/dashboard/page.tsx,GRC analytics,Active
+72,HR,/api/hr/employees,GET,app/api/hr/employees/route.ts,YES,employees,Employee List,app/hr/employees/page.tsx,List employees,Active
+73,HR,/api/hr/employees,POST,app/api/hr/employees/route.ts,YES,employees,Employee Form,app/hr/employees/create/page.tsx,Create employee,Active
+74,HR,/api/hr/attendance,GET,app/api/hr/attendance/route.ts,YES,attendance_records,Attendance Dashboard,app/hr/attendance/page.tsx,Get attendance records,Active
+75,HR,/api/hr/attendance,POST,app/api/hr/attendance/route.ts,YES,attendance_records,Attendance Logger,app/hr/attendance/log/page.tsx,Log attendance,Active
+76,HR,/api/hr/payroll,GET,app/api/hr/payroll/route.ts,YES,payroll_records,Payroll Dashboard,app/hr/payroll/page.tsx,Get payroll records,Active
+77,HR,/api/hr/payroll,POST,app/api/hr/payroll/route.ts,YES,payroll_records,Payroll Processor,app/hr/payroll/process/page.tsx,Process payroll,Active
+78,Dashboard,/api/dashboard/stats,GET,app/api/dashboard/stats/route.ts,YES,Multiple tables,Main Dashboard,app/dashboard/page.tsx,Dashboard statistics,Active
+79,Dashboard,/api/dashboard/activity,GET,app/api/dashboard/activity/route.ts,YES,"audit_logs,activities",Activity Feed,app/dashboard/components/ActivityFeed.tsx,Recent activity,Active
+80,Dashboard,/api/dashboard/widgets,GET,app/api/dashboard/widgets/route.ts,YES,user_preferences,Dashboard,app/dashboard/page.tsx,User widget config,Active
+81,AI,/api/ai-agents,POST,app/api/ai-agents/route.ts,NO,N/A,AI Assistant,app/components/AIAssistant.tsx,AI agent interactions,Active
+82,AI,/api/agents/self-healing,POST,app/api/agents/self-healing/route.ts,YES,agent_execution_logs,System Monitor,app/admin/monitoring/page.tsx,Self-healing agent,Active
+83,AI,/api/ai/finance-agents,POST,app/api/ai/finance-agents/route.ts,YES,"transactions,invoices",Finance Dashboard,app/finance/dashboard/page.tsx,AI finance assistant,Active
+84,AI,/api/llm/generate,POST,app/api/llm/generate/route.ts,NO,N/A,Content Generator,app/tools/content-generator/page.tsx,LLM text generation,Active
+85,AI,/api/ai/config,GET,app/api/ai/config/route.ts,YES,ai_configurations,AI Settings,app/settings/ai/page.tsx,AI configuration,Active
+86,Integrations,/api/integrations/webhooks,GET,app/api/integrations/webhooks/route.ts,YES,webhooks,Webhooks List,app/integrations/webhooks/page.tsx,List webhooks,Active
+87,Integrations,/api/integrations/webhooks,POST,app/api/integrations/webhooks/route.ts,YES,webhooks,Webhook Creator,app/integrations/webhooks/create/page.tsx,Create webhook,Active
+88,Integrations,/api/integrations/webhooks/[id],DELETE,app/api/integrations/webhooks/[id]/route.ts,YES,webhooks,Webhooks List,app/integrations/webhooks/page.tsx,Delete webhook,Active
+89,Themes,/api/themes/[organizationId],GET,app/api/themes/[organizationId]/route.ts,YES,organization_themes,All Pages,app/layout.tsx (ThemeProvider),Get organization theme,Active
+90,Themes,/api/themes/[organizationId],PUT,app/api/themes/[organizationId]/route.ts,YES,organization_themes,Theme Editor,app/settings/theme/page.tsx,Update theme,Active
+91,Platform,/api/platform/owner-permissions,GET,app/api/platform/owner-permissions/route.ts,YES,"permissions,roles",Admin Dashboard,app/admin/permissions/page.tsx,Get platform permissions,Active
+92,Workflows,/api/workflows,GET,app/api/workflows/route.ts,YES,workflows,Workflows List,app/workflows/page.tsx,List all workflows,Active
+93,Workflows,/api/workflows,POST,app/api/workflows/route.ts,YES,workflows,Workflow Builder,app/workflows/create/page.tsx,Create workflow,Active
+94,Workflows,/api/workflows/[id]/execute,POST,app/api/workflows/[id]/execute/route.ts,YES,"workflows,workflow_executions",Workflow Details,app/workflows/[id]/page.tsx,Execute workflow,Active
+95,Payment,/api/payment,POST,app/api/payment/route.ts,YES,"transactions,payments",Payment Form,app/payments/checkout/page.tsx,Process payment,Active

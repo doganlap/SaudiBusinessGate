@@ -1,0 +1,485 @@
+// Prisma Schema for Saudi Store Multi-tenant Platform
+// Database: Prisma PostgreSQL Cloud
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("POSTGRES_URL")
+}
+
+// =====================================================
+// SUBSCRIPTION PLANS
+// =====================================================
+model SubscriptionPlan {
+  id                      String   @id @default(uuid())
+  name                    String   @db.VarChar(100)
+  slug                    String   @unique @db.VarChar(100)
+  displayName             Json     // {en: "Professional", ar: "احترافي"}
+  description             Json?
+  
+  // Pricing
+  priceMonthly            Decimal  @db.Decimal(10, 2)
+  priceYearly             Decimal? @db.Decimal(10, 2)
+  currency                String   @default("SAR") @db.VarChar(3)
+  
+  // Plan Type
+  planType                String   @default("standard") @db.VarChar(50)
+  
+  // Features & Limits
+  maxUsers                Int      @default(5)
+  maxTeams                Int      @default(1)
+  maxStorageGb            Int      @default(10)
+  maxApiCallsPerMonth     Int      @default(10000)
+  
+  // Module Access
+  enabledModules          Json     @default("[]")
+  features                Json     @default("{}")
+  
+  // White-label Features
+  allowWhiteLabel         Boolean  @default(false)
+  allowCustomBranding     Boolean  @default(false)
+  allowCustomDomain       Boolean  @default(false)
+  allowReselling          Boolean  @default(false)
+  resellerCommissionRate  Decimal  @default(0) @db.Decimal(5, 2)
+  
+  // Status
+  isActive                Boolean  @default(true)
+  isPublic                Boolean  @default(true)
+  
+  // Metadata
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  
+  // Relations
+  tenantSubscriptions     TenantSubscription[]
+  
+  @@map("subscription_plans")
+}
+
+// =====================================================
+// MODULES
+// =====================================================
+model Module {
+  id                String   @id @default(uuid())
+  name              String   @db.VarChar(100)
+  slug              String   @unique @db.VarChar(100)
+  displayName       Json     // {en: "CRM", ar: "إدارة العملاء"}
+  description       Json?
+  
+  // Module Type
+  moduleType        String   @default("core") @db.VarChar(50)
+  category          String   @db.VarChar(50)
+  basePath          String   @db.VarChar(200)
+  icon              String?  @db.VarChar(50)
+  
+  // Pricing
+  monthlyPrice      Decimal  @default(0) @db.Decimal(10, 2)
+  
+  // Status
+  isActive          Boolean  @default(true)
+  isBeta            Boolean  @default(false)
+  sortOrder         Int      @default(0)
+  
+  // Metadata
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  tenantModules     TenantModule[]
+  
+  @@map("modules")
+}
+
+// =====================================================
+// TENANTS
+// =====================================================
+model Tenant {
+  id                    String   @id @default(uuid())
+  name                  String   @db.VarChar(255)
+  slug                  String   @unique @db.VarChar(100)
+  domain                String?  @unique @db.VarChar(255)
+  
+  // Subscription
+  subscriptionTier      String   @default("free") @db.VarChar(50)
+  subscriptionStatus    String   @default("active") @db.VarChar(50)
+  trialEndsAt           DateTime?
+  
+  // Limits
+  maxUsers              Int      @default(5)
+  maxTeams              Int      @default(1)
+  maxStorageGb          Int      @default(10)
+  
+  // Features
+  features              Json     @default("{}")
+  
+  // Contact
+  contactEmail          String?  @db.VarChar(255)
+  contactPhone          String?  @db.VarChar(50)
+  
+  // Status
+  isActive              Boolean  @default(true)
+  
+  // Metadata
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  users                 User[]
+  teams                 Team[]
+  tenantModules         TenantModule[]
+  whiteLabelConfig      WhiteLabelConfig?
+  resellerConfig        ResellerConfig?
+  tenantSubscriptions   TenantSubscription[]
+  
+  @@index([slug])
+  @@index([domain])
+  @@map("tenants")
+}
+
+// =====================================================
+// USERS
+// =====================================================
+model User {
+  id                String    @id @default(uuid())
+  tenantId          String
+  
+  // Authentication
+  email             String    @unique @db.VarChar(255)
+  passwordHash      String    @db.VarChar(255)
+  emailVerified     Boolean   @default(false)
+  
+  // Profile
+  fullName          String    @db.VarChar(255)
+  avatar            String?   @db.VarChar(500)
+  phone             String?   @db.VarChar(50)
+  timezone          String?   @default("Asia/Riyadh") @db.VarChar(50)
+  language          String?   @default("en") @db.VarChar(10)
+  
+  // Role
+  role              String    @default("user") @db.VarChar(50)
+  userType          String    @default("regular") @db.VarChar(50)
+  permissions       Json      @default("[]")
+  
+  // Status
+  isActive          Boolean   @default(true)
+  lastLoginAt       DateTime?
+  
+  // Metadata
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relations
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  userTeams         UserTeam[]
+  
+  @@index([tenantId])
+  @@index([email])
+  @@map("users")
+}
+
+// =====================================================
+// TEAMS
+// =====================================================
+model Team {
+  id                String    @id @default(uuid())
+  tenantId          String
+  name              String    @db.VarChar(255)
+  slug              String    @db.VarChar(100)
+  description       String?   @db.Text
+  
+  // Team Type
+  teamType          String    @default("department") @db.VarChar(50)
+  
+  // Hierarchy
+  parentTeamId      String?
+  teamLeadId        String?
+  
+  // Status
+  isActive          Boolean   @default(true)
+  
+  // Metadata
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relations
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  parentTeam        Team?     @relation("TeamHierarchy", fields: [parentTeamId], references: [id])
+  childTeams        Team[]    @relation("TeamHierarchy")
+  userTeams         UserTeam[]
+  
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@map("teams")
+}
+
+// =====================================================
+// ROLES
+// =====================================================
+model Role {
+  id                String    @id @default(uuid())
+  tenantId          String?
+  
+  // Role Details
+  name              String    @db.VarChar(100)
+  slug              String    @db.VarChar(100)
+  displayName       Json      // {en: "Manager", ar: "مدير"}
+  description       Json?
+  
+  // Role Type
+  roleType          String    @default("tenant") @db.VarChar(50)
+  roleLevel         Int       @default(5)
+  
+  // Permissions
+  permissions       Json      @default("[]")
+  moduleAccess      Json      @default("{}")
+  
+  // Status
+  isDefault         Boolean   @default(false)
+  isSystem          Boolean   @default(false)
+  
+  // Metadata
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@unique([tenantId, slug])
+  @@map("roles")
+}
+
+// =====================================================
+// USER TEAMS (Many-to-Many)
+// =====================================================
+model UserTeam {
+  id                String    @id @default(uuid())
+  userId            String
+  teamId            String
+  roleId            String?
+  
+  // Team Permissions
+  teamPermissions   Json      @default("{}")
+  
+  // Status
+  isActive          Boolean   @default(true)
+  joinedAt          DateTime  @default(now())
+  
+  // Relations
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team              Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, teamId])
+  @@index([userId])
+  @@index([teamId])
+  @@map("user_teams")
+}
+
+// =====================================================
+// TENANT MODULES
+// =====================================================
+model TenantModule {
+  id                String    @id @default(uuid())
+  tenantId          String
+  moduleId          String
+  
+  // Access
+  isEnabled         Boolean   @default(true)
+  moduleSettings    Json      @default("{}")
+  
+  // Trial
+  isTrial           Boolean   @default(false)
+  trialEndsAt       DateTime?
+  
+  // Metadata
+  enabledAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relations
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  module            Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  
+  @@unique([tenantId, moduleId])
+  @@index([tenantId])
+  @@map("tenant_modules")
+}
+
+// =====================================================
+// WHITE LABEL CONFIGS
+// =====================================================
+model WhiteLabelConfig {
+  id                String    @id @default(uuid())
+  tenantId          String    @unique
+  
+  // Branding
+  companyName       String    @db.VarChar(255)
+  logoUrl           String?   @db.VarChar(500)
+  faviconUrl        String?   @db.VarChar(500)
+  primaryColor      String?   @db.VarChar(20)
+  secondaryColor    String?   @db.VarChar(20)
+  
+  // Domain
+  customDomain      String?   @unique @db.VarChar(255)
+  domainVerified    Boolean   @default(false)
+  
+  // Customization
+  customCss         String?   @db.Text
+  customJs          String?   @db.Text
+  customEmailTemplates Json?
+  
+  // Branding Control
+  hidePoweredBy     Boolean   @default(false)
+  customFooter      String?   @db.Text
+  
+  // Metadata
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relations
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  @@map("white_label_configs")
+}
+
+// =====================================================
+// RESELLER CONFIGS
+// =====================================================
+model ResellerConfig {
+  id                        String    @id @default(uuid())
+  resellerTenantId          String    @unique
+  
+  // Reseller Details
+  resellerName              String    @db.VarChar(255)
+  resellerCode              String    @unique @db.VarChar(50)
+  
+  // Commission
+  commissionRate            Decimal   @default(20) @db.Decimal(5, 2)
+  
+  // Limits
+  maxClients                Int?
+  
+  // Permissions
+  canWhiteLabel             Boolean   @default(true)
+  canManageClients          Boolean   @default(true)
+  
+  // Tracking
+  totalRevenue              Decimal   @default(0) @db.Decimal(12, 2)
+  totalCommissionEarned     Decimal   @default(0) @db.Decimal(12, 2)
+  
+  // Status
+  isActive                  Boolean   @default(true)
+  
+  // Metadata
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
+  
+  // Relations
+  tenant                    Tenant    @relation(fields: [resellerTenantId], references: [id], onDelete: Cascade)
+  
+  @@map("reseller_configs")
+}
+
+// =====================================================
+// TENANT SUBSCRIPTIONS
+// =====================================================
+model TenantSubscription {
+  id                String    @id @default(uuid())
+  tenantId          String
+  planId            String
+  
+  // Subscription Details
+  status            String    @default("active") @db.VarChar(50)
+  billingPeriod     String    @default("monthly") @db.VarChar(20)
+  
+  // Dates
+  startDate         DateTime  @default(now())
+  endDate           DateTime?
+  nextBillingDate   DateTime?
+  
+  // Pricing
+  amount            Decimal   @db.Decimal(10, 2)
+  currency          String    @default("SAR") @db.VarChar(3)
+  
+  // Payment
+  paymentMethod     String?   @db.VarChar(50)
+  stripeSubscriptionId String? @db.VarChar(255)
+  
+  // Reseller
+  resellerId        String?
+  
+  // Metadata
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relations
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  plan              SubscriptionPlan @relation(fields: [planId], references: [id])
+  
+  @@index([tenantId])
+  @@index([status])
+  @@map("tenant_subscriptions")
+}
+
+// =====================================================
+// DEMO REQUESTS
+// =====================================================
+model DemoRequest {
+  id                String    @id @default(uuid())
+  
+  // Contact Info
+  fullName          String    @db.VarChar(255)
+  email             String    @db.VarChar(255)
+  phone             String?   @db.VarChar(50)
+  companyName       String?   @db.VarChar(255)
+  
+  // Request Details
+  interestedModules Json      @default("[]")
+  companySize       String?   @db.VarChar(50)
+  message           String?   @db.Text
+  
+  // Status
+  status            String    @default("pending") @db.VarChar(50)
+  assignedTo        String?
+  
+  // Metadata
+  requestedAt       DateTime  @default(now())
+  respondedAt       DateTime?
+  
+  @@index([email])
+  @@index([status])
+  @@map("demo_requests")
+}
+
+// =====================================================
+// POC REQUESTS
+// =====================================================
+model PocRequest {
+  id                String    @id @default(uuid())
+  
+  // Contact Info
+  fullName          String    @db.VarChar(255)
+  email             String    @db.VarChar(255)
+  phone             String    @db.VarChar(50)
+  companyName       String    @db.VarChar(255)
+  
+  // Request Details
+  industry          String?   @db.VarChar(100)
+  companySize       String?   @db.VarChar(50)
+  pocScope          String    @db.Text
+  requiredModules   Json      @default("[]")
+  timeline          String?   @db.VarChar(100)
+  budget            String?   @db.VarChar(100)
+  
+  // Status
+  status            String    @default("pending") @db.VarChar(50)
+  approvedBy        String?
+  
+  // Metadata
+  requestedAt       DateTime  @default(now())
+  respondedAt       DateTime?
+  
+  @@index([email])
+  @@index([status])
+  @@map("poc_requests")
+}

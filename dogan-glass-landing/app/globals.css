@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Default: dark */
+:root {
+  color-scheme: dark;
+  --color-primary: 0 204 153; /* teal accent */
+}
+
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  @apply bg-black text-white antialiased;
+}
+
+/* Daily scene variables (set via inline style in layout) */
+.scene-gradient {
+  background-image: var(--scene-gradient);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-2xl px-4 py-2 font-medium transition;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+.btn:hover { transform: translateY(-1px); }
+
+/* RTL adjustments (applied when html[dir="rtl"]) */
+[dir="rtl"] .rtl\:text-right { text-align: right; }
+[dir="rtl"] .rtl\:flex-row-reverse { flex-direction: row-reverse; }
+[dir="rtl"] .rtl\:ml-0 { margin-left: 0; }
+[dir="rtl"] .rtl\:mr-2 { margin-right: 0.5rem; }
+
+/* Dashboard minimalist charts */
+.sparkline-bar {
+  height: 48px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 6px;
+  align-items: end;
+}
+
+.sparkline-bar span {
+  width: 8px;
+  background: rgba(var(--color-primary), 0.9);
+  border-radius: 3px 3px 0 0;
+  animation: rise 2s ease-in-out infinite alternate;
+}
+
+@keyframes rise {
+  from { transform: scaleY(0.4); }
+  to { transform: scaleY(1); }
+}

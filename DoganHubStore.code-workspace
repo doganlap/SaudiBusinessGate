@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../AUTONOMOUS-SERVICES-MALL"
+		}
+	],
+	"settings": {
+		"yaml.schemaStore.enable": false,
+		"powershell.cwd": "DoganHubStore"
+	}
+}

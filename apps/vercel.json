@@ -1,0 +1,63 @@
+{
+  "version": 2,
+  "name": "dogan-ai-grc-platform",
+  "alias": ["dogan-ai.com", "www.dogan-ai.com"],
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_APP_URL": "https://dogan-ai.com",
+    "NEXT_PUBLIC_APP_NAME": "Dogan AI - GRC Platform",
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://dogan-ai.com"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, x-tenant-id, x-user-id"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/en",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/grc/:path*",
+      "destination": "/en/grc/:path*"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+services:
+  bff:
+    build:
+      context: ../../apps/bff
+    ports: [ "3000:3000" ]
+  example-api:
+    build:
+      context: ../../apps/services/example-api-fastapi
+    ports: [ "8000:8000" ]

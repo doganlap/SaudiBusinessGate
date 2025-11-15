@@ -1,0 +1,508 @@
+# ============================================
+# AI WORKFLOW CONFIGURATION
+# Saudi Store - المتجر السعودي
+# Event-to-Workflow Mapping & Agent Routing
+# ============================================
+
+version: "1.0"
+platform: "Saudi Store"
+environment: "production"
+
+# ============================================
+# EVENT TYPE MAPPINGS
+# ============================================
+event_mappings:
+  # Large Transaction Events
+  large_transaction:
+    workflow_type: "compliance_review"
+    workflow_name:
+      en: "Large Transaction Review"
+      ar: "مراجعة معاملة كبيرة"
+    priority: "high"
+    assigned_agent: "compliance-agent"
+    sla_hours: 4
+    requires_approval: true
+    notification_channels:
+      - email
+      - in_app
+      - sms
+    escalation_rules:
+      - condition: "amount > 500000"
+        escalate_to: "super_admin"
+        escalate_after_hours: 2
+      - condition: "amount > 1000000"
+        escalate_to: "compliance_officer"
+        escalate_immediately: true
+    
+  # Duplicate Payment Events
+  duplicate_payment:
+    workflow_type: "fraud_detection"
+    workflow_name:
+      en: "Duplicate Payment Investigation"
+      ar: "تحقيق في دفعة مكررة"
+    priority: "medium"
+    assigned_agent: "fraud-detection-agent"
+    sla_hours: 8
+    requires_approval: true
+    notification_channels:
+      - email
+      - in_app
+    auto_actions:
+      - action: "flag_transaction"
+        params:
+          status: "under_review"
+      - action: "notify_finance_team"
+    
+  # Round Amount (Structuring)
+  round_amount_structuring:
+    workflow_type: "aml_review"
+    workflow_name:
+      en: "AML Structuring Review"
+      ar: "مراجعة التجزئة المالية"
+    priority: "low"
+    assigned_agent: "aml-agent"
+    sla_hours: 24
+    requires_approval: false
+    notification_channels:
+      - in_app
+    aggregation_rules:
+      enabled: true
+      aggregate_by: "counterparty"
+      time_window_hours: 24
+      threshold_count: 3
+    
+  # Budget Overrun Events
+  budget_overrun:
+    workflow_type: "budget_alert"
+    workflow_name:
+      en: "Budget Overrun Alert"
+      ar: "تنبيه تجاوز الميزانية"
+    priority: "high"
+    assigned_agent: "budget-monitor-agent"
+    sla_hours: 2
+    requires_approval: true
+    notification_channels:
+      - email
+      - in_app
+      - dashboard
+    auto_actions:
+      - action: "notify_budget_owner"
+      - action: "create_budget_report"
+      - action: "suggest_reallocation"
+    escalation_rules:
+      - condition: "overrun_percentage > 20"
+        escalate_to: "finance_manager"
+        escalate_after_hours: 1
+    
+  # Unusual Transaction Time
+  unusual_transaction_time:
+    workflow_type: "security_review"
+    workflow_name:
+      en: "Off-Hours Transaction Review"
+      ar: "مراجعة معاملة خارج أوقات العمل"
+    priority: "low"
+    assigned_agent: "security-agent"
+    sla_hours: 12
+    requires_approval: false
+    notification_channels:
+      - in_app
+    aggregation_rules:
+      enabled: true
+      aggregate_by: "user"
+      time_window_hours: 24
+      threshold_count: 5
+    
+  # Rapid Transactions
+  rapid_transactions:
+    workflow_type: "fraud_detection"
+    workflow_name:
+      en: "Rapid Transaction Pattern Detection"
+      ar: "كشف نمط المعاملات السريعة"
+    priority: "medium"
+    assigned_agent: "fraud-detection-agent"
+    sla_hours: 6
+    requires_approval: true
+    notification_channels:
+      - email
+      - in_app
+    auto_actions:
+      - action: "temporary_account_freeze"
+        params:
+          duration_minutes: 30
+      - action: "require_2fa_verification"
+
+# ============================================
+# AGENT CONFIGURATIONS
+# ============================================
+agents:
+  compliance-agent:
+    name: "Compliance Review Agent"
+    name_ar: "وكيل مراجعة الامتثال"
+    type: "ai_agent"
+    capabilities:
+      - transaction_review
+      - regulatory_compliance
+      - risk_assessment
+      - report_generation
+    max_concurrent_workflows: 10
+    auto_assign: true
+    working_hours:
+      start: "08:00"
+      end: "17:00"
+      timezone: "Asia/Riyadh"
+    escalation_timeout_hours: 4
+    
+  fraud-detection-agent:
+    name: "Fraud Detection Agent"
+    name_ar: "وكيل كشف الاحتيال"
+    type: "ai_agent"
+    capabilities:
+      - pattern_detection
+      - anomaly_detection
+      - duplicate_detection
+      - risk_scoring
+    max_concurrent_workflows: 20
+    auto_assign: true
+    working_hours:
+      start: "00:00"
+      end: "23:59"
+      timezone: "Asia/Riyadh"
+    escalation_timeout_hours: 8
+    
+  aml-agent:
+    name: "AML Monitoring Agent"
+    name_ar: "وكيل مراقبة غسل الأموال"
+    type: "ai_agent"
+    capabilities:
+      - aml_screening
+      - structuring_detection
+      - sanctions_check
+      - pep_screening
+    max_concurrent_workflows: 15
+    auto_assign: true
+    working_hours:
+      start: "08:00"
+      end: "17:00"
+      timezone: "Asia/Riyadh"
+    escalation_timeout_hours: 24
+    
+  budget-monitor-agent:
+    name: "Budget Monitoring Agent"
+    name_ar: "وكيل مراقبة الميزانية"
+    type: "ai_agent"
+    capabilities:
+      - budget_tracking
+      - variance_analysis
+      - forecasting
+      - alert_generation
+    max_concurrent_workflows: 50
+    auto_assign: true
+    working_hours:
+      start: "08:00"
+      end: "17:00"
+      timezone: "Asia/Riyadh"
+    escalation_timeout_hours: 2
+    
+  security-agent:
+    name: "Security Review Agent"
+    name_ar: "وكيل المراجعة الأمنية"
+    type: "ai_agent"
+    capabilities:
+      - access_review
+      - behavior_analysis
+      - threat_detection
+      - incident_response
+    max_concurrent_workflows: 30
+    auto_assign: true
+    working_hours:
+      start: "00:00"
+      end: "23:59"
+      timezone: "Asia/Riyadh"
+    escalation_timeout_hours: 12
+
+# ============================================
+# NOTIFICATION TEMPLATES
+# ============================================
+notification_templates:
+  large_transaction:
+    email:
+      subject:
+        en: "🚨 Large Transaction Alert: {amount} SAR"
+        ar: "🚨 تنبيه معاملة كبيرة: {amount} ريال"
+      body:
+        en: |
+          A large transaction has been detected and requires your review.
+          
+          Amount: {amount} SAR
+          Account: {account}
+          Date: {date}
+          Description: {description}
+          
+          Please review and approve this transaction in the system.
+        ar: |
+          تم اكتشاف معاملة كبيرة وتتطلب مراجعتك.
+          
+          المبلغ: {amount} ريال
+          الحساب: {account}
+          التاريخ: {date}
+          الوصف: {description}
+          
+          يرجى مراجعة واعتماد هذه المعاملة في النظام.
+    
+  budget_overrun:
+    email:
+      subject:
+        en: "💰 Budget Overrun Alert: {overrun_percentage}%"
+        ar: "💰 تنبيه تجاوز الميزانية: {overrun_percentage}%"
+      body:
+        en: |
+          Budget overrun detected for account {account}.
+          
+          Budget Limit: {budget_limit} SAR
+          Current Spent: {current_spent} SAR
+          Overrun Amount: {overrun_amount} SAR
+          Overrun Percentage: {overrun_percentage}%
+          
+          Immediate action required.
+        ar: |
+          تم اكتشاف تجاوز في الميزانية للحساب {account}.
+          
+          حد الميزانية: {budget_limit} ريال
+          المصروف الحالي: {current_spent} ريال
+          مبلغ التجاوز: {overrun_amount} ريال
+          نسبة التجاوز: {overrun_percentage}%
+          
+          يتطلب إجراء فوري.
+    
+  duplicate_payment:
+    email:
+      subject:
+        en: "⚠️ Duplicate Payment Detected"
+        ar: "⚠️ تم اكتشاف دفعة مكررة"
+      body:
+        en: |
+          A potential duplicate payment has been detected.
+          
+          Amount: {amount} SAR
+          Account: {account}
+          Duplicate Count: {duplicate_count}
+          Time Window: {time_window}
+          
+          Please investigate this transaction.
+        ar: |
+          تم اكتشاف دفعة مكررة محتملة.
+          
+          المبلغ: {amount} ريال
+          الحساب: {account}
+          عدد التكرارات: {duplicate_count}
+          الفترة الزمنية: {time_window}
+          
+          يرجى التحقيق في هذه المعاملة.
+
+# ============================================
+# WORKFLOW STEPS TEMPLATES
+# ============================================
+workflow_steps:
+  compliance_review:
+    - step_name: "Initial Review"
+      step_name_ar: "المراجعة الأولية"
+      agent: "compliance-agent"
+      auto_execute: true
+      actions:
+        - "fetch_transaction_details"
+        - "check_regulatory_requirements"
+        - "assess_risk_level"
+    
+    - step_name: "Document Collection"
+      step_name_ar: "جمع المستندات"
+      agent: "compliance-agent"
+      auto_execute: false
+      requires_human_input: true
+      actions:
+        - "request_supporting_documents"
+        - "verify_counterparty_identity"
+    
+    - step_name: "Compliance Decision"
+      step_name_ar: "قرار الامتثال"
+      agent: "compliance-agent"
+      auto_execute: true
+      actions:
+        - "generate_compliance_report"
+        - "recommend_action"
+        - "notify_stakeholders"
+    
+    - step_name: "Final Approval"
+      step_name_ar: "الاعتماد النهائي"
+      agent: "human"
+      role_required: "compliance_officer"
+      auto_execute: false
+      actions:
+        - "approve_or_reject"
+        - "add_comments"
+        - "close_workflow"
+  
+  fraud_detection:
+    - step_name: "Pattern Analysis"
+      step_name_ar: "تحليل الأنماط"
+      agent: "fraud-detection-agent"
+      auto_execute: true
+      actions:
+        - "analyze_transaction_pattern"
+        - "check_historical_behavior"
+        - "calculate_fraud_score"
+    
+    - step_name: "Investigation"
+      step_name_ar: "التحقيق"
+      agent: "fraud-detection-agent"
+      auto_execute: true
+      actions:
+        - "gather_evidence"
+        - "check_related_transactions"
+        - "verify_user_identity"
+    
+    - step_name: "Decision"
+      step_name_ar: "القرار"
+      agent: "human"
+      role_required: "fraud_analyst"
+      auto_execute: false
+      actions:
+        - "review_findings"
+        - "decide_action"
+        - "implement_controls"
+
+# ============================================
+# SCHEDULER CONFIGURATION
+# ============================================
+scheduler:
+  event_processor:
+    enabled: true
+    interval_seconds: 60
+    batch_size: 100
+    function: "process_pending_events()"
+    retry_on_failure: true
+    max_retries: 3
+    
+  workflow_monitor:
+    enabled: true
+    interval_seconds: 300
+    function: "monitor_workflow_sla()"
+    escalate_overdue: true
+    
+  event_archiver:
+    enabled: true
+    schedule: "0 2 * * *"  # Daily at 2 AM
+    function: "archive_old_events()"
+    retention_days: 90
+
+# ============================================
+# RBAC - ROLE PERMISSIONS
+# ============================================
+roles:
+  viewer:
+    can_view_events: true
+    can_view_workflows: true
+    can_approve: false
+    can_escalate: false
+    
+  user:
+    can_view_events: true
+    can_view_workflows: true
+    can_approve: false
+    can_escalate: false
+    
+  manager:
+    can_view_events: true
+    can_view_workflows: true
+    can_approve: true
+    can_escalate: true
+    approval_limit: 100000
+    
+  admin:
+    can_view_events: true
+    can_view_workflows: true
+    can_approve: true
+    can_escalate: true
+    can_configure: true
+    approval_limit: 500000
+    
+  compliance_officer:
+    can_view_events: true
+    can_view_workflows: true
+    can_approve: true
+    can_escalate: true
+    can_configure: true
+    approval_limit: 1000000
+    special_permissions:
+      - close_compliance_workflows
+      - override_decisions
+    
+  super_admin:
+    can_view_events: true
+    can_view_workflows: true
+    can_approve: true
+    can_escalate: true
+    can_configure: true
+    approval_limit: null  # unlimited
+    special_permissions:
+      - all
+
+# ============================================
+# MULTI-TENANT CONFIGURATION
+# ============================================
+multi_tenant:
+  enabled: true
+  isolation_level: "strict"
+  tenant_specific_rules: true
+  tenant_specific_thresholds: true
+  cross_tenant_reporting: false
+  
+# ============================================
+# MONITORING & ALERTS
+# ============================================
+monitoring:
+  metrics:
+    - event_processing_rate
+    - workflow_completion_rate
+    - average_processing_time
+    - sla_compliance_rate
+    - agent_utilization
+    
+  alerts:
+    - name: "High Event Backlog"
+      condition: "pending_events > 1000"
+      severity: "high"
+      notify: ["admin", "super_admin"]
+      
+    - name: "SLA Breach"
+      condition: "overdue_workflows > 10"
+      severity: "critical"
+      notify: ["manager", "admin", "super_admin"]
+      
+    - name: "Agent Overload"
+      condition: "agent_utilization > 90"
+      severity: "medium"
+      notify: ["admin"]
+
+# ============================================
+# INTEGRATION ENDPOINTS
+# ============================================
+integrations:
+  websocket:
+    enabled: true
+    url: "ws://localhost:3051"
+    events:
+      - "workflow:update"
+      - "workflow:step:update"
+      - "event:created"
+      
+  api:
+    base_url: "http://localhost:3050/api"
+    endpoints:
+      events: "/ai/events"
+      workflows: "/ai/workflows"
+      notifications: "/notifications"
+      
+  database:
+    connection_string: "${DATABASE_URL}"
+    pool_size: 20
+    timeout_seconds: 30

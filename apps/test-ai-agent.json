@@ -1,0 +1,11 @@
+{
+  "agent_code": "CFO_AGENT",
+  "decision_context": {
+    "task_type": "payment_approval",
+    "input_data": {
+      "amount": 75000,
+      "vendor": "TechCorp",
+      "description": "Software licensing"
+    }
+  }
+}

@@ -1,0 +1,137 @@
+# =====================================================
+# Saudi Store - Production Docker Compose
+# The 1st Autonomous Store in the World
+# From Saudi Arabia to The World 🇸🇦
+# =====================================================
+version: '3.8'
+
+# Global configuration
+x-common-variables: &common-variables
+  TZ: Asia/Riyadh
+  LANG: en_US.UTF-8
+  LC_ALL: en_US.UTF-8
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    ports:
+      - "3003:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      TZ: Asia/Riyadh
+      LANG: en_US.UTF-8
+      LC_ALL: en_US.UTF-8
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/doganhubstore
+      REDIS_URL: redis://redis:6379
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      NODE_ENV: production
+      NEXTAUTH_URL: http://localhost:3003
+      NEXTAUTH_SECRET: doganhub-production-secret-2025-change-this
+      JWT_SECRET: doganhub-jwt-secret-2025-change-this
+      NEXT_PUBLIC_APP_URL: http://localhost:3003
+      NEXT_PUBLIC_API_URL: http://localhost:3003/api
+      POSTGRES_URL: postgresql://postgres:postgres@postgres:5432/doganhubstore
+      REDIS_CONNECTION_STRING: redis://redis:6379
+      LOG_LEVEL: info
+      ENABLE_REQUEST_LOGGING: "true"
+      ENABLE_ERROR_TRACKING: "true"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - app_cache:/app/.next/cache
+    restart: unless-stopped
+    networks:
+      - doganhub_network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  postgres:
+    image: postgres:13-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: doganhubstore
+      POSTGRES_INITDB_ARGS: --encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    networks:
+      - doganhub_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d doganhubstore"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    command:
+      - postgres
+      - -c
+      - log_statement=all
+      - -c
+      - log_destination=stderr
+      - -c
+      - max_connections=200
+      - -c
+      - shared_buffers=256MB
+      - -c
+      - effective_cache_size=1GB
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6390:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - doganhub_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+
+  # Monitoring and Management
+  adminer:
+    image: adminer:4-standalone
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - doganhub_network
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: lucas
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  app_cache:
+    driver: local
+
+networks:
+  doganhub_network:
+    driver: bridge

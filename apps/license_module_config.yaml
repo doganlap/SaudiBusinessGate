@@ -1,0 +1,60 @@
+renewal_workflow:
+  cadence: [120, 90, 60, 30, 7, 0, -7] # Days relative to license end_date
+  default_price_increase_pct: 5.0
+
+  actions:
+    120:
+      - type: create_renewal_opportunity
+        layer: 10
+    90:
+      - type: create_quote
+        layer: 4
+    60:
+      - type: create_proposal
+        layer: 5
+      - type: schedule_success_check_in
+        layer: 9
+    30:
+      - type: finalize_quote
+        layer: 4
+      - type: draft_amendment
+        layer: 6
+      - type: generate_pro_forma_invoice
+        layer: 8
+    7:
+      - type: send_dunning_email
+      - type: run_escalation_runbook
+      - type: lock_risky_features
+    0:
+      - type: process_renewal_or_grace_period
+    -7:
+      - type: suspend_unpaid_features
+      - type: create_churn_prevention_task
+        layer: 10
+
+enforcement:
+  http_status_on_unlicensed: 402 # Payment Required
+  http_status_on_limit_exceeded: 403 # Forbidden
+
+  # UI behavior for unlicensed features
+  feature_gates:
+    - feature_code: 'analytics-reporting'
+      hide_route: true
+    - feature_code: 'advanced-security'
+      disable_ui_element: true
+
+feature_buckets:
+  - name: 'Core'
+    features: ['dashboard', 'user-management']
+  - name: 'Sales'
+    features: ['opportunities', 'quotes', 'proposals']
+  - name: 'Support'
+    features: ['cases', 'knowledge-base']
+
+kpis:
+  - name: 'Renewal Rate'
+    query: 'SELECT COUNT(DISTINCT CASE WHEN event_type = \'renewed\' THEN tenant_id END) / COUNT(DISTINCT tenant_id) FROM license_events WHERE event_type IN (\'renewed\', \'expired\');'
+  - name: 'Gross Dollar Retention (GDR)'
+    query: '...'
+  - name: 'Net Dollar Retention (NDR)'
+    query: '...'

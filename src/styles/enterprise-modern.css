@@ -1,0 +1,57 @@
+/*
+ * Shahin-AI Modern Enterprise UI Style
+ * Version: 1.0
+ * Description: A clean, professional, data-centric theme for enterprise applications.
+ */
+
+:root {
+  /* Light enterprise palette */
+  --enterprise-bg-primary: #f9fafb;      /* gray-50 */
+  --enterprise-bg-secondary: #ffffff;    /* white */
+  --enterprise-bg-tertiary: #f3f4f6;     /* gray-100 */
+  --enterprise-border-primary: #e5e7eb;  /* gray-200 */
+  --enterprise-border-secondary: #e5e7eb;/* gray-200 */
+
+  --enterprise-text-primary: #111827;    /* gray-900 */
+  --enterprise-text-secondary: #374151;  /* gray-700 */
+  --enterprise-text-tertiary: #6b7280;   /* gray-500 */
+
+  --enterprise-accent-primary: #2563eb;  /* blue-600 */
+  --enterprise-accent-secondary: #1d4ed8;/* blue-700 */
+
+  --enterprise-sidebar-width: 280px;
+  --enterprise-header-height: 64px;
+}
+
+.enterprise-body {
+  background-color: var(--enterprise-bg-primary);
+  color: var(--enterprise-text-secondary);
+}
+
+.enterprise-sidebar {
+  background-color: var(--enterprise-bg-secondary);
+  border-right: 1px solid var(--enterprise-border-primary);
+  width: var(--enterprise-sidebar-width);
+  flex: 0 0 auto;
+}
+
+.sidebar-expanded { width: var(--enterprise-sidebar-width); }
+.sidebar-collapsed { width: 64px; }
+
+.enterprise-header {
+  background-color: var(--enterprise-bg-secondary);
+  border-bottom: 1px solid var(--enterprise-border-primary);
+  height: var(--enterprise-header-height);
+}
+
+.enterprise-content-area {
+  background-color: var(--enterprise-bg-primary);
+  padding: 1.5rem; /* 24px */
+}
+
+.enterprise-card {
+  background-color: var(--enterprise-bg-secondary);
+  border: 1px solid var(--enterprise-border-primary);
+  border-radius: 0.75rem; /* 12px */
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+}

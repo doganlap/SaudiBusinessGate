@@ -143,7 +143,7 @@ export class EnterpriseAutonomyEngine {
         // Try cache first
         const cacheKey = `license:check:${tenantId}:${apiEndpoint}`;
         const cached = await redisCachingService.get(cacheKey);
-        if (cached) {
+        if (cached && typeof cached === 'string') {
             return JSON.parse(cached);
         }
 
@@ -167,7 +167,7 @@ export class EnterpriseAutonomyEngine {
         }
 
         const license = licenseResult.rows[0];
-        const tierConfig = LICENSE_TIERS[license.license_code.toUpperCase()];
+        const tierConfig = LICENSE_TIERS[license.license_code.toUpperCase() as keyof typeof LICENSE_TIERS];
 
         if (!tierConfig) {
             return {
@@ -302,7 +302,7 @@ export class EnterpriseAutonomyEngine {
         const cacheKey = `usage:daily:${tenantId}`;
         const cached = await redisCachingService.get(cacheKey);
         if (cached) {
-            return parseInt(cached, 10);
+            return parseInt(cached as string, 10);
         }
 
         const result = await pool.query(
@@ -346,7 +346,7 @@ export class EnterpriseAutonomyEngine {
     ): Promise<{ recommend: boolean; tier?: string; reason?: string }> {
         // Get usage metrics
         const metrics = await this.getUsageMetrics(tenantId);
-        const tierConfig = LICENSE_TIERS[currentLicense.license_code.toUpperCase()];
+        const tierConfig = LICENSE_TIERS[currentLicense.license_code.toUpperCase() as keyof typeof LICENSE_TIERS];
 
         // Check if approaching limits (>80% usage)
         if (
@@ -472,7 +472,7 @@ export class EnterpriseAutonomyEngine {
             [tenantId]
         );
 
-        const tierConfig = LICENSE_TIERS[license.rows[0].license_code.toUpperCase()];
+        const tierConfig = LICENSE_TIERS[license.rows[0].license_code.toUpperCase() as keyof typeof LICENSE_TIERS];
 
         return {
             period,

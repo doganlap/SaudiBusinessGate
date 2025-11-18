@@ -17,6 +17,7 @@ import {
   UserCheck,
   CreditCard
 } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 interface DashboardStats {
   totalRevenue: number;
@@ -254,13 +255,14 @@ export default function DashboardPage() {
               </p>
             </div>
             <div className="flex items-center gap-4">
+              <ThemeToggle />
               <button 
                 className="p-2 text-gray-400 hover:text-gray-600 relative"
                 title="Notifications"
                 aria-label="View notifications"
               >
                 <Bell className="h-6 w-6" />
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
+                <span className="absolute -top-1 -right-1 rtl:-right-auto rtl:-left-1 h-3 w-3 bg-red-500 rounded-full"></span>
               </button>
               <button 
                 className="p-2 text-gray-400 hover:text-gray-600"
@@ -283,7 +285,7 @@ export default function DashboardPage() {
                 <div className="p-2 bg-green-100 rounded-lg">
                   <DollarSign className="h-6 w-6 text-green-600" />
                 </div>
-                <div className="ml-4">
+                <div className="ml-4 rtl:ml-0 rtl:mr-4">
                   <p className="text-sm font-medium text-gray-600">{t('totalRevenue')}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     {formatCurrency(stats.totalRevenue)}
@@ -297,7 +299,7 @@ export default function DashboardPage() {
                 <div className="p-2 bg-blue-100 rounded-lg">
                   <Users className="h-6 w-6 text-blue-600" />
                 </div>
-                <div className="ml-4">
+                <div className="ml-4 rtl:ml-0 rtl:mr-4">
                   <p className="text-sm font-medium text-gray-600">{t('totalUsers')}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     {stats.totalUsers.toLocaleString()}
@@ -311,7 +313,7 @@ export default function DashboardPage() {
                 <div className="p-2 bg-purple-100 rounded-lg">
                   <CreditCard className="h-6 w-6 text-purple-600" />
                 </div>
-                <div className="ml-4">
+                <div className="ml-4 rtl:ml-0 rtl:mr-4">
                   <p className="text-sm font-medium text-gray-600">{t('activeSubscriptions')}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     {stats.activeSubscriptions.toLocaleString()}
@@ -325,7 +327,7 @@ export default function DashboardPage() {
                 <div className="p-2 bg-orange-100 rounded-lg">
                   <TrendingUp className="h-6 w-6 text-orange-600" />
                 </div>
-                <div className="ml-4">
+                <div className="ml-4 rtl:ml-0 rtl:mr-4">
                   <p className="text-sm font-medium text-gray-600">{t('monthlyGrowth')}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     +{stats.monthlyGrowth}%

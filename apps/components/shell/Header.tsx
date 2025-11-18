@@ -23,7 +23,7 @@ interface HeaderProps {
   onToggleDrawer?: () => void;
 }
 
-export default function Header({ onToggleDrawer }: HeaderProps) {
+export default function Header({ onToggleDrawer, locale }: HeaderProps) {
   const { language: currentLang, isRTL } = useLanguage();
   const { toggleMode, isDark } = useTheme();
 

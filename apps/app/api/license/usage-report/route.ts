@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
         }
 
         const { searchParams } = new URL(request.url);
-        const tenantId = searchParams.get('tenantId') || session.user.organizationId;
+        const tenantId = searchParams.get('tenantId') || (session.user as any).organizationId || 'default';
         const period = (searchParams.get('period') || 'day') as 'day' | 'week' | 'month';
 
         // Generate comprehensive usage report
@@ -24,8 +24,9 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(report);
     } catch (error) {
         console.error('Error generating usage report:', error);
+        const msg = (error as any)?.message || 'Failed to generate usage report';
         return NextResponse.json(
-            { error: 'Failed to generate usage report' },
+            { error: msg },
             { status: 500 }
         );
     }

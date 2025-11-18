@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigation } from '@/hooks/useNavigation';
 import {
   LayoutDashboard,
   Building2,
@@ -37,6 +38,8 @@ import {
   Mail,
   HelpCircle,
   Sparkles,
+  Loader2,
+  AlertCircle
 } from 'lucide-react';
 import { useTheme } from '@/lib/theme/ThemeContext';
 import { useLanguage } from '@/components/i18n/LanguageProvider';
@@ -205,6 +208,7 @@ export default function EnhancedSidebar({ defaultCollapsed = false }: EnhancedSi
   };
 
   const isActive = (href: string) => {
+    if (!pathname) return false;
     return pathname === href || pathname.startsWith(href + '/');
   };
 

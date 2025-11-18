@@ -3,14 +3,15 @@
 import { useEffect, useState } from 'react';
 import { useLingui } from '@lingui/react';
 import { EnterpriseToolbar } from '@/components/enterprise/EnterpriseToolbar';
+import { Plus } from 'lucide-react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Task } from '@/types/project-management';
 import { useSearchParams } from 'next/navigation';
 
 const TasksPage = () => {
   const { _ } = useLingui();
-  const searchParams = useSearchParams();
-  const projectId = searchParams.get('projectId');
+  const searchParams = useSearchParams() as any;
+  const projectId = (searchParams?.get('projectId')) || null;
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -43,8 +44,7 @@ const TasksPage = () => {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <EnterpriseToolbar
-        title={_('Tasks')}
-        buttons={[{ label: _('New Task'), onClick: () => console.log('New Task') }]}
+        actions={[{ label: _('New Task'), icon: Plus, onClick: () => console.log('New Task') }]}
       />
       <DataGrid
         rows={tasks}

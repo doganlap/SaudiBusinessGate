@@ -19,7 +19,8 @@ const pool = new Pool({
     port: parseInt(process.env.DB_PORT || '5432', 10),
 });
 
-export default async function ReportViewerPage({ params }: { params: { reportId: string } }) {
+export default async function ReportViewerPage(context: { params: Promise<{ reportId: string }> }) {
+    const { reportId: reportIdStr } = await context.params;
     const session = await getServerSession();
 
     if (!session || !session.user) {
@@ -27,7 +28,7 @@ export default async function ReportViewerPage({ params }: { params: { reportId:
     }
 
     const user = session.user as any;
-    const reportId = parseInt(params.reportId, 10);
+    const reportId = parseInt(reportIdStr, 10);
 
     // Check if user has permission to view reports
     const hasPermission = await authorizationService.hasPermission(

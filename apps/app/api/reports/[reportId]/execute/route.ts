@@ -5,7 +5,7 @@
 // This endpoint now uses a secure query builder instead of raw SQL.
 // =================================================================
 
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authorizationService } from '@/Services/Security/AuthorizationService';
 import { secureQueryBuilderService } from '@/Services/Reports/secure-query-builder-service';
@@ -20,9 +20,10 @@ const pool = new Pool({
 });
 
 export async function POST(
-    request: Request,
-    { params }: { params: { reportId: string } }
+    request: NextRequest,
+    context: { params: Promise<{ reportId: string }> }
 ) {
+    const { reportId: reportIdStr } = await context.params;
     const session = await getServerSession();
 
     if (!session || !session.user) {
@@ -30,7 +31,7 @@ export async function POST(
     }
 
     const user = session.user as any;
-    const reportId = parseInt(params.reportId, 10);
+    const reportId = parseInt(reportIdStr, 10);
 
     if (isNaN(reportId)) {
         return NextResponse.json({ error: 'Invalid report ID.' }, { status: 400 });
@@ -112,7 +113,7 @@ export async function POST(
             // Log failed execution
             await pool.query(
                 'UPDATE report_executions SET status = $1, error_message = $2 WHERE id = $3',
-                ['failed', error.message, executionId]
+                ['failed', (error instanceof Error ? error.message : String(error)), executionId]
             );
 
             throw error;
@@ -121,7 +122,7 @@ export async function POST(
     } catch (error: any) {
         console.error('Error executing report:', error);
         return NextResponse.json(
-            { error: 'An error occurred while executing the report.', details: error.message },
+            { error: 'An error occurred while executing the report.', details: error instanceof Error ? error.message : String(error) },
             { status: 500 }
         );
     }

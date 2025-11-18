@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('Dynamic navigation error:', error);
         return NextResponse.json(
-            { error: 'Failed to generate navigation', details: error.message },
+            { error: 'Failed to generate navigation', details: error instanceof Error ? error.message : String(error) },
             { status: 500 }
         );
     }
@@ -229,5 +229,5 @@ function getComponentIcon(componentName: string): string {
     if (componentName.includes('Edit')) return '??';
     if (componentName.includes('View')) return '???';
     if (componentName.includes('Settings')) return '??';
-    return '•';
+    return 'ï¿½';
 }

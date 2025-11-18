@@ -40,7 +40,7 @@ export function withPerformanceMonitoring(
         statusCode: response.status,
         timestamp: new Date(),
         userAgent: req.headers.get('user-agent') || undefined,
-        country: req.geo?.country,
+        country: (req as any).geo?.country,
       };
 
       // Store metrics

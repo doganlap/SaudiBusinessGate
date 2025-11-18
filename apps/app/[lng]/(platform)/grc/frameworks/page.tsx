@@ -27,8 +27,8 @@ interface Framework {
 }
 
 export default function FrameworksPage() {
-  const params = useParams();
-  const lng = params.lng as string;
+  const params = useParams() as any;
+  const lng = (params?.lng as string) || 'en';
   
   const [frameworks, setFrameworks] = useState<Framework[]>([]);
   const [loading, setLoading] = useState(true);

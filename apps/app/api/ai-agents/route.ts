@@ -273,7 +273,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response);
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message },
+      { error: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
@@ -339,7 +339,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message },
+      { error: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }

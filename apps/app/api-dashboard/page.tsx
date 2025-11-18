@@ -546,7 +546,7 @@ export default function APIDashboard() {
                     </div>
                     <div className="flex items-center gap-2">
                       <div className={`w-2 h-2 rounded-full ${statusStyle?.dot}`}></div>
-                      <Badge variant={api.method === 'GET' ? 'default' : api.method === 'POST' ? 'success' : 'warning'}>
+                      <Badge variant={api.method === 'GET' ? 'default' : api.method === 'POST' ? 'secondary' : api.method === 'DELETE' ? 'destructive' : 'outline'}>
                         {api.method}
                       </Badge>
                     </div>
@@ -672,7 +672,7 @@ export default function APIDashboard() {
                             <div key={api.id} className="bg-white rounded p-3 shadow-sm">
                               <div className="flex items-center justify-between mb-2">
                                 <span className="font-mono text-sm">{api.path}</span>
-                                <Badge variant={api.method === 'GET' ? 'default' : 'success'}>
+                                <Badge variant={api.method === 'GET' ? 'default' : 'secondary'}>
                                   {api.method}
                                 </Badge>
                               </div>

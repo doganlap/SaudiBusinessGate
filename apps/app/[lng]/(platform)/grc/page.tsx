@@ -43,8 +43,8 @@ interface GRCOverview {
 }
 
 export default function GRCDashboard() {
-  const params = useParams();
-  const lng = params.lng as string;
+  const params = useParams() as any;
+  const lng = (params?.lng as string) || 'en';
   
   const [overview, setOverview] = useState<GRCOverview | null>(null);
   const [loading, setLoading] = useState(true);

@@ -4,8 +4,7 @@ const nextConfig = {
   // output: 'standalone', // Temporarily disabled due to Windows permission issues
   poweredByHeader: false,
 
-  // Enable turbopack for faster development
-  turbopack: {},
+  // Use webpack to resolve module conflicts
 
   // TypeScript configuration
   typescript: {
@@ -14,20 +13,38 @@ const nextConfig = {
 
   // Enable experimental features for AI integration
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion', '@radix-ui/react-icons'],
+    optimizePackageImports: ['framer-motion', '@radix-ui/react-icons'],
     serverActions: {
       bodySizeLimit: '10mb',
     },
   },
 
-  // Webpack configuration for Lingui
-  webpack: (config) => {
+  // Webpack configuration for Lingui and module resolution
+  webpack: (config, { isServer }) => {
+    // Add PO file loader for Lingui
     config.module.rules.push({
       test: /\.po$/,
       use: {
         loader: '@lingui/loader',
       },
     });
+    
+    // Fix ESM/CommonJS module conflicts
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+    };
+    
+    // Handle module system conflicts
+    config.module.rules.push({
+      test: /\.m?js$/,
+      resolve: {
+        fullySpecified: false,
+      },
+    });
+    
     return config;
   },
   
@@ -81,6 +98,11 @@ const nextConfig = {
           `${process.env.AUTH_SERVICE_URL}/api/auth/:path*` :
           '/api/auth/:path*',
       },
+      // Exclude finance API from proxy to use Next.js API routes directly
+      {
+        source: '/api/finance/:path*',
+        destination: '/api/finance/:path*',
+      },
       {
         source: '/api/:path*',
         destination: process.env.BACKEND_URL
@@ -111,12 +133,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-  
-  // Experimental features (stable ones only)
-  experimental: {
-    // Only include stable experimental features
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   
   // Compiler options

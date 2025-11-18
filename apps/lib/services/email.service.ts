@@ -472,7 +472,12 @@ export class EmailService {
         .replace('{{billingPeriod}}', params.billingPeriod)
         .replace('{{subscriptionId}}', params.subscriptionId);
 
-      await this.sendEmail(params.tenantId, subject, content);
+      await this.sendEmail({
+        to: params.tenantId,
+        subject: subject,
+        content: content,
+        templateName: 'subscription_update'
+      });
       return true;
     } catch (error) {
       console.error('Failed to send subscription update:', error);
@@ -493,7 +498,12 @@ export class EmailService {
         .replace('{{subscriptionId}}', params.subscriptionId)
         .replace('{{endDate}}', params.endDate.toLocaleDateString());
 
-      await this.sendEmail(params.tenantId, subject, content);
+      await this.sendEmail({
+        to: params.tenantId,
+        subject: subject,
+        content: content,
+        templateName: 'subscription_cancellation'
+      });
       return true;
     } catch (error) {
       console.error('Failed to send subscription cancellation:', error);
@@ -518,7 +528,12 @@ export class EmailService {
         .replace('{{dueDate}}', params.dueDate.toLocaleDateString())
         .replace('{{invoiceUrl}}', params.invoiceUrl || '');
 
-      await this.sendEmail(params.tenantId, subject, content);
+      await this.sendEmail({
+        to: params.tenantId,
+        subject: subject,
+        content: content,
+        templateName: 'subscription_confirmation'
+      });
       return true;
     } catch (error) {
       console.error('Failed to send invoice:', error);
@@ -539,7 +554,12 @@ export class EmailService {
         .replace('{{amount}}', `$${params.amount}`)
         .replace('{{invoiceId}}', params.invoiceId);
 
-      await this.sendEmail(params.tenantId, subject, content);
+      await this.sendEmail({
+        to: params.tenantId,
+        subject: subject,
+        content: content,
+        templateName: 'payment_confirmation'
+      });
       return true;
     } catch (error) {
       console.error('Failed to send payment confirmation:', error);
@@ -562,7 +582,12 @@ export class EmailService {
         .replace('{{invoiceId}}', params.invoiceId)
         .replace('{{retryUrl}}', params.retryUrl || '');
 
-      await this.sendEmail(params.tenantId, subject, content);
+      await this.sendEmail({
+        to: params.tenantId,
+        subject: subject,
+        content: content,
+        templateName: 'invoice'
+      });
       return true;
     } catch (error) {
       console.error('Failed to send payment failed notification:', error);
@@ -583,7 +608,12 @@ export class EmailService {
         .replace('{{totalCharges}}', `$${params.charges.total}`)
         .replace('{{chargeItems}}', params.charges.items.map((item: any) => `${item.description}: $${item.amount}`).join('\n'));
 
-      await this.sendEmail(params.tenantId, subject, content);
+      await this.sendEmail({
+        to: params.tenantId,
+        subject: subject,
+        content: content,
+        templateName: 'license_expiry_alert'
+      });
       return true;
     } catch (error) {
       console.error('Failed to send usage overage alert:', error);

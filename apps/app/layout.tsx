@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3050'),
-  themeColor: '#0ea5e9',
+  
   alternates: {
     canonical: '/',
     languages: {
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
       'en': '/en',
     },
   },
-  viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
+  
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -64,6 +64,12 @@ export const metadata: Metadata = {
     google: process.env.GOOGLE_SITE_VERIFICATION,
   },
 }
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#0ea5e9',
+};
 
 export default function RootLayout({
   children,

@@ -5,9 +5,9 @@ import { useParams, useRouter } from 'next/navigation';
 import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
 
 export default function AuthPage() {
-  const params = useParams();
+  const params = useParams() as any;
   const router = useRouter();
-  const lng = params.lng as string;
+  const lng = (params?.lng as string) || 'en';
   
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);

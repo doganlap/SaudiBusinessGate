@@ -142,7 +142,7 @@ export class VectorizeService extends BaseDatabaseService {
       updated_at: new Date().toISOString()
     };
 
-    const result = await this.create(data, indexData.tenantId, client);
+    const result = await super.create(data, indexData.tenantId, client);
     if (result) {
       return {
         ...result,
@@ -175,7 +175,7 @@ export class VectorizeService extends BaseDatabaseService {
       data.metadata = JSON.stringify(updates.metadata);
     }
 
-    const result = await this.update(id, data, tenantId, client);
+    const result = await super.update(id, data, tenantId, client);
     if (result && result.metadata) {
       result.metadata = JSON.parse(result.metadata);
     }
@@ -192,7 +192,7 @@ export class VectorizeService extends BaseDatabaseService {
       );
 
       // Delete the index
-      return await this.delete(id, tenantId, txClient);
+      return await super.delete(id, tenantId, txClient);
     });
   }
 
@@ -266,7 +266,7 @@ export class VectorizeService extends BaseDatabaseService {
         ? await client.query(queryText, [indexId, tenantId, topK])
         : await this.query(queryText, [indexId, tenantId, topK]);
 
-      return result.rows.map(row => ({
+      return result.rows.map((row: any) => ({
         ...row,
         metadata: JSON.parse(row.metadata || '{}')
       }));
@@ -364,8 +364,5 @@ export class VectorizeService extends BaseDatabaseService {
     }
   }
 
-  private async query(text: string, params?: any[]): Promise<any> {
-    const { query } = await import('../db/connection');
-    return query(text, params);
-  }
+  
 }

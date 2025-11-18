@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { z } from 'zod';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-04-10',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 const FinancialMetricSchema = z.object({
   id: z.string(),
@@ -99,6 +97,9 @@ export async function GET(request: NextRequest) {
 
     const currentMonthExpenses = await fetchExpenses(currentMonthStart, now);
     const previousMonthExpenses = await fetchExpenses(previousMonthStart, previousMonthEnd);
+
+    const currentMonthRevenue = await fetchRevenue(currentMonthStart, now);
+    const previousMonthRevenue = await fetchRevenue(previousMonthStart, previousMonthEnd);
 
     const currentMonthProfit = currentMonthRevenue - currentMonthExpenses;
     const previousMonthProfit = previousMonthRevenue - previousMonthExpenses;

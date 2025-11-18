@@ -27,7 +27,7 @@ export async function POST(
         }
 
         const body = await request.json();
-        const tenantId = session.user.organizationId || 'default';
+        const tenantId = (session.user as any).organizationId || 'default';
         const { id, reportId, tenantId: paramTenantId, organizationId, dealId } = params;
 
         
@@ -36,7 +36,7 @@ export async function POST(
             `INSERT INTO workflows (organization_id, data, created_by, created_at)
              VALUES ($1, $2, $3, NOW())
              RETURNING *`,
-            [tenantId, JSON.stringify(body), session.user.id]
+            [tenantId, JSON.stringify(body), (session.user as any).id]
         );
 
         return NextResponse.json(result.rows[0], { status: 201 });
@@ -44,7 +44,7 @@ export async function POST(
     } catch (error) {
         console.error('/api/workflows/[id]/execute error:', error);
         return NextResponse.json(
-            { error: 'Internal server error', details: error.message },
+            { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
             { status: 500 }
         );
     }

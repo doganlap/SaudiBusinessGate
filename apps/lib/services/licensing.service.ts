@@ -85,7 +85,7 @@ export class LicensingService extends BaseDatabaseService {
         ? await client.query(queryText, [tenantId])
         : await this.query(queryText, [tenantId]);
 
-      return result.rows.map(row => ({
+      return result.rows.map((row: any) => ({
         ...row,
         features_included: row.featuresincluded || [],
         available_features: row.available_features || [],
@@ -122,7 +122,7 @@ export class LicensingService extends BaseDatabaseService {
         updated_at: new Date().toISOString()
       };
 
-      return await this.create(data, licenseData.tenantId, client);
+      return await super.create(data, licenseData.tenantId, client);
     } catch (error) {
       console.error('Error creating tenant license:', error);
       return null;
@@ -142,7 +142,7 @@ export class LicensingService extends BaseDatabaseService {
         updated_at: new Date().toISOString()
       };
 
-      return await this.update(id, data, tenantId, client);
+      return await super.update(id, data, tenantId, client);
     } catch (error) {
       console.error('Error updating tenant license:', error);
       return null;
@@ -188,7 +188,7 @@ export class LicensingService extends BaseDatabaseService {
         updated_at: new Date().toISOString()
       };
 
-      return await this.update(id, data, tenantId, client);
+      return await super.update(id, data, tenantId, client);
     } catch (error) {
       console.error('Error renewing license:', error);
       return null;
@@ -365,8 +365,96 @@ export class LicensingService extends BaseDatabaseService {
     }
   }
 
-  private async query(text: string, params?: any[]): Promise<any> {
-    const { query } = await import('../db/connection');
-    return query(text, params);
+  
+
+  // Get all active licenses
+  async getActiveLicenses(): Promise<any[]> {
+    try {
+      const result = await this.query(`
+        SELECT * FROM tenant_licenses 
+        WHERE status = 'active' AND is_active = true 
+        AND end_date > NOW()
+      `);
+      return result.rows;
+    } catch (error) {
+      console.error('Error getting active licenses:', error);
+      return [];
+    }
+  }
+
+  // Get weekly license metrics
+  async getWeeklyLicenseMetrics(startDate: Date, endDate: Date): Promise<any> {
+    try {
+      const result = await this.query(`
+        SELECT 
+          COUNT(*) as total_licenses,
+          COUNT(CASE WHEN status = 'active' THEN 1 END) as active_licenses,
+          COUNT(CASE WHEN status = 'trial' THEN 1 END) as trial_licenses,
+          COUNT(CASE WHEN status = 'expired' THEN 1 END) as expired_licenses,
+          SUM(current_users) as total_users,
+          SUM(current_storage_gb) as total_storage,
+          SUM(COALESCE(monthly_cost, 0)) as total_monthly_revenue
+        FROM tenant_licenses
+        WHERE created_at BETWEEN $1 AND $2
+      `, [startDate, endDate]);
+      
+      return result.rows[0] || {
+        total_licenses: 0,
+        active_licenses: 0,
+        trial_licenses: 0,
+        expired_licenses: 0,
+        total_users: 0,
+        total_storage: 0,
+        total_monthly_revenue: 0
+      };
+    } catch (error) {
+      console.error('Error getting weekly license metrics:', error);
+      return {
+        total_licenses: 0,
+        active_licenses: 0,
+        trial_licenses: 0,
+        expired_licenses: 0,
+        total_users: 0,
+        total_storage: 0,
+        total_monthly_revenue: 0
+      };
+    }
+  }
+
+  // Get platform administrators
+  async getPlatformAdministrators(): Promise<any[]> {
+    try {
+      const result = await this.query(`
+        SELECT DISTINCT u.email, u.name
+        FROM users u
+        JOIN user_roles ur ON u.id = ur.user_id
+        JOIN roles r ON ur.role_id = r.id
+        WHERE r.name IN ('platform_admin', 'super_admin')
+        AND u.is_active = true
+      `);
+      return result.rows;
+    } catch (error) {
+      console.error('Error getting platform administrators:', error);
+      return [];
+    }
+  }
+
+  // Get tenants for monthly billing
+  async getTenantsForMonthlyBilling(): Promise<any[]> {
+    try {
+      const result = await this.query(`
+        SELECT DISTINCT t.*, tl.auto_renew, tl.billing_cycle
+        FROM tenants t
+        JOIN tenant_licenses tl ON t.id = tl.tenant_id
+        WHERE tl.status = 'active' 
+        AND tl.is_active = true
+        AND tl.billing_cycle = 'monthly'
+        AND tl.end_date > NOW()
+      `);
+      return result.rows;
+    } catch (error) {
+      console.error('Error getting tenants for monthly billing:', error);
+      return [];
+    }
   }
 }

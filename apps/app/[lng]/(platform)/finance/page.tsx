@@ -102,8 +102,8 @@ const financeModules = [
 ];
 
 export default function FinancePage() {
-  const params = useParams();
-  const lng = params.lng as string;
+  const params = useParams() as any;
+  const lng = (params?.lng as string) || 'en';
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -119,7 +119,17 @@ export const translations = {
     'currency_eur': 'يورو',
     'thousand': 'ألف',
     'million': 'مليون',
-    'billion': 'مليار'
+    'billion': 'مليار',
+    
+    // Dashboard Specific
+    'totalRevenue': 'إجمالي الإيرادات',
+    'totalUsers': 'إجمالي المستخدمين',
+    'activeSubscriptions': 'الاشتراكات النشطة',
+    'monthlyGrowth': 'النمو الشهري',
+    'quickActions': 'إجراءات سريعة',
+    'quickActionsSubtitle': 'الوصول السريع إلى الوظائف الرئيسية',
+    'recentActivity': 'النشاط الأخير',
+    'recentActivitySubtitle': 'آخر التحديثات والأحداث'
   },
   
   en: {
@@ -241,7 +251,17 @@ export const translations = {
     'currency_eur': 'Euro',
     'thousand': 'Thousand',
     'million': 'Million',
-    'billion': 'Billion'
+    'billion': 'Billion',
+    
+    // Dashboard Specific
+    'totalRevenue': 'Total Revenue',
+    'totalUsers': 'Total Users',
+    'activeSubscriptions': 'Active Subscriptions',
+    'monthlyGrowth': 'Monthly Growth',
+    'quickActions': 'Quick Actions',
+    'quickActionsSubtitle': 'Quick access to main features',
+    'recentActivity': 'Recent Activity',
+    'recentActivitySubtitle': 'Latest updates and events'
   }
 };
 

@@ -1,59 +1,41 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
+import Link from 'next/link';
 
-export interface BreadcrumbItem {
+interface BreadcrumbItem {
   label: string;
   href?: string;
+  icon?: React.ReactNode;
 }
 
 interface BreadcrumbsProps {
   items: BreadcrumbItem[];
-  separator?: React.ReactNode;
 }
 
-export default function Breadcrumbs({ items, separator }: BreadcrumbsProps) {
+export function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
-    <nav className="flex items-center space-x-2 text-sm" aria-label="Breadcrumb">
-      <Link
-        href="/"
-        className="text-neutral-600 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-        aria-label="Home"
-      >
-        <Home className="w-4 h-4" />
+    <nav className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+      <Link href="/" className="flex items-center hover:text-gray-900 dark:hover:text-gray-200">
+        <Home className="h-4 w-4" />
       </Link>
-
-      {items.map((item, index) => {
-        const isLast = index === items.length - 1;
-
-        return (
-          <React.Fragment key={index}>
-            {separator || <ChevronRight className="w-4 h-4 text-neutral-400 dark:text-neutral-600" />}
-            
-            {item.href && !isLast ? (
-              <Link
-                href={item.href}
-                className="text-neutral-600 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <span
-                className={`${
-                  isLast
-                    ? 'text-neutral-900 dark:text-white font-medium'
-                    : 'text-neutral-600 dark:text-neutral-400'
-                }`}
-                aria-current={isLast ? 'page' : undefined}
-              >
-                {item.label}
-              </span>
-            )}
-          </React.Fragment>
-        );
-      })}
+      
+      {items.map((item, index) => (
+        <div key={index} className="flex items-center">
+          <ChevronRight className="h-4 w-4 mx-2 text-gray-400" />
+          {item.href ? (
+            <Link href={item.href} className="flex items-center hover:text-gray-900 dark:hover:text-gray-200">
+              {item.icon && <span className="mr-1">{item.icon}</span>}
+              {item.label}
+            </Link>
+          ) : (
+            <span className="flex items-center text-gray-900 dark:text-gray-200">
+              {item.icon && <span className="mr-1">{item.icon}</span>}
+              {item.label}
+            </span>
+          )}
+        </div>
+      ))}
     </nav>
   );
 }

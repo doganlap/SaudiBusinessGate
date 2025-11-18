@@ -1,5 +1,5 @@
 // Red Flags AI Agents - الوكلاء الأذكياء للأعلام الحمراء
-import { DatabaseService } from '@/lib/db/connection';
+import { DatabaseService } from '@/lib/services/database.service';
 import { incidentMode, IncidentContext } from '@/lib/red-flags/incident-mode';
 
 export interface AgentJob {
@@ -47,6 +47,9 @@ class RedFlagsAgentService {
         case 'FIN_DEDUP_REVIEW':
           result = await this.reviewDuplicateTransactions(job);
           break;
+        case 'FIN_TRANSACTION_OUTLIERS':
+          result = await this.detectFinanceTransactionOutliers(job);
+          break;
         case 'COMPLIANCE_CASE_OPEN':
           result = await this.openComplianceCase(job);
           break;
@@ -79,12 +82,12 @@ class RedFlagsAgentService {
     const journalId = inputData.entityId;
 
     // الحصول على تفاصيل القيد غير المتوازن
-    const entries = await this.db.query(`
+    const entriesRes = await this.db.query(`
       SELECT * FROM gl_entries 
       WHERE tenant_id = $1 AND journal_id = $2
       ORDER BY created_at
     `, [tenantId, journalId]);
-
+    const entries = entriesRes.rows || [];
     const totalDebit = entries.reduce((sum: number, entry: any) => sum + parseFloat(entry.debit || 0), 0);
     const totalCredit = entries.reduce((sum: number, entry: any) => sum + parseFloat(entry.credit || 0), 0);
     const imbalance = totalDebit - totalCredit;
@@ -156,22 +159,21 @@ class RedFlagsAgentService {
     const paymentId = inputData.entityId;
 
     // البحث عن المعاملات المشابهة
-    const duplicates = await this.db.query(`
-      WITH target_payment AS (
-        SELECT amount, counterparty_id, reference, txn_date
-        FROM payments WHERE id = $1 AND tenant_id = $2
+    const duplicatesRes = await this.db.query(`
+      WITH target_tx AS (
+         SELECT amount, reference_id, transaction_date
+         FROM transactions WHERE id = $1 AND tenant_id = $2
       )
-      SELECT p.id, p.amount, p.reference, p.txn_date, p.status
-      FROM payments p, target_payment tp
-      WHERE p.tenant_id = $2
-      AND p.amount = tp.amount
-      AND p.counterparty_id = tp.counterparty_id
-      AND p.reference = tp.reference
-      AND p.txn_date::DATE = tp.txn_date::DATE
-      AND p.id != $1
-      ORDER BY p.txn_date
+      SELECT t.id, t.amount, t.reference_id as reference, t.transaction_date as txn_date, t.status
+      FROM transactions t, target_tx tp
+      WHERE t.tenant_id = $2
+      AND t.amount = tp.amount
+      AND COALESCE(t.reference_id, '') = COALESCE(tp.reference_id, '')
+      AND DATE(t.transaction_date) = DATE(tp.transaction_date)
+      AND t.id != $1
+      ORDER BY t.transaction_date
     `, [paymentId, tenantId]);
-
+    const duplicates = duplicatesRes.rows || [];
     const actions: string[] = [];
     const recommendations: string[] = [];
 
@@ -382,18 +384,17 @@ class RedFlagsAgentService {
     const paymentId = inputData.entityId;
 
     // الحصول على تفاصيل المعاملة
-    const payment = await this.db.query(`
+    const paymentRes = await this.db.query(`
       SELECT p.*, c.name as counterparty_name, c.email as counterparty_email
       FROM payments p
       LEFT JOIN counterparties c ON c.id = p.counterparty_id
       WHERE p.id = $1 AND p.tenant_id = $2
     `, [paymentId, tenantId]);
-
-    if (payment.length === 0) {
+    const paymentRows = paymentRes.rows || [];
+    if (paymentRows.length === 0) {
       throw new Error('Payment not found');
     }
-
-    const paymentData = payment[0];
+    const paymentData = paymentRows[0];
 
     // إنشاء طلب مستندات
     const requestId = `DOC-REQ-${Date.now()}`;
@@ -567,11 +568,11 @@ class RedFlagsAgentService {
   }
 
   private async getSuspenseAccount(tenantId: string): Promise<string> {
-    const result = await this.db.query(`
+    const resultRes = await this.db.query(`
       SELECT id FROM chart_of_accounts 
       WHERE tenant_id = $1 AND account_code = 'SUSPENSE'
     `, [tenantId]);
-    
+    const result = resultRes.rows || [];
     if (result.length === 0) {
       // إنشاء حساب Suspense إذا لم يكن موجوداً
       const suspenseId = `SUSP-${Date.now()}`;
@@ -584,18 +585,16 @@ class RedFlagsAgentService {
       `, [suspenseId, tenantId]);
       return suspenseId;
     }
-    
     return result[0].id;
   }
 
   private async generateTransactionSignature(paymentId: string, tenantId: string): Promise<string> {
-    const payment = await this.db.query(`
+    const paymentRes = await this.db.query(`
       SELECT counterparty_id, reference, amount 
       FROM payments WHERE id = $1 AND tenant_id = $2
     `, [paymentId, tenantId]);
-    
+    const payment = paymentRes.rows || [];
     if (payment.length === 0) return '';
-    
     const p = payment[0];
     const crypto = require('crypto');
     return crypto.createHash('md5')
@@ -609,19 +608,21 @@ class RedFlagsAgentService {
   }
 
   private async captureAuditLogs(tenantId: string): Promise<any[]> {
-    return await this.db.query(`
+    const res = await this.db.query(`
       SELECT * FROM audit_logs 
       WHERE tenant_id = $1 AND created_at >= NOW() - INTERVAL '24 hours'
       ORDER BY created_at DESC LIMIT 1000
     `, [tenantId]);
+    return res.rows || [];
   }
 
   private async captureUserActivities(tenantId: string): Promise<any[]> {
-    return await this.db.query(`
+    const res = await this.db.query(`
       SELECT * FROM user_activities 
       WHERE tenant_id = $1 AND created_at >= NOW() - INTERVAL '24 hours'
       ORDER BY created_at DESC LIMIT 500
     `, [tenantId]);
+    return res.rows || [];
   }
 
   private async captureSystemLogs(tenantId: string): Promise<any[]> {
@@ -631,21 +632,21 @@ class RedFlagsAgentService {
 
   private async captureDatabaseState(tenantId: string): Promise<any> {
     return {
-      tableStats: await this.db.query(`
+      tableStats: (await this.db.query(`
         SELECT schemaname, tablename, n_tup_ins, n_tup_upd, n_tup_del
         FROM pg_stat_user_tables 
         WHERE schemaname = 'public'
-      `),
-      connectionStats: await this.db.query(`
+      `)).rows || [],
+      connectionStats: (await this.db.query(`
         SELECT count(*) as active_connections 
         FROM pg_stat_activity 
         WHERE state = 'active'
-      `)
+      `)).rows || []
     };
   }
 
   private async analyzeTransactionPattern(tenantId: string, accountId: string): Promise<any> {
-    const result = await this.db.query(`
+    const res = await this.db.query(`
       SELECT 
         COUNT(*) as transaction_count,
         SUM(amount) as total_amount,
@@ -656,8 +657,7 @@ class RedFlagsAgentService {
       WHERE tenant_id = $1 AND account_id = $2 
       AND txn_ts >= NOW() - INTERVAL '1 hour'
     `, [tenantId, accountId]);
-
-    return result[0] || {};
+    return (res.rows || [])[0] || {};
   }
 
   private calculateRiskScore(pattern: any): number {
@@ -710,6 +710,65 @@ class RedFlagsAgentService {
     // في التطبيق الحقيقي، هذا سيرسل إشعارات فعلية
     console.log(`📄 Document request sent: ${requestId} for payment ${paymentData.id}`);
   }
+  private async detectFinanceTransactionOutliers(job: AgentJob): Promise<AgentResult> {
+    const { tenantId, inputData } = job;
+    const threshold = inputData?.threshold || 100000; // SAR
+    const windowDays = inputData?.windowDays || 7;
+    const actions: string[] = [];
+    const recommendations: string[] = [];
+
+    const highRes = await this.db.query(
+      `SELECT id, amount, transaction_type, reference_id, transaction_date
+       FROM transactions
+       WHERE tenant_id = $1 AND amount >= $2
+       ORDER BY amount DESC LIMIT 50`,
+      [tenantId, threshold]
+    );
+    const high = highRes.rows || [];
+    if (high.length > 0) {
+      actions.push(`Detected ${high.length} high-value transactions >= ${threshold}`);
+      recommendations.push('Review approvals and supporting documents for high-value transactions');
+    }
+
+    const repeatRes = await this.db.query(
+      `SELECT reference_id, COUNT(*) AS c, MIN(transaction_date) AS first_ts, MAX(transaction_date) AS last_ts
+       FROM transactions
+       WHERE tenant_id = $1 AND reference_id IS NOT NULL
+       AND transaction_date >= NOW() - INTERVAL '${windowDays} days'
+       GROUP BY reference_id HAVING COUNT(*) >= 3
+       ORDER BY c DESC LIMIT 50`,
+      [tenantId]
+    );
+    const repeats = repeatRes.rows || [];
+    if (repeats.length > 0) {
+      actions.push(`Found ${repeats.length} repeated references (>=3 in ${windowDays}d)`);
+      recommendations.push('Enable dedup rules and vendor reconciliation for repeated references');
+    }
+
+    const overdueRes = await this.db.query(
+      `SELECT id, amount, reference_id, transaction_date
+       FROM transactions
+       WHERE tenant_id = $1 AND transaction_type = 'receipt' AND status = 'pending'
+       AND transaction_date < NOW() - INTERVAL '30 days' AND amount >= $2
+       ORDER BY transaction_date ASC LIMIT 50`,
+      [tenantId, Math.max(5000, threshold / 10)]
+    );
+    const overdue = overdueRes.rows || [];
+    if (overdue.length > 0) {
+      actions.push(`Detected ${overdue.length} overdue AR receipts > 30d`);
+      recommendations.push('Initiate dunning and collection procedures');
+    }
+
+    return {
+      success: true,
+      actions,
+      recommendations,
+      nextSteps: ['Attach findings to incident record', 'Notify finance controller'],
+      evidence: { high, repeats, overdue },
+      confidence: 0.9
+    };
+  }
+
 }
 
 export const redFlagsAgents = new RedFlagsAgentService();

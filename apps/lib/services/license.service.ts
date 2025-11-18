@@ -504,4 +504,153 @@ export class LicenseService {
     // Could calculate based on current usage vs new plan efficiency
     return 0;
   }
+
+  /**
+   * Get expiring licenses
+   */
+  async getExpiringLicenses(days: number): Promise<any[]> {
+    try {
+      const result = await this.dbService.query(
+        `SELECT * FROM licenses 
+         WHERE status = 'active' 
+         AND expires_at IS NOT NULL 
+         AND expires_at <= CURRENT_DATE + INTERVAL '${days} days'`,
+        []
+      );
+      return result.rows;
+    } catch (error) {
+      console.error('Error getting expiring licenses:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get active tenants with licenses
+   */
+  async getActiveTenantsWithLicenses(): Promise<any[]> {
+    try {
+      const result = await this.dbService.query(
+        `SELECT DISTINCT tenant_id, license_code 
+         FROM licenses 
+         WHERE status = 'active'`,
+        []
+      );
+      return result.rows;
+    } catch (error) {
+      console.error('Error getting active tenants:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get renewal reminder candidates
+   */
+  async getRenewalReminderCandidates(): Promise<any[]> {
+    try {
+      const result = await this.dbService.query(
+        `SELECT * FROM licenses 
+         WHERE status = 'active' 
+         AND auto_renew = true 
+         AND expires_at IS NOT NULL 
+         AND expires_at <= CURRENT_DATE + INTERVAL '30 days'`,
+        []
+      );
+      return result.rows;
+    } catch (error) {
+      console.error('Error getting renewal candidates:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get tenant context
+   */
+  async getTenantContext(tenantId: string): Promise<any> {
+    try {
+      const result = await this.dbService.query(
+        `SELECT * FROM tenants 
+         WHERE id = $1`,
+        [tenantId]
+      );
+      return result.rows[0] || null;
+    } catch (error) {
+      console.error('Error getting tenant context:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Get active licenses
+   */
+  async getActiveLicenses(): Promise<any[]> {
+    try {
+      const result = await this.dbService.query(
+        `SELECT * FROM licenses 
+         WHERE status = 'active'`,
+        []
+      );
+      return result.rows;
+    } catch (error) {
+      console.error('Error getting active licenses:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get weekly license metrics
+   */
+  async getWeeklyLicenseMetrics(weekStart: Date, reportDate: Date): Promise<any> {
+    try {
+      const result = await this.dbService.query(
+        `SELECT 
+           COUNT(*) as total_licenses,
+           COUNT(CASE WHEN status = 'active' THEN 1 END) as active_licenses,
+           COUNT(CASE WHEN status = 'expired' THEN 1 END) as expired_licenses
+         FROM licenses 
+         WHERE created_at >= $1 AND created_at <= $2`,
+        [weekStart, reportDate]
+      );
+      return result.rows[0] || { total_licenses: 0, active_licenses: 0, expired_licenses: 0 };
+    } catch (error) {
+      console.error('Error getting weekly metrics:', error);
+      return { total_licenses: 0, active_licenses: 0, expired_licenses: 0 };
+    }
+  }
+
+  /**
+   * Get platform administrators
+   */
+  async getPlatformAdministrators(): Promise<any[]> {
+    try {
+      const result = await this.dbService.query(
+        `SELECT * FROM users 
+         WHERE role = 'platform_admin' 
+         AND status = 'active'`,
+        []
+      );
+      return result.rows;
+    } catch (error) {
+      console.error('Error getting platform administrators:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get tenants for monthly billing
+   */
+  async getTenantsForMonthlyBilling(): Promise<any[]> {
+    try {
+      const result = await this.dbService.query(
+        `SELECT DISTINCT tenant_id 
+         FROM licenses 
+         WHERE status = 'active' 
+         AND billing_cycle = 'monthly'`,
+        []
+      );
+      return result.rows;
+    } catch (error) {
+      console.error('Error getting tenants for billing:', error);
+      return [];
+    }
+  }
 }

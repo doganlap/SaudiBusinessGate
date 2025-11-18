@@ -43,8 +43,9 @@ interface ApiResponse {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { tenantId: string } }
+  context: { params: Promise<{ tenantId: string }> }
 ): Promise<NextResponse<ApiResponse>> {
+  const params = await context.params;
   try {
     const validation = paramsSchema.safeParse(params);
     if (!validation.success) {
@@ -138,7 +139,7 @@ export async function GET(
         customer: {
           id: foundCustomer.id,
           email: foundCustomer.email,
-          name: foundCustomer.name
+          name: (foundCustomer.name as string | null) ?? null
         },
         subscriptions: formattedSubscriptions,
         upcomingInvoice: upcomingInvoice ? {

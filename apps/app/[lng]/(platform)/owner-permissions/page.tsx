@@ -106,6 +106,41 @@ export default function OwnerPermissionsPage({ params }: { params: Promise<{ lng
     return acc;
   }, {} as Record<string, OwnerPermission[]>);
 
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'system': return 'bg-blue-100 text-blue-600';
+      case 'users': return 'bg-green-100 text-green-600';
+      case 'data': return 'bg-purple-100 text-purple-600';
+      case 'billing': return 'bg-pink-100 text-pink-600';
+      case 'security': return 'bg-red-100 text-red-600';
+      default: return 'bg-gray-100 text-gray-600';
+    }
+  };
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'system': return <Settings className="h-5 w-5" />;
+      case 'users': return <Users className="h-5 w-5" />;
+      case 'data': return <Database className="h-5 w-5" />;
+      case 'billing': return <Key className="h-5 w-5" />;
+      case 'security': return <Shield className="h-5 w-5" />;
+      default: return <Crown className="h-5 w-5" />;
+    }
+  };
+
+  const togglePermission = (id: string) => {
+    handleToggle(id);
+  };
+
+  const getLevelColor = (level: 'full' | 'limited' | 'read_only') => {
+    switch (level) {
+      case 'full': return 'bg-green-100 text-green-700';
+      case 'limited': return 'bg-yellow-100 text-yellow-700';
+      case 'read_only': return 'bg-blue-100 text-blue-700';
+      default: return 'bg-gray-100 text-gray-700';
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">

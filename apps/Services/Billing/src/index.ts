@@ -12,6 +12,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
+const skipDb = process.env.BILLING_SKIP_DB === 'true';
 
 // Initialize services
 const billingController = new BillingController();
@@ -92,9 +93,12 @@ app.use('*', (req, res) => {
 // Initialize database and start server
 async function startServer() {
   try {
-    // Initialize database tables
-    await databaseService.initializeTables();
-    logger.info('Database initialized successfully');
+    if (!skipDb) {
+      await databaseService.initializeTables();
+      logger.info('Database initialized successfully');
+    } else {
+      logger.warn('Skipping database initialization (BILLING_SKIP_DB=true)');
+    }
 
     // Start server
     app.listen(port, () => {
@@ -105,6 +109,17 @@ async function startServer() {
       });
     });
   } catch (error) {
+    if (skipDb) {
+      logger.error('Database initialization failed but continuing due to BILLING_SKIP_DB', { error });
+      app.listen(port, () => {
+        logger.info(`Billing service started on port ${port} (DB skipped)`, {
+          port,
+          environment: process.env.NODE_ENV || 'development',
+          timestamp: new Date().toISOString()
+        });
+      });
+      return;
+    }
     logger.error('Failed to start server', { error });
     process.exit(1);
   }

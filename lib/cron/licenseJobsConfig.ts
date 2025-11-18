@@ -374,12 +374,11 @@ export class LicenseJobsConfig {
         });
         
         // Generate invoice
-        const invoice = await this.billingService.generateInvoice({
-          tenantId: tenant.id,
-          billingCalculation,
-          dueDate: new Date(billingDate.getTime() + 30 * 24 * 60 * 60 * 1000), // 30 days
-          invoiceDate: billingDate
-        });
+        const invoiceItems = [
+          { description: 'Monthly License Fee', amount: tenant.monthlyFee || 99 },
+          { description: 'Usage Charges', amount: billingCalculation.overageAmount || 0 }
+        ];
+        const invoice = await this.billingService.generateInvoice(tenant.id, invoiceItems);
         
         // Process automatic payment if enabled
         if (tenant.autoPayEnabled) {
@@ -396,10 +395,12 @@ export class LicenseJobsConfig {
         // Log billing event
         await this.dbService.logBillingEvent({
           tenantId: tenant.id,
-          invoiceId: invoice.id,
           eventType: 'monthly_billing_processed',
-          amount: billingCalculation.totalAmount,
-          billingDate
+          data: {
+            invoiceId: invoice.id,
+            amount: billingCalculation.totalAmount,
+            billingDate
+          }
         });
       }
       

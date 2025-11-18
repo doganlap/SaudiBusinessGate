@@ -162,7 +162,7 @@ export default function RedFlagsCard({ redFlag, onStatusChange, locale = 'ar' }:
         
         <div className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border ${getStatusColor(redFlag.status)}`}>
           {getStatusIcon(redFlag.status)}
-          <span>{t[redFlag.status as keyof typeof t]}</span>
+          <span>{t[redFlag.status as keyof Omit<typeof t, 'eventTypes'>]}</span>
         </div>
       </div>
 

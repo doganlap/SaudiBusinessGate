@@ -7,8 +7,8 @@ import { LoadingState } from '@/components/ui/loading-state';
 
 export default function LangHomePage() {
   const router = useRouter();
-  const params = useParams();
-  const lng = params.lng as string;
+  const params = useParams() as any;
+  const lng = (params?.lng as string) || 'en';
 
   useEffect(() => {
     // Redirect to platform dashboard

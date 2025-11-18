@@ -5,36 +5,56 @@
   "installCommand": "npm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
+  "regions": ["iad1"],
+  "functions": {
+    "app/api/**/*.ts": {
+      "runtime": "@vercel/node",
+      "maxDuration": 30
+    }
+  },
   "env": {
+    "DATABASE_URL": "postgres://f9b01b016f6065e1f9d62776a95e03ccb3773e35f2ba4d5ec6f6bbc1afaa2e46:sk_ZDb_YXE5HdKoY5VayB3tN@db.prisma.io:5432/postgres?sslmode=require",
+    "POSTGRES_URL": "postgres://f9b01b016f6065e1f9d62776a95e03ccb3773e35f2ba4d5ec6f6bbc1afaa2e46:sk_ZDb_YXE5HdKoY5VayB3tN@db.prisma.io:5432/postgres?sslmode=require",
+    "PRISMA_DATABASE_URL": "prisma+postgres://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RfaWQiOjEsInNlY3VyZV9rZXkiOiJza19aRGJfWVhFNUhkS29ZNVZheUIzdE4iLCJhcGlfa2V5IjoiMDFLQTI2MDZLUDJDVkpYU1laWFhTVlFCWFAiLCJ0ZW5hbnRfaWQiOiJmOWIwMWIwMTZmNjA2NWUxZjlkNjI3NzZhOTVlMDNjY2IzNzczZTM1ZjJiYTRkNWVjNmY2YmJjMWFmYWEyZTQ2IiwiaW50ZXJuYWxfc2VjcmV0IjoiOWU1MWIyYjQtNzU3OS00ZmZhLTllMWEtYmFiYTVlMTQxYjdmIn0.4ZQEin9USH0TBlfgFmW_DVhaBy_fOTzlhsUJGn1SdSE",
+    "NEXTAUTH_URL": "@vercel-url",
     "NODE_ENV": "production",
-    "NEXT_PUBLIC_APP_URL": "https://doganhub-store.vercel.app",
-    "NEXT_PUBLIC_APP_NAME": "DoganHub Store",
-    "ENABLE_EXPERIMENTAL_COREPACK": "1"
+    "NEXT_PUBLIC_APP_URL": "https://saudistore.sa",
+    "NEXT_PUBLIC_APP_NAME": "Saudi Business Gate"
   },
   "build": {
     "env": {
       "NEXT_TELEMETRY_DISABLED": "1"
     }
   },
+  "rewrites": [
+    {
+      "source": "/health",
+      "destination": "/api/health"
+    },
+    {
+      "source": "/healthcheck",
+      "destination": "/api/health"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
-        {
-          "key": "Access-Control-Allow-Credentials",
-          "value": "true"
-        },
         {
           "key": "Access-Control-Allow-Origin",
           "value": "*"
         },
         {
           "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
         },
         {
           "key": "Access-Control-Allow-Headers",
-          "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
+          "value": "Content-Type, Authorization, X-Tenant-ID"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=60, stale-while-revalidate"
         }
       ]
     },
@@ -56,10 +76,6 @@
         {
           "key": "Referrer-Policy",
           "value": "origin-when-cross-origin"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
     },
@@ -76,29 +92,8 @@
   "redirects": [
     {
       "source": "/",
-      "destination": "/en/dashboard",
-      "permanent": false
-    },
-    {
-      "source": "/dashboard",
-      "destination": "/en/dashboard",
+      "destination": "/landing",
       "permanent": false
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/health",
-      "destination": "/api/health"
-    },
-    {
-      "source": "/healthcheck",
-      "destination": "/api/health"
-    }
-  ],
-  "regions": ["iad1"],
-  "github": {
-    "enabled": true,
-    "autoAlias": true,
-    "silent": false
-  }
+  ]
 }

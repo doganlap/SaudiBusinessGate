@@ -1,11 +1,11 @@
 import { Pool, PoolClient } from 'pg';
-import { DatabaseService } from './connection';
+import { DatabaseService } from '../services/database.service';
 
 // Database Manager - Central coordinator for all database operations
 export class DatabaseManager {
   private static instance: DatabaseManager;
   private pool: Pool | null = null;
-  private services: Map<string, any> = new Map();
+  private services: Map<string, Record<string, any>> = new Map();
 
   private constructor() {}
 
@@ -40,129 +40,168 @@ export class DatabaseManager {
   }
 
   // Get a registered service
-  getService<T>(name: string): T | null {
-    return this.services.get(name) || null;
+  getService<T = Record<string, any>>(name: string): T | null {
+    return (this.services.get(name) as T) || null;
   }
 
   // Execute transaction across multiple services
   async executeTransaction<T>(
     operations: Array<{
       service: string;
-      operation: string;
+      method: string;
       params: any[];
-    }>
-  ): Promise<T> {
+    }>,
+    options?: {
+      isolationLevel?: 'read_committed' | 'repeatable_read' | 'serializable';
+      timeout?: number;
+    }
+  ): Promise<T[]> {
     if (!this.pool) {
-      throw new Error('Database not initialized');
+      throw new Error('Database Manager not initialized');
     }
 
-    return await DatabaseService.transaction(async (client: PoolClient) => {
-      const results: any[] = [];
+    const client = await this.pool.connect();
+    const results: T[] = [];
 
-      for (const op of operations) {
-        const service = this.getService(op.service);
+    try {
+      await client.query('BEGIN');
+
+      for (const operation of operations) {
+        const service = this.getService(operation.service);
         if (!service) {
-          throw new Error(`Service ${op.service} not found`);
+          throw new Error(`Service not found: ${operation.service}`);
         }
 
-        if (typeof service[op.operation] !== 'function') {
-          throw new Error(`Operation ${op.operation} not found in service ${op.service}`);
+        const method = service[operation.method];
+        if (typeof method !== 'function') {
+          throw new Error(`Method not found: ${operation.method} on service ${operation.service}`);
         }
 
-        // Inject client for transaction support
-        const result = await service[op.operation](...op.params, client);
+        const result = await method.apply(service, operation.params);
         results.push(result);
       }
 
-      return results as T;
-    });
+      await client.query('COMMIT');
+      return results;
+
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 
-  // Health check across all services
+  // Get database pool
+  getPool(): Pool {
+    if (!this.pool) {
+      throw new Error('Database Manager not initialized');
+    }
+    return this.pool;
+  }
+
+  // Health check
   async healthCheck(): Promise<{
     status: 'healthy' | 'degraded' | 'unhealthy';
     services: Record<string, boolean>;
     database: boolean;
   }> {
-    const results: Record<string, boolean> = {};
-    let allHealthy = true;
-
-    // Check database connection
-    const dbHealthy = await DatabaseService.testConnection().catch(() => false);
-
-    // Check each service
-    for (const [name, service] of this.services) {
-      try {
-        if (typeof service.healthCheck === 'function') {
-          results[name] = await service.healthCheck();
-        } else {
-          results[name] = true; // Assume healthy if no health check
+    try {
+      const services: Record<string, boolean> = {};
+      
+      // Check all registered services
+      for (const [serviceName, service] of this.services) {
+        try {
+          if (service.healthCheck && typeof service.healthCheck === 'function') {
+            services[serviceName] = await service.healthCheck();
+          } else {
+            services[serviceName] = true; // Assume healthy if no healthCheck method
+          }
+        } catch (error) {
+          console.error(`Health check failed for service ${serviceName}:`, error);
+          services[serviceName] = false;
         }
-      } catch (error) {
-        results[name] = false;
-        allHealthy = false;
       }
-    }
 
-    let status: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
-    if (!dbHealthy) {
-      status = 'unhealthy';
-    } else if (!allHealthy) {
-      status = 'degraded';
-    }
+      // Check database connection
+      let database = false;
+      if (this.pool) {
+        try {
+          const result = await this.pool.query('SELECT 1');
+          database = result.rows.length > 0;
+        } catch (error) {
+          console.error('Database health check failed:', error);
+          database = false;
+        }
+      }
 
-    return {
-      status,
-      services: results,
-      database: dbHealthy
-    };
+      // Determine overall status
+      const allServicesHealthy = Object.values(services).every(healthy => healthy);
+      const status = database && allServicesHealthy ? 'healthy' : 
+                    database || Object.values(services).some(healthy => healthy) ? 'degraded' : 'unhealthy';
+
+      return {
+        status,
+        services,
+        database
+      };
+    } catch (error) {
+      console.error('Health check failed:', error);
+      return {
+        status: 'unhealthy',
+        services: {},
+        database: false
+      };
+    }
   }
 
   // Get database statistics
-  async getStats(): Promise<{
-    connections: {
-      total: number;
-      active: number;
-      idle: number;
-    };
-    services: string[];
-    uptime: number;
-  }> {
-    const pool = DatabaseService.getPool();
-    const stats = {
-      connections: {
-        total: pool.totalCount,
-        active: pool.totalCount - pool.idleCount,
-        idle: pool.idleCount
-      },
-      services: Array.from(this.services.keys()),
-      uptime: process.uptime()
-    };
+  async getStats(): Promise<any> {
+    try {
+      if (!this.pool) {
+        return {
+          totalConnections: 0,
+          activeConnections: 0,
+          idleConnections: 0,
+          services: this.services.size
+        };
+      }
 
-    return stats;
+      // Get PostgreSQL statistics
+      const result = await this.pool.query(`
+        SELECT 
+          count(*) as total_connections,
+          count(*) FILTER (WHERE state = 'active') as active_connections,
+          count(*) FILTER (WHERE state = 'idle') as idle_connections
+        FROM pg_stat_activity 
+        WHERE datname = current_database()
+      `);
+
+      return {
+        ...result.rows[0],
+        services: this.services.size
+      };
+    } catch (error) {
+      console.error('Failed to get database stats:', error);
+      return {
+        totalConnections: 0,
+        activeConnections: 0,
+        idleConnections: 0,
+        services: this.services.size,
+        error: error.message
+      };
+    }
   }
 
-  // Graceful shutdown
+  // Shutdown
   async shutdown(): Promise<void> {
-    console.log('🛑 Shutting down Database Manager...');
-
-    // Shutdown all services
-    for (const [name, service] of this.services) {
-      if (typeof service.shutdown === 'function') {
-        try {
-          await service.shutdown();
-          console.log(`✅ Service ${name} shut down`);
-        } catch (error) {
-          console.error(`❌ Error shutting down service ${name}:`, error);
-        }
-      }
+    if (this.pool) {
+      await this.pool.end();
+      this.pool = null;
+      console.log('🗄️ Database Manager shutdown complete');
     }
-
-    // Close database connection
-    await DatabaseService.closePool();
-    console.log('🗄️ Database Manager shut down complete');
   }
 }
 
-// Global instance
+// Export singleton instance
 export const dbManager = DatabaseManager.getInstance();

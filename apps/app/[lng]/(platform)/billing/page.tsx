@@ -20,8 +20,8 @@ interface User {
 }
 
 export default function BillingPage() {
-  const params = useParams();
-  const lng = params.lng as string;
+  const params = useParams() as any;
+  const lng = (params?.lng as string) || 'en';
   
   const [currentView, setCurrentView] = useState<'activation' | 'plans' | 'dashboard'>('dashboard');
   const [loading, setLoading] = useState(true);

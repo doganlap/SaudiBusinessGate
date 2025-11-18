@@ -3,14 +3,15 @@
 import { useEffect, useState } from 'react';
 import { useLingui } from '@lingui/react';
 import { EnterpriseToolbar } from '@/components/enterprise/EnterpriseToolbar';
+import { Plus } from 'lucide-react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Timesheet } from '@/types/project-management';
 import { useSearchParams } from 'next/navigation';
 
 const TimesheetsPage = () => {
   const { _ } = useLingui();
-  const searchParams = useSearchParams();
-  const taskId = searchParams.get('taskId');
+  const searchParams = useSearchParams() as any;
+  const taskId = (searchParams?.get('taskId')) || null;
   const [timesheets, setTimesheets] = useState<Timesheet[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -43,8 +44,7 @@ const TimesheetsPage = () => {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <EnterpriseToolbar
-        title={_('Timesheets')}
-        buttons={[{ label: _('New Timesheet'), onClick: () => console.log('New Timesheet') }]}
+        actions={[{ label: _('New Timesheet'), icon: Plus, onClick: () => console.log('New Timesheet') }]}
       />
       <DataGrid
         rows={timesheets}

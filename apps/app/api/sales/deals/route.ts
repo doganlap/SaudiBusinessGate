@@ -25,17 +25,11 @@ export async function POST(request: NextRequest) {
     const tenantId = request.headers.get('tenant-id') || 'default-tenant';
     const body = await request.json();
     
-    const newDeal: Deal = {
-      id: Date.now().toString(),
+    const newDeal = await SalesService.createDeal(tenantId, {
       ...body,
-      tenantId,
-      createdAt: new Date().toISOString(),
-      lastActivity: new Date().toISOString(),
       stage: 'prospecting',
       probability: 20
-    };
-    
-    mockDeals.push(newDeal);
+    });
     
     return NextResponse.json({
       success: true,

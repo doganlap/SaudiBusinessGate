@@ -1,0 +1,18 @@
+{
+  "name": "@sbg/uikit",
+  "version": "0.1.0",
+  "description": "Shared UI components for SBG projects",
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json --outDir dist --declaration false --emitDeclarationOnly false --noEmit false"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "@radix-ui/react-tabs": "^1.1.13"
+  }
+}

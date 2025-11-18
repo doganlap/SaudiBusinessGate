@@ -65,6 +65,29 @@ export class RedisCachingService {
             console.error(`Error deleting Redis key ${key}:`, err);
         }
     }
+
+    // Increment a counter value
+    async increment(key: string): Promise<number> {
+        if (!this.isConnected) return 0;
+        try {
+            return await this.client.incr(key);
+        } catch (err) {
+            console.error(`Error incrementing Redis key ${key}:`, err);
+            return 0;
+        }
+    }
+
+    // Set expiration time for a key
+    async expire(key: string, seconds: number): Promise<boolean> {
+        if (!this.isConnected) return false;
+        try {
+            const result = await this.client.expire(key, seconds);
+            return result === 1;
+        } catch (err) {
+            console.error(`Error setting expiry for Redis key ${key}:`, err);
+            return false;
+        }
+    }
 }
 
 export const redisCachingService = new RedisCachingService();

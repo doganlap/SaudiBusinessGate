@@ -1,5 +1,5 @@
 // Red Flags Incident Mode - نظام الاحتواء الفوري
-import { DatabaseService } from '@/lib/db/connection';
+import { DatabaseService } from '@/lib/services/database.service';
 
 export interface IncidentContext {
   tenantId: string;
@@ -318,18 +318,20 @@ class IncidentModeService {
     // التقاط البيانات ذات الصلة حسب نوع العلم
     switch (context.flagType) {
       case 'accounting_unbalanced':
-        return await this.db.query(`
+        const res1 = await this.db.query(`
           SELECT * FROM gl_entries 
           WHERE tenant_id = $1 AND journal_id = $2
         `, [context.tenantId, context.entityId]);
+        return (res1.rows ?? res1);
       
       case 'duplicate_transaction':
-        return await this.db.query(`
+        const res2 = await this.db.query(`
           SELECT * FROM payments 
           WHERE tenant_id = $1 AND (id = $2 OR reference = (
             SELECT reference FROM payments WHERE id = $2
           ))
         `, [context.tenantId, context.entityId]);
+        return (res2.rows ?? res2);
       
       default:
         return { message: 'Generic data capture for ' + context.flagType };
@@ -360,16 +362,16 @@ class IncidentModeService {
   }
 
   private async getNotificationRecipients(context: IncidentContext): Promise<any> {
-    const recipients = await this.db.query(`
+    const res = await this.db.query(`
       SELECT notification_type, recipient_list 
       FROM incident_notification_rules 
       WHERE tenant_id = $1 AND flag_type = $2 AND severity = $3
     `, [context.tenantId, context.flagType, context.severity]);
 
     return {
-      slack: recipients.find((r: any) => r.notification_type === 'slack')?.recipient_list || [],
-      email: recipients.find((r: any) => r.notification_type === 'email')?.recipient_list || [],
-      sms: recipients.find((r: any) => r.notification_type === 'sms')?.recipient_list || []
+      slack: (res.rows ?? res).find((r: any) => r.notification_type === 'slack')?.recipient_list || [],
+      email: (res.rows ?? res).find((r: any) => r.notification_type === 'email')?.recipient_list || [],
+      sms: (res.rows ?? res).find((r: any) => r.notification_type === 'sms')?.recipient_list || []
     };
   }
 

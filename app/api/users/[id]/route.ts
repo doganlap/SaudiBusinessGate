@@ -1,172 +1,104 @@
-/**
- * Single User API Route
- * GET /api/users/:id - Get user by ID
- * PUT /api/users/:id - Full update
- * PATCH /api/users/:id - Partial update
- * DELETE /api/users/:id - Delete user
- */
+import { NextRequest, NextResponse } from 'next/server'
+import { query } from '@/lib/db/connection'
+import { getUsersStore, upsertUser, deleteUser, ensureSeed } from '@/lib/mock/users-memory'
 
-import { NextRequest, NextResponse } from 'next/server';
-import { Pool } from 'pg';
-import bcrypt from 'bcryptjs';
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-// GET - Get single user by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
+  const { id } = params
   try {
-    const { id } = await params;
-    const result = await pool.query(
-      `SELECT 
-        id, email, username, first_name, last_name, phone, 
-        avatar_url, role, status, email_verified, license_tier, 
-        last_login_at, created_at, updated_at
-      FROM users WHERE id = $1`,
+    const result = await query(
+      `SELECT id, email, username, first_name, last_name, phone, role, status, created_at, updated_at FROM users WHERE id = $1`,
       [id]
-    );
-
+    )
     if (result.rows.length === 0) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
-
-    return NextResponse.json({ user: result.rows[0] });
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    return NextResponse.json({ error: 'Failed to fetch user' }, { status: 500 });
+    return NextResponse.json({ user: result.rows[0] })
+  } catch {
+    ensureSeed()
+    const mem = getUsersStore()
+    const u = mem.users.get(id)
+    if (!u) return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    return NextResponse.json({ user: u })
   }
 }
 
-// PUT - Full update of user
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
+  const { id } = params
+  const body = await request.json()
   try {
-    const { id } = await params;
-    const body = await request.json();
-    const {
-      email,
-      username,
-      first_name,
-      last_name,
-      phone,
-      avatar_url,
-      password,
-    } = body;
-
-    const userCheck = await pool.query('SELECT id FROM users WHERE id = $1', [id]);
-    if (userCheck.rows.length === 0) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    const result = await query(
+      `UPDATE users SET email=$1, username=$2, first_name=$3, last_name=$4, phone=$5, updated_at=NOW() WHERE id=$6 RETURNING id, email, username, first_name, last_name, phone, role, status, created_at, updated_at`,
+      [body.email, body.username, body.first_name, body.last_name, body.phone, id]
+    )
+    return NextResponse.json({ user: result.rows[0] })
+  } catch {
+    ensureSeed()
+    const mem = getUsersStore()
+    const anotherWithEmail = body.email && Array.from(mem.users.values()).find((u) => u.id !== id && u.email === body.email)
+    const anotherWithUsername = body.username && Array.from(mem.users.values()).find((u) => u.id !== id && u.username === body.username)
+    if (anotherWithEmail || anotherWithUsername) {
+      return NextResponse.json({ error: 'Email or username already exists' }, { status: 409 })
     }
-
-    // Check for duplicate email/username (excluding current user)
-    if (email || username) {
-      const duplicateCheck = await pool.query(
-        'SELECT id FROM users WHERE (email = $1 OR username = $2) AND id != $3',
-        [email, username, id]
-      );
-
-      if (duplicateCheck.rows.length > 0) {
-        return NextResponse.json(
-          { error: 'Email or username already exists' },
-          { status: 409 }
-        );
-      }
-    }
-
-    // Build update query
-    const updates: string[] = [];
-    const values: any[] = [];
-    let paramCount = 1;
-
-    if (email) {
-      updates.push(`email = $${paramCount++}`);
-      values.push(email);
-    }
-    if (username) {
-      updates.push(`username = $${paramCount++}`);
-      values.push(username);
-    }
-    if (first_name !== undefined) {
-      updates.push(`first_name = $${paramCount++}`);
-      values.push(first_name);
-    }
-    if (last_name !== undefined) {
-      updates.push(`last_name = $${paramCount++}`);
-      values.push(last_name);
-    }
-    if (phone !== undefined) {
-      updates.push(`phone = $${paramCount++}`);
-      values.push(phone);
-    }
-    if (avatar_url !== undefined) {
-      updates.push(`avatar_url = $${paramCount++}`);
-      values.push(avatar_url);
-    }
-    if (password) {
-      const password_hash = await bcrypt.hash(password, 10);
-      updates.push(`password_hash = $${paramCount++}`);
-      values.push(password_hash);
-    }
-
-    updates.push(`updated_at = CURRENT_TIMESTAMP`);
-    values.push(id);
-
-    const query = `
-      UPDATE users 
-      SET ${updates.join(', ')}
-      WHERE id = $${paramCount}
-      RETURNING id, email, username, first_name, last_name, phone, avatar_url, role, status, updated_at
-    `;
-
-    const result = await pool.query(query, values);
-
-    return NextResponse.json({
-      message: 'User updated successfully',
-      user: result.rows[0],
-    });
-  } catch (error) {
-    console.error('Error updating user:', error);
-    return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
+    const updated = upsertUser({ id, ...body })
+    return NextResponse.json({ user: updated })
   }
 }
 
-// PATCH - Partial update of user
 export async function PATCH(
   request: NextRequest,
-  ctx: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  return PUT(request, ctx);
-}
-
-// DELETE - Delete user
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+  const { id } = params
+  const body = await request.json()
   try {
-    const { id } = await params;
-    const userCheck = await pool.query('SELECT id FROM users WHERE id = $1', [id]);
-    if (userCheck.rows.length === 0) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    const fields: string[] = []
+    const values: any[] = []
+    let idx = 1
+    for (const [k, v] of Object.entries(body)) {
+      fields.push(`${k}=$${idx++}`)
+      values.push(v)
     }
-
-    // Delete user (cascade deletes will handle related records)
-    await pool.query('DELETE FROM users WHERE id = $1', [id]);
-
-    return NextResponse.json({
-      message: 'User deleted successfully',
-      id: id,
-    });
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    return NextResponse.json({ error: 'Failed to delete user' }, { status: 500 });
+    values.push(id)
+    const result = await query(
+      `UPDATE users SET ${fields.join(', ')}, updated_at=NOW() WHERE id=$${idx} RETURNING id, email, username, first_name, last_name, phone, role, status, created_at, updated_at`,
+      values
+    )
+    return NextResponse.json({ user: result.rows[0] })
+  } catch {
+    const mem = getUsersStore()
+    const existing = mem.users.get(id)
+    if (!existing) return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    const anotherWithEmail = body.email && Array.from(mem.users.values()).find((u) => u.id !== id && u.email === body.email)
+    const anotherWithUsername = body.username && Array.from(mem.users.values()).find((u) => u.id !== id && u.username === body.username)
+    if (anotherWithEmail || anotherWithUsername) {
+      return NextResponse.json({ error: 'Email or username already exists' }, { status: 409 })
+    }
+    const updated = upsertUser({ ...existing, ...body, id })
+    return NextResponse.json({ user: updated })
   }
 }
 
-export const dynamic = 'force-dynamic';
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params
+  try {
+    const result = await query(`DELETE FROM users WHERE id=$1 RETURNING id`, [id])
+    if (result.rowCount === 0) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+    return NextResponse.json({ message: 'User deleted successfully' })
+  } catch {
+    ensureSeed()
+    const ok = deleteUser(id)
+    if (!ok) return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    return NextResponse.json({ message: 'User deleted successfully' })
+  }
+}

@@ -1,0 +1,356 @@
+{
+  "name": "Email Classifier",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "oauth2",
+        "resource": "message",
+        "operation": "get",
+        "messageId": "={{ $json.messageId }}",
+        "format": "full",
+        "downloadAttachments": false
+      },
+      "name": "Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 1,
+      "position": [
+        580,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.subject.toLowerCase() }}",
+              "operation": "contains",
+              "value2": "support"
+            }
+          ]
+        }
+      },
+      "name": "Support Request?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        800,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.subject.toLowerCase() }}",
+              "operation": "contains",
+              "value2": "sales"
+            }
+          ]
+        }
+      },
+      "name": "Sales Inquiry?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.subject.toLowerCase() }}",
+              "operation": "contains",
+              "value2": "urgent"
+            }
+          ]
+        }
+      },
+      "name": "Urgent?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "category",
+              "value": "support"
+            },
+            {
+              "name": "priority",
+              "value": "medium"
+            },
+            {
+              "name": "assignTo",
+              "value": "support-team"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set as Support",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "category",
+              "value": "sales"
+            },
+            {
+              "name": "priority",
+              "value": "high"
+            },
+            {
+              "name": "assignTo",
+              "value": "sales-team"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set as Sales",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "category",
+              "value": "general"
+            },
+            {
+              "name": "priority",
+              "value": "urgent"
+            },
+            {
+              "name": "assignTo",
+              "value": "management"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set as Urgent",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "category",
+              "value": "general"
+            },
+            {
+              "name": "priority",
+              "value": "low"
+            },
+            {
+              "name": "assignTo",
+              "value": "general-inbox"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set as General",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oauth2",
+        "resource": "message",
+        "operation": "getAll",
+        "limit": 10,
+        "filters": {
+          "includeSpamTrash": false,
+          "onlyInThread": false,
+          "q": "is:unread"
+        },
+        "returnAll": false,
+        "options": {
+          "returnAll": false
+        }
+      },
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 1,
+      "position": [
+        360,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Combine all classified emails into one array\nreturn [items.reduce((result, item) => {\n  result.push({\n    messageId: item.json.id,\n    subject: item.json.subject,\n    from: item.json.from,\n    category: item.json.category || 'unclassified',\n    priority: item.json.priority || 'normal',\n    assignTo: item.json.assignTo || 'inbox',\n    receivedTime: item.json.internalDate\n  });\n  return result;\n}, [])];"
+      },
+      "name": "Combine Results",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        440
+      ]
+    }
+  ],
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "Support Request?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Support Request?": {
+      "main": [
+        [
+          {
+            "node": "Set as Support",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sales Inquiry?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sales Inquiry?": {
+      "main": [
+        [
+          {
+            "node": "Set as Sales",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Urgent?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Urgent?": {
+      "main": [
+        [
+          {
+            "node": "Set as Urgent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set as General",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set as Support": {
+      "main": [
+        [
+          {
+            "node": "Combine Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set as Sales": {
+      "main": [
+        [
+          {
+            "node": "Combine Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set as Urgent": {
+      "main": [
+        [
+          {
+            "node": "Combine Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set as General": {
+      "main": [
+        [
+          {
+            "node": "Combine Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,83 +1,58 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
-export interface Tab {
+interface TabItem {
   id: string;
   label: string;
-  href: string;
-  icon?: React.ReactNode;
-  badge?: string | number;
+  content?: React.ReactNode;
+  disabled?: boolean;
 }
 
 interface TabNavigationProps {
-  tabs: Tab[];
-  variant?: 'default' | 'pills' | 'underline';
+  tabs: TabItem[];
+  defaultTab?: string;
+  onTabChange?: (tabId: string) => void;
+  className?: string;
 }
 
-export default function TabNavigation({ tabs, variant = 'default' }: TabNavigationProps) {
-  const pathname = usePathname();
+export function TabNavigation({ tabs, defaultTab, onTabChange, className }: TabNavigationProps) {
+  const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id);
 
-  const getTabStyles = (isActive: boolean) => {
-    const baseStyles = 'inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors';
-
-    if (variant === 'pills') {
-      return `${baseStyles} rounded-full ${
-        isActive
-          ? 'bg-blue-600 text-white'
-          : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
-      }`;
-    }
-
-    if (variant === 'underline') {
-      return `${baseStyles} border-b-2 ${
-        isActive
-          ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-          : 'border-transparent text-neutral-700 dark:text-neutral-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-neutral-300 dark:hover:border-neutral-700'
-      }`;
-    }
-
-    // default variant
-    return `${baseStyles} rounded-md ${
-      isActive
-        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-        : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
-    }`;
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+    onTabChange?.(tabId);
   };
 
   return (
-    <nav className="flex flex-wrap gap-1" aria-label="Tabs">
-      {tabs.map((tab) => {
-        const isActive = pathname === tab.href || pathname?.startsWith(tab.href + '/');
-
-        return (
-          <Link
-            key={tab.id}
-            href={tab.href}
-            className={getTabStyles(isActive)}
-            aria-current={isActive ? 'page' : undefined}
-          >
-            {tab.icon && <span>{tab.icon}</span>}
-            <span>{tab.label}</span>
-            {tab.badge !== undefined && (
-              <span
-                className={`
-                  px-2 py-0.5 text-xs font-semibold rounded-full
-                  ${
-                    isActive
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
-                  }
-                `}
-              >
-                {tab.badge}
-              </span>
-            )}
-          </Link>
-        );
-      })}
-    </nav>
+    <div className={cn("w-full", className)}>
+      <div className="border-b border-gray-200 dark:border-gray-700">
+        <nav className="-mb-px flex space-x-8" role="tablist">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => !tab.disabled && handleTabChange(tab.id)}
+              className={cn(
+                "py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap",
+                activeTab === tab.id
+                  ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300",
+                tab.disabled && "opacity-50 cursor-not-allowed"
+              )}
+              disabled={tab.disabled}
+              aria-selected={activeTab === tab.id ? "true" : "false"}
+              role="tab"
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+      
+      <div className="mt-4">
+        {tabs.find(tab => tab.id === activeTab)?.content}
+      </div>
+    </div>
   );
 }

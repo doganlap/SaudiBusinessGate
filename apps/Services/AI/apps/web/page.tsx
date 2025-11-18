@@ -77,9 +77,11 @@ const aiModules = [
 
 export default function AIServicesPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <>
+      <a href="#content" className="fixed left-4 top-4 z-50 -translate-y-20 rounded-full bg-indigo-500 px-3 py-1 text-sm font-semibold text-white shadow focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-indigo-300">تخطي إلى المحتوى</a>
+      <main id="content" className="container mx-auto px-4 py-8">
       <div className="text-center mb-10">
-        <Brain className="h-16 w-16 mx-auto mb-4 text-indigo-600" />
+        <Brain className="h-16 w-16 mx-auto mb-4 text-indigo-600" aria-hidden={true} />
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           AI Services Hub
         </h1>
@@ -95,10 +97,10 @@ export default function AIServicesPage() {
             <Link
               key={module.name}
               href={module.href}
-              className="block p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-50 transition-colors"
+              className="block p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-300"
             >
               <div className="flex items-center gap-3 mb-3">
-                <Icon className="h-8 w-8 text-indigo-600" />
+                <Icon className="h-8 w-8 text-indigo-600" aria-hidden={true} />
                 <h3 className="text-lg font-semibold text-gray-900">
                   {module.name}
                 </h3>
@@ -135,6 +137,7 @@ export default function AIServicesPage() {
           Version 2.0.0 | Environment: {process.env.NODE_ENV || 'development'} | {aiModules.length} services available
         </p>
       </div>
-    </div>
+      </main>
+    </>
   )
 }

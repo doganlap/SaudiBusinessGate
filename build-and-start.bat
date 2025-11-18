@@ -4,7 +4,7 @@ echo DoganHub Store - Build Validation
 echo =======================================
 echo.
 
-cd /d "D:\Projects\DoganHubStore"
+cd /d "d:\Projects\SBG"
 
 echo [1/6] Checking paths and directories...
 if exist "app" (echo   OK: app/) else (echo   MISSING: app/ && exit /b 1)

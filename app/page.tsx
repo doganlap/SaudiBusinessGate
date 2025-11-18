@@ -8,9 +8,9 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to English platform dashboard
-    router.push('/en/dashboard');
+    // Redirect to the world-class landing page
+    router.push('/landing');
   }, [router]);
 
-  return <LoadingState message="Redirecting to DoganHub Store..." />;
+  return <LoadingState message="Welcome to Saudi Business Gate..." />;
 }

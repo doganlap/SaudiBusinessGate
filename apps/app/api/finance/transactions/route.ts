@@ -1,4 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { FinanceService } from '@/lib/services/finance.service';
+import { getServerSession } from 'next-auth';
+import { getPool } from '@/lib/db/connection';
+import { AuditLogger } from '@/lib/audit/audit-logger';
+import { RBACService } from '@/lib/auth/rbac-service';
 
 interface Transaction {
   id: string;
@@ -91,6 +96,18 @@ const sampleTransactions: Transaction[] = [
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.transactions.read', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.transactions.read', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const type = searchParams.get('type');
@@ -98,49 +115,15 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') || '0');
     
     // Get tenant ID from headers
-    const tenantId = request.headers.get('x-tenant-id') || 'default';
-    
-    // Filter transactions based on query parameters
-    let filteredTransactions = [...sampleTransactions];
-    
-    if (status && status !== 'all') {
-      filteredTransactions = filteredTransactions.filter(t => t.status === status);
-    }
-    
-    if (type && type !== 'all') {
-      filteredTransactions = filteredTransactions.filter(t => t.type === type);
-    }
-    
-    // Apply pagination
-    const paginatedTransactions = filteredTransactions.slice(offset, offset + limit);
-    
-    // Calculate summary statistics
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
+    const service = new FinanceService();
+    const data = await service.getTransactions(tenantId, { status: status || undefined, type: type || undefined, limit, offset });
     const summary = {
-      total: filteredTransactions.length,
-      totalAmount: filteredTransactions.reduce((sum, t) => sum + t.amount, 0),
-      byStatus: {
-        pending: filteredTransactions.filter(t => t.status === 'pending').length,
-        paid: filteredTransactions.filter(t => t.status === 'paid').length,
-        overdue: filteredTransactions.filter(t => t.status === 'overdue').length
-      },
-      byType: {
-        receivable: filteredTransactions.filter(t => t.type === 'receivable').length,
-        payable: filteredTransactions.filter(t => t.type === 'payable').length
-      }
+      total: data.length,
+      totalAmount: data.reduce((sum, t: any) => sum + Number(t.amount || 0), 0),
     };
-
-    return NextResponse.json({
-      success: true,
-      data: paginatedTransactions,
-      summary,
-      pagination: {
-        limit,
-        offset,
-        total: filteredTransactions.length,
-        hasMore: offset + limit < filteredTransactions.length
-      },
-      timestamp: new Date().toISOString()
-    });
+    await audit.logDataAccess(userId, organizationId, 'transaction', 0, 'read');
+    return NextResponse.json({ success: true, data, summary, pagination: { limit, offset, total: data.length, hasMore: data.length === limit }, timestamp: new Date().toISOString() });
   } catch (error) {
     console.error('Error fetching transactions:', error);
     return NextResponse.json(
@@ -152,8 +135,20 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.transactions.write', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.transactions.write', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
     const body = await request.json();
-    const tenantId = request.headers.get('x-tenant-id') || 'default';
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
     
     // Validate required fields
     const requiredFields = ['type', 'party_name', 'amount', 'due_date'];
@@ -166,28 +161,20 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // Create new transaction
-    const newTransaction: Transaction = {
-      id: `txn_${Date.now()}`,
-      type: body.type,
-      party_name: body.party_name,
-      reference: body.reference || `REF-${Date.now()}`,
-      amount: parseFloat(body.amount),
-      due_date: body.due_date,
-      status: body.status || 'pending',
-      created_at: new Date().toISOString(),
+    const service = new FinanceService();
+    const created = await service.createTransaction(tenantId, {
       account_id: body.account_id,
-      description: body.description
-    };
-    
-    // In production, save to database
-    // For demo, just return the created transaction
-    
-    return NextResponse.json({
-      success: true,
-      data: newTransaction,
-      message: 'Transaction created successfully'
-    }, { status: 201 });
+      transaction_type: body.type === 'receivable' ? 'receipt' : 'payment',
+      amount: parseFloat(body.amount),
+      transaction_date: new Date(body.due_date),
+      reference_id: body.reference,
+      transaction_number: undefined,
+      description: body.description,
+      status: body.status || 'pending',
+      id: '', tenant_id: tenantId, created_at: new Date(), updated_at: new Date()
+    } as any);
+    await audit.logDataChange(userId, organizationId, 'transaction', (created as any).id, null, created);
+    return NextResponse.json({ success: true, data: created, message: 'Transaction created successfully' }, { status: 201 });
   } catch (error) {
     console.error('Error creating transaction:', error);
     return NextResponse.json(

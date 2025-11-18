@@ -1,15 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { Pool } from 'pg';
+import { getPool } from '@/lib/db/connection';
+import { AuditLogger } from '@/lib/audit/audit-logger';
+import { RBACService } from '@/lib/auth/rbac-service';
+import { apiLogger } from '@/lib/logger';
 
 // Database connection
-const pool = new Pool({
-    user: process.env.DB_USER || 'postgres',
-    host: process.env.DB_HOST || 'localhost',
-    database: process.env.DB_NAME || 'doganhubstore',
-    password: process.env.DB_PASSWORD || 'password',
-    port: parseInt(process.env.DB_PORT || '5432', 10),
-});
+const pool = getPool();
 
 
 
@@ -24,9 +21,19 @@ export async function GET(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const tenantId = (session.user as any)?.organizationId || params?.tenantId || params?.organizationId || 'default';
-        const { id, reportId, tenantId: paramTenantId, organizationId, dealId } = params;
+        const audit = new AuditLogger(pool);
+        const rbac = new RBACService(pool);
+        const organizationId = (session.user as any)?.organizationId || 0;
+        const userId = (session.user as any)?.id || 0;
+        const allowed = await rbac.checkPermission(userId, 'finance.invoices.read', organizationId);
+        if (!allowed) {
+            await audit.logPermissionCheck(userId, organizationId, 'finance.invoices.read', false);
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+        }
 
+        const tenantId = String(organizationId);
+        const { id, reportId, tenantId: paramTenantId, organizationId: paramOrgId, dealId } = params;
+        
         
         // Database query
         const result = await pool.query(
@@ -36,11 +43,11 @@ export async function GET(
              LIMIT 100`,
             [tenantId]
         );
-
+        await audit.logDataAccess(userId, organizationId, 'invoice', 0, 'read');
         return NextResponse.json(result.rows);
         
     } catch (error) {
-        console.error('/api/finance/invoices/[id] error:', error);
+        apiLogger.error('/api/finance/invoices/[id] error', { error: error instanceof Error ? error.message : String(error) });
         return NextResponse.json(
             { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
             { status: 500 }

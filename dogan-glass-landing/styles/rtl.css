@@ -1,0 +1,405 @@
+/* RTL-Specific Styles */
+/* Global styles for RTL languages (Arabic, Hebrew, etc.) */
+
+/* Base RTL styles */
+html[dir='rtl'] {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir='rtl'] body {
+  text-align: right;
+}
+
+/* Typography adjustments for RTL */
+html[dir='rtl'] h1,
+html[dir='rtl'] h2,
+html[dir='rtl'] h3,
+html[dir='rtl'] h4,
+html[dir='rtl'] h5,
+html[dir='rtl'] h6 {
+  text-align: right;
+}
+
+/* Form elements RTL */
+html[dir='rtl'] input[type='text'],
+html[dir='rtl'] input[type='email'],
+html[dir='rtl'] input[type='password'],
+html[dir='rtl'] input[type='number'],
+html[dir='rtl'] input[type='search'],
+html[dir='rtl'] textarea,
+html[dir='rtl'] select {
+  text-align: right;
+  direction: rtl;
+}
+
+html[dir='rtl'] input::placeholder,
+html[dir='rtl'] textarea::placeholder {
+  text-align: right;
+}
+
+/* List styles for RTL */
+html[dir='rtl'] ul,
+html[dir='rtl'] ol {
+  padding-inline-start: 1.5rem;
+  padding-inline-end: 0;
+}
+
+html[dir='rtl'] ol {
+  list-style-type: arabic-indic;
+  list-style-position: inside;
+}
+
+html[dir='rtl'] li {
+  text-align: right;
+}
+
+/* Table alignment for RTL */
+html[dir='rtl'] table {
+  text-align: right;
+}
+
+html[dir='rtl'] th,
+html[dir='rtl'] td {
+  text-align: right;
+}
+
+/* Navigation and menus RTL */
+html[dir='rtl'] .menu,
+html[dir='rtl'] .nav,
+html[dir='rtl'] nav {
+  direction: rtl;
+}
+
+/* Modal and dialog RTL */
+html[dir='rtl'] .modal,
+html[dir='rtl'] .dialog {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Tooltip RTL adjustments */
+html[dir='rtl'] .tooltip {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Dropdown RTL */
+html[dir='rtl'] .dropdown-menu {
+  text-align: right;
+  right: 0;
+  left: auto;
+}
+
+/* Breadcrumb RTL */
+html[dir='rtl'] .breadcrumb {
+  direction: rtl;
+}
+
+html[dir='rtl'] .breadcrumb-item + .breadcrumb-item::before {
+  content: '\\';
+  padding: 0 0.5rem;
+}
+
+/* Pagination RTL */
+html[dir='rtl'] .pagination {
+  direction: rtl;
+}
+
+/* Card layouts RTL */
+html[dir='rtl'] .card-header,
+html[dir='rtl'] .card-body,
+html[dir='rtl'] .card-footer {
+  text-align: right;
+}
+
+/* Alert messages RTL */
+html[dir='rtl'] .alert {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Badge RTL */
+html[dir='rtl'] .badge {
+  direction: rtl;
+}
+
+/* Progress bar RTL */
+html[dir='rtl'] .progress {
+  direction: ltr; /* Keep progress bar direction LTR */
+}
+
+/* Tabs RTL */
+html[dir='rtl'] .tabs,
+html[dir='rtl'] .tab-list {
+  direction: rtl;
+}
+
+/* Sidebar RTL */
+html[dir='rtl'] .sidebar {
+  right: 0;
+  left: auto;
+  border-left: 1px solid var(--border-color);
+  border-right: none;
+}
+
+html[dir='rtl'] .sidebar-right {
+  left: 0;
+  right: auto;
+  border-right: 1px solid var(--border-color);
+  border-left: none;
+}
+
+/* Icon flipping for RTL */
+html[dir='rtl'] .icon-flip-rtl,
+html[dir='rtl'] [class*='arrow'],
+html[dir='rtl'] [class*='chevron'],
+html[dir='rtl'] [class*='angle'] {
+  transform: scaleX(-1);
+}
+
+/* Don't flip these icons */
+html[dir='rtl'] .icon-no-flip,
+html[dir='rtl'] [class*='up'],
+html[dir='rtl'] [class*='down'],
+html[dir='rtl'] [class*='vertical'] {
+  transform: none !important;
+}
+
+/* Flexbox adjustments for RTL */
+html[dir='rtl'] .flex-row {
+  flex-direction: row-reverse;
+}
+
+html[dir='rtl'] .justify-start {
+  justify-content: flex-end;
+}
+
+html[dir='rtl'] .justify-end {
+  justify-content: flex-start;
+}
+
+/* Grid adjustments for RTL */
+html[dir='rtl'] .grid {
+  direction: rtl;
+}
+
+/* Text alignment utilities for RTL */
+html[dir='rtl'] .text-left {
+  text-align: right !important;
+}
+
+html[dir='rtl'] .text-right {
+  text-align: left !important;
+}
+
+/* Margin and padding logical properties */
+html[dir='rtl'] .ms-auto {
+  margin-right: auto !important;
+  margin-left: 0 !important;
+}
+
+html[dir='rtl'] .me-auto {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+/* Float utilities for RTL */
+html[dir='rtl'] .float-left {
+  float: right !important;
+}
+
+html[dir='rtl'] .float-right {
+  float: left !important;
+}
+
+/* Border radius for RTL */
+html[dir='rtl'] .rounded-start {
+  border-top-right-radius: var(--border-radius) !important;
+  border-bottom-right-radius: var(--border-radius) !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+html[dir='rtl'] .rounded-end {
+  border-top-left-radius: var(--border-radius) !important;
+  border-bottom-left-radius: var(--border-radius) !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* Checkboxes and radio buttons RTL */
+html[dir='rtl'] input[type='checkbox'],
+html[dir='rtl'] input[type='radio'] {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+/* Date picker RTL */
+html[dir='rtl'] .date-picker,
+html[dir='rtl'] .calendar {
+  direction: rtl;
+}
+
+/* Time picker RTL */
+html[dir='rtl'] .time-picker {
+  direction: rtl;
+}
+
+/* Select dropdown RTL */
+html[dir='rtl'] select {
+  background-position: left 0.75rem center;
+  padding-right: 0.75rem;
+  padding-left: 2.5rem;
+}
+
+/* Search input RTL */
+html[dir='rtl'] input[type='search']::-webkit-search-cancel-button {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+/* Number input RTL */
+html[dir='rtl'] input[type='number'] {
+  text-align: right;
+}
+
+/* Animation adjustments for RTL */
+@keyframes slideInRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+html[dir='rtl'] .slide-in-left {
+  animation: slideInRight 0.3s ease-out;
+}
+
+html[dir='rtl'] .slide-in-right {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+/* Scrollbar for RTL */
+html[dir='rtl'] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Data table RTL */
+html[dir='rtl'] .data-table {
+  direction: rtl;
+}
+
+html[dir='rtl'] .data-table th:first-child,
+html[dir='rtl'] .data-table td:first-child {
+  text-align: right;
+}
+
+/* Dashboard layout RTL */
+html[dir='rtl'] .dashboard-container {
+  direction: rtl;
+}
+
+html[dir='rtl'] .dashboard-sidebar {
+  right: 0;
+  left: auto;
+}
+
+html[dir='rtl'] .dashboard-content {
+  margin-right: 250px;
+  margin-left: 0;
+}
+
+/* Chart labels RTL */
+html[dir='rtl'] .chart-label {
+  text-align: right;
+}
+
+/* Code blocks - keep LTR */
+html[dir='rtl'] code,
+html[dir='rtl'] pre {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Email addresses and URLs - keep LTR */
+html[dir='rtl'] .email,
+html[dir='rtl'] .url,
+html[dir='rtl'] a[href^='mailto:'],
+html[dir='rtl'] a[href^='http'] {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+/* Numbers in RTL context */
+html[dir='rtl'] .number,
+html[dir='rtl'] .price,
+html[dir='rtl'] .currency {
+  direction: ltr;
+  unicode-bidi: embed;
+  display: inline-block;
+}
+
+/* Arabic font optimization */
+html[lang='ar'] {
+  font-family: 'Dubai', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-feature-settings: 'liga' 1, 'calt' 1;
+}
+
+/* Hebrew font optimization */
+html[lang='he'] {
+  font-family: 'Open Sans Hebrew', 'Segoe UI', Arial, sans-serif;
+}
+
+/* Persian font optimization */
+html[lang='fa'] {
+  font-family: 'Vazir', 'Segoe UI', Arial, sans-serif;
+}
+
+/* Print styles for RTL */
+@media print {
+  html[dir='rtl'] {
+    direction: rtl !important;
+  }
+  
+  html[dir='rtl'] body {
+    text-align: right !important;
+  }
+}
+
+/* Mobile responsive RTL adjustments */
+@media (max-width: 768px) {
+  html[dir='rtl'] .mobile-menu {
+    right: 0;
+    left: auto;
+  }
+  
+  html[dir='rtl'] .sidebar {
+    transform: translateX(100%);
+  }
+  
+  html[dir='rtl'] .sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+/* Accessibility improvements for RTL */
+html[dir='rtl'] :focus {
+  outline-offset: 2px;
+}
+
+html[dir='rtl'] [aria-label] {
+  direction: inherit;
+}

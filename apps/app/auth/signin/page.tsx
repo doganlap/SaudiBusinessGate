@@ -24,9 +24,9 @@ export default function SignInPage() {
       });
 
       if (result?.error) {
-        setError('Invalid email or password');
+        setError('البريد الإلكتروني أو كلمة المرور غير صحيحة');
       } else {
-        router.push('/dashboard');
+        router.push('/ar/dashboard');
       }
     } catch (error) {
       setError('An error occurred during sign in');
@@ -40,10 +40,10 @@ export default function SignInPage() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            تسجيل الدخول إلى منصة شاهين الذكي السعودية
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your credentials to access the dashboard
+            أدخل بياناتك للوصول إلى لوحة التحكم
           </p>
         </div>
         
@@ -57,7 +57,7 @@ export default function SignInPage() {
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email" className="sr-only">
-                Email address
+                البريد الإلكتروني
               </label>
               <input
                 id="email"
@@ -66,14 +66,14 @@ export default function SignInPage() {
                 autoComplete="email"
                 required
                 className="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="Email address"
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
-                Password
+                كلمة المرور
               </label>
               <input
                 id="password"
@@ -95,13 +95,13 @@ export default function SignInPage() {
               disabled={loading}
               className="group relative flex w-full justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? 'جاري تسجيل الدخول...' : 'دخول'}
             </button>
           </div>
 
           {/* Demo credentials hint */}
           <div className="text-center text-sm text-gray-500">
-            <p>Demo: admin@example.com / password123</p>
+            <p dir="ltr">Demo: admin@example.com / password123</p>
           </div>
         </form>
       </div>

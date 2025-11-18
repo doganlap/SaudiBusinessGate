@@ -41,8 +41,8 @@ interface ControlStatusReport {
 }
 
 export default function ReportsPage() {
-  const params = useParams();
-  const lng = params.lng as string;
+  const params = useParams() as any;
+  const lng = (params?.lng as string) || 'en';
   
   const [complianceData, setComplianceData] = useState<ComplianceReport[]>([]);
   const [controlStatusData, setControlStatusData] = useState<ControlStatusReport[]>([]);

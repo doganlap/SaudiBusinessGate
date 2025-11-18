@@ -188,7 +188,7 @@ export class BillingService {
         data: {
           planId,
           billingPeriod,
-          error: error.message
+          error: (error as Error).message
         }
       });
       throw error;
@@ -263,7 +263,7 @@ export class BillingService {
           subscriptionId,
           immediately,
           canceledAt: new Date(),
-          endDate: immediately ? new Date() : new Date(subscription.current_period_end * 1000)
+          endDate: immediately ? new Date() : new Date((subscription as any).current_period_end * 1000)
         }
       });
 
@@ -271,7 +271,7 @@ export class BillingService {
       await this.emailService.sendSubscriptionCancellation({
         tenantId: subscription.metadata.tenantId,
         subscriptionId,
-        endDate: immediately ? new Date() : new Date(subscription.current_period_end * 1000)
+        endDate: immediately ? new Date() : new Date((subscription as any).current_period_end * 1000)
       });
 
       return canceledSubscription;
@@ -325,7 +325,7 @@ export class BillingService {
         invoiceId: finalizedInvoice.id,
         amount: finalizedInvoice.amount_due / 100,
         dueDate: new Date(finalizedInvoice.due_date! * 1000),
-        invoiceUrl: finalizedInvoice.hosted_invoice_url
+        invoiceUrl: finalizedInvoice.hosted_invoice_url ?? undefined
       });
 
       return finalizedInvoice;
@@ -519,8 +519,9 @@ export class BillingService {
 
     // Send notification to platform admin
     await this.notificationService.sendAlert({
+      tenantId,
       type: 'payment_failed',
-      priority: 'high',
+      title: 'Payment Failed',
       message: `Payment failed for tenant ${tenantId}`,
       data: { tenantId, invoiceId: invoice.id, amount: invoice.amount_due / 100 }
     });
@@ -638,7 +639,7 @@ export class BillingService {
   }
 
   private calculateOverageCharges(usage: any, limits: any): any {
-    const charges = {
+    const charges: { items: any[], total: number } = {
       items: [],
       total: 0
     };
@@ -692,6 +693,263 @@ export class BillingService {
     } catch (error) {
       return null;
     }
+  }
+
+  /**
+   * Calculate monthly billing for a tenant
+   */
+  public async calculateMonthlyBilling(params: {
+    tenantId: string;
+    billingPeriod: { start: Date; end: Date };
+    includeUsageCharges: boolean;
+  }): Promise<any> {
+    try {
+      const { tenantId, billingPeriod, includeUsageCharges } = params;
+      
+      // Get tenant's current license and usage
+      const license = await this.databaseService.getCurrentLicense(tenantId);
+      const usage = await this.databaseService.getUsageForPeriod(tenantId, billingPeriod);
+      
+      let totalAmount = 0;
+      const items = [];
+      
+      // Base license fee
+      if (license) {
+        totalAmount += license.monthlyPrice;
+        items.push({
+          description: `License: ${license.planName}`,
+          amount: license.monthlyPrice,
+          quantity: 1
+        });
+      }
+      
+      // Usage charges if enabled
+      if (includeUsageCharges && usage) {
+        // Calculate overage charges
+        const overageCharges = await this.calculateOverageCharges(tenantId, usage);
+        totalAmount += overageCharges.total;
+        items.push(...overageCharges.items);
+      }
+      
+      return {
+        totalAmount,
+        items,
+        billingPeriod,
+        tenantId,
+        license,
+        usage
+      };
+    } catch (error) {
+      console.error('Failed to calculate monthly billing:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Process automatic payment for an invoice
+   */
+  public async processAutomaticPayment(invoiceId: string): Promise<any> {
+    try {
+      // Get invoice details
+      const invoice = await this.stripe.invoices.retrieve(invoiceId);
+      
+      if (!invoice.customer) {
+        throw new Error('Invoice has no customer');
+      }
+      
+      // Get customer's default payment method
+      const customer = await this.stripe.customers.retrieve(invoice.customer as string);
+      
+      if (!(customer as any).default_source && !(customer as any).invoice_settings?.default_payment_method) {
+        throw new Error('Customer has no default payment method');
+      }
+      
+      // Attempt to pay the invoice
+      const payment = await this.stripe.invoices.pay(invoiceId);
+      
+      // Record the payment
+      await this.databaseService.logBillingEvent({
+        tenantId: invoice.metadata?.tenantId || 'unknown',
+        eventType: 'automatic_payment_processed',
+        data: {
+          invoiceId,
+          paymentId: payment.id,
+          amount: payment.amount_paid,
+          status: payment.status
+        }
+      });
+      
+      return payment;
+    } catch (error) {
+      console.error('Failed to process automatic payment:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Handle subscription created webhook
+   */
+  public async handleSubscriptionCreated(subscription: any): Promise<void> {
+    try {
+      const tenantId = subscription.metadata?.tenantId;
+      if (!tenantId) {
+        throw new Error('No tenant ID in subscription metadata');
+      }
+      
+      await this.databaseService.logBillingEvent({
+        tenantId,
+        eventType: 'subscription_created',
+        data: {
+          subscriptionId: subscription.id,
+          planId: subscription.items.data[0]?.price?.id,
+          status: subscription.status
+        }
+      });
+      
+      console.log(`Handled subscription created for tenant ${tenantId}`);
+    } catch (error) {
+      console.error('Failed to handle subscription created:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Handle subscription updated webhook
+   */
+  public async handleSubscriptionUpdated(subscription: any): Promise<void> {
+    try {
+      const tenantId = subscription.metadata?.tenantId;
+      if (!tenantId) {
+        throw new Error('No tenant ID in subscription metadata');
+      }
+      
+      await this.databaseService.logBillingEvent({
+        tenantId,
+        eventType: 'subscription_updated',
+        data: {
+          subscriptionId: subscription.id,
+          planId: subscription.items.data[0]?.price?.id,
+          status: subscription.status,
+          previousAttributes: subscription.previous_attributes
+        }
+      });
+      
+      console.log(`Handled subscription updated for tenant ${tenantId}`);
+    } catch (error) {
+      console.error('Failed to handle subscription updated:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Handle subscription deleted webhook
+   */
+  public async handleSubscriptionDeleted(subscription: any): Promise<void> {
+    try {
+      const tenantId = subscription.metadata?.tenantId;
+      if (!tenantId) {
+        throw new Error('No tenant ID in subscription metadata');
+      }
+      
+      await this.databaseService.logBillingEvent({
+        tenantId,
+        eventType: 'subscription_deleted',
+        data: {
+          subscriptionId: subscription.id,
+          planId: subscription.items.data[0]?.price?.id,
+          deletedAt: new Date()
+        }
+      });
+      
+      console.log(`Handled subscription deleted for tenant ${tenantId}`);
+    } catch (error) {
+      console.error('Failed to handle subscription deleted:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Handle trial will end webhook
+   */
+  public async handleTrialWillEnd(subscription: any): Promise<void> {
+    try {
+      const tenantId = subscription.metadata?.tenantId;
+      if (!tenantId) {
+        throw new Error('No tenant ID in subscription metadata');
+      }
+      
+      // Send trial ending notification
+      await this.notificationService.sendAlert({
+        tenantId,
+        type: 'trial_ending',
+        title: 'Trial Ending Soon',
+        message: `Your trial will end on ${new Date(subscription.trial_end * 1000).toLocaleDateString()}. Please upgrade to continue using our services.`,
+        data: {
+          subscriptionId: subscription.id,
+          trialEnd: subscription.trial_end,
+          planId: subscription.items.data[0]?.price?.id
+        }
+      });
+      
+      await this.databaseService.logBillingEvent({
+        tenantId,
+        eventType: 'trial_will_end',
+        data: {
+          subscriptionId: subscription.id,
+          trialEnd: subscription.trial_end,
+          planId: subscription.items.data[0]?.price?.id
+        }
+      });
+      
+      console.log(`Handled trial will end for tenant ${tenantId}`);
+    } catch (error) {
+      console.error('Failed to handle trial will end:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Calculate overage charges for usage
+   */
+  private async calculateOverageChargesAsync(tenantId: string, usage: any): Promise<any> {
+    // This is a simplified implementation
+    const overage: { total: number, items: any[] } = {
+      total: 0,
+      items: []
+    };
+    
+    // Add overage logic based on your pricing model
+    if (usage.extraUsers > 0) {
+      const charge = usage.extraUsers * 10; // $10 per extra user
+      overage.total += charge;
+      overage.items.push({
+        description: `Extra users (${usage.extraUsers})`,
+        amount: charge,
+        quantity: usage.extraUsers
+      });
+    }
+    
+    if (usage.extraStorage > 0) {
+      const charge = usage.extraStorage * 5; // $5 per GB
+      overage.total += charge;
+      overage.items.push({
+        description: `Extra storage (${usage.extraStorage}GB)`,
+        amount: charge,
+        quantity: usage.extraStorage
+      });
+    }
+    
+    if (usage.extraApiCalls > 0) {
+      const charge = usage.extraApiCalls * 0.01; // $0.01 per API call
+      overage.total += charge;
+      overage.items.push({
+        description: `Extra API calls (${usage.extraApiCalls})`,
+        amount: charge,
+        quantity: usage.extraApiCalls
+      });
+    }
+    
+    return overage;
   }
 }
 

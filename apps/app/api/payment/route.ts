@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
   } catch (error: any) {
     console.error('❌ Payment GET error:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: (error instanceof Error ? error.message : String(error)) || 'Internal server error' },
       { status: 500 }
     );
   }
@@ -271,7 +271,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('❌ Payment POST error:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: (error instanceof Error ? error.message : String(error)) || 'Internal server error' },
       { status: 500 }
     );
   }
@@ -312,7 +312,7 @@ export async function DELETE(request: NextRequest) {
   } catch (error: any) {
     console.error('❌ Payment DELETE error:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: (error instanceof Error ? error.message : String(error)) || 'Internal server error' },
       { status: 500 }
     );
   }

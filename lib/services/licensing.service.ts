@@ -85,7 +85,7 @@ export class LicensingService extends BaseDatabaseService {
         ? await client.query(queryText, [tenantId])
         : await this.query(queryText, [tenantId]);
 
-      return result.rows.map(row => ({
+      return result.rows.map((row: any) => ({
         ...row,
         features_included: row.featuresincluded || [],
         available_features: row.available_features || [],

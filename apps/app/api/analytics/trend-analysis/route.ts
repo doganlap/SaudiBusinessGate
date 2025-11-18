@@ -23,7 +23,7 @@ export async function GET(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const tenantId = session.user.organizationId || 'default';
+        const tenantId = (session.user as any).organizationId || 'default';
         
 
         
@@ -40,8 +40,9 @@ export async function GET(
         
     } catch (error) {
         console.error('/api/analytics/trend-analysis error:', error);
+        const msg = (error as any)?.message || 'Unknown error';
         return NextResponse.json(
-            { error: 'Internal server error', details: error.message },
+            { error: 'Internal server error', details: msg },
             { status: 500 }
         );
     }

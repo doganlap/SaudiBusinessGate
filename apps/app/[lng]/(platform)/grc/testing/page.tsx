@@ -35,8 +35,8 @@ interface ControlTest {
 }
 
 export default function TestingPage() {
-  const params = useParams();
-  const lng = params.lng as string;
+  const params = useParams() as any;
+  const lng = (params?.lng as string) || 'en';
   
   const [tests, setTests] = useState<ControlTest[]>([]);
   const [loading, setLoading] = useState(true);

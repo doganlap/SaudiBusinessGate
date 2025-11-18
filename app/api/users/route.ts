@@ -9,12 +9,9 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { Pool } from 'pg';
+import { query } from '@/lib/db/connection';
+import { getUsersStore, upsertUser, ensureSeed } from '@/lib/mock/users-memory';
 import bcrypt from 'bcryptjs';
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
 
 // Validation helpers
 function validateEmail(email: string): boolean {
@@ -35,7 +32,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search') || '';
     const offset = (page - 1) * limit;
 
-    let query = `
+    let queryText = `
       SELECT 
         id, email, username, first_name, last_name, phone, 
         avatar_url, role, status, email_verified, license_tier, 
@@ -47,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     if (search) {
       params.push(`%${search}%`);
-      query += ` AND (
+      queryText += ` AND (
         email ILIKE $${params.length} OR 
         username ILIKE $${params.length} OR 
         first_name ILIKE $${params.length} OR 
@@ -55,16 +52,42 @@ export async function GET(request: NextRequest) {
       )`;
     }
 
-    query += ` ORDER BY created_at DESC LIMIT $${params.length + 1} OFFSET $${params.length + 2}`;
+    queryText += ` ORDER BY created_at DESC LIMIT $${params.length + 1} OFFSET $${params.length + 2}`;
     params.push(limit, offset);
 
-    const result = await pool.query(query, params);
+    let result;
+    try {
+      result = await query(queryText, params);
+    } catch {
+      ensureSeed();
+      const mem = getUsersStore();
+      const all = Array.from(mem.users.values());
+      const filtered = search
+        ? all.filter(
+            (u) =>
+              (u.email || '').toLowerCase().includes(search.toLowerCase()) ||
+              (u.username || '').toLowerCase().includes(search.toLowerCase()) ||
+              (u.first_name || '').toLowerCase().includes(search.toLowerCase()) ||
+              (u.last_name || '').toLowerCase().includes(search.toLowerCase())
+          )
+        : all;
+      const pageItems = filtered.slice(offset, offset + limit);
+      return NextResponse.json({
+        users: pageItems,
+        pagination: {
+          page,
+          limit,
+          total: filtered.length,
+          totalPages: Math.ceil(filtered.length / limit),
+        },
+      });
+    }
 
     // Get total count
     const countQuery = search
       ? `SELECT COUNT(*) FROM users WHERE email ILIKE $1 OR username ILIKE $1 OR first_name ILIKE $1 OR last_name ILIKE $1`
       : `SELECT COUNT(*) FROM users`;
-    const countResult = await pool.query(countQuery, search ? [`%${search}%`] : []);
+    const countResult = await query(countQuery, search ? [`%${search}%`] : []);
     const total = parseInt(countResult.rows[0].count);
 
     return NextResponse.json({
@@ -122,12 +145,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Check for duplicates
-    const duplicateCheck = await pool.query(
-      'SELECT id FROM users WHERE email = $1 OR username = $2',
-      [email, username]
+    ensureSeed();
+    const memFirst = getUsersStore();
+    let duplicateExists = Array.from(memFirst.users.values()).some(
+      (u) => u.email === email || u.username === username
     );
+    if (!duplicateExists) {
+      try {
+        const duplicateCheck = await query(
+          'SELECT id FROM users WHERE email = $1 OR username = $2',
+          [email, username]
+        );
+        duplicateExists = duplicateCheck.rows.length > 0;
+      } catch {
+        // ignore
+      }
+    }
 
-    if (duplicateCheck.rows.length > 0) {
+    if (duplicateExists) {
       return NextResponse.json(
         { error: 'Email or username already exists' },
         { status: 409 }
@@ -138,21 +173,39 @@ export async function POST(request: NextRequest) {
     const password_hash = await bcrypt.hash(password, 10);
 
     // Insert user
-    const result = await pool.query(
-      `INSERT INTO users (
-        email, username, password_hash, first_name, last_name, phone, role
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING id, email, username, first_name, last_name, phone, role, status, created_at`,
-      [email, username, password_hash, first_name, last_name, phone, role]
-    );
+    try {
+      const result = await query(
+        `INSERT INTO users (
+          email, username, password_hash, first_name, last_name, phone, role
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING id, email, username, first_name, last_name, phone, role, status, created_at`,
+        [email, username, password_hash, first_name, last_name, phone, role]
+      );
 
-    return NextResponse.json(
-      {
-        message: 'User created successfully',
-        user: result.rows[0],
-      },
-      { status: 201 }
-    );
+      return NextResponse.json(
+        {
+          message: 'User created successfully',
+          user: result.rows[0],
+        },
+        { status: 201 }
+      );
+    } catch {
+      ensureSeed();
+      const id = `user-${Date.now()}`;
+      const record = upsertUser({
+        id,
+        email,
+        username,
+        first_name,
+        last_name,
+        phone,
+        role,
+      });
+      return NextResponse.json(
+        { message: 'User created successfully', user: record },
+        { status: 201 }
+      );
+    }
   } catch (error) {
     console.error('Error creating user:', error);
     return NextResponse.json(

@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState, useCallback, useRef } from "react"
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import Header from "./shell/Header";
+import Header from '@/src/components/layout/shell/Header';
 import {
   Sparkles,
   Globe,

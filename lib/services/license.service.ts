@@ -339,6 +339,7 @@ export class LicenseService {
     }
   }
 
+
   /**
    * Get upgrade suggestions based on usage patterns
    */
@@ -503,5 +504,95 @@ export class LicenseService {
     // Placeholder for savings calculation logic
     // Could calculate based on current usage vs new plan efficiency
     return 0;
+  }
+
+  async getExpiringLicenses(days: number): Promise<Array<{ id: string; tenantId: string; licenseType: string; expiryDate: Date }>> {
+    const result = await this.dbService.query(
+      `SELECT id, tenant_id, license_code as license_type, valid_until
+       FROM tenant_licenses
+       WHERE is_active = true AND valid_until <= NOW() + INTERVAL '${days} days'`,
+      []
+    );
+    return result.rows.map((row: any) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      licenseType: row.license_type,
+      expiryDate: new Date(row.valid_until)
+    }));
+  }
+
+  async getActiveTenantsWithLicenses(): Promise<Array<{ id: string }>> {
+    const result = await this.dbService.query(
+      `SELECT DISTINCT tenant_id as id FROM tenant_licenses WHERE is_active = true`,
+      []
+    );
+    return result.rows.map((row: any) => ({ id: row.id }));
+  }
+
+  async getRenewalReminderCandidates(): Promise<Array<{ id: string; tenantId: string; renewalDate: Date }>> {
+    const result = await this.dbService.query(
+      `SELECT id, tenant_id, COALESCE(renewal_date, valid_until) as renewal_date
+       FROM tenant_licenses
+       WHERE is_active = true AND COALESCE(renewal_date, valid_until) >= NOW()`,
+      []
+    );
+    return result.rows.map((row: any) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      renewalDate: new Date(row.renewal_date)
+    }));
+  }
+
+  async getTenantContext(tenantId: string): Promise<any> {
+    const result = await this.dbService.query(
+      `SELECT id, name, industry FROM tenants WHERE id = $1`,
+      [tenantId]
+    );
+    return result.rows[0] || {};
+  }
+
+  async getActiveLicenses(): Promise<Array<{ id: string; tenantId: string; userLimit: number; enabledFeatures: string[]; apiLimits: { perDay: number }; storageLimit: number }>> {
+    const result = await this.dbService.query(
+      `SELECT tl.id, tl.tenant_id, lp.max_users, lp.features, lp.max_api_calls_per_day, lp.max_storage_gb
+       FROM tenant_licenses tl
+       JOIN license_plans lp ON tl.license_code = lp.code
+       WHERE tl.is_active = true`,
+      []
+    );
+    return result.rows.map((row: any) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      userLimit: parseInt(row.max_users || 0),
+      enabledFeatures: Array.isArray(row.features) ? row.features : [],
+      apiLimits: { perDay: parseInt(row.max_api_calls_per_day || 0) },
+      storageLimit: parseInt(row.max_storage_gb || 0)
+    }));
+  }
+
+  async getWeeklyLicenseMetrics(start: Date, end: Date): Promise<any> {
+    return { start, end, activeLicenses: 0, renewalsDue: 0 };
+  }
+
+  async getPlatformAdministrators(): Promise<Array<{ email: string }>> {
+    const result = await this.dbService.query(
+      `SELECT email FROM platform_admins WHERE is_active = true`,
+      []
+    );
+    return result.rows.map((row: any) => ({ email: row.email }));
+  }
+
+  async getTenantsForMonthlyBilling(): Promise<Array<{ id: string; monthlyFee?: number; autoPayEnabled?: boolean }>> {
+    const result = await this.dbService.query(
+      `SELECT t.id, t.auto_pay_enabled, COALESCE(lp.monthly_price, 99) as monthly_fee
+       FROM tenants t
+       JOIN tenant_licenses tl ON tl.tenant_id = t.id AND tl.is_active = true
+       JOIN license_plans lp ON tl.license_code = lp.code`,
+      []
+    );
+    return result.rows.map((row: any) => ({
+      id: row.id,
+      monthlyFee: parseFloat(row.monthly_fee || 99),
+      autoPayEnabled: !!row.auto_pay_enabled
+    }));
   }
 }

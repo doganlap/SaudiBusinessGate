@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { PlatformNavigation } from '@/components/navigation/PlatformNavigation';
+import { PlatformNavigation } from '@/apps/components/navigation/PlatformNavigation';
 
 interface EnterpriseShellProps {
   children: React.ReactNode;

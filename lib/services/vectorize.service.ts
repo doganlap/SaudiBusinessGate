@@ -266,7 +266,7 @@ export class VectorizeService extends BaseDatabaseService {
         ? await client.query(queryText, [indexId, tenantId, topK])
         : await this.query(queryText, [indexId, tenantId, topK]);
 
-      return result.rows.map(row => ({
+      return result.rows.map((row: any) => ({
         ...row,
         metadata: JSON.parse(row.metadata || '{}')
       }));

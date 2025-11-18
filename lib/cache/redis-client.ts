@@ -11,7 +11,11 @@ let redis: Redis | null = null;
 export function getRedisClient(): Redis {
   if (!redis) {
     const config = getRedisConfig();
-    redis = new Redis(config);
+    redis = new Redis({
+      ...(config as any),
+      lazyConnect: true,
+      enableOfflineQueue: false,
+    });
     
     redis.on('connect', () => {
       console.log('Redis client connected');

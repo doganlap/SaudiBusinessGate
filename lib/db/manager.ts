@@ -1,11 +1,11 @@
 import { Pool, PoolClient } from 'pg';
-import { DatabaseService } from './connection';
+import { DatabaseService } from '../services/database.service';
 
 // Database Manager - Central coordinator for all database operations
 export class DatabaseManager {
   private static instance: DatabaseManager;
   private pool: Pool | null = null;
-  private services: Map<string, any> = new Map();
+  private services: Map<string, Record<string, any>> = new Map();
 
   private constructor() {}
 
@@ -40,8 +40,8 @@ export class DatabaseManager {
   }
 
   // Get a registered service
-  getService<T>(name: string): T | null {
-    return this.services.get(name) || null;
+  getService<T = Record<string, any>>(name: string): T | null {
+    return (this.services.get(name) as T) || null;
   }
 
   // Execute transaction across multiple services
@@ -65,12 +65,12 @@ export class DatabaseManager {
           throw new Error(`Service ${op.service} not found`);
         }
 
-        if (typeof service[op.operation] !== 'function') {
+        if (typeof (service as Record<string, any>)[op.operation] !== 'function') {
           throw new Error(`Operation ${op.operation} not found in service ${op.service}`);
         }
 
         // Inject client for transaction support
-        const result = await service[op.operation](...op.params, client);
+        const result = await (service as Record<string, any>)[op.operation](...op.params, client);
         results.push(result);
       }
 

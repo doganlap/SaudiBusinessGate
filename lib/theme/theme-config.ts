@@ -144,8 +144,8 @@ export const darkTheme: ThemeConfig = {
     warning: '#f59e0b',
     error: '#ef4444',
     info: '#3b82f6',
-    background: '#0a0a0a', // Almost black
-    surface: '#171717', // gray-900
+    background: '#111827', // gray-900 (much lighter than almost black)
+    surface: '#1f2937', // gray-800 (lighter surface for better visibility)
     text: {
       primary: '#f9fafb', // gray-50
       secondary: '#9ca3af', // gray-400
@@ -157,28 +157,28 @@ export const darkTheme: ThemeConfig = {
   },
   glassmorphism: {
     subtle: {
-      background: 'rgba(23, 23, 23, 0.6)',
+      background: 'rgba(31, 41, 55, 0.6)', // gray-800 with opacity
       blur: 'blur-md',
       border: 'rgba(255, 255, 255, 0.1)',
-      shadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
+      shadow: '0 4px 16px rgba(0, 0, 0, 0.3)', // Reduced shadow intensity
       ring: 'rgba(255, 255, 255, 0.1)',
-      hover: 'rgba(23, 23, 23, 0.75)',
+      hover: 'rgba(31, 41, 55, 0.75)',
     },
     medium: {
-      background: 'linear-gradient(135deg, rgba(38, 38, 38, 0.5) 0%, rgba(23, 23, 23, 0.4) 100%)',
+      background: 'linear-gradient(135deg, rgba(55, 65, 81, 0.5) 0%, rgba(31, 41, 55, 0.4) 100%)', // gray-700 to gray-800
       blur: 'blur-xl',
       border: 'rgba(255, 255, 255, 0.15)',
-      shadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+      shadow: '0 8px 32px rgba(0, 0, 0, 0.4)', // Reduced shadow intensity
       ring: 'rgba(255, 255, 255, 0.15)',
-      hover: 'rgba(38, 38, 38, 0.6)',
+      hover: 'rgba(55, 65, 81, 0.6)',
     },
     strong: {
-      background: 'linear-gradient(135deg, rgba(55, 65, 81, 0.5) 0%, rgba(31, 41, 55, 0.3) 100%)',
+      background: 'linear-gradient(135deg, rgba(75, 85, 99, 0.5) 0%, rgba(55, 65, 81, 0.3) 100%)', // gray-600 to gray-700
       blur: 'blur-2xl',
       border: 'rgba(255, 255, 255, 0.2)',
-      shadow: '0 12px 48px rgba(0, 0, 0, 0.6)',
+      shadow: '0 12px 48px rgba(0, 0, 0, 0.5)', // Reduced shadow intensity
       ring: 'rgba(255, 255, 255, 0.2)',
-      hover: 'rgba(55, 65, 81, 0.6)',
+      hover: 'rgba(75, 85, 99, 0.6)',
     },
   },
   spacing: lightTheme.spacing,

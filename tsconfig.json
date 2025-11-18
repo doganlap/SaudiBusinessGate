@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "lib": [
       "dom",
       "dom.iterable",
@@ -26,14 +26,18 @@
     ],
     "paths": {
       "@/*": [
-        "./src/*",
         "./*"
       ],
+      "@/src/*": [
+        "./src/*"
+      ],
       "@/components/*": [
-        "./components/*"
+        "./components/*",
+        "./src/components/*"
       ],
       "@/lib/*": [
-        "./lib/*"
+        "./lib/*",
+        "./src/lib/*"
       ],
       "@/utils/*": [
         "./utils/*"
@@ -66,15 +70,16 @@
   },
   "include": [
     "next-env.d.ts",
-    ".next/types/**/*.ts",
     "app/**/*",
     "components/**/*",
     "lib/**/*",
     "types/**/*",
+    ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
+    ".next/**/*",
     "Archive/**/*",
     "Products/**/*",
     "PlatformManagmet/**/*"

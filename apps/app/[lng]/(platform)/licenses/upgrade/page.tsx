@@ -1,4 +1,4 @@
-import UpgradePage from '@/apps/web/src/pages/UpgradePage';
+import UpgradePage from '@/pages/UpgradePage.jsx';
 
 export default function LicenseUpgradeRoute() {
   return <UpgradePage />;

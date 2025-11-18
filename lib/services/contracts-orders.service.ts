@@ -47,6 +47,39 @@ export class ContractsOrdersService {
     return result.rows[0];
   }
 
+  static async getContractById(tenantId: string, contractId: string): Promise<Contract | null> {
+    const result = await query<Contract>(
+      'SELECT * FROM sales_contracts WHERE tenant_id = $1 AND id = $2',
+      [tenantId, contractId]
+    );
+    return result.rows[0] || null;
+  }
+
+  static async updateContract(tenantId: string, contractId: string, contractData: Partial<Omit<Contract, 'id' | 'tenant_id' | 'created_at'>>): Promise<Contract | null> {
+    const fields = Object.keys(contractData);
+    const values = Object.values(contractData);
+    
+    if (fields.length === 0) {
+      return null;
+    }
+
+    const setClause = fields.map((field, index) => `${field} = $${index + 3}`).join(', ');
+    const result = await query<Contract>(
+      `UPDATE sales_contracts SET ${setClause}, updated_at = CURRENT_TIMESTAMP 
+       WHERE tenant_id = $1 AND id = $2 RETURNING *`,
+      [tenantId, contractId, ...values]
+    );
+    return result.rows[0] || null;
+  }
+
+  static async deleteContract(tenantId: string, contractId: string): Promise<boolean> {
+    const result = await query(
+      'DELETE FROM sales_contracts WHERE tenant_id = $1 AND id = $2',
+      [tenantId, contractId]
+    );
+    return result.rowCount ? result.rowCount > 0 : false;
+  }
+
   // Order CRUD aOPERATIONS
 
   static async getOrders(tenantId: string, filters?: { status?: string; quote_id?: number; limit?: number; offset?: number }): Promise<Order[]> {
@@ -90,5 +123,38 @@ export class ContractsOrdersService {
       [tenantId, orderData.quote_id, orderData.contract_id, orderData.order_number, orderData.status || 'pending', orderData.total_amount, orderData.order_date]
     );
     return result.rows[0];
+  }
+
+  static async getOrderById(tenantId: string, orderId: string): Promise<Order | null> {
+    const result = await query<Order>(
+      'SELECT * FROM sales_orders WHERE tenant_id = $1 AND id = $2',
+      [tenantId, orderId]
+    );
+    return result.rows[0] || null;
+  }
+
+  static async updateOrder(tenantId: string, orderId: string, orderData: Partial<Omit<Order, 'id' | 'tenant_id' | 'created_at'>>): Promise<Order | null> {
+    const fields = Object.keys(orderData);
+    const values = Object.values(orderData);
+    
+    if (fields.length === 0) {
+      return null;
+    }
+
+    const setClause = fields.map((field, index) => `${field} = $${index + 3}`).join(', ');
+    const result = await query<Order>(
+      `UPDATE sales_orders SET ${setClause}, updated_at = CURRENT_TIMESTAMP 
+       WHERE tenant_id = $1 AND id = $2 RETURNING *`,
+      [tenantId, orderId, ...values]
+    );
+    return result.rows[0] || null;
+  }
+
+  static async deleteOrder(tenantId: string, orderId: string): Promise<boolean> {
+    const result = await query(
+      'DELETE FROM sales_orders WHERE tenant_id = $1 AND id = $2',
+      [tenantId, orderId]
+    );
+    return result.rowCount ? result.rowCount > 0 : false;
   }
 }

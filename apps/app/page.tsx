@@ -8,8 +8,7 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to English platform dashboard
-    router.push('/en/dashboard');
+    router.push('/ar/dashboard');
   }, [router]);
 
   return <LoadingState message="Redirecting to DoganHub Store..." />;

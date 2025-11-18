@@ -71,7 +71,7 @@ export default function IntelligentNavigation({
     const suggestions: AISuggestion[] = [];
     
     // Context-based suggestions
-    if (pathname.includes('/dashboard')) {
+    if (pathname?.includes('/dashboard')) {
       suggestions.push({
         id: '1',
         title: 'View Financial Analytics',
@@ -92,7 +92,7 @@ export default function IntelligentNavigation({
       });
     }
     
-    if (pathname.includes('/finance')) {
+    if (pathname?.includes('/finance')) {
       suggestions.push({
         id: '3',
         title: 'Automate Invoice Processing',

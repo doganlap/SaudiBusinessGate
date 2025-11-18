@@ -1,9 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CompleteFinanceService } from '@/lib/services/finance-complete.service';
+import { testConnection, getPool } from '@/lib/db/connection';
+import { getServerSession } from 'next-auth';
+import { AuditLogger } from '@/lib/audit/audit-logger';
+import { RBACService } from '@/lib/auth/rbac-service';
+import { apiLogger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.invoices.read', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.invoices.read', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const tenantId = request.headers.get('tenant-id') || String(organizationId);
     const { searchParams } = new URL(request.url);
     
     const filters = {
@@ -15,18 +33,33 @@ export async function GET(request: NextRequest) {
       offset: searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : 0
     };
     
-    const invoices = await CompleteFinanceService.getInvoices(tenantId, filters);
+    // Try to get real invoices from database
+    try {
+      const isConnected = await testConnection();
+      
+      if (isConnected) {
+        const invoices = await CompleteFinanceService.getInvoices(tenantId, filters);
+        
+        await audit.logDataAccess(userId, organizationId, 'invoice', 0, 'read');
+        return NextResponse.json({
+          success: true,
+          data: invoices,
+          total: invoices.length,
+          source: 'database',
+          filters
+        });
+      }
+    } catch (dbError) {
+      apiLogger.warn('Database not available for invoices, using fallback data', { error: dbError instanceof Error ? dbError.message : String(dbError) });
+    }
     
-    return NextResponse.json({
-      success: true,
-      data: invoices,
-      total: invoices.length,
-      filters
-    });
-  } catch (error) {
-    console.error('Error fetching invoices:', error);
     
-    // Fallback sample data
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        { success: false, error: 'Service unavailable' },
+        { status: 503 }
+      );
+    }
     const fallbackInvoices = [
       {
         id: '1',
@@ -72,14 +105,34 @@ export async function GET(request: NextRequest) {
       success: true,
       data: fallbackInvoices,
       total: fallbackInvoices.length,
-      fallback: true
+      source: 'fallback',
+      filters
     });
+  } catch (error) {
+    apiLogger.error('Error fetching invoices', { error: error instanceof Error ? error.message : String(error) });
+    
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch invoices' },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.invoices.write', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.invoices.write', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    const tenantId = request.headers.get('tenant-id') || String(organizationId);
     const body = await request.json();
     
     // Validate required fields
@@ -112,13 +165,14 @@ export async function POST(request: NextRequest) {
       created_by: body.created_by || 'system'
     });
     
+    await audit.logDataChange(userId, organizationId, 'invoice', (invoice as any).id, null, invoice);
     return NextResponse.json({
       success: true,
       data: invoice,
       message: 'Invoice created successfully'
     });
   } catch (error) {
-    console.error('Error creating invoice:', error);
+    apiLogger.error('Error creating invoice', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { success: false, error: 'Failed to create invoice' },
       { status: 500 }

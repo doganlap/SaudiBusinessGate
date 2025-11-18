@@ -19,12 +19,12 @@ import { UserProfileCard } from '@/components/features/user-profile-card';
 import { WorkflowBuilder } from '@/components/features/workflow-builder';
 import { ThemeSelector } from '@/components/features/theme-selector';
 import { NotificationCenter } from '@/components/features/notification-center';
-import Header from '@/components/layout/Header';
+import { Header } from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
 import Footer from '@/components/layout/Footer';
-import MobileNav from '@/components/navigation/mobile-nav';
-import Breadcrumbs from '@/components/navigation/breadcrumbs';
-import TabNavigation from '@/components/navigation/tab-navigation';
+import { MobileNav } from '@/components/navigation/mobile-nav';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
+import { TabNavigation } from '@/components/navigation/tab-navigation';
 import { 
   Settings, Users, BarChart3, Zap, Bell, 
   Download, Share2, Filter, Search, Plus,
@@ -125,12 +125,12 @@ export default function ComponentDemoPage() {
   ];
 
   const getStatusBadge = (status: string) => {
-    const variants = {
+    const variants: Record<string, 'success' | 'secondary' | 'warning' | 'default'> = {
       active: 'success',
       inactive: 'secondary', 
       pending: 'warning'
     };
-    return <Badge variant={(variants[status as keyof typeof variants] || 'default') as any}>{status}</Badge>;
+    return <Badge variant={variants[status] || 'default'}>{status}</Badge>;
   };
 
   const handleRefresh = () => {
@@ -240,7 +240,7 @@ export default function ComponentDemoPage() {
                         <Badge variant="default">Default</Badge>
                         <Badge variant="success">Success</Badge>
                         <Badge variant="warning">Warning</Badge>
-                        <Badge variant="danger">Danger</Badge>
+                        <Badge variant="destructive">Danger</Badge>
                       </div>
                     </div>
                     <div className="space-y-2">

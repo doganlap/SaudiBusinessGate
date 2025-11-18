@@ -4,12 +4,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 export default function PlatformLayout({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
+    <ThemeProvider>
       <PlatformShell>
         {children}
       </PlatformShell>

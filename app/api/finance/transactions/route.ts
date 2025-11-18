@@ -1,4 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { getPool } from '@/lib/db/connection';
+import { AuditLogger } from '@/lib/audit/audit-logger';
+import { RBACService } from '@/lib/auth/rbac-service';
+import { apiLogger } from '@/lib/logger';
 
 interface Transaction {
   id: string;
@@ -91,6 +96,18 @@ const sampleTransactions: Transaction[] = [
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.transactions.read', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.transactions.read', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const type = searchParams.get('type');
@@ -98,8 +115,16 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') || '0');
     
     // Get tenant ID from headers
-    const tenantId = request.headers.get('x-tenant-id') || 'default';
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
     
+    
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        { success: false, message: 'Service unavailable' },
+        { status: 503 }
+      );
+    }
+
     // Filter transactions based on query parameters
     let filteredTransactions = [...sampleTransactions];
     
@@ -129,6 +154,7 @@ export async function GET(request: NextRequest) {
       }
     };
 
+    await audit.logDataAccess(userId, organizationId, 'transaction', 0, 'read');
     return NextResponse.json({
       success: true,
       data: paginatedTransactions,
@@ -142,7 +168,7 @@ export async function GET(request: NextRequest) {
       timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Error fetching transactions:', error);
+    apiLogger.error('Error fetching transactions', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { success: false, message: 'Failed to fetch transactions' },
       { status: 500 }
@@ -153,7 +179,19 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const tenantId = request.headers.get('x-tenant-id') || 'default';
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.transactions.write', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.transactions.write', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
     
     // Validate required fields
     const requiredFields = ['type', 'party_name', 'amount', 'due_date'];
@@ -166,6 +204,11 @@ export async function POST(request: NextRequest) {
       }
     }
     
+    
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json({ success: false, message: 'Service unavailable' }, { status: 503 });
+    }
+
     // Create new transaction
     const newTransaction: Transaction = {
       id: `txn_${Date.now()}`,
@@ -183,13 +226,14 @@ export async function POST(request: NextRequest) {
     // In production, save to database
     // For demo, just return the created transaction
     
+    await audit.logDataChange(userId, Number(organizationId), 'transaction', Date.now(), null, newTransaction);
     return NextResponse.json({
       success: true,
       data: newTransaction,
       message: 'Transaction created successfully'
     }, { status: 201 });
   } catch (error) {
-    console.error('Error creating transaction:', error);
+    apiLogger.error('Error creating transaction', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { success: false, message: 'Failed to create transaction' },
       { status: 500 }

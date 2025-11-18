@@ -142,8 +142,8 @@ export class EnterpriseAutonomyEngine {
     ): Promise<LicenseCheckResult> {
         // Try cache first
         const cacheKey = `license:check:${tenantId}:${apiEndpoint}`;
-        const cached = await redisCachingService.get(cacheKey);
-        if (cached) {
+        const cached = await redisCachingService.get<string>(cacheKey);
+        if (cached && typeof cached === 'string') {
             return JSON.parse(cached);
         }
 
@@ -167,7 +167,7 @@ export class EnterpriseAutonomyEngine {
         }
 
         const license = licenseResult.rows[0];
-        const tierConfig = LICENSE_TIERS[license.license_code.toUpperCase()];
+        const tierConfig = (LICENSE_TIERS as any)[license.license_code.toUpperCase()];
 
         if (!tierConfig) {
             return {
@@ -300,8 +300,8 @@ export class EnterpriseAutonomyEngine {
      */
     private async getDailyAPIUsage(tenantId: string): Promise<number> {
         const cacheKey = `usage:daily:${tenantId}`;
-        const cached = await redisCachingService.get(cacheKey);
-        if (cached) {
+        const cached = await redisCachingService.get<string>(cacheKey);
+        if (cached && typeof cached === 'string') {
             return parseInt(cached, 10);
         }
 
@@ -346,7 +346,7 @@ export class EnterpriseAutonomyEngine {
     ): Promise<{ recommend: boolean; tier?: string; reason?: string }> {
         // Get usage metrics
         const metrics = await this.getUsageMetrics(tenantId);
-        const tierConfig = LICENSE_TIERS[currentLicense.license_code.toUpperCase()];
+        const tierConfig = (LICENSE_TIERS as any)[currentLicense.license_code.toUpperCase()];
 
         // Check if approaching limits (>80% usage)
         if (
@@ -472,7 +472,7 @@ export class EnterpriseAutonomyEngine {
             [tenantId]
         );
 
-        const tierConfig = LICENSE_TIERS[license.rows[0].license_code.toUpperCase()];
+        const tierConfig = (LICENSE_TIERS as any)[license.rows[0].license_code.toUpperCase()];
 
         return {
             period,

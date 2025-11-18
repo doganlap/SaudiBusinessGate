@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { FinanceService } from '@/lib/services/finance.service';
+import { getServerSession } from 'next-auth';
+import { getPool } from '@/lib/db/connection';
+import { AuditLogger } from '@/lib/audit/audit-logger';
+import { RBACService } from '@/lib/auth/rbac-service';
 
 interface Account {
   id: string;
@@ -108,11 +112,24 @@ const fallbackAccounts: Account[] = [
 
 export async function GET(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('x-tenant-id') || 'default';
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.accounts.read', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.accounts.read', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
     
     // Get accounts from database
     const financeService = new FinanceService();
     const accounts = await financeService.getAccounts(tenantId);
+    await audit.logDataAccess(userId, organizationId, 'financial_account', 0, 'read');
     
     return NextResponse.json({
       success: true,
@@ -138,8 +155,20 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.accounts.write', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.accounts.write', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
     const body = await request.json();
-    const tenantId = request.headers.get('x-tenant-id') || 'default';
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
     
     // Validate required fields
     const requiredFields = ['account_name', 'account_code', 'account_type'];
@@ -161,26 +190,21 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Create new account
-    const newAccount: Account = {
-      id: `acc_${Date.now()}`,
+    const financeService = new FinanceService();
+    const created = await financeService.createAccount(tenantId, {
       account_name: body.account_name,
       account_code: body.account_code,
       account_type: body.account_type,
       balance: parseFloat(body.balance || '0'),
       parent_account_id: body.parent_account_id,
       is_active: body.is_active !== false,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
       description: body.description
-    };
-    
-    // In production, save to database and validate account code uniqueness
-    // For demo, just return the created account
+    });
+    await audit.logDataChange(userId, organizationId, 'financial_account', (created as any).id, null, created);
     
     return NextResponse.json({
       success: true,
-      data: newAccount,
+      data: created,
       message: 'Account created successfully'
     }, { status: 201 });
   } catch (error) {

@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react';
 export default function ReportsListPage() {
     const { data: session } = useSession();
     const [data, setData] = useState<any[]>([]);
+    const [finance, setFinance] = useState<{ stats: any; summary: any } | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -27,6 +28,11 @@ export default function ReportsListPage() {
             }
             const result = await response.json();
             setData(Array.isArray(result) ? result : result.data || []);
+            const finRes = await fetch('/api/reports/finance/summary');
+            if (finRes.ok) {
+                const fin = await finRes.json();
+                setFinance(fin);
+            }
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -60,6 +66,26 @@ export default function ReportsListPage() {
                 <p className="text-gray-600 mt-2">Reports Module</p>
             </div>
 
+            {finance && (
+                <div className="grid gap-4 mb-6 grid-cols-2 lg:grid-cols-4">
+                    <div className="rounded-lg bg-white shadow p-4">
+                        <p className="text-xs text-gray-500">Total Revenue</p>
+                        <p className="text-2xl font-semibold">{Number(finance.stats?.totalRevenue || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="rounded-lg bg-white shadow p-4">
+                        <p className="text-xs text-gray-500">Total Expenses</p>
+                        <p className="text-2xl font-semibold">{Number(finance.stats?.totalExpenses || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="rounded-lg bg-white shadow p-4">
+                        <p className="text-xs text-gray-500">Accounts Receivable</p>
+                        <p className="text-2xl font-semibold">{Number(finance.stats?.accountsReceivable || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="rounded-lg bg-white shadow p-4">
+                        <p className="text-xs text-gray-500">Accounts Payable</p>
+                        <p className="text-2xl font-semibold">{Number(finance.stats?.accountsPayable || 0).toLocaleString()}</p>
+                    </div>
+                </div>
+            )}
             <div className="bg-white rounded-lg shadow">
                 {data.length === 0 ? (
                     <div className="p-12 text-center">

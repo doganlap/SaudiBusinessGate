@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useLingui } from '@lingui/react';
 import { EnterpriseToolbar } from '@/components/enterprise/EnterpriseToolbar';
+import { Plus } from 'lucide-react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Project } from '@/types/project-management';
 
@@ -38,8 +39,7 @@ const ProjectsPage = () => {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <EnterpriseToolbar
-        title={_('Projects')}
-        buttons={[{ label: _('New Project'), onClick: () => console.log('New Project') }]}
+        actions={[{ label: _('New Project'), icon: Plus, onClick: () => console.log('New Project') }]}
       />
       <DataGrid
         rows={projects}

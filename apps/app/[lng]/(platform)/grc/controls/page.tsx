@@ -33,8 +33,8 @@ interface Control {
 }
 
 export default function ControlsPage() {
-  const params = useParams();
-  const lng = params.lng as string;
+  const params = useParams() as any;
+  const lng = (params?.lng as string) || 'en';
   
   const [controls, setControls] = useState<Control[]>([]);
   const [loading, setLoading] = useState(true);

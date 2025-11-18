@@ -5,8 +5,8 @@
 
 export const redisConfig = {
   development: {
-    host: process.env.REDIS_HOST || 'localhost',
-    port: parseInt(process.env.REDIS_PORT || '6390'),
+    host: /your-redis-host/i.test(process.env.REDIS_HOST || '') ? 'localhost' : (process.env.REDIS_HOST || 'localhost'),
+    port: parseInt(process.env.REDIS_PORT || '6379'),
     password: process.env.REDIS_PASSWORD,
     db: 0,
     retryStrategy: (times: number) => {
@@ -15,7 +15,8 @@ export const redisConfig = {
     },
     maxRetriesPerRequest: 3,
     enableReadyCheck: true,
-    enableOfflineQueue: true,
+    enableOfflineQueue: false,
+    lazyConnect: true,
   },
   
   production: {
@@ -31,6 +32,7 @@ export const redisConfig = {
     enableReadyCheck: true,
     enableOfflineQueue: false,
     connectTimeout: 10000,
+    lazyConnect: true,
   },
   
   test: {

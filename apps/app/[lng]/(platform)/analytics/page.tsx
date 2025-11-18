@@ -32,8 +32,8 @@ interface KPIData {
 }
 
 export default function AnalyticsPage() {
-  const params = useParams();
-  const lng = params.lng as string;
+  const params = useParams() as any;
+  const lng = (params?.lng as string) || 'en';
   const [kpiData, setKpiData] = useState<KPIData[]>([]);
   const [loading, setLoading] = useState(true);
 

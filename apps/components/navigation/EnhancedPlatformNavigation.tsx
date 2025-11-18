@@ -61,7 +61,7 @@ const translations = {
 export default function EnhancedPlatformNavigation() {
   const params = useParams();
   const pathname = usePathname();
-  const lng = (params.lng as string) || 'en';
+  const lng = (params?.lng as string) || 'en';
   const isRTL = lng === 'ar';
   
   const [user, setUser] = useState<User | null>(null);
@@ -113,6 +113,7 @@ export default function EnhancedPlatformNavigation() {
   };
 
   const isActiveRoute = (route: NavigationRoute): boolean => {
+    if (!pathname) return false;
     if (route.href === `/${lng}/dashboard` && pathname === `/${lng}`) return true;
     return pathname.startsWith(`/${lng}${route.href}`);
   };
@@ -121,8 +122,15 @@ export default function EnhancedPlatformNavigation() {
     return getAllRoutes().filter(route => route.category === category);
   };
 
-  const categories = [
-    { id: 'dashboard', name: t('Dashboard'), icon: Home, routes: [{ id: 'dashboard', name: t('Dashboard'), href: '/dashboard', icon: Home, description: '', category: 'dashboard' }] },
+  interface Category {
+    id: string;
+    name: string;
+    icon: any;
+    routes: NavigationRoute[];
+  }
+
+  const categories: Category[] = [
+    { id: 'dashboard', name: t('Dashboard'), icon: Home, routes: [{ id: 'dashboard', name: t('Dashboard'), href: '/dashboard', icon: Home, description: '', category: 'platform' }] },
     { id: 'products', name: t('Products'), icon: Package, routes: getRoutesByCategory('products') },
     { id: 'services', name: t('Services'), icon: Sparkles, routes: getRoutesByCategory('services') },
     { id: 'admin', name: t('Administration'), icon: Shield, routes: getRoutesByCategory('admin') }

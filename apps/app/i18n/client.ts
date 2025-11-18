@@ -13,7 +13,7 @@ export function useTranslation(lng: string, ns: string, options: any) {
   // Use provided language or fall back to context language
   const currentLng = (lng as Language) || language;
   
-  const t = (key: string) => {
+  const t = (key: string, _opts?: any) => {
     return translateFn(key, currentLng);
   };
 

@@ -43,9 +43,9 @@ interface QuickAction {
 }
 
 export default function DashboardPage() {
-  const params = useParams();
-  const lng = params.lng as string;
-  const { t } = useTranslation(lng, 'dashboard');
+  const params = useParams() as any;
+  const lng = (params?.lng as string) || 'en';
+  const { t } = useTranslation(lng, 'dashboard', {});
   
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);

@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function Home() {
-  const params = useParams();
+  const params = useParams() as any;
   const router = useRouter();
-  const lng = params.lng as string;
+  const lng = (params?.lng as string) || 'en';
 
   useEffect(() => {
     // Redirect to dashboard

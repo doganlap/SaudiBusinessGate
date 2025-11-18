@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('LLM Generation Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to generate completion' },
+      { error: (error instanceof Error ? error.message : String(error)) || 'Failed to generate completion' },
       { status: 500 }
     );
   }
@@ -50,7 +50,7 @@ export async function GET() {
   } catch (error: any) {
     console.error('Get Providers Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to get providers' },
+      { error: (error instanceof Error ? error.message : String(error)) || 'Failed to get providers' },
       { status: 500 }
     );
   }

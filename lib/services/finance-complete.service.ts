@@ -482,6 +482,14 @@ export class CompleteFinanceService {
     return result.rows;
   }
 
+  static async getInvoiceById(tenantId: string, invoiceId: string): Promise<Invoice | null> {
+    const result = await query<Invoice>(
+      `SELECT * FROM invoices WHERE tenant_id = $1 AND id = $2`,
+      [tenantId, invoiceId]
+    );
+    return result.rows[0] || null;
+  }
+
   static async createInvoice(tenantId: string, invoiceData: {
     customer_name: string;
     customer_email?: string;
@@ -656,6 +664,157 @@ export class CompleteFinanceService {
       totalLiabilities,
       totalEquity,
       asOfDate
+    };
+  }
+
+  // TAX OPERATIONS - SAUDI COMPLIANCE
+
+  static async getTaxRecords(tenantId: string, filters?: {
+    type?: string;
+    period?: string;
+    status?: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<any[]> {
+    let sql = `
+      SELECT tr.*, 
+        fa.account_name,
+        fa.account_code,
+        CASE 
+          WHEN tr.transaction_type = 'sale' THEN 'Output VAT'
+          WHEN tr.transaction_type = 'purchase' THEN 'Input VAT'
+          ELSE 'Other'
+        END as vat_category
+      FROM tax_records tr
+      LEFT JOIN financial_accounts fa ON tr.account_id = fa.id
+      WHERE tr.tenant_id = $1
+    `;
+    const params: any[] = [tenantId];
+    let paramIndex = 2;
+
+    if (filters?.type) {
+      sql += ` AND tr.tax_type = $${paramIndex}`;
+      params.push(filters.type);
+      paramIndex++;
+    }
+
+    if (filters?.period) {
+      sql += ` AND tr.tax_period = $${paramIndex}`;
+      params.push(filters.period);
+      paramIndex++;
+    }
+
+    if (filters?.status) {
+      sql += ` AND tr.status = $${paramIndex}`;
+      params.push(filters.status);
+      paramIndex++;
+    }
+
+    sql += ` ORDER BY tr.transaction_date DESC, tr.created_at DESC`;
+
+    if (filters?.limit) {
+      sql += ` LIMIT $${paramIndex}`;
+      params.push(filters.limit);
+      paramIndex++;
+    }
+
+    if (filters?.offset) {
+      sql += ` OFFSET $${paramIndex}`;
+      params.push(filters.offset);
+    }
+
+    const result = await query(sql, params);
+    return result.rows;
+  }
+
+  static async createTaxRecord(tenantId: string, taxData: {
+    tax_type: string;
+    tax_code: string;
+    tax_rate: number | null;
+    description: string;
+    amount: number;
+    base_amount: number;
+    transaction_type: string;
+    transaction_id: string;
+    transaction_date: string;
+    tax_period: string;
+    vat_return_period?: string;
+    account_id: string;
+    saudi_compliance?: any;
+    created_by?: string;
+  }): Promise<any> {
+    const result = await query(
+      `INSERT INTO tax_records (
+        tenant_id, tax_type, tax_code, tax_rate, description,
+        amount, base_amount, transaction_type, transaction_id,
+        transaction_date, tax_period, vat_return_period,
+        account_id, saudi_compliance, created_by
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+      RETURNING *`,
+      [
+        tenantId, taxData.tax_type, taxData.tax_code, taxData.tax_rate, taxData.description,
+        taxData.amount, taxData.base_amount, taxData.transaction_type, taxData.transaction_id,
+        taxData.transaction_date, taxData.tax_period, taxData.vat_return_period,
+        taxData.account_id, JSON.stringify(taxData.saudi_compliance || {}), taxData.created_by
+      ]
+    );
+    return result.rows[0];
+  }
+
+  static async calculateVATReturn(tenantId: string, period: string): Promise<any> {
+    // Get output VAT (sales)
+    const outputVAT = await query(
+      `SELECT 
+        COALESCE(SUM(amount), 0) as total_output_vat,
+        COALESCE(SUM(base_amount), 0) as total_sales
+      FROM tax_records
+      WHERE tenant_id = $1 
+        AND tax_type = 'vat'
+        AND transaction_type = 'sale'
+        AND tax_period = $2
+        AND status = 'posted'`,
+      [tenantId, period]
+    );
+
+    // Get input VAT (purchases)
+    const inputVAT = await query(
+      `SELECT 
+        COALESCE(SUM(ABS(amount)), 0) as total_input_vat,
+        COALESCE(SUM(base_amount), 0) as total_purchases
+      FROM tax_records
+      WHERE tenant_id = $1 
+        AND tax_type = 'vat'
+        AND transaction_type = 'purchase'
+        AND tax_period = $2
+        AND status = 'posted'`,
+      [tenantId, period]
+    );
+
+    const outputVATAmount = parseFloat(outputVAT.rows[0].total_output_vat);
+    const inputVATAmount = parseFloat(inputVAT.rows[0].total_input_vat);
+    const netVATPayable = outputVATAmount - inputVATAmount;
+
+    return {
+      period,
+      output_vat: {
+        amount: outputVATAmount,
+        base_amount: parseFloat(outputVAT.rows[0].total_sales),
+        transactions: await this.getTaxRecords(tenantId, { type: 'vat', period, status: 'posted' })
+          .then(records => records.filter(r => r.transaction_type === 'sale'))
+      },
+      input_vat: {
+        amount: inputVATAmount,
+        base_amount: parseFloat(inputVAT.rows[0].total_purchases),
+        transactions: await this.getTaxRecords(tenantId, { type: 'vat', period, status: 'posted' })
+          .then(records => records.filter(r => r.transaction_type === 'purchase'))
+      },
+      net_vat_payable: netVATPayable,
+      saudi_compliance: {
+        zatca_ready: true,
+        electronic_invoice_compliant: true,
+        qr_code_required: true,
+        vat_return_period: period
+      }
     };
   }
 }

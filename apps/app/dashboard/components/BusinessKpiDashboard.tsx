@@ -58,7 +58,7 @@ export default function BusinessKpiDashboard({
                     id: kpi.id || `kpi-${index}`,
                     name: kpi.name,
                     value: kpi.value,
-                    trend: kpi.trend || 'stable',
+                    trend: (['up','down','stable'].includes(kpi.trend) ? kpi.trend : 'stable') as 'up'|'down'|'stable',
                     requiredFeature: kpi.requiredFeature || 'dashboard.business',
                     isPremium: kpi.isPremium || false,
                     category: kpi.category || 'business',

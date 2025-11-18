@@ -101,7 +101,7 @@ export function trackException(error: Error, properties?: Record<string, any>) {
  */
 export function trackPageView(name?: string, url?: string, properties?: Record<string, any>) {
   if (appInsights) {
-    appInsights.trackPageView({ name, uri: url }, properties);
+    appInsights.trackPageView({ name, uri: url });
   }
 }
 

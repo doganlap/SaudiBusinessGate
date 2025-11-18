@@ -131,7 +131,7 @@ export abstract class BaseDatabaseService {
         ? await client.query(queryText, params)
         : await query(queryText, params);
 
-      return result.rowCount > 0;
+      return result.rowCount! > 0;
     } catch (error) {
       console.error(`Error deleting ${this.tableName}:`, error);
       return false;

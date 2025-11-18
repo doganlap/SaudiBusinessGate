@@ -18,6 +18,23 @@
   
   --border-radius-enterprise: 0.75rem;
   --transition-enterprise: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Font Family Variables */
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-noto-arabic: 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
+  
+  /* Apply font families */
+  font-family: var(--font-noto-arabic);
+  
+  /* English text uses Inter font */
+  :lang(en) {
+    font-family: var(--font-inter);
+  }
+}
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Dark theme variables */
@@ -48,8 +65,15 @@ html {
   direction: rtl;
   text-align: right;
   scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Font Family Utilities */
+.font-arabic {
+  font-family: var(--font-noto-arabic);
+}
+
+.font-latin {
+  font-family: var(--font-inter);
 }
 
 html[dir="ltr"] {
@@ -178,7 +202,7 @@ body {
     transform: rotate(180deg);
   }
   
-  .rtl\:scale-x-[-1] {
+  .rtl\:scale-x-negative {
     transform: scaleX(-1);
   }
 }

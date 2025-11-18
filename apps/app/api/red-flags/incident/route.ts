@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { incidentMode, IncidentContext } from '@/lib/red-flags/incident-mode';
-import { redFlagsAgents } from '@/lib/agents/red-flags-agents';
+import { incidentMode, IncidentContext } from '../../../../../lib/red-flags/incident-mode';
+import { redFlagsAgents } from '../../../../../lib/agents/red-flags-agents';
 
 // Red Flags Incident Response API
 export async function POST(request: NextRequest) {
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('❌ Red Flags API Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: (error instanceof Error ? error.message : String(error)) || 'Internal server error' },
       { status: 500 }
     );
   }
@@ -173,7 +173,7 @@ export async function GET(request: NextRequest) {
   } catch (error: any) {
     console.error('❌ Red Flags GET Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: (error instanceof Error ? error.message : String(error)) || 'Internal server error' },
       { status: 500 }
     );
   }

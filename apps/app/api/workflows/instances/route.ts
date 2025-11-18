@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
   } catch (error: any) {
     console.error('Error fetching workflows:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch workflows' },
+      { error: (error instanceof Error ? error.message : String(error)) || 'Failed to fetch workflows' },
       { status: 500 }
     );
   }
@@ -197,7 +197,7 @@ export async function POST(req: NextRequest) {
     await client.query('ROLLBACK');
     console.error('Error creating workflow:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to create workflow' },
+      { error: (error instanceof Error ? error.message : String(error)) || 'Failed to create workflow' },
       { status: 500 }
     );
   } finally {
@@ -291,7 +291,7 @@ export async function PATCH(req: NextRequest) {
   } catch (error: any) {
     console.error('Error updating workflow:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to update workflow' },
+      { error: (error instanceof Error ? error.message : String(error)) || 'Failed to update workflow' },
       { status: 500 }
     );
   }

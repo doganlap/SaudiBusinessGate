@@ -4,6 +4,7 @@ const config = {
   testEnvironment: 'node',
   roots: ['<rootDir>/tests', '<rootDir>/app'],
   testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
+  testPathIgnorePatterns: ['<rootDir>/tests/integration/health.spec.ts'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },

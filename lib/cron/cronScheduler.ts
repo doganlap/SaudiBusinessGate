@@ -84,7 +84,6 @@ export class CronScheduler {
           await this.executeJob(jobConfig);
         },
         {
-          scheduled: false, // Start manually after setup
           timezone: process.env.CRON_TIMEZONE || 'UTC'
         }
       );
@@ -187,9 +186,8 @@ export class CronScheduler {
         await this.monitorJobHealth();
       },
       {
-        scheduled: true,
-        timezone: process.env.CRON_TIMEZONE || 'UTC'
-      }
+          timezone: process.env.CRON_TIMEZONE || 'UTC'
+        }
     );
 
     this.jobs.set('job-health-monitor', monitoringTask);

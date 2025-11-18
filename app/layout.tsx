@@ -1,8 +1,7 @@
 import './globals.css'
 import '../styles/rtl.css'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import Providers from './providers'
-import { LanguageProvider } from '@/components/i18n/LanguageProvider'
 import { AIChatbot } from '@/components/features/ai-chatbot'
 
 export const metadata: Metadata = {
@@ -22,7 +21,6 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3050'),
-  themeColor: '#0ea5e9',
   alternates: {
     canonical: '/',
     languages: {
@@ -30,7 +28,6 @@ export const metadata: Metadata = {
       'en': '/en',
     },
   },
-  viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -66,44 +63,65 @@ export const metadata: Metadata = {
   },
 }
 
+export const viewport: Viewport = {
+  themeColor: '#0ea5e9',
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="ar" dir="rtl" className="scroll-smooth">
+    <html lang="ar" dir="rtl" className="scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning={true}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            /* CSS Variable Fallbacks */
+            :root {
+              --color-brand-50: 240, 249, 255;
+              --color-brand-500: 14, 165, 233;
+              --color-brand-600: 2, 132, 199;
+              --color-brand-900: 12, 74, 110;
+              --color-neutral-50: 250, 250, 250;
+              --color-neutral-100: 245, 245, 245;
+              --color-neutral-900: 23, 23, 23;
+              --font-inter: 'Inter', system-ui, sans-serif;
+              --font-noto-arabic: 'Noto Sans Arabic', sans-serif;
+              --transition-enterprise: all 0.3s ease;
+            }
+            body {
+              font-family: var(--font-noto-arabic);
+              transition: var(--transition-enterprise);
+            }
+            .font-arabic {
+              font-family: var(--font-noto-arabic);
+            }
+          `
+        }} />
+      </head>
       <body
-        className="font-sans antialiased bg-neutral-50 text-neutral-900 selection:bg-brand-100 selection:text-brand-900"
+        className="font-arabic antialiased bg-neutral-50 text-neutral-900 selection:bg-brand-100 selection:text-brand-900"
         suppressHydrationWarning={true}
       >
-        <LanguageProvider>
-          <Providers>
-            <div className="min-h-screen flex flex-col">
-              {children}
-            </div>
-            <AIChatbot />
-          </Providers>
-        </LanguageProvider>
+        <Providers>
+          <div className="min-h-screen flex flex-col">
+            {children}
+          </div>
+          <AIChatbot />
+        </Providers>
         
         {/* Performance and Analytics Scripts */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Preload critical resources
-              if ('requestIdleCallback' in window) {
-                requestIdleCallback(() => {
-                  // Preload fonts
-                  const link = document.createElement('link');
-                  link.rel = 'preload';
-                  link.as = 'font';
-                  link.type = 'font/woff2';
-                  link.crossOrigin = 'anonymous';
-                  link.href = 'https://fonts.gstatic.com/s/notosansarabic/v18/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCfyGyvu3CBFQLaig.woff2';
-                  document.head.appendChild(link);
-                });
-              }
-              
               // Theme detection and application
               (function() {
                 const theme = localStorage.getItem('theme') || 'light';
@@ -112,15 +130,24 @@ export default function RootLayout({
                 }
               })();
               
-              // Language direction detection
+              // Language direction detection and dynamic updates
               (function() {
-                const lang = document.documentElement.lang;
-                const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
-                if (rtlLanguages.includes(lang)) {
-                  document.documentElement.setAttribute('dir', 'rtl');
-                } else {
-                  document.documentElement.setAttribute('dir', 'ltr');
-                }
+                const updateDirection = () => {
+                  const lang = document.documentElement.lang || 'ar';
+                  const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+                  const direction = rtlLanguages.includes(lang) ? 'rtl' : 'ltr';
+                  document.documentElement.setAttribute('dir', direction);
+                };
+                
+                // Initial update
+                updateDirection();
+                
+                // Listen for language changes
+                const observer = new MutationObserver(updateDirection);
+                observer.observe(document.documentElement, {
+                  attributes: true,
+                  attributeFilter: ['lang']
+                });
               })();
             `,
           }}

@@ -21,19 +21,13 @@ export default async function LangLayout({ children, params }: LayoutProps) {
   const direction = getDirection(validLang);
   
   return (
-    <html lang={validLang} dir={direction}>
-      <head>
-        <meta name="language" content={validLang} />
-        <meta name="direction" content={direction} />
-      </head>
-      <body className={direction}>
-        <RTLProvider>
-          <LanguageProvider initialLanguage={validLang}>
-            {children}
-          </LanguageProvider>
-        </RTLProvider>
-      </body>
-    </html>
+    <RTLProvider>
+      <LanguageProvider initialLanguage={validLang}>
+        <div className={direction} data-lang={validLang} data-direction={direction}>
+          {children}
+        </div>
+      </LanguageProvider>
+    </RTLProvider>
   )
 }
 

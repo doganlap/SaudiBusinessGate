@@ -51,10 +51,9 @@ export interface ComplianceCheck {
 
 export interface BillingEvent {
   tenantId: string;
-  invoiceId: string;
   eventType: string;
-  amount: number;
-  billingDate: Date;
+  data?: any;
+  timestamp?: Date;
 }
 
 export interface HealthCheckResult {
@@ -88,6 +87,18 @@ export class DatabaseService {
         return { rows: [], rowCount: 0 };
       }
     };
+  }
+
+  public async beginTransaction(): Promise<void> {
+    await this.pool.query('BEGIN');
+  }
+
+  public async commitTransaction(): Promise<void> {
+    await this.pool.query('COMMIT');
+  }
+
+  public async rollbackTransaction(): Promise<void> {
+    await this.pool.query('ROLLBACK');
   }
 
   /**
@@ -318,21 +329,19 @@ export class DatabaseService {
     try {
       const query = `
         INSERT INTO billing_events (
-          tenant_id, invoice_id, event_type, amount, billing_date, created_at
-        ) VALUES ($1, $2, $3, $4, $5, $6)
+          tenant_id, event_type, event_data, created_at
+        ) VALUES ($1, $2, $3, $4)
       `;
 
       const values = [
         event.tenantId,
-        event.invoiceId,
         event.eventType,
-        event.amount,
-        event.billingDate,
-        new Date()
+        JSON.stringify(event.data || {}),
+        event.timestamp || new Date()
       ];
 
       await this.pool.query(query, values);
-      console.log(`Logged billing event for tenant ${event.tenantId}`);
+      console.log(`Logged billing event for tenant ${event.tenantId}: ${event.eventType}`);
     } catch (error) {
       console.error('Failed to log billing event:', error);
       throw error;
@@ -492,6 +501,155 @@ export class DatabaseService {
       console.log('Database connection pool closed');
     } catch (error) {
       console.error('Failed to close database connection:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get Stripe customer
+   */
+  public async getStripeCustomer(tenantId: string): Promise<any> {
+    try {
+      const query = `SELECT * FROM stripe_customers WHERE tenant_id = $1`;
+      const result = await this.pool.query(query, [tenantId]);
+      return result.rows[0] || null;
+    } catch (error) {
+      console.error('Failed to get Stripe customer:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get tenant
+   */
+  public async getTenant(tenantId: string): Promise<any> {
+    try {
+      const query = `SELECT * FROM tenants WHERE id = $1`;
+      const result = await this.pool.query(query, [tenantId]);
+      return result.rows[0] || null;
+    } catch (error) {
+      console.error('Failed to get tenant:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Save Stripe customer
+   */
+  public async saveStripeCustomer(tenantId: string, customerId: string): Promise<void> {
+    try {
+      const query = `
+        INSERT INTO stripe_customers (tenant_id, customer_id, created_at)
+        VALUES ($1, $2, $3)
+        ON CONFLICT (tenant_id) DO UPDATE SET
+          customer_id = EXCLUDED.customer_id,
+          updated_at = CURRENT_TIMESTAMP
+      `;
+      await this.pool.query(query, [tenantId, customerId, new Date()]);
+      console.log(`Saved Stripe customer for tenant ${tenantId}`);
+    } catch (error) {
+      console.error('Failed to save Stripe customer:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Begin transaction
+   */
+  public async beginTransaction(): Promise<void> {
+    try {
+      await this.pool.query('BEGIN');
+      console.log('Transaction begun');
+    } catch (error) {
+      console.error('Failed to begin transaction:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Commit transaction
+   */
+  public async commitTransaction(): Promise<void> {
+    try {
+      await this.pool.query('COMMIT');
+      console.log('Transaction committed');
+    } catch (error) {
+      console.error('Failed to commit transaction:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Rollback transaction
+   */
+  public async rollbackTransaction(): Promise<void> {
+    try {
+      await this.pool.query('ROLLBACK');
+      console.log('Transaction rolled back');
+    } catch (error) {
+      console.error('Failed to rollback transaction:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Static method to get connection pool
+   */
+  public static getPool(): any {
+    // This is a mock implementation
+    return {
+      query: async (sql: string, params?: any[]) => {
+        console.log('Database query:', sql, params);
+        return { rows: [], rowCount: 0 };
+      }
+    };
+  }
+
+  /**
+   * Static method to close connection pool
+   */
+  public static async closePool(): Promise<void> {
+    console.log('Database connection pool closed');
+  }
+
+  /**
+   * Get current license for tenant
+   */
+  public async getCurrentLicense(tenantId: string): Promise<any> {
+    try {
+      const query = `
+        SELECT l.*, p.name as plan_name, p.monthly_price 
+        FROM licenses l 
+        JOIN license_plans p ON l.plan_id = p.id 
+        WHERE l.tenant_id = $1 AND l.status = 'active'
+        ORDER BY l.created_at DESC 
+        LIMIT 1
+      `;
+      const result = await this.pool.query(query, [tenantId]);
+      return result.rows[0] || null;
+    } catch (error) {
+      console.error('Failed to get current license:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get usage for period
+   */
+  public async getUsageForPeriod(tenantId: string, period: { start: Date; end: Date }): Promise<any> {
+    try {
+      const query = `
+        SELECT 
+          COALESCE(SUM(user_count), 0) as total_users,
+          COALESCE(SUM(storage_gb), 0) as total_storage,
+          COALESCE(SUM(api_calls), 0) as total_api_calls
+        FROM daily_usage_aggregations 
+        WHERE tenant_id = $1 AND usage_date >= $2 AND usage_date <= $3
+      `;
+      const result = await this.pool.query(query, [tenantId, period.start, period.end]);
+      return result.rows[0] || { total_users: 0, total_storage: 0, total_api_calls: 0 };
+    } catch (error) {
+      console.error('Failed to get usage for period:', error);
       throw error;
     }
   }

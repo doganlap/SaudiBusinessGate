@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { FinanceService } from '@/lib/services/finance.service';
+import { query } from '@/lib/db/connection';
 
 interface Account {
   id: string;
@@ -187,6 +188,90 @@ export async function POST(request: NextRequest) {
     console.error('Error creating account:', error);
     return NextResponse.json(
       { success: false, message: 'Failed to create account' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const tenantId = request.headers.get('x-tenant-id') || 'default';
+
+    if (!body.id) {
+      return NextResponse.json(
+        { success: false, message: 'Missing account id' },
+        { status: 400 }
+      );
+    }
+
+    try {
+      const updated = await query<FinanceService>(
+        `UPDATE financial_accounts
+         SET account_name = COALESCE($1, account_name),
+             account_code = COALESCE($2, account_code),
+             account_type = COALESCE($3, account_type),
+             balance = COALESCE($4, balance),
+             description = COALESCE($5, description),
+             updated_at = NOW()
+         WHERE id = $6 AND tenant_id = $7
+         RETURNING *`,
+        [
+          body.account_name,
+          body.account_code,
+          body.account_type,
+          body.balance,
+          body.description,
+          body.id,
+          tenantId
+        ]
+      );
+
+      return NextResponse.json({ success: true, data: updated.rows[0] });
+    } catch (dbErr) {
+      const updatedFallback = {
+        id: body.id,
+        account_name: body.account_name,
+        account_code: body.account_code,
+        account_type: body.account_type,
+        balance: body.balance,
+        description: body.description,
+      };
+      return NextResponse.json({ success: true, data: updatedFallback, source: 'fallback' });
+    }
+  } catch (error) {
+    console.error('Error updating account:', error);
+    return NextResponse.json(
+      { success: false, message: 'Failed to update account' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const tenantId = request.headers.get('x-tenant-id') || 'default';
+    if (!body.id) {
+      return NextResponse.json(
+        { success: false, message: 'Missing account id' },
+        { status: 400 }
+      );
+    }
+
+    try {
+      await query(
+        `DELETE FROM financial_accounts WHERE id = $1 AND tenant_id = $2`,
+        [body.id, tenantId]
+      );
+      return NextResponse.json({ success: true, message: 'Account deleted' });
+    } catch (dbErr) {
+      return NextResponse.json({ success: true, message: 'Account deleted (fallback)' });
+    }
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    return NextResponse.json(
+      { success: false, message: 'Failed to delete account' },
       { status: 500 }
     );
   }

@@ -111,12 +111,16 @@ export class RealTimeAnalyticsEngine extends EventEmitter {
 
   private async calculateCustomerKPIs(): Promise<KPI[]> {
     console.log('📊 Dashboard: Fetching Customer KPIs from database...');
-
-    // Real query for active users (e.g., users who signed in within the last 7 days)
-    const activeUsersResult = await pool.query(
-      "SELECT COUNT(*) FROM users WHERE last_login >= NOW() - INTERVAL '7 days'"
-    );
-    const activeUsers = { id: 'active_users', name: 'Active Users (7d)', category: KPI_CATEGORIES.CUSTOMER, value: parseInt(activeUsersResult.rows[0].count, 10), change: 18.5, changeType: 'increase' as 'increase' | 'decrease', trend: this.generateTrend(400, 487, 12), target: 600, format: 'number' as "number" | "text" | "currency" | "percentage" | undefined };
+    let activeUsersCount = 0;
+    try {
+      const activeUsersResult = await pool.query(
+        "SELECT COUNT(*) FROM users WHERE last_login >= NOW() - INTERVAL '7 days'"
+      );
+      activeUsersCount = parseInt(activeUsersResult.rows[0]?.count || '0', 10);
+    } catch (err) {
+      console.warn('⚠️ Active users query failed, using fallback count = 0');
+    }
+    const activeUsers = { id: 'active_users', name: 'Active Users (7d)', category: KPI_CATEGORIES.CUSTOMER, value: activeUsersCount, change: 18.5, changeType: 'increase' as 'increase' | 'decrease', trend: this.generateTrend(400, 487, 12), target: 600, format: 'number' as "number" | "text" | "currency" | "percentage" | undefined };
 
     // NOTE: NPS and CSAT would typically come from a 'surveys' or 'feedback' table.
     const nps = { id: 'nps', name: 'Net Promoter Score (NPS)', category: KPI_CATEGORIES.CUSTOMER, value: 45, change: 12.5, changeType: 'increase' as 'increase' | 'decrease', trend: this.generateTrend(40, 45, 12), target: 50, format: 'number' as "number" | "text" | "currency" | "percentage" | undefined };
@@ -131,12 +135,16 @@ export class RealTimeAnalyticsEngine extends EventEmitter {
 
   private async calculateProductKPIs(): Promise<KPI[]> {
     console.log('📊 Dashboard: Fetching Product KPIs from database...');
-
-    // Real query for API calls in the last 24 hours from the audit log
-    const apiCallsResult = await pool.query(
-      "SELECT COUNT(*) FROM audit_logs WHERE action_type = 'api_call' AND created_at >= NOW() - INTERVAL '24 hours'"
-    );
-    const apiCalls = { id: 'api_calls', name: 'API Calls (24h)', category: KPI_CATEGORIES.PRODUCT, value: parseInt(apiCallsResult.rows[0].count, 10), change: 22.5, changeType: 'increase' as 'increase' | 'decrease', trend: this.generateTrend(120000, 156789, 24), format: 'number' as "number" | "text" | "currency" | "percentage" | undefined };
+    let apiCallsValue = 0;
+    try {
+      const apiCallsResult = await pool.query(
+        "SELECT COUNT(*) FROM audit_logs WHERE action_type = 'api_call' AND created_at >= NOW() - INTERVAL '24 hours'"
+      );
+      apiCallsValue = parseInt(apiCallsResult.rows[0]?.count || '0', 10);
+    } catch (err) {
+      console.warn('⚠️ API calls query failed, using fallback count = 0');
+    }
+    const apiCalls = { id: 'api_calls', name: 'API Calls (24h)', category: KPI_CATEGORIES.PRODUCT, value: apiCallsValue, change: 22.5, changeType: 'increase' as 'increase' | 'decrease', trend: this.generateTrend(120000, 156789, 24), format: 'number' as "number" | "text" | "currency" | "percentage" | undefined };
 
     // NOTE: P95 Response Time and System Uptime are typically sourced from an 
     // Application Performance Monitoring (APM) tool like Azure Monitor, not the database.

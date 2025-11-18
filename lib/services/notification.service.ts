@@ -426,6 +426,39 @@ export class NotificationService {
     // Cancel a scheduled notification
     console.log(`Cancelled scheduled notification ${notificationId}`);
   }
+
+  /**
+   * Send general alert
+   */
+  public async sendAlert(alert: {
+    tenantId: string;
+    type: string;
+    title: string;
+    message: string;
+    data?: any;
+  }): Promise<void> {
+    try {
+      const { tenantId, type, title, message, data } = alert;
+      
+      // Send email notification
+      await this.emailService.send({
+        to: `admin@${tenantId}.com`, // This should be replaced with actual admin email
+        subject: title,
+        text: message,
+        html: `<h3>${title}</h3><p>${message}</p>`
+      });
+      
+      // Log the alert
+      console.log(`Alert sent to tenant ${tenantId}: ${type} - ${title}`);
+      
+      // Store in database for audit
+      // This would typically be stored in a notifications/alerts table
+      
+    } catch (error) {
+      console.error('Failed to send alert:', error);
+      throw error;
+    }
+  }
 }
 
 export default NotificationService;

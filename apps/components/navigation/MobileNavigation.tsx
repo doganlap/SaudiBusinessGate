@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useNavigation } from '@/hooks/useNavigation';
 import { 
   Menu, 
   X, 
@@ -18,7 +19,9 @@ import {
   ChevronRight,
   User,
   LogOut,
-  HelpCircle
+  HelpCircle,
+  Loader2,
+  AlertCircle
 } from 'lucide-react';
 
 interface MobileNavigationItem {
@@ -132,7 +135,7 @@ export default function MobileNavigation({
   };
 
   const isActive = (href: string) => {
-    return pathname === href || pathname.startsWith(href + '/');
+    return pathname === href || pathname?.startsWith(href + '/') || false;
   };
 
   const handleNavigation = (href: string) => {

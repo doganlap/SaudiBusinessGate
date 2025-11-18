@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     const status = searchParams.get('status') || undefined;
     const assignee_id = searchParams.get('assignee_id') || undefined;
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit') as string) : undefined;
-    const offset = searchParams.get('offset') ? parseInt(search_params.get('offset') as string) : undefined;
+    const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset') as string) : undefined;
 
     const tasks = await ProjectManagementService.getTasks(parseInt(projectId), { status, assignee_id, limit, offset });
     return NextResponse.json(tasks);

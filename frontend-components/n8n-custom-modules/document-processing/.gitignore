@@ -1,0 +1,44 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+npm-debug.log*
+package-lock.json
+yarn.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Application
+logs/
+backups/
+data/
+*.log
+.n8n/
+.npm/
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Tests
+coverage/
+.nyc_output/
+*.lcov
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db

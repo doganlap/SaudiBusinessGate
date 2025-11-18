@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils"
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link' | 'success' | 'warning'
+  variant?: 'default' | 'primary' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link' | 'success' | 'warning'
   size?: 'sm' | 'default' | 'lg' | 'xl' | 'icon'
   loading?: boolean
   leftIcon?: React.ReactNode
@@ -25,6 +25,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const baseClasses = "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden"
     
     const variants = {
+      default: "bg-brand-600 text-white hover:bg-brand-700 focus-visible:ring-brand-500 shadow-sm hover:shadow-md active:scale-[0.98]",
       primary: "bg-brand-600 text-white hover:bg-brand-700 focus-visible:ring-brand-500 shadow-sm hover:shadow-md active:scale-[0.98]",
       secondary: "bg-white text-neutral-700 border border-neutral-300 hover:bg-neutral-50 focus-visible:ring-brand-500 shadow-sm hover:shadow-md active:scale-[0.98]",
       destructive: "bg-error-600 text-white hover:bg-error-700 focus-visible:ring-error-500 shadow-sm hover:shadow-md active:scale-[0.98]",

@@ -3,26 +3,33 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  LayoutDashboard, 
-  Building2, 
-  Users, 
-  TrendingUp, 
-  DollarSign, 
-  Bot,
-  Settings,
-  BarChart3,
-  FileText,
-  Calendar,
-  Shield,
-  Menu,
-  X,
-  ChevronRight,
-  ChevronDown,
-  ChevronLeft
-} from 'lucide-react';
+import { useNavigation } from '@/hooks/useNavigation';
+import {
+  IconHome,
+  IconBuilding,
+  IconUsers,
+  IconTrendingUp,
+  IconDollar,
+  IconZap,
+  IconSettings,
+  IconBarChart,
+  IconFileText,
+  IconCalendar,
+  IconShield,
+  IconMenu,
+  IconClose,
+  IconChevronRight,
+  IconChevronDown,
+  IconChevronLeft,
+  IconLoader,
+  IconAlert,
+  IconPackage,
+  IconCreditCard,
+  IconUserCheck
+} from '@/components/ui/IconSystem';
 
 interface NavigationItem {
+  id: string;
   name: string;
   href: string;
   icon: React.ComponentType<any>;
@@ -31,81 +38,6 @@ interface NavigationItem {
   badge?: number;
   isNew?: boolean;
 }
-
-const navigationItems: NavigationItem[] = [
-  {
-    name: 'Dashboard',
-    href: '/dashboard',
-    icon: LayoutDashboard,
-    description: 'Main overview and metrics'
-  },
-  {
-    name: 'Finance',
-    href: '/finance',
-    icon: DollarSign,
-    description: 'Financial management and accounting',
-    children: [
-      { name: 'Dashboard', href: '/finance', icon: LayoutDashboard },
-      { name: 'Accounts', href: '/finance/accounts', icon: Building2 },
-      { name: 'Transactions', href: '/finance/transactions', icon: FileText },
-      { name: 'Reports', href: '/finance/reports', icon: BarChart3 }
-    ]
-  },
-  {
-    name: 'Sales & CRM',
-    href: '/sales',
-    icon: TrendingUp,
-    description: 'Sales pipeline and customer management',
-    children: [
-      { name: 'Dashboard', href: '/sales', icon: LayoutDashboard },
-      { name: 'Opportunities', href: '/sales/opportunities', icon: TrendingUp },
-      { name: 'Customers', href: '/sales/customers', icon: Users },
-      { name: 'Activities', href: '/sales/activities', icon: Calendar }
-    ]
-  },
-  {
-    name: 'HR Management',
-    href: '/hr',
-    icon: Users,
-    description: 'Human resources and employee management',
-    children: [
-      { name: 'Dashboard', href: '/hr', icon: LayoutDashboard },
-      { name: 'Employees', href: '/hr/employees', icon: Users },
-      { name: 'Leaves', href: '/hr/leaves', icon: Calendar },
-      { name: 'Reports', href: '/hr/reports', icon: BarChart3 }
-    ]
-  },
-  {
-    name: 'AI & Automation',
-    href: '/ai',
-    icon: Bot,
-    description: 'AI integration and automation tools',
-    isNew: true,
-    children: [
-      { name: 'AI Hub', href: '/ai', icon: Bot },
-      { name: 'Local LLM', href: '/ai/local-llm', icon: Bot },
-      { name: 'Agents', href: '/agents', icon: Bot }
-    ]
-  },
-  {
-    name: 'Analytics',
-    href: '/analytics',
-    icon: BarChart3,
-    description: 'Data insights and reporting'
-  },
-  {
-    name: 'Admin',
-    href: '/admin',
-    icon: Shield,
-    description: 'System administration and configuration'
-  },
-  {
-    name: 'Settings',
-    href: '/settings',
-    icon: Settings,
-    description: 'Application settings and preferences'
-  }
-];
 
 interface SidebarProps {
   isCollapsed?: boolean;
@@ -116,6 +48,15 @@ export default function Sidebar({ isCollapsed = false, onToggleCollapse }: Sideb
   const pathname = usePathname();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  
+  // Use the navigation hook for API-driven navigation
+  const { 
+    navigation, 
+    userMenu, 
+    isLoading, 
+    error,
+    refetch 
+  } = useNavigation();
 
   const toggleExpanded = (itemName: string) => {
     setExpandedItems(prev => 
@@ -126,8 +67,207 @@ export default function Sidebar({ isCollapsed = false, onToggleCollapse }: Sideb
   };
 
   const isActive = (href: string) => {
-    return pathname === href || pathname.startsWith(href + '/');
+    return pathname === href || pathname?.startsWith(href + '/') || false;
   };
+
+  // Map API navigation items to component format with icons
+  const mapNavigationItem = (item: any): NavigationItem => {
+    // Icon mapping based on item id or category
+    const getIcon = (id: string, category?: string) => {
+      const iconMap: { [key: string]: React.ReactNode } = {
+        'dashboard': <IconHome size="md" />,
+        'finance': <IconDollar size="sm" />,
+        'sales': <IconTrendingUp size="sm" />,
+        'crm': <IconUsers size="sm" />,
+        'hr': <IconUserCheck size="sm" />,
+        'procurement': <IconPackage size="sm" />,
+        'billing': <IconCreditCard size="sm" />,
+        'analytics': <IconBarChart size="sm" />,
+        'reporting': <IconFileText size="sm" />,
+        'workflow': <IconFileText size="sm" />,
+        'grc': <IconShield size="sm" />,
+        'platform': <IconBuilding size="md" />,
+        'users': <IconUsers size="sm" />,
+        'tenants': <IconBuilding size="sm" />,
+        'settings': <IconSettings size="sm" />,
+        'services': <IconZap size="md" />,
+        'products': <IconPackage size="md" />,
+        'ai': <IconZap size="sm" />,
+        'admin': <IconShield size="sm" />,
+      };
+      
+      return iconMap[id] || <IconHome size="md" />;
+    };
+
+    return {
+      id: item.id,
+      name: item.label || item.title,
+      href: item.path || item.href,
+      icon: getIcon(item.id, item.category),
+      description: item.description,
+      children: item.children ? item.children.map(mapNavigationItem) : undefined,
+      badge: item.badge,
+      isNew: item.isNew
+    };
+  };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <>
+        {/* Mobile menu button */}
+        <button
+          onClick={() => setIsMobileOpen(true)}
+          className="fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-lg lg:hidden"
+        >
+          <IconMenu size="md" />
+        </button>
+
+        {/* Mobile Overlay */}
+        {isMobileOpen && (
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+            onClick={() => setIsMobileOpen(false)}
+          />
+        )}
+
+        {/* Loading Sidebar */}
+        <div className={`
+          fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200
+          transform transition-transform duration-300 ease-in-out
+          ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
+          lg:translate-x-0 lg:static lg:shadow-none
+          ${isCollapsed ? 'lg:w-16' : 'lg:w-64'}
+        `}>
+          <div className="flex flex-col h-full">
+            {/* Header skeleton */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              {!isCollapsed && (
+                <div className="animate-pulse">
+                  <div className="h-6 bg-gray-200 rounded w-24 mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-16"></div>
+                </div>
+              )}
+              <button
+                onClick={onToggleCollapse}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                {isCollapsed ? <IconChevronRight size="sm" /> : <IconChevronLeft size="sm" />}
+              </button>
+            </div>
+
+            {/* Navigation skeleton */}
+            <nav className="flex-1 p-4 space-y-2">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="h-10 bg-gray-200 rounded-lg mb-2"></div>
+                </div>
+              ))}
+            </nav>
+
+            {/* User info skeleton */}
+            <div className="p-4 border-t border-gray-200">
+              <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
+                <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
+                {!isCollapsed && (
+                  <div className="flex-1">
+                    <div className="h-4 bg-gray-200 rounded w-20 mb-1"></div>
+                    <div className="h-3 bg-gray-200 rounded w-16"></div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <>
+        {/* Mobile menu button */}
+        <button
+          onClick={() => setIsMobileOpen(true)}
+          className="fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-lg lg:hidden"
+        >
+          <IconMenu size="md" />
+        </button>
+
+        {/* Mobile Overlay */}
+        {isMobileOpen && (
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+            onClick={() => setIsMobileOpen(false)}
+          />
+        )}
+
+        {/* Error Sidebar */}
+        <div className={`
+          fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200
+          transform transition-transform duration-300 ease-in-out
+          ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
+          lg:translate-x-0 lg:static lg:shadow-none
+          ${isCollapsed ? 'lg:w-16' : 'lg:w-64'}
+        `}>
+          <div className="flex flex-col h-full">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              {!isCollapsed && (
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">DH</span>
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">DoganHub</h2>
+                    <p className="text-xs text-gray-500">Navigation Error</p>
+                  </div>
+                </div>
+              )}
+              <button
+                onClick={onToggleCollapse}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                {isCollapsed ? <IconChevronRight size="sm" /> : <IconChevronLeft size="sm" />}
+              </button>
+            </div>
+
+            {/* Error message */}
+            <div className="flex-1 px-4 py-6">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="flex items-center space-x-2 text-red-800">
+                  <IconAlert size="md" />
+                  <span className="font-medium">Navigation Error</span>
+                </div>
+                <p className="text-red-600 text-sm mt-2">{error}</p>
+                <button
+                  onClick={refetch}
+                  className="mt-3 flex items-center space-x-2 text-sm text-red-600 hover:text-red-800"
+                >
+                  <IconLoader size="sm" />
+                  <span>Retry</span>
+                </button>
+              </div>
+            </div>
+
+            {/* User info */}
+            <div className="p-4 border-t border-gray-200">
+              <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
+                <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+                {!isCollapsed && (
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">Unknown User</p>
+                    <p className="text-xs text-gray-500 truncate">Connection failed</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   const NavigationItem = ({ item, level = 0 }: { item: NavigationItem; level?: number }) => {
     const hasChildren = item.children && item.children.length > 0;
@@ -157,13 +297,13 @@ export default function Sidebar({ isCollapsed = false, onToggleCollapse }: Sideb
           }}
         >
           <div className={`flex items-center ${isCollapsed && level === 0 ? '' : 'flex-1'}`}>
-            <item.icon className={`h-5 w-5 ${isCollapsed && level === 0 ? '' : 'mr-3'}`} />
+            {item.icon}
             {!isCollapsed && (
               <span className="flex-1">{item.name}</span>
             )}
           </div>
           {!isCollapsed && hasChildren && (
-            <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+            <IconChevronDown size="sm" className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
           )}
           {!isCollapsed && item.isNew && (
             <span className="ml-2 px-2 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full">
@@ -207,19 +347,34 @@ export default function Sidebar({ isCollapsed = false, onToggleCollapse }: Sideb
           onClick={onToggleCollapse}
           className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
         >
-          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          {isCollapsed ? <IconChevronRight size="sm" /> : <IconChevronLeft size="sm" />}
         </button>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-        {navigationItems.map((item) => (
-          <NavigationItem key={item.name} item={item} />
+        {navigation.map((item) => (
+          <NavigationItem key={item.id} item={mapNavigationItem(item)} />
         ))}
       </nav>
 
       {/* Footer */}
       <div className="p-4 border-t border-gray-200">
+        {/* User menu */}
+        {userMenu.length > 0 && !isCollapsed && (
+          <div className="mb-4 space-y-1">
+            {userMenu.map(item => (
+              <Link
+                key={item.id}
+                href={item.path || item.href}
+                className="flex items-center space-x-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              >
+                <span>{item.label || item.title}</span>
+              </Link>
+            ))}
+          </div>
+        )}
+        
         <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
           <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
           {!isCollapsed && (
@@ -248,12 +403,12 @@ export default function Sidebar({ isCollapsed = false, onToggleCollapse }: Sideb
         onClick={() => setIsMobileOpen(true)}
         className="fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-lg lg:hidden"
       >
-        <Menu className="h-6 w-6" />
+        <IconMenu size="md" />
       </button>
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200
+        fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200
         transform transition-transform duration-300 ease-in-out
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 lg:static lg:inset-0

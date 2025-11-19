@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { SaudiBusinessGateInfographic } from '@/components/infographic/SaudiBusinessGateBlock';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -94,6 +95,82 @@ export default function LandingPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Agents Infographic Section */}
+      <section id="agents" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white to-slate-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">عوامل ومنصات ذاتية بالذكاء الاصطناعي</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">كروت إنفوجرافيك مختصرة للمشاريع الرئيسية: Shahin، SBG، DoganHub</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-2xl font-bold text-gray-900">Shahin Vision</h3>
+                <span className="px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">L2 الآن • L3 خلال 12 شهر</span>
+              </div>
+              <p className="text-gray-600 mb-6">لوحة حوكمة سيبرية وامتثال تساعد القادة على رسم الضوابط، مراقبتها، وفرضها عبر رؤى وأتمتة مدعومة بالذكاء.</p>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-start"><span className="mr-2">🚀</span><p className="text-gray-700">قرارات أسرع عبر تحليلات فورية</p></div>
+                <div className="flex items-start"><span className="mr-2">🛡</span><p className="text-gray-700">ضوابط أقوى وتتبّع أدق</p></div>
+                <div className="flex items-start"><span className="mr-2">📊</span><p className="text-gray-700">لوحات مؤشرات لحظية قابلة للتنفيذ</p></div>
+                <div className="flex items-start"><span className="mr-2">🤖</span><p className="text-gray-700">توصيات وتنفيذ ذكي مع اعتماد</p></div>
+              </div>
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="bg-slate-50 rounded-xl p-3 text-center"><div className="font-semibold">الآن</div><div className="text-sm text-gray-600">مساعد ذكي + رؤى</div></div>
+                <div className="bg-slate-50 rounded-xl p-3 text-center"><div className="font-semibold">3–6 أشهر</div><div className="text-sm text-gray-600">مهام ذاتية + اعتماد</div></div>
+                <div className="bg-slate-50 rounded-xl p-3 text-center"><div className="font-semibold">6–12 شهر</div><div className="text-sm text-gray-600">حوكمة ذاتية</div></div>
+              </div>
+              <div className="mb-6">
+                <div className="font-semibold mb-2">من وضع حالي → إلى امتثال مستمر</div>
+                <p className="text-gray-700">قبل: تقارير يدوية متأخرة وفجوات ضوابط.</p>
+                <p className="text-gray-700">مع Shahin: خرائط ضوابط آلية، مراقبة مستمرة، إجراءات مع اعتماد.</p>
+              </div>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">−40% وقت التقارير</span>
+                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">−30% متابعات يدوية</span>
+                <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">+50% وضوح مخاطر</span>
+                <span className="bg-slate-100 text-slate-800 px-3 py-1 rounded-full text-sm">100% تتبع قرارات</span>
+              </div>
+              <div className="text-sm text-gray-600">التزام: ترقية إلى L3 تحكم ذاتي وامتثال مستمر خلال 12 شهرًا</div>
+            </div>
+
+            <SaudiBusinessGateInfographic />
+
+            <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-2xl font-bold text-gray-900">DoganHub Commerce</h3>
+                <span className="px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">L1 الآن • L2 خلال 12 شهر</span>
+              </div>
+              <p className="text-gray-600 mb-6">مركز تكامل تجاري ينسّق الكتالوج والطلبات ورحلات العملاء مع رؤى وأتمتة مدفوعة بالذكاء.</p>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-start"><span className="mr-2">🚀</span><p className="text-gray-700">رؤى الطلبات والمخزون في لحظة</p></div>
+                <div className="flex items-start"><span className="mr-2">🛡</span><p className="text-gray-700">سياسات دفع وبيانات آمنة</p></div>
+                <div className="flex items-start"><span className="mr-2">📊</span><p className="text-gray-700">مسارات العملاء وأداء المبيعات</p></div>
+                <div className="flex items-start"><span className="mr-2">🤖</span><p className="text-gray-700">حملات وعمليات مدفوعة بالذكاء</p></div>
+              </div>
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="bg-slate-50 rounded-xl p-3 text-center"><div className="font-semibold">الآن</div><div className="text-sm text-gray-600">رؤى + دمج القنوات</div></div>
+                <div className="bg-slate-50 rounded-xl p-3 text-center"><div className="font-semibold">3–6 أشهر</div><div className="text-sm text-gray-600">تدفقات شبه ذاتية</div></div>
+                <div className="bg-slate-50 rounded-xl p-3 text-center"><div className="font-semibold">6–12 شهر</div><div className="text-sm text-gray-600">أتمتة المخزون والحملات</div></div>
+              </div>
+              <div className="mb-6">
+                <div className="font-semibold mb-2">من إدارة يدوية → إلى تجارة ذكية</div>
+                <p className="text-gray-700">قبل: تحديثات مخزون يدوية ورؤية مجزأة.</p>
+                <p className="text-gray-700">مع DoganHub: تكامل المنصّات، توصيات AI، تدفقات أوتوماتيكية.</p>
+              </div>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">−30% زمن الطلبات</span>
+                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">−25% أخطاء المخزون</span>
+                <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">+40% دقّة الاستهداف</span>
+                <span className="bg-slate-100 text-slate-800 px-3 py-1 rounded-full text-sm">+20% التحويل</span>
+              </div>
+              <div className="text-sm text-gray-600">التزام: ترقية إلى L2 Co-Pilot خلال 9–12 شهرًا</div>
+            </div>
           </div>
         </div>
       </section>

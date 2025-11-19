@@ -171,7 +171,78 @@ export async function GET() {
           icon: '👤',
           badge: 0,
           available: true,
-          children: []
+          children: [
+            {
+              id: 'hr-dashboard',
+              module: 'HR',
+              label: 'HR Dashboard',
+              titleAr: 'لوحة الموارد البشرية',
+              path: '/hr',
+              icon: '📊',
+              available: true,
+              description: 'HR overview and metrics'
+            },
+            {
+              id: 'employees',
+              module: 'HR',
+              label: 'Employees',
+              titleAr: 'الموظفون',
+              path: '/hr/employees',
+              icon: '👥',
+              available: true,
+              description: 'Employee management'
+            },
+            {
+              id: 'attendance',
+              module: 'HR',
+              label: 'Attendance',
+              titleAr: 'الحضور',
+              path: '/hr/attendance',
+              icon: '📅',
+              available: true,
+              description: 'Attendance tracking'
+            },
+            {
+              id: 'payroll',
+              module: 'HR',
+              label: 'Payroll',
+              titleAr: 'الرواتب',
+              path: '/hr/payroll',
+              icon: '💰',
+              available: true,
+              description: 'Payroll management'
+            },
+            {
+              id: 'employees-create',
+              module: 'HR',
+              label: 'Create Employee',
+              titleAr: 'إضافة موظف',
+              path: '/hr/employees/create',
+              icon: '➕',
+              available: true,
+              description: 'Add new employee'
+            },
+            {
+              id: 'attendance-log',
+              module: 'HR',
+              label: 'Log Attendance',
+              titleAr: 'تسجيل الحضور',
+              path: '/hr/attendance/log',
+              icon: '📝',
+              available: true,
+              description: 'Record attendance'
+            },
+            {
+              id: 'payroll-process',
+              module: 'HR',
+              label: 'Process Payroll',
+              titleAr: 'معالجة الرواتب',
+              path: '/hr/payroll/process',
+              icon: '⚙️',
+              available: true,
+              description: 'Process payroll payments'
+            }
+          ]
         },
         {
           id: 'procurement',

@@ -36,7 +36,9 @@ import {
   Activity,
   Clock,
   ArrowUp,
-  Target
+  Target,
+  Calendar,
+  UserCircle
 } from 'lucide-react';
 
 interface NavigationItem {
@@ -373,7 +375,45 @@ export function PlatformNavigation() {
           href: `/${lng}/hr`,
           icon: <UserCheck className="h-4 w-4" />,
           description: 'Human resources',
-          descriptionAr: 'الموارد البشرية'
+          descriptionAr: 'الموارد البشرية',
+          children: [
+            {
+              id: 'hr-dashboard',
+              title: 'HR Dashboard',
+              titleAr: 'لوحة الموارد البشرية',
+              href: `/${lng}/hr`,
+              icon: <BarChart3 className="h-4 w-4" />,
+              description: 'HR overview and metrics',
+              descriptionAr: 'نظرة عامة ومقاييس الموارد البشرية'
+            },
+            {
+              id: 'employees',
+              title: 'Employees',
+              titleAr: 'الموظفون',
+              href: `/${lng}/hr/employees`,
+              icon: <Users className="h-4 w-4" />,
+              description: 'Employee management',
+              descriptionAr: 'إدارة الموظفين'
+            },
+            {
+              id: 'attendance',
+              title: 'Attendance',
+              titleAr: 'الحضور',
+              href: `/${lng}/hr/attendance`,
+              icon: <Calendar className="h-4 w-4" />,
+              description: 'Attendance tracking',
+              descriptionAr: 'تتبع الحضور'
+            },
+            {
+              id: 'payroll',
+              title: 'Payroll',
+              titleAr: 'الرواتب',
+              href: `/${lng}/hr/payroll`,
+              icon: <DollarSign className="h-4 w-4" />,
+              description: 'Payroll management',
+              descriptionAr: 'إدارة الرواتب'
+            }
+          ]
         },
         {
           id: 'procurement',

@@ -175,7 +175,7 @@ export const navigationRoutes: NavigationRoute[] = [
     ]
   },
 
-  // HR Product - PARTIAL
+  // HR Product - COMPLETE
   {
     id: 'hr',
     name: 'HR',
@@ -186,11 +186,43 @@ export const navigationRoutes: NavigationRoute[] = [
     defaultCollapsed: true,
     children: [
       {
+        id: 'hr-dashboard',
+        name: 'HR Dashboard',
+        href: '/hr',
+        icon: BarChart3,
+        description: 'HR overview and metrics',
+        category: 'products'
+      },
+      {
         id: 'hr-employees',
         name: 'Employees',
         href: '/hr/employees',
         icon: Users,
         description: 'Employee directory and management',
+        category: 'products'
+      },
+      {
+        id: 'hr-employees-create',
+        name: 'Create Employee',
+        href: '/hr/employees/create',
+        icon: Users,
+        description: 'Add new employee',
+        category: 'products'
+      },
+      {
+        id: 'hr-attendance',
+        name: 'Attendance',
+        href: '/hr/attendance',
+        icon: Clock,
+        description: 'Attendance tracking',
+        category: 'products'
+      },
+      {
+        id: 'hr-attendance-log',
+        name: 'Log Attendance',
+        href: '/hr/attendance/log',
+        icon: Clock,
+        description: 'Record attendance',
         category: 'products'
       },
       {
@@ -202,11 +234,11 @@ export const navigationRoutes: NavigationRoute[] = [
         category: 'products'
       },
       {
-        id: 'hr-attendance',
-        name: 'Attendance',
-        href: '/hr/attendance',
-        icon: Clock,
-        description: 'Attendance tracking',
+        id: 'hr-payroll-process',
+        name: 'Process Payroll',
+        href: '/hr/payroll/process',
+        icon: DollarSign,
+        description: 'Process payroll payments',
         category: 'products'
       }
     ]

@@ -106,7 +106,37 @@ export default function MainNavigation() {
           title: 'HR',
           href: `/${lng}/hr`,
           icon: <UserCheck className="h-4 w-4" />,
-          description: 'Human resources'
+          description: 'Human resources',
+          children: [
+            {
+              id: 'hr-dashboard',
+              title: 'HR Dashboard',
+              href: `/${lng}/hr`,
+              icon: <BarChart3 className="h-4 w-4" />,
+              description: 'HR overview and metrics'
+            },
+            {
+              id: 'employees',
+              title: 'Employees',
+              href: `/${lng}/hr/employees`,
+              icon: <Users className="h-4 w-4" />,
+              description: 'Employee management'
+            },
+            {
+              id: 'attendance',
+              title: 'Attendance',
+              href: `/${lng}/hr/attendance`,
+              icon: <Calendar className="h-4 w-4" />,
+              description: 'Attendance tracking'
+            },
+            {
+              id: 'payroll',
+              title: 'Payroll',
+              href: `/${lng}/hr/payroll`,
+              icon: <DollarSign className="h-4 w-4" />,
+              description: 'Payroll management'
+            }
+          ]
         },
         {
           id: 'procurement',

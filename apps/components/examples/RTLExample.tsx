@@ -70,10 +70,12 @@ export default function ExampleComponent() {
           {/* Form with RTL support */}
           <form className="space-y-4">
             <div className={tw.textStart}>
-              <label className="block">
+              <label htmlFor="rtl-name" className="block">
                 {isRTL ? 'الاسم' : 'Name'}
               </label>
               <input 
+                id="rtl-name"
+                aria-label={isRTL ? 'الاسم' : 'Name'}
                 type="text" 
                 className={`w-full ${tw.textStart} ${tw.ps('3')}`}
                 dir={direction}
@@ -81,13 +83,15 @@ export default function ExampleComponent() {
             </div>
 
             <div className={tw.textStart}>
-              <label className="block">
+              <label htmlFor="rtl-email" className="block">
                 {isRTL ? 'البريد الإلكتروني' : 'Email'}
               </label>
               <input 
+                id="rtl-email"
+                aria-label={isRTL ? 'البريد الإلكتروني' : 'Email'}
                 type="email" 
                 className={`w-full ${tw.textStart} ${tw.ps('3')}`}
-                dir="ltr" // Email always LTR
+                dir="ltr"
               />
             </div>
           </form>

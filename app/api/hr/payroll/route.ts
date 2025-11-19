@@ -1,58 +1,58 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
+import { HRService } from '@/lib/services/hr.service';
 
-interface PayrollRecord {
-  id: string;
-  employeeId: string;
-  employeeName: string;
-  department: string;
-  position: string;
-  baseSalary: number;
-  overtime: number;
-  bonuses: number;
-  deductions: number;
-  grossPay: number;
-  netPay: number;
-  payPeriod: string;
-  status: 'draft' | 'processed' | 'paid';
-  payDate: string;
-}
+const hrService = new HRService();
 
-const mockPayroll: PayrollRecord[] = [
-  {
-    id: '1', employeeId: 'EMP001', employeeName: 'Sarah Johnson', department: 'Sales',
-    position: 'Sales Manager', baseSalary: 7083, overtime: 450, bonuses: 1000, deductions: 1200,
-    grossPay: 8533, netPay: 7333, payPeriod: 'January 2024', status: 'paid', payDate: '2024-01-31'
-  },
-  {
-    id: '2', employeeId: 'EMP002', employeeName: 'Mike Chen', department: 'Engineering',
-    position: 'Software Engineer', baseSalary: 7917, overtime: 600, bonuses: 500, deductions: 1400,
-    grossPay: 9017, netPay: 7617, payPeriod: 'January 2024', status: 'paid', payDate: '2024-01-31'
-  },
-  {
-    id: '3', employeeId: 'EMP003', employeeName: 'Alex Rodriguez', department: 'Marketing',
-    position: 'Marketing Specialist', baseSalary: 5417, overtime: 200, bonuses: 300, deductions: 950,
-    grossPay: 5917, netPay: 4967, payPeriod: 'February 2024', status: 'processed', payDate: '2024-02-29'
-  }
-];
-
+/**
+ * GET /api/hr/payroll
+ * Get payroll records with optional filtering
+ */
 export async function GET(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
-    
-    const totalGrossPay = mockPayroll.reduce((sum, record) => sum + record.grossPay, 0);
-    const totalNetPay = mockPayroll.reduce((sum, record) => sum + record.netPay, 0);
-    const totalDeductions = mockPayroll.reduce((sum, record) => sum + record.deductions, 0);
-    
+    // Authentication
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Get tenant ID
+    const tenantId =
+      request.headers.get('x-tenant-id') ||
+      (session.user as any).tenantId ||
+      'default-tenant';
+
+    // Parse query parameters
+    const { searchParams } = new URL(request.url);
+    const employee_id = searchParams.get('employee_id')
+      ? parseInt(searchParams.get('employee_id')!)
+      : undefined;
+    const start_date = searchParams.get('start_date') || undefined;
+    const end_date = searchParams.get('end_date') || undefined;
+    const status = searchParams.get('status') || undefined;
+    const limit = searchParams.get('limit')
+      ? parseInt(searchParams.get('limit')!)
+      : undefined;
+    const offset = searchParams.get('offset')
+      ? parseInt(searchParams.get('offset')!)
+      : undefined;
+
+    // Call service layer (business logic)
+    const { payroll, summary } = await hrService.getPayroll(tenantId, {
+      employee_id,
+      start_date,
+      end_date,
+      status,
+      limit,
+      offset,
+    });
+
+    // Return HTTP response
     return NextResponse.json({
       success: true,
-      payroll: mockPayroll,
-      summary: {
-        totalEmployees: mockPayroll.length,
-        totalGrossPay,
-        totalNetPay,
-        totalDeductions,
-        paidEmployees: mockPayroll.filter(p => p.status === 'paid').length
-      }
+      payroll,
+      summary,
+      source: 'database',
     });
   } catch (error) {
     console.error('Error fetching payroll:', error);
@@ -63,30 +63,102 @@ export async function GET(request: NextRequest) {
   }
 }
 
+/**
+ * POST /api/hr/payroll
+ * Create new payroll record
+ */
 export async function POST(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
+    // Authentication
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Get tenant ID
+    const tenantId =
+      request.headers.get('x-tenant-id') ||
+      (session.user as any).tenantId ||
+      'default-tenant';
+
+    // Parse and validate request body
     const body = await request.json();
-    
-    const newPayroll: PayrollRecord = {
-      id: Date.now().toString(),
-      ...body,
-      grossPay: body.baseSalary + body.overtime + body.bonuses,
-      netPay: body.baseSalary + body.overtime + body.bonuses - body.deductions,
-      status: 'draft'
-    };
-    
-    mockPayroll.push(newPayroll);
-    
-    return NextResponse.json({
-      success: true,
-      payroll: newPayroll,
-      message: 'Payroll record created successfully'
+
+    const {
+      employee_id,
+      pay_period_start,
+      pay_period_end,
+      pay_date,
+      base_salary,
+      overtime_hours,
+      overtime_rate,
+      allowances,
+      bonuses,
+      deductions,
+      currency,
+      payment_method,
+    } = body;
+
+    // Validation
+    if (!employee_id || !pay_period_start || !pay_period_end || !pay_date || base_salary === undefined) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            'employee_id, pay_period_start, pay_period_end, pay_date, and base_salary are required',
+        },
+        { status: 400 }
+      );
+    }
+
+    // Call service layer (business logic)
+    const payroll = await hrService.createPayroll(tenantId, {
+      employee_id,
+      pay_period_start,
+      pay_period_end,
+      pay_date,
+      base_salary,
+      overtime_hours,
+      overtime_rate,
+      allowances,
+      bonuses,
+      deductions,
+      currency,
+      payment_method,
     });
-  } catch (error) {
-    console.error('Error creating payroll:', error);
+
+    // Return HTTP response
     return NextResponse.json(
-      { success: false, error: 'Failed to create payroll' },
+      {
+        success: true,
+        payroll,
+        message: 'Payroll record created successfully',
+      },
+      { status: 201 }
+    );
+  } catch (error: any) {
+    console.error('Error creating payroll:', error);
+
+    // Handle specific error cases
+    if (error.message?.includes('not found')) {
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: 404 }
+      );
+    }
+
+    if (error.message?.includes('not found')) {
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: 503 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: error.message || 'Failed to create payroll record',
+      },
       { status: 500 }
     );
   }

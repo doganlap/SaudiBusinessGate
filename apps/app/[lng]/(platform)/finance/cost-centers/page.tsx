@@ -51,7 +51,7 @@ export default function FinanceCostCentersPage() {
   ];
 
   return (
-    <div style={{ height: "100%", width: "100%" }}>
+    <div className="h-full w-full">
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <h1 className="text-2xl font-bold text-gray-900">{lng === "ar" ? "مراكز التكلفة" : "Cost Centers"}</h1>
@@ -78,9 +78,31 @@ export default function FinanceCostCentersPage() {
           <div className="bg-white rounded-lg shadow p-4 mt-6">
             <h2 className="text-lg font-semibold mb-3">{lng === 'ar' ? 'تعديل مركز التكلفة' : 'Edit Cost Center'}</h2>
             <div className="grid gap-3 md:grid-cols-4">
-              <input defaultValue={editing.name} onChange={(e)=>editing.name=e.target.value} className="rounded-md border px-3 py-2" />
-              <input defaultValue={editing.department} onChange={(e)=>editing.department=e.target.value} className="rounded-md border px-3 py-2" />
-              <input defaultValue={String(editing.budget)} onChange={(e)=>editing.budget=Number(e.target.value)} className="rounded-md border px-3 py-2" />
+              <input
+                defaultValue={editing.name}
+                onChange={(e)=>editing.name=e.target.value}
+                className="rounded-md border px-3 py-2"
+                aria-label={lng === 'ar' ? 'اسم مركز التكلفة' : 'Cost Center Name'}
+                title={lng === 'ar' ? 'اسم مركز التكلفة' : 'Cost Center Name'}
+                placeholder={lng === 'ar' ? 'الاسم' : 'Name'}
+              />
+              <input
+                defaultValue={editing.department}
+                onChange={(e)=>editing.department=e.target.value}
+                className="rounded-md border px-3 py-2"
+                aria-label={lng === 'ar' ? 'قسم مركز التكلفة' : 'Cost Center Department'}
+                title={lng === 'ar' ? 'قسم مركز التكلفة' : 'Cost Center Department'}
+                placeholder={lng === 'ar' ? 'القسم' : 'Department'}
+              />
+              <input
+                defaultValue={String(editing.budget)}
+                onChange={(e)=>editing.budget=Number(e.target.value)}
+                className="rounded-md border px-3 py-2"
+                aria-label={lng === 'ar' ? 'ميزانية مركز التكلفة' : 'Cost Center Budget'}
+                title={lng === 'ar' ? 'ميزانية مركز التكلفة' : 'Cost Center Budget'}
+                placeholder={lng === 'ar' ? 'الميزانية' : 'Budget'}
+                inputMode="numeric"
+              />
               <button onClick={async ()=>{
                 const res = await fetch(`/api/finance/cost-centers/${editing.id}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name: editing.name, department: editing.department, budget: editing.budget })});
                 if(res.ok){ setEditing(null); const data = await fetch('/api/finance/cost-centers?limit=50'); setRows(await data.json()); }

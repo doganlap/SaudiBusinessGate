@@ -39,6 +39,8 @@ import {
   DollarSign,
   TrendingUp,
   UserPlus,
+  UserCircle,
+  Calendar,
 } from "lucide-react";
 
 /**
@@ -174,6 +176,15 @@ function LeftNav({ locale, collapsedAt, drawerOpen, onCloseDrawer }:{ locale:"ar
       { k:"leads", ar:"العملاء المحتملون", en:"Leads", icon: TrendingUp, href:"/en/sales/leads" },
       { k:"deals", ar:"الصفقات", en:"Deals", icon: Handshake, href:"/en/sales/deals" },
     ]},
+    { key:"hr", titleAr:"الموارد البشرية", titleEn:"HR", items:[
+      { k:"hr-dashboard", ar:"لوحة الموارد البشرية", en:"HR Dashboard", icon: LayoutDashboard, href:`/${locale}/hr` },
+      { k:"employees", ar:"الموظفون", en:"Employees", icon: UserCircle, href:`/${locale}/hr/employees` },
+      { k:"employees-create", ar:"إضافة موظف", en:"Create Employee", icon: UserPlus, href:`/hr/employees/create` },
+      { k:"attendance", ar:"الحضور", en:"Attendance", icon: Calendar, href:`/${locale}/hr/attendance` },
+      { k:"attendance-log", ar:"تسجيل الحضور", en:"Log Attendance", icon: Calendar, href:`/hr/attendance/log` },
+      { k:"payroll", ar:"الرواتب", en:"Payroll", icon: DollarSign, href:`/${locale}/hr/payroll` },
+      { k:"payroll-process", ar:"معالجة الرواتب", en:"Process Payroll", icon: DollarSign, href:`/hr/payroll/process` },
+    ]},
     { key:"admin", titleAr:"الإدارة", titleEn:"Admin", items:[
       { k:"users", ar:"المستخدمون", en:"Users", icon: Users, href:"/en/platform/users" },
       { k:"tenants", ar:"العملاء", en:"Tenants", icon: Building2, href:"/en/platform/tenants" },
@@ -193,7 +204,7 @@ function LeftNav({ locale, collapsedAt, drawerOpen, onCloseDrawer }:{ locale:"ar
             <div className="h-full rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur-xl ring-1 ring-white/10 shadow-xl">
               <div className="mb-2 flex items-center justify-between">
                 <div className="text-sm font-semibold">Saudi Store</div>
-                <button onClick={onCloseDrawer} className="rounded-lg p-2 hover:bg-white/20"><X className="h-4 w-4"/></button>
+                <button onClick={onCloseDrawer} className="rounded-lg p-2 hover:bg-white/20" title="Close drawer"><X className="h-4 w-4"/></button>
               </div>
               {groups.map(g=> (
                 <div key={g.key} className="mb-3">

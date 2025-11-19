@@ -5,3 +5,6 @@ export { AccountsPayableService, accountsPayableService } from './accounts-payab
 export { AccountsReceivableService, accountsReceivableService } from './accounts-receivable.service';
 export { BudgetService, budgetService } from './budget.service';
 
+// HR Services Export
+export { HRService, hrService } from './hr.service';
+

@@ -1,8 +1,99 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { SaudiBusinessGateInfographic } from '@/components/infographic/SaudiBusinessGateBlock';
+
+function DiagnosticsBlock() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    fetch('/api/platform/status')
+      .then((r) => r.json())
+      .then((json) => {
+        if (!mounted) return;
+        setData(json);
+        setLoading(false);
+      })
+      .catch((e) => {
+        if (!mounted) return;
+        setError('فشل جلب حالة المنصة');
+        setLoading(false);
+      });
+    return () => { mounted = false; };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[1,2,3].map(i => (
+          <div key={i} className="bg-gray-100 h-24 rounded-xl animate-pulse" />
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-800">
+        {error}
+      </div>
+    );
+  }
+
+  const diag = data?.problems_and_diagnostics || {};
+  const errors: string[] = diag?.errors || [];
+  const integrations: any[] = diag?.integrations || [];
+  const services: any[] = diag?.services || [];
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-3">الأخطاء</h3>
+        {errors.length === 0 ? (
+          <p className="text-gray-600">لا توجد أخطاء مسجلة</p>
+        ) : (
+          <ul className="space-y-2">
+            {errors.slice(0,5).map((e: string, idx: number) => (
+              <li key={idx} className="text-sm text-red-700">{e}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-3">الخدمات</h3>
+        {services.length === 0 ? (
+          <p className="text-gray-600">لا توجد خدمات حرجة</p>
+        ) : (
+          <ul className="space-y-2">
+            {services.slice(0,5).map((s: any, idx: number) => (
+              <li key={idx} className="text-sm text-gray-700">
+                <span className="font-semibold">{s.name}</span>: {s.status}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-3">التكاملات</h3>
+        {integrations.length === 0 ? (
+          <p className="text-gray-600">التكاملات جاهزة</p>
+        ) : (
+          <ul className="space-y-2">
+            {integrations.slice(0,5).map((i: any, idx: number) => (
+              <li key={idx} className="text-sm text-gray-700">
+                <span className="font-semibold">{i.name}</span>: {i.status}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function LandingPage() {
   const router = useRouter();
@@ -172,6 +263,17 @@ export default function LandingPage() {
               <div className="text-sm text-gray-600">التزام: ترقية إلى L2 Co-Pilot خلال 9–12 شهرًا</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Problems & Diagnostics */}
+      <section id="problems_and_diagnostics" className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">المشكلات والتشخيص</h2>
+            <p className="text-gray-600">حالة المنصة والاعتمادات وفق تقرير التشغيل</p>
+          </div>
+          <DiagnosticsBlock />
         </div>
       </section>
 

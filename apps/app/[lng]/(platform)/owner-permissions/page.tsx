@@ -219,10 +219,12 @@ export default function OwnerPermissionsPage({ params }: { params: Promise<{ lng
                       <div className="space-y-3">
                         {/* Permission Level */}
                         <div>
-                          <label className="block text-xs font-medium text-neutral-500 mb-1">
+                          <label htmlFor={`access-level-${permission.id}`} className="block text-xs font-medium text-neutral-500 mb-1">
                             Access Level
                           </label>
                           <select
+                            id={`access-level-${permission.id}`}
+                            aria-label={t.full + '/' + t.limited + '/' + t.readOnly}
                             value={permission.level}
                             onChange={(e) => updatePermissionLevel(permission.id, e.target.value as any)}
                             className="w-full px-3 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800"
@@ -238,11 +240,14 @@ export default function OwnerPermissionsPage({ params }: { params: Promise<{ lng
                           <div className="grid grid-cols-1 gap-2">
                             {permission.limits.maxUsers && (
                               <div>
-                                <label className="block text-xs font-medium text-neutral-500 mb-1">
+                                <label htmlFor={`max-users-${permission.id}`} className="block text-xs font-medium text-neutral-500 mb-1">
                                   {t.maxUsers}
                                 </label>
                                 <input
+                                  id={`max-users-${permission.id}`}
+                                  aria-label={t.maxUsers}
                                   type="number"
+                                  inputMode="numeric"
                                   defaultValue={permission.limits.maxUsers}
                                   className="w-full px-3 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800"
                                 />
@@ -250,11 +255,14 @@ export default function OwnerPermissionsPage({ params }: { params: Promise<{ lng
                             )}
                             {permission.limits.maxApiCalls && (
                               <div>
-                                <label className="block text-xs font-medium text-neutral-500 mb-1">
+                                <label htmlFor={`max-api-${permission.id}`} className="block text-xs font-medium text-neutral-500 mb-1">
                                   {t.maxApiCalls}
                                 </label>
                                 <input
+                                  id={`max-api-${permission.id}`}
+                                  aria-label={t.maxApiCalls}
                                   type="number"
+                                  inputMode="numeric"
                                   defaultValue={permission.limits.maxApiCalls}
                                   className="w-full px-3 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800"
                                 />

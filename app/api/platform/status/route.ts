@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
 interface APIEndpoint {
   id: string;
@@ -337,6 +339,22 @@ export async function GET(request: NextRequest) {
     const developmentAPIs = apiEndpoints.filter(api => api.status === 'development').length;
     const plannedAPIs = apiEndpoints.filter(api => api.status === 'planned').length;
 
+    let diagnostics: any = null;
+    try {
+      const reportPath = path.join(process.cwd(), 'PRODUCTION_VERIFICATION_REPORT.json');
+      if (fs.existsSync(reportPath)) {
+        const raw = fs.readFileSync(reportPath, 'utf-8');
+        const parsed = JSON.parse(raw);
+        diagnostics = {
+          errors: parsed.errors || [],
+          services: parsed.services || [],
+          integrations: parsed.integrations || [],
+          environment: parsed.environment || [],
+          database: parsed.database || []
+        };
+      }
+    } catch {}
+
     return NextResponse.json({
       success: true,
       summary: {
@@ -349,6 +367,7 @@ export async function GET(request: NextRequest) {
       },
       modules: moduleGroups,
       endpoints: apiEndpoints,
+      problems_and_diagnostics: diagnostics,
       lastUpdated: new Date().toISOString()
     });
   } catch (error) {

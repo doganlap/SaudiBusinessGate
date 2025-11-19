@@ -11,7 +11,7 @@ import {
   CheckCircle, Activity, Bell,
   FolderOpen, TrendingUp, Cpu, Globe,
   UserCheck, GitBranch, BookOpen, Award, Archive, AlertTriangle, ShieldCheck, Star, Heart, Copy, Bot,
-  Plus, Edit, RefreshCw, Search, Download
+  Plus, Edit, RefreshCw, Search, Download, UserCircle, Calendar, DollarSign
 } from 'lucide-react';
 import { RoleActivationPanel } from './MultiTenantNavigation';
 
@@ -538,7 +538,74 @@ const Sidebar = () => {
     },
 
     // ============================================================================
-    // 7. ADMINISTRATION - System management & configuration
+    // 7. HR MODULE - Human Resources Management
+    // ============================================================================
+    {
+      id: 'hr',
+      name: 'Human Resources',
+      icon: Users,
+      items: [
+        {
+          id: 'hr-dashboard',
+          name: 'HR Dashboard',
+          path: '/[lng]/hr',
+          icon: Home,
+          description: 'HR overview and metrics',
+          badge: null
+        },
+        {
+          id: 'employees',
+          name: 'Employees',
+          path: '/[lng]/hr/employees',
+          icon: UserCircle,
+          description: 'Employee management',
+          badge: null
+        },
+        {
+          id: 'employees-create',
+          name: 'Create Employee',
+          path: '/hr/employees/create',
+          icon: Plus,
+          description: 'Add new employee',
+          badge: null
+        },
+        {
+          id: 'attendance',
+          name: 'Attendance',
+          path: '/[lng]/hr/attendance',
+          icon: Calendar,
+          description: 'Attendance tracking',
+          badge: null
+        },
+        {
+          id: 'attendance-log',
+          name: 'Log Attendance',
+          path: '/hr/attendance/log',
+          icon: Edit,
+          description: 'Record attendance',
+          badge: null
+        },
+        {
+          id: 'payroll',
+          name: 'Payroll',
+          path: '/[lng]/hr/payroll',
+          icon: DollarSign,
+          description: 'Payroll management',
+          badge: null
+        },
+        {
+          id: 'payroll-process',
+          name: 'Process Payroll',
+          path: '/hr/payroll/process',
+          icon: RefreshCw,
+          description: 'Process payroll payments',
+          badge: null
+        }
+      ]
+    },
+
+    // ============================================================================
+    // 8. ADMINISTRATION - System management & configuration
     // ============================================================================
     {
       id: 'administration',
@@ -605,7 +672,7 @@ const Sidebar = () => {
     },
 
     // ============================================================================
-    // 8. PLATFORM & MSP - Multi-tenant platform management
+    // 9. PLATFORM & MSP - Multi-tenant platform management
     // ============================================================================
     {
       id: 'platform',
@@ -656,7 +723,7 @@ const Sidebar = () => {
     },
 
     // ============================================================================
-    // 9. SPECIALIZED & REGIONAL - KSA-specific and specialized features
+    // 10. SPECIALIZED & REGIONAL - KSA-specific and specialized features
     // ============================================================================
     {
       id: 'specialized',
@@ -707,7 +774,7 @@ const Sidebar = () => {
     },
 
     // ============================================================================
-    // 10. ADVANCED & MODERN UI - Enhanced user interfaces
+    // 11. ADVANCED & MODERN UI - Enhanced user interfaces
     // ============================================================================
     {
       id: 'advanced-ui',
@@ -758,7 +825,7 @@ const Sidebar = () => {
     },
 
     // ============================================================================
-    // 11. TENANT & MULTI-TENANT - Tenant-specific features
+    // 12. TENANT & MULTI-TENANT - Tenant-specific features
     // ============================================================================
     {
       id: 'tenant-management',
@@ -801,7 +868,7 @@ const Sidebar = () => {
     },
 
     // ============================================================================
-    // 12. LEGACY & COMPATIBILITY - Legacy versions for compatibility
+    // 13. LEGACY & COMPATIBILITY - Legacy versions for compatibility
     // ============================================================================
     {
       id: 'legacy-versions',

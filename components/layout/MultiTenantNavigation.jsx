@@ -142,10 +142,13 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
       {
         id: 'hr-module-platform', name: 'HR Management', icon: UserCheck, collapsed: true, category: 'Platform',
         items: [
-          { id: 'hr-dashboard', name: 'HR Dashboard', path: '/app/hr', icon: BarChart3 },
-          { id: 'hr-employees', name: 'Employees', path: '/app/hr/employees', icon: Users },
-          { id: 'hr-payroll', name: 'Payroll', path: '/app/hr/payroll', icon: DollarSign },
-          { id: 'hr-attendance', name: 'Attendance', path: '/app/hr/attendance', icon: Calendar }
+          { id: 'hr-dashboard', name: 'HR Dashboard', path: '/[lng]/hr', icon: BarChart3 },
+          { id: 'hr-employees', name: 'Employees', path: '/[lng]/hr/employees', icon: Users },
+          { id: 'hr-employees-create', name: 'Create Employee', path: '/hr/employees/create', icon: Users },
+          { id: 'hr-attendance', name: 'Attendance', path: '/[lng]/hr/attendance', icon: Calendar },
+          { id: 'hr-attendance-log', name: 'Log Attendance', path: '/hr/attendance/log', icon: Calendar },
+          { id: 'hr-payroll', name: 'Payroll', path: '/[lng]/hr/payroll', icon: DollarSign },
+          { id: 'hr-payroll-process', name: 'Process Payroll', path: '/hr/payroll/process', icon: DollarSign }
         ]
       },
       {
@@ -231,10 +234,13 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
       {
         id: 'hr-module', name: 'HR Management', icon: UserCheck, collapsed: true, category: 'Business',
         items: [
-          { id: 'hr-dashboard', name: 'HR Dashboard', path: '/app/hr', icon: BarChart3 },
-          { id: 'hr-employees', name: 'Employees', path: '/app/hr/employees', icon: Users },
-          { id: 'hr-payroll', name: 'Payroll', path: '/app/hr/payroll', icon: DollarSign },
-          { id: 'hr-attendance', name: 'Attendance', path: '/app/hr/attendance', icon: Calendar }
+          { id: 'hr-dashboard', name: 'HR Dashboard', path: '/[lng]/hr', icon: BarChart3 },
+          { id: 'hr-employees', name: 'Employees', path: '/[lng]/hr/employees', icon: Users },
+          { id: 'hr-employees-create', name: 'Create Employee', path: '/hr/employees/create', icon: Users },
+          { id: 'hr-attendance', name: 'Attendance', path: '/[lng]/hr/attendance', icon: Calendar },
+          { id: 'hr-attendance-log', name: 'Log Attendance', path: '/hr/attendance/log', icon: Calendar },
+          { id: 'hr-payroll', name: 'Payroll', path: '/[lng]/hr/payroll', icon: DollarSign },
+          { id: 'hr-payroll-process', name: 'Process Payroll', path: '/hr/payroll/process', icon: DollarSign }
         ]
       },
       {
@@ -286,8 +292,9 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
       {
         id: 'hr-module-team', name: 'HR', icon: UserCheck, collapsed: true, category: 'Business',
         items: [
-          { id: 'hr-employees', name: 'Employees', path: '/app/hr/employees', icon: Users },
-          { id: 'hr-attendance', name: 'My Attendance', path: '/app/hr/attendance', icon: Calendar }
+          { id: 'hr-employees-team', name: 'Employees', path: '/[lng]/hr/employees', icon: Users },
+          { id: 'hr-attendance-team', name: 'My Attendance', path: '/[lng]/hr/attendance', icon: Calendar },
+          { id: 'hr-attendance-log-team', name: 'Log Attendance', path: '/hr/attendance/log', icon: Calendar }
         ]
       }
     ]

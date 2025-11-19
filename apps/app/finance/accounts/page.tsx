@@ -280,6 +280,7 @@ export default function FinanceAccountsPage() {
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                aria-label="Filter by account type"
               >
                 <option value="all">All Types</option>
                 <option value="asset">Assets</option>
@@ -294,6 +295,7 @@ export default function FinanceAccountsPage() {
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                aria-label="Filter by status"
               >
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
@@ -523,8 +525,10 @@ export default function FinanceAccountsPage() {
               </h3>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Account Name *</label>
+                  <label htmlFor="account-name" className="block text-sm font-medium text-gray-700">Account Name *</label>
                   <input
+                    id="account-name"
+                    aria-label="Account Name"
                     type="text"
                     required
                     value={formData.account_name}
@@ -534,8 +538,10 @@ export default function FinanceAccountsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Account Code *</label>
+                  <label htmlFor="account-code" className="block text-sm font-medium text-gray-700">Account Code *</label>
                   <input
+                    id="account-code"
+                    aria-label="Account Code"
                     type="text"
                     required
                     value={formData.account_code}
@@ -546,8 +552,10 @@ export default function FinanceAccountsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Account Type *</label>
+                  <label htmlFor="account-type" className="block text-sm font-medium text-gray-700">Account Type *</label>
                   <select
+                    id="account-type"
+                    aria-label="Account Type"
                     required
                     value={formData.account_type}
                     onChange={(e) => setFormData({...formData, account_type: e.target.value as any})}
@@ -562,8 +570,10 @@ export default function FinanceAccountsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Opening Balance</label>
+                  <label htmlFor="opening-balance" className="block text-sm font-medium text-gray-700">Opening Balance</label>
                   <input
+                    id="opening-balance"
+                    aria-label="Opening Balance"
                     type="number"
                     step="0.01"
                     value={formData.opening_balance}
@@ -573,8 +583,10 @@ export default function FinanceAccountsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
                   <textarea
+                    id="description"
+                    aria-label="Description"
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"

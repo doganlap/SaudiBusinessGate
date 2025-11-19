@@ -53,9 +53,14 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
 
+  const [diag, setDiag] = useState<any>(null);
+  const [diagLoading, setDiagLoading] = useState(true);
+  const [diagError, setDiagError] = useState<string | null>(null);
+
   useEffect(() => {
     fetchDashboardData();
     fetchUserData();
+    fetchDiagnostics();
   }, []);
 
   const fetchUserData = async () => {
@@ -123,6 +128,21 @@ export default function DashboardPage() {
       ]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchDiagnostics = async () => {
+    try {
+      setDiagLoading(true);
+      const res = await fetch('/api/platform/status');
+      if (res.ok) {
+        const json = await res.json();
+        setDiag(json?.problems_and_diagnostics || {});
+      }
+    } catch (err) {
+      setDiagError('Failed to load diagnostics');
+    } finally {
+      setDiagLoading(false);
     }
   };
 
@@ -400,6 +420,69 @@ export default function DashboardPage() {
                   </a>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <div className="bg-white rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-900">Problems & Diagnostics</h2>
+              <p className="text-sm text-gray-600">Platform status snapshot</p>
+            </div>
+            <div className="p-6">
+              {diagLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[1,2,3].map(i => (
+                    <div key={i} className="h-20 bg-gray-100 rounded-lg animate-pulse" />
+                  ))}
+                </div>
+              ) : diagError ? (
+                <div className="text-sm text-red-700">{diagError}</div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Errors</h3>
+                    {Array.isArray(diag?.errors) && diag.errors.length > 0 ? (
+                      <ul className="space-y-1">
+                        {diag.errors.slice(0,5).map((e: string, idx: number) => (
+                          <li key={idx} className="text-sm text-red-700">{e}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm text-gray-600">None</p>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Services</h3>
+                    {Array.isArray(diag?.services) && diag.services.length > 0 ? (
+                      <ul className="space-y-1">
+                        {diag.services.slice(0,5).map((s: any, idx: number) => (
+                          <li key={idx} className="text-sm text-gray-700">
+                            <span className="font-medium">{s.name}</span>: {s.status}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm text-gray-600">Healthy</p>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Integrations</h3>
+                    {Array.isArray(diag?.integrations) && diag.integrations.length > 0 ? (
+                      <ul className="space-y-1">
+                        {diag.integrations.slice(0,5).map((i: any, idx: number) => (
+                          <li key={idx} className="text-sm text-gray-700">
+                            <span className="font-medium">{i.name}</span>: {i.status}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm text-gray-600">Configured</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

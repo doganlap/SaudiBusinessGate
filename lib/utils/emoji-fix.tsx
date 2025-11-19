@@ -40,8 +40,8 @@ export function Emoji({
     <span 
       className={`emoji emoji-render emoji-no-break ${className}`}
       role="img" 
-      aria-label={label}
-      aria-hidden={!label}
+      aria-label={label || undefined}
+      aria-hidden={label ? false : true}
     >
       {emoji}
     </span>

@@ -29,6 +29,7 @@ const translations = {
     'common.filter': 'Filter',
     'common.manage': 'Manage',
     'common.viewDetails': 'View Details',
+    'common.user': 'User',
     
     // App
     'app.title': 'Saudi Business Gate',
@@ -110,6 +111,7 @@ const translations = {
     'common.filter': 'تصفية',
     'common.manage': 'إدارة',
     'common.viewDetails': 'عرض التفاصيل',
+    'common.user': 'المستخدم',
     
     // App
     'app.title': 'بوابة الأعمال السعودية',

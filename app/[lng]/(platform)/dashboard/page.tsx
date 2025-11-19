@@ -234,7 +234,7 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{lng === 'ar' ? 'جاري تحميل لوحة التحكم...' : 'Loading dashboard...'}</p>
+          <p className="text-gray-600">{t('dashboard.loading')}</p>
         </div>
       </div>
     );
@@ -248,10 +248,10 @@ export default function DashboardPage() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                {lng === 'ar' ? `مرحباً ${user?.name || 'المستخدم'}` : `Welcome ${user?.name || 'User'}`}
+                {t('dashboard.welcome')} {user?.name || t('common.user')}
               </h1>
               <p className="mt-1 text-sm text-gray-500">
-                {lng === 'ar' ? 'نظرة عامة على لوحة التحكم' : 'Here is your dashboard overview'}
+                {t('dashboard.overview')}
               </p>
             </div>
             <div className="flex items-center gap-4">
@@ -286,7 +286,7 @@ export default function DashboardPage() {
                   <DollarSign className="h-6 w-6 text-green-600" />
                 </div>
                 <div className="ml-4 rtl:ml-0 rtl:mr-4">
-                  <p className="text-sm font-medium text-gray-600">{t('totalRevenue')}</p>
+                  <p className="text-sm font-medium text-gray-600">{t('dashboard.totalRevenue')}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     {formatCurrency(stats.totalRevenue)}
                   </p>
@@ -300,7 +300,7 @@ export default function DashboardPage() {
                   <Users className="h-6 w-6 text-blue-600" />
                 </div>
                 <div className="ml-4 rtl:ml-0 rtl:mr-4">
-                  <p className="text-sm font-medium text-gray-600">{t('totalUsers')}</p>
+                  <p className="text-sm font-medium text-gray-600">{t('dashboard.totalUsers')}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     {stats.totalUsers.toLocaleString()}
                   </p>
@@ -314,7 +314,7 @@ export default function DashboardPage() {
                   <CreditCard className="h-6 w-6 text-purple-600" />
                 </div>
                 <div className="ml-4 rtl:ml-0 rtl:mr-4">
-                  <p className="text-sm font-medium text-gray-600">{t('activeSubscriptions')}</p>
+                  <p className="text-sm font-medium text-gray-600">{t('dashboard.activeSubscriptions')}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     {stats.activeSubscriptions.toLocaleString()}
                   </p>
@@ -328,7 +328,7 @@ export default function DashboardPage() {
                   <TrendingUp className="h-6 w-6 text-orange-600" />
                 </div>
                 <div className="ml-4 rtl:ml-0 rtl:mr-4">
-                  <p className="text-sm font-medium text-gray-600">{t('monthlyGrowth')}</p>
+                  <p className="text-sm font-medium text-gray-600">{t('dashboard.monthlyGrowth')}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     +{stats.monthlyGrowth}%
                   </p>
@@ -343,8 +343,8 @@ export default function DashboardPage() {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow">
               <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">{t('quickActions')}</h2>
-                <p className="text-sm text-gray-600">{t('quickActionsSubtitle')}</p>
+                <h2 className="text-lg font-semibold text-gray-900">{t('dashboard.quickActions')}</h2>
+                <p className="text-sm text-gray-600">{t('dashboard.quickActionsSubtitle')}</p>
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

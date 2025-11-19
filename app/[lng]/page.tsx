@@ -26,7 +26,7 @@ export default function LangHomePage() {
     // Show landing page for 3 seconds, then redirect
     setShowContent(true);
     const timer = setTimeout(() => {
-      router.push(`/${lng}/(platform)/dashboard`);
+      router.push(`/${lng}/dashboard`);
     }, 4000);
 
     return () => clearTimeout(timer);
@@ -64,7 +64,7 @@ export default function LangHomePage() {
             <span className="text-white font-bold text-lg">Saudi Business Gate Enterprise</span>
           </div>
           <div className="flex items-center space-x-4">
-            <Link href={`/${lng}/(platform)/dashboard`} className="text-white hover:text-blue-200 transition-colors">
+            <Link href={`/${lng}/dashboard`} className="text-white hover:text-blue-200 transition-colors">
               {lng === 'ar' ? 'الدخول إلى النظام' : 'Enter Platform'}
             </Link>
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
@@ -112,14 +112,14 @@ export default function LangHomePage() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <Link
-                href={`/${lng}/(platform)/dashboard`}
+                href={`/${lng}/dashboard`}
                 className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center"
               >
                 {lng === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                 <ArrowRight className={`h-5 w-5 ml-2 ${lng === 'ar' ? 'transform rotate-180' : ''}`} />
               </Link>
               <Link
-                href={`/${lng}/(platform)/motivation`}
+                href={`/${lng}/motivation`}
                 className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white/20 transition-all duration-300"
               >
                 {lng === 'ar' ? 'اكتشف الذكاء الاصطناعي' : 'Discover AI'}

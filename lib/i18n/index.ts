@@ -9,6 +9,14 @@ export const defaultLanguage: Language = 'ar'; // Arabic as default
 // Translation dictionaries
 const translations = {
   en: {
+    // Navigation
+    'nav.dashboard': 'Dashboard',
+    'nav.finance': 'Finance',
+    'nav.sales': 'Sales',
+    'nav.crm': 'CRM',
+    'nav.hr': 'HR',
+    'nav.procurement': 'Procurement',
+    
     // Common
     'common.loading': 'Loading...',
     'common.error': 'Error',
@@ -19,15 +27,50 @@ const translations = {
     'common.edit': 'Edit',
     'common.search': 'Search',
     'common.filter': 'Filter',
+    'common.manage': 'Manage',
+    'common.viewDetails': 'View Details',
     
     // App
-    'app.title': 'DoganHub Enterprise Platform',
+    'app.title': 'Saudi Business Gate',
     'app.description': 'Multi-tenant Enterprise Platform',
     
     // Dashboard
     'dashboard.title': 'Dashboard',
+    'dashboard.welcome': 'Welcome back',
+    'dashboard.overview': 'Overview',
+    'dashboard.quickActions': 'Quick Actions',
+    'dashboard.recentActivity': 'Recent Activity',
+    'dashboard.statistics': 'Statistics',
     'dashboard.analytics': 'Analytics',
     'dashboard.processes': 'Processes',
+    
+    // Finance
+    'finance.title': 'Finance',
+    'finance.description': 'Manage accounts, transactions, and reports',
+    'finance.accounts': 'Accounts',
+    'finance.transactions': 'Transactions',
+    'finance.budgets': 'Budgets',
+    'finance.reports': 'Reports',
+    'finance.analytics': 'Analytics',
+    'finance.banking': 'Banking',
+    'finance.bills': 'Bills',
+    'finance.invoices': 'Invoices',
+    'finance.journal': 'Journal Entries',
+    'finance.tax': 'Tax Management',
+    'finance.cashFlow': 'Cash Flow',
+    'finance.costCenters': 'Cost Centers',
+    
+    // Sales
+    'sales.title': 'Sales',
+    'sales.description': 'Track leads, deals, and pipeline',
+    
+    // CRM
+    'crm.title': 'CRM',
+    'crm.description': 'Customer relationship management',
+    
+    // HR
+    'hr.title': 'HR',
+    'hr.description': 'Human resources management',
     
     // Auth
     'auth.login': 'Login',
@@ -42,25 +85,68 @@ const translations = {
     'billing.manage': 'Manage Subscription',
   },
   ar: {
+    // Navigation
+    'nav.dashboard': 'لوحة التحكم',
+    'nav.finance': 'المالية',
+    'nav.sales': 'المبيعات',
+    'nav.crm': 'إدارة العملاء',
+    'nav.hr': 'الموارد البشرية',
+    'nav.procurement': 'المشتريات',
+    
     // Common
     'common.loading': 'جاري التحميل...',
     'common.error': 'خطأ',
-    'common.success': 'نجح',
+    'common.success': 'نجاح',
     'common.save': 'حفظ',
     'common.cancel': 'إلغاء',
     'common.delete': 'حذف',
     'common.edit': 'تعديل',
     'common.search': 'بحث',
     'common.filter': 'تصفية',
+    'common.manage': 'إدارة',
+    'common.viewDetails': 'عرض التفاصيل',
     
     // App
-    'app.title': 'منصة دوغان هب للمؤسسات',
+    'app.title': 'بوابة الأعمال السعودية',
     'app.description': 'منصة مؤسسية متعددة المستأجرين',
     
     // Dashboard
-    'dashboard.title': 'لوحة القيادة',
+    'dashboard.title': 'لوحة التحكم',
+    'dashboard.welcome': 'مرحباً بعودتك',
+    'dashboard.overview': 'نظرة عامة',
+    'dashboard.quickActions': 'إجراءات سريعة',
+    'dashboard.recentActivity': 'النشاط الأخير',
+    'dashboard.statistics': 'الإحصائيات',
     'dashboard.analytics': 'التحليلات',
     'dashboard.processes': 'العمليات',
+    
+    // Finance
+    'finance.title': 'المالية',
+    'finance.description': 'إدارة الحسابات والمعاملات والتقارير',
+    'finance.accounts': 'الحسابات',
+    'finance.transactions': 'المعاملات',
+    'finance.budgets': 'الميزانيات',
+    'finance.reports': 'التقارير',
+    'finance.analytics': 'التحليلات المالية',
+    'finance.banking': 'الخدمات المصرفية',
+    'finance.bills': 'الفواتير',
+    'finance.invoices': 'الفواتير الصادرة',
+    'finance.journal': 'قيود اليومية',
+    'finance.tax': 'إدارة الضرائب',
+    'finance.cashFlow': 'التدفق النقدي',
+    'finance.costCenters': 'مراكز التكلفة',
+    
+    // Sales
+    'sales.title': 'المبيعات',
+    'sales.description': 'تتبع العملاء المحتملين والصفقات والمسار',
+    
+    // CRM
+    'crm.title': 'إدارة العملاء',
+    'crm.description': 'إدارة علاقات العملاء',
+    
+    // HR
+    'hr.title': 'الموارد البشرية',
+    'hr.description': 'إدارة الموارد البشرية',
     
     // Auth
     'auth.login': 'تسجيل الدخول',

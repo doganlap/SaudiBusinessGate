@@ -48,6 +48,7 @@ export default function Sidebar({ isCollapsed = false, onToggleCollapse }: Sideb
   const pathname = usePathname();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const isRTL = typeof document !== 'undefined' && document.documentElement.dir === 'rtl';
   
   // Use the navigation hook for API-driven navigation
   const { 
@@ -152,7 +153,10 @@ export default function Sidebar({ isCollapsed = false, onToggleCollapse }: Sideb
                 onClick={onToggleCollapse}
                 className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
               >
-                {isCollapsed ? <IconChevronRight size="sm" /> : <IconChevronLeft size="sm" />}
+                {isCollapsed 
+                  ? (isRTL ? <IconChevronLeft size="sm" /> : <IconChevronRight size="sm" />)
+                  : (isRTL ? <IconChevronRight size="sm" /> : <IconChevronLeft size="sm" />)
+                }
               </button>
             </div>
 
@@ -229,7 +233,10 @@ export default function Sidebar({ isCollapsed = false, onToggleCollapse }: Sideb
                 onClick={onToggleCollapse}
                 className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
               >
-                {isCollapsed ? <IconChevronRight size="sm" /> : <IconChevronLeft size="sm" />}
+                {isCollapsed 
+                  ? (isRTL ? <IconChevronLeft size="sm" /> : <IconChevronRight size="sm" />)
+                  : (isRTL ? <IconChevronRight size="sm" /> : <IconChevronLeft size="sm" />)
+                }
               </button>
             </div>
 

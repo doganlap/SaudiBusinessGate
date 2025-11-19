@@ -116,6 +116,7 @@ export default function Sidebar({ isCollapsed = false, onToggleCollapse }: Sideb
   const pathname = usePathname();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const isRTL = typeof document !== 'undefined' && document.documentElement.dir === 'rtl';
 
   const toggleExpanded = (itemName: string) => {
     setExpandedItems(prev => 
@@ -207,7 +208,10 @@ export default function Sidebar({ isCollapsed = false, onToggleCollapse }: Sideb
           onClick={onToggleCollapse}
           className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
         >
-          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          {isCollapsed 
+            ? (isRTL ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />)
+            : (isRTL ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />)
+          }
         </button>
       </div>
 

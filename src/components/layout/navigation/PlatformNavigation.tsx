@@ -87,10 +87,14 @@ export function PlatformNavigation() {
           const json = await res.json();
           setUser(json?.data || null);
         } else {
-          setUserError('Failed to load user');
+          // User authentication is optional - don't block navigation
+          console.warn('User authentication failed, continuing without user data');
+          setUserError('Optional: User not authenticated');
         }
-      } catch {
-        setUserError('Failed to load user');
+      } catch (error) {
+        // User authentication is optional - don't block navigation
+        console.warn('User fetch error:', error);
+        setUserError('Optional: User not authenticated');
       } finally {
         setUserLoading(false);
       }
@@ -194,7 +198,7 @@ export function PlatformNavigation() {
       id: 'dashboard',
       title: 'Dashboard',
       titleAr: 'لوحة التحكم',
-      href: `/${lng}/(platform)/dashboard`,
+      href: `/${lng}/dashboard`,
       icon: <Home className="h-5 w-5" />,
     },
     {
@@ -208,35 +212,35 @@ export function PlatformNavigation() {
           id: 'finance',
           title: 'Finance',
           titleAr: 'المالية',
-          href: `/${lng}/(platform)/finance`,
+          href: `/${lng}/finance`,
           icon: <DollarSign className="h-4 w-4" />,
         },
         {
           id: 'sales',
           title: 'Sales',
           titleAr: 'المبيعات',
-          href: `/${lng}/(platform)/sales`,
+          href: `/${lng}/sales`,
           icon: <TrendingUp className="h-4 w-4" />,
         },
         {
           id: 'crm',
           title: 'CRM',
           titleAr: 'إدارة العملاء',
-          href: `/${lng}/(platform)/crm`,
+          href: `/${lng}/crm`,
           icon: <Users className="h-4 w-4" />,
         },
         {
           id: 'hr',
           title: 'HR',
           titleAr: 'الموارد البشرية',
-          href: `/${lng}/(platform)/hr`,
+          href: `/${lng}/hr`,
           icon: <UserCheck className="h-4 w-4" />,
         },
         {
           id: 'procurement',
           title: 'Procurement',
           titleAr: 'المشتريات',
-          href: `/${lng}/(platform)/procurement`,
+          href: `/${lng}/procurement`,
           icon: <Package className="h-4 w-4" />,
         }
       ]
@@ -252,28 +256,28 @@ export function PlatformNavigation() {
           id: 'licenses-overview',
           title: 'All Licenses',
           titleAr: 'جميع التراخيص',
-          href: `/${lng}/(platform)/licenses/management`,
+          href: `/${lng}/licenses/management`,
           icon: <Key className="h-4 w-4" />,
         },
         {
           id: 'renewals-pipeline',
           title: 'Renewals Pipeline',
           titleAr: 'خط تجديد التراخيص',
-          href: `/${lng}/(platform)/licenses/renewals`,
+          href: `/${lng}/licenses/renewals`,
           icon: <Clock className="h-4 w-4" />,
         },
         {
           id: 'usage-dashboard',
           title: 'Usage Analytics',
           titleAr: 'تحليلات الاستخدام',
-          href: `/${lng}/(platform)/licenses/usage`,
+          href: `/${lng}/licenses/usage`,
           icon: <Activity className="h-4 w-4" />,
         },
         {
           id: 'license-upgrade',
           title: 'Upgrade License',
           titleAr: 'ترقية الترخيص',
-          href: `/${lng}/(platform)/licenses/upgrade`,
+          href: `/${lng}/licenses/upgrade`,
           icon: <ArrowUp className="h-4 w-4" />,
         }
       ]
@@ -289,7 +293,7 @@ export function PlatformNavigation() {
           id: 'billing',
           title: 'Billing',
           titleAr: 'الفوترة',
-          href: `/${lng}/(platform)/billing`,
+          href: `/${lng}/billing`,
           icon: <CreditCard className="h-4 w-4" />,
           description: 'Subscription management',
           descriptionAr: 'إدارة الاشتراكات'
@@ -298,7 +302,7 @@ export function PlatformNavigation() {
           id: 'analytics',
           title: 'Analytics',
           titleAr: 'التحليلات',
-          href: `/${lng}/(platform)/analytics`,
+          href: `/${lng}/analytics`,
           icon: <BarChart3 className="h-4 w-4" />,
           description: 'Business intelligence',
           descriptionAr: 'ذكاء الأعمال'
@@ -307,7 +311,7 @@ export function PlatformNavigation() {
           id: 'motivation',
           title: 'Motivation & AI',
           titleAr: 'التحفيز والذكاء الاصطناعي',
-          href: `/${lng}/(platform)/motivation`,
+          href: `/${lng}/motivation`,
           icon: <Target className="h-4 w-4" />,
           description: 'Daily goals and AI agents',
           descriptionAr: 'الأهداف اليومية والوكلاء الذكيون'
@@ -321,7 +325,7 @@ export function PlatformNavigation() {
       id: 'dashboard',
       title: 'Dashboard',
       titleAr: 'لوحة التحكم',
-      href: `/${lng}/(platform)/dashboard`,
+      href: `/${lng}/dashboard`,
       icon: <Home className="h-5 w-5" />,
       description: 'Overview and analytics',
       descriptionAr: 'نظرة عامة والتحليلات'
@@ -339,7 +343,7 @@ export function PlatformNavigation() {
           id: 'finance',
           title: 'Finance',
           titleAr: 'المالية',
-          href: `/${lng}/(platform)/finance`,
+          href: `/${lng}/finance`,
           icon: <DollarSign className="h-4 w-4" />,
           description: 'Financial management',
           descriptionAr: 'الإدارة المالية'
@@ -348,7 +352,7 @@ export function PlatformNavigation() {
           id: 'sales',
           title: 'Sales',
           titleAr: 'المبيعات',
-          href: `/${lng}/(platform)/sales`,
+          href: `/${lng}/sales`,
           icon: <TrendingUp className="h-4 w-4" />,
           description: 'Sales pipeline',
           descriptionAr: 'خط أنابيب المبيعات'
@@ -357,7 +361,7 @@ export function PlatformNavigation() {
           id: 'crm',
           title: 'CRM',
           titleAr: 'إدارة العملاء',
-          href: `/${lng}/(platform)/crm`,
+          href: `/${lng}/crm`,
           icon: <Users className="h-4 w-4" />,
           description: 'Customer management',
           descriptionAr: 'إدارة العملاء'
@@ -366,7 +370,7 @@ export function PlatformNavigation() {
           id: 'hr',
           title: 'HR',
           titleAr: 'الموارد البشرية',
-          href: `/${lng}/(platform)/hr`,
+          href: `/${lng}/hr`,
           icon: <UserCheck className="h-4 w-4" />,
           description: 'Human resources',
           descriptionAr: 'الموارد البشرية'
@@ -375,7 +379,7 @@ export function PlatformNavigation() {
           id: 'procurement',
           title: 'Procurement',
           titleAr: 'المشتريات',
-          href: `/${lng}/(platform)/procurement`,
+          href: `/${lng}/procurement`,
           icon: <Package className="h-4 w-4" />,
           description: 'Purchase management',
           descriptionAr: 'إدارة المشتريات'
@@ -396,7 +400,7 @@ export function PlatformNavigation() {
             id: 'licenses-overview',
             title: 'All Licenses',
             titleAr: 'جميع التراخيص',
-            href: `/${lng}/(platform)/licenses/management`,
+            href: `/${lng}/licenses/management`,
             icon: <Key className="h-4 w-4" />,
             description: 'Platform-wide license management',
             descriptionAr: 'إدارة التراخيص على مستوى المنصة'
@@ -405,7 +409,7 @@ export function PlatformNavigation() {
             id: 'renewals-pipeline',
             title: 'Renewals Pipeline',
             titleAr: 'خط تجديد التراخيص',
-            href: `/${lng}/(platform)/licenses/renewals`,
+            href: `/${lng}/licenses/renewals`,
             icon: <Clock className="h-4 w-4" />,
             description: '120-day renewal tracking',
             descriptionAr: 'تتبع التجديد لـ 120 يوم'
@@ -415,7 +419,7 @@ export function PlatformNavigation() {
           id: 'usage-dashboard',
           title: 'Usage Analytics',
           titleAr: 'تحليلات الاستخدام',
-          href: `/${lng}/(platform)/licenses/usage`,
+          href: `/${lng}/licenses/usage`,
           icon: <Activity className="h-4 w-4" />,
           description: 'Monitor feature usage',
           descriptionAr: 'مراقبة استخدام الميزات'
@@ -424,7 +428,7 @@ export function PlatformNavigation() {
           id: 'license-upgrade',
           title: 'Upgrade License',
           titleAr: 'ترقية الترخيص',
-          href: `/${lng}/(platform)/licenses/upgrade`,
+          href: `/${lng}/licenses/upgrade`,
           icon: <ArrowUp className="h-4 w-4" />,
           description: 'Upgrade your plan',
           descriptionAr: 'ترقية خطتك'
@@ -444,7 +448,7 @@ export function PlatformNavigation() {
           id: 'billing',
           title: 'Billing',
           titleAr: 'الفوترة',
-          href: `/${lng}/(platform)/billing`,
+          href: `/${lng}/billing`,
           icon: <CreditCard className="h-4 w-4" />,
           description: 'Subscription management',
           descriptionAr: 'إدارة الاشتراكات'
@@ -453,7 +457,7 @@ export function PlatformNavigation() {
           id: 'analytics',
           title: 'Analytics',
           titleAr: 'التحليلات',
-          href: `/${lng}/(platform)/analytics`,
+          href: `/${lng}/analytics`,
           icon: <BarChart3 className="h-4 w-4" />,
           description: 'Business intelligence',
           descriptionAr: 'ذكاء الأعمال'
@@ -462,7 +466,7 @@ export function PlatformNavigation() {
           id: 'motivation',
           title: 'Motivation & AI',
           titleAr: 'التحفيز والذكاء الاصطناعي',
-          href: `/${lng}/(platform)/motivation`,
+          href: `/${lng}/motivation`,
           icon: <Target className="h-4 w-4" />,
           description: 'Daily goals and AI agents',
           descriptionAr: 'الأهداف اليومية والوكلاء الذكيون'
@@ -596,29 +600,21 @@ export function PlatformNavigation() {
         </div>
       </div>
       <nav className="flex-1 p-4 space-y-2">
-        {userLoading && (
+        {/* Show loading only for navigation, not user (user is optional) */}
+        {navLoading && (
           <div className="flex items-center justify-center py-6 text-neutral-500">
             <div className="h-5 w-5 mr-2 animate-spin border-2 border-neutral-400 rounded-full border-t-transparent" />
-            <span>Loading user...</span>
+            <span>{isRTL ? 'جاري التحميل...' : 'Loading...'}</span>
           </div>
         )}
-        {userError && (
-          <div className={`${isRTL ? 'text-right' : 'text-left'} text-sm text-red-600 py-2`}>
-            Failed to load user: {userError}
+        {/* Show navigation error if navigation fails to load */}
+        {!navLoading && navError && (
+          <div className={`${isRTL ? 'text-right' : 'text-left'} text-xs text-orange-600 dark:text-orange-400 py-2 px-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg`}>
+            {isRTL ? '⚠️ فشل تحميل القائمة' : '⚠️ Navigation load failed'}
           </div>
         )}
-        {!userLoading && !userError && navLoading && (
-          <div className="flex items-center justify-center py-6 text-neutral-500">
-            <div className="h-5 w-5 mr-2 animate-spin border-2 border-neutral-400 rounded-full border-t-transparent" />
-            <span>Loading navigation...</span>
-          </div>
-        )}
-        {!userLoading && !userError && navError && (
-          <div className={`${isRTL ? 'text-right' : 'text-left'} text-sm text-red-600 py-2`}>
-            {navError}
-          </div>
-        )}
-        {!userLoading && !userError && !navLoading && renderNavItems(items.length ? items : navigationItems)}
+        {/* Render navigation items regardless of user authentication status */}
+        {!navLoading && renderNavItems(items.length ? items : navigationItems)}
       </nav>
       {/* Footer with tagline */}
       <div className="p-4 border-t border-neutral-200 dark:border-neutral-800/50">

@@ -2,6 +2,7 @@
 const nextConfig = {
   // Production optimizations for Saudi Store
   output: 'standalone',
+  outputFileTracingRoot: process.cwd(),
   poweredByHeader: false,
 
   // Use webpack to resolve module conflicts

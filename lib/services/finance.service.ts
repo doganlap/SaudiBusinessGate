@@ -202,7 +202,7 @@ export class FinanceService {
     offset?: number;
   }): Transaction[] {
     // Mock data for transactions
-    const mockTransactions: Transaction[] = [
+    let mockTransactions: Transaction[] = [
       {
         id: 'mock-1',
         tenant_id: 'mock-tenant',

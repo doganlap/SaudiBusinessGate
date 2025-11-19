@@ -378,7 +378,7 @@ export class SalesService {
         status: 'new',
         score: 60,
         estimated_value: 100000,
-        assigned_to: null,
+        assigned_to: undefined,
         notes: 'تواصل عبر لينكدإن',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()

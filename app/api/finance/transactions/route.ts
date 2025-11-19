@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
     const pool = getPool();
     const audit = new AuditLogger(pool);
     const rbac = new RBACService(pool);
-    const organizationId = user.tenantId;
-    const userId = user.id;
+    const organizationId = Number(user.tenantId);
+    const userId = Number(user.id);
     const allowed = await rbac.checkPermission(userId, 'finance.transactions.read', organizationId);
     if (!allowed) {
       await audit.logPermissionCheck(userId, organizationId, 'finance.transactions.read', false);
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') || '0');
     
     // Get tenant ID from headers
-    const tenantId = request.headers.get('x-tenant-id') || organizationId;
+    const tenantId = request.headers.get('x-tenant-id') || String(user.tenantId);
     const service = new FinanceService();
     const data = await service.getTransactions(tenantId, {
       status: status || undefined,
@@ -71,7 +71,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const tenantId = request.headers.get('x-tenant-id') || user.tenantId;
+    const tenantId = request.headers.get('x-tenant-id') || String(user.tenantId);
     const body = await request.json();
     
     if (!body.id) {
@@ -95,8 +95,8 @@ export async function DELETE(request: NextRequest) {
       }
 
       await audit.logSync({
-        organizationId: tenantId,
-        userId: user.id,
+        organizationId: Number(tenantId),
+        userId: Number(user.id),
         actionType: 'data.delete',
         resourceType: 'transaction',
         resourceId: body.id,
@@ -139,14 +139,14 @@ export async function POST(request: NextRequest) {
     const pool = getPool();
     const audit = new AuditLogger(pool);
     const rbac = new RBACService(pool);
-    const organizationId = user.tenantId;
-    const userId = user.id;
+    const organizationId = Number(user.tenantId);
+    const userId = Number(user.id);
     const allowed = await rbac.checkPermission(userId, 'finance.transactions.write', organizationId);
     if (!allowed) {
       await audit.logPermissionCheck(userId, organizationId, 'finance.transactions.write', false);
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
-    const tenantId = request.headers.get('x-tenant-id') || organizationId;
+    const tenantId = request.headers.get('x-tenant-id') || String(user.tenantId);
 
     const requiredFields = ['type', 'party_name', 'amount', 'due_date'];
     for (const field of requiredFields) {
@@ -172,7 +172,7 @@ export async function POST(request: NextRequest) {
       description: body.description || null
     } as any);
 
-    await audit.logDataChange(userId, Number(organizationId), 'transaction', (created as any).id, null, created);
+    await audit.logDataChange(userId, organizationId, 'transaction', (created as any).id, null, created);
     return NextResponse.json({
       success: true,
       data: created,

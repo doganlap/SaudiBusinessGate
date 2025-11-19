@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Production optimizations for Saudi Store
-  // output: 'standalone', // Temporarily disabled due to Windows permission issues
+  output: 'standalone',
   poweredByHeader: false,
 
   // Use webpack to resolve module conflicts

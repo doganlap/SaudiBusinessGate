@@ -20,7 +20,7 @@ export default function LangHomePage({ params: { lng } }: LangHomePageProps) {
   };
 
   const handleNavigation = (path: string) => {
-    router.push(`/${lng}${path}`);
+    router.push(`/${lng}/(platform)${path}`);
     handleSidebarClose();
   };
 
@@ -166,7 +166,7 @@ export default function LangHomePage({ params: { lng } }: LangHomePageProps) {
               <a href="#impact" className="text-gray-700 hover:text-green-600 transition-colors font-medium">التأثير</a>
               <a href="#enterprise" className="text-gray-700 hover:text-green-600 transition-colors font-medium">الدعم المؤسسي</a>
               <button
-                onClick={() => router.push(`/${lng}/dashboard`)}
+                onClick={() => router.push(`/${lng}/(platform)/dashboard`)}
                 className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-green-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium"
               >
                 دخول المنصة
@@ -210,7 +210,7 @@ export default function LangHomePage({ params: { lng } }: LangHomePageProps) {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <button
-                onClick={() => router.push(`/${lng}/dashboard`)}
+                onClick={() => router.push(`/${lng}/(platform)/dashboard`)}
                 className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-2xl"
               >
                 ابدأ الرحلة مجاناً
@@ -605,7 +605,7 @@ export default function LangHomePage({ params: { lng } }: LangHomePageProps) {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button
-                onClick={() => router.push(`/${lng}/dashboard`)}
+                onClick={() => router.push(`/${lng}/(platform)/dashboard`)}
                 className="bg-white text-green-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
               >
                 ابدأ الرحلة مجاناً

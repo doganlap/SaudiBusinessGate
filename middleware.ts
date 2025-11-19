@@ -77,7 +77,8 @@ export function middleware(request: NextRequest) {
   if (routeRedirects[pathname]) {
     const locale = getLocale(request) || defaultLanguage
     const redirectPath = routeRedirects[pathname]
-    const redirectUrl = new URL(`/${locale}/(platform)${redirectPath}`, request.url)
+    // Route groups like (platform) should NOT appear in URLs
+    const redirectUrl = new URL(`/${locale}${redirectPath}`, request.url)
     
     // Preserve query parameters
     request.nextUrl.searchParams.forEach((value, key) => {

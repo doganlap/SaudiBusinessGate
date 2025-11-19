@@ -1,26 +1,33 @@
 import { NextResponse } from 'next/server';
+import { authService } from '@/lib/auth/auth-service';
 
 export async function GET() {
   try {
-    // Mock user data for testing - Arabic name for Saudi market
-    const mockUserData = {
+    // Get current authenticated user
+    const user = await authService.getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Not authenticated' },
+        { status: 401 }
+      );
+    }
+
+    // Return user data in the expected format
+    return NextResponse.json({
       success: true,
       data: {
-        id: 'test-user-123',
-        name: 'أحمد محمد', // Ahmed Mohammed in Arabic
-        nameEn: 'Ahmed Mohammed',
-        email: 'ahmed@doganhub.com',
-        tenantId: 'saudi-business-123',
-        organization: 'بوابة الأعمال السعودية',
-        organizationEn: 'Saudi Business Gate',
-        role: 'admin',
-        avatar: null,
-        locale: 'ar',
-        timezone: 'Asia/Riyadh'
+        id: user.id,
+        name: user.fullName,
+        nameEn: user.fullName,
+        email: user.email,
+        tenantId: user.tenantId,
+        role: user.role,
+        avatar: user.avatar,
+        locale: user.language || 'ar',
+        timezone: user.timezone || 'Asia/Riyadh'
       }
-    };
-
-    return NextResponse.json(mockUserData);
+    });
   } catch (error) {
     console.error('Auth API error:', error);
     return NextResponse.json(

@@ -1,19 +1,18 @@
 /**
  * Multi-Tenant Navigation Structure
  * Supports Platform Admin, Tenant Admin, and Team Member roles
+ * SINGLE SOURCE OF TRUTH - Used by both React Router and Next.js apps
  */
 
 import React, { useState, useEffect } from 'react';
-import { useApp } from '../../context/AppContext';
- 
-import { useTheme } from '../theme/ThemeProvider';
 import { 
-  Building2, Shield, Users, DollarSign, 
+  Building2, Shield, Users, DollarSign, Settings, 
   Crown, BarChart3, Home, Target, FileText, AlertTriangle,
   CheckCircle, Activity, Bell, Bot, TrendingUp, Globe,
-  Briefcase, ChevronDown, Zap,
-  Calendar, Brain, Search, FolderOpen,
-  BarChart2
+  Briefcase, Database, Code, ChevronDown, ChevronRight, Zap,
+  Workflow, Calendar, Brain, Search, FolderOpen,
+  Scale, BarChart2, Building, ShieldCheck, MessageSquare,
+  Upload, Monitor, LayoutDashboard, Globe2, UserCheck, Package
 } from 'lucide-react';
 
 /**
@@ -57,10 +56,10 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
         category: 'Platform'
       },
       {
-        id: 'users-access', name: 'Users & Access', icon: Shield, collapsed: true,
+        id: 'users-access', name: 'Users & Access', icon: ShieldCheck, collapsed: true,
         items: [
           { id: 'users', name: 'Users', path: '/app/users', icon: Users },
-          { id: 'roles-permissions', name: 'Roles & Permissions', path: '/app/settings/security', icon: Shield }
+          { id: 'roles-permissions', name: 'Roles & Permissions', path: '/app/settings/security', icon: ShieldCheck }
         ],
         category: 'Platform'
       },
@@ -95,15 +94,25 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
         id: 'platform-automation', name: 'Platform Automation', icon: Bot, collapsed: true,
         items: [
           { id: 'regulatory-engine', name: 'Regulatory Engine', path: '/app/regulatory', icon: Globe },
-          { id: 'platform-workflows', name: 'Global Workflows', path: '/app/workflows', icon: Zap },
+          { id: 'platform-workflows', name: 'Global Workflows', path: '/app/workflows', icon: Workflow },
           { id: 'ai-scheduler', name: 'AI Scheduler', path: '/app/ai/scheduler', icon: Calendar }
         ],
         category: 'Platform'
       },
       {
+        id: 'system-management', name: 'System Management', icon: Settings, collapsed: true, category: 'Platform',
+        items: [
+          { id: 'database', name: 'Database Management', path: '/app/database', icon: Database },
+          { id: 'api-management', name: 'API Management', path: '/app/system/api', icon: Code },
+          { id: 'system-health', name: 'System Health', path: '/app/system/health', icon: Monitor }
+        ]
+      },
+      {
         id: 'advanced-ui', name: 'Advanced UI', icon: BarChart3, collapsed: true, category: 'Platform',
         items: [
           { id: 'advanced-dashboard', name: 'Advanced Dashboard', path: '/advanced', icon: BarChart3 },
+          { id: 'modern-dashboard', name: 'Modern Advanced Dashboard', path: '/app/dashboard/advanced', icon: LayoutDashboard },
+          { id: 'regulatory-market', name: 'Regulatory Market Dashboard', path: '/app/dashboard/regulatory-market', icon: Globe2 },
           { id: 'advanced-assessments', name: 'Advanced Assessments', path: '/advanced/assessments', icon: FileText },
           { id: 'advanced-frameworks', name: 'Advanced Frameworks', path: '/advanced/frameworks', icon: Target },
           { id: 'advanced-controls', name: 'Advanced Controls', path: '/app/controls', icon: Shield },
@@ -118,6 +127,35 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
           { id: 'tenant-billing', name: 'Billing & Subscriptions', path: '/app/licenses', icon: DollarSign, badge: stats.invoices || 0 }
         ],
         category: 'Platform'
+      },
+      {
+        id: 'sales-module-platform', name: 'Sales', icon: TrendingUp, collapsed: true, category: 'Platform',
+        items: [
+          { id: 'sales-dashboard', name: 'Sales Dashboard', path: '/app/sales', icon: BarChart3 },
+          { id: 'sales-pipeline', name: 'Sales Pipeline', path: '/app/sales/pipeline', icon: Target },
+          { id: 'sales-deals', name: 'Deals', path: '/app/sales/deals', icon: Briefcase },
+          { id: 'sales-leads', name: 'Leads', path: '/app/sales/leads', icon: Users },
+          { id: 'sales-quotes', name: 'Quotes', path: '/app/sales/quotes', icon: FileText },
+          { id: 'sales-orders', name: 'Orders', path: '/app/sales/orders', icon: CheckCircle }
+        ]
+      },
+      {
+        id: 'hr-module-platform', name: 'HR Management', icon: UserCheck, collapsed: true, category: 'Platform',
+        items: [
+          { id: 'hr-dashboard', name: 'HR Dashboard', path: '/app/hr', icon: BarChart3 },
+          { id: 'hr-employees', name: 'Employees', path: '/app/hr/employees', icon: Users },
+          { id: 'hr-payroll', name: 'Payroll', path: '/app/hr/payroll', icon: DollarSign },
+          { id: 'hr-attendance', name: 'Attendance', path: '/app/hr/attendance', icon: Calendar }
+        ]
+      },
+      {
+        id: 'procurement-module-platform', name: 'Procurement', icon: Package, collapsed: true, category: 'Platform',
+        items: [
+          { id: 'procurement-dashboard', name: 'Procurement Dashboard', path: '/app/procurement', icon: BarChart3 },
+          { id: 'procurement-orders', name: 'Purchase Orders', path: '/app/procurement/orders', icon: FileText },
+          { id: 'procurement-vendors', name: 'Vendors', path: '/app/procurement/vendors', icon: Building2 },
+          { id: 'procurement-inventory', name: 'Inventory', path: '/app/procurement/inventory', icon: Package }
+        ]
       }
     ],
     tenant_admin: [
@@ -129,7 +167,12 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
           { id: 'assessments', name: 'Assessments', path: '/app/assessments', icon: FileText, badge: stats.assessments || 0 },
           { id: 'risks', name: 'Risks', path: '/app/risks', icon: AlertTriangle, badge: stats.risks || 0 },
           { id: 'controls', name: 'Controls', path: '/app/controls', icon: Shield, badge: stats.controls || 0 },
-          { id: 'compliance', name: 'Compliance Tracking', path: '/app/compliance', icon: CheckCircle }
+          { id: 'compliance', name: 'Compliance Tracking', path: '/app/compliance', icon: CheckCircle },
+          { id: 'tasks', name: 'Task Management', path: '/app/tasks', icon: CheckCircle },
+          { id: 'tasks-board', name: 'Task Board', path: '/app/tasks/board', icon: CheckCircle },
+          { id: 'gaps', name: 'Gap Analysis', path: '/app/gaps', icon: AlertTriangle },
+          { id: 'remediation', name: 'Remediation Plans', path: '/app/remediation', icon: Target },
+          { id: 'evidence-upload', name: 'Evidence Upload', path: '/app/evidence/upload', icon: Upload }
         ]
       },
       {
@@ -137,13 +180,15 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
         items: [
           { id: 'teams-users', name: 'Teams & Users', path: '/app/users', icon: Users, badge: stats.users || 0 },
           { id: 'departments', name: 'Departments', path: '/app/organizations', icon: Building2 },
-          { id: 'roles-permissions', name: 'Roles & Permissions', path: '/app/settings/security', icon: Shield }
+          { id: 'onboarding', name: 'Onboarding', path: '/app/onboarding', icon: Users },
+          { id: 'roles-permissions', name: 'Roles & Permissions', path: '/app/settings/security', icon: ShieldCheck },
+          { id: 'documents', name: 'Document Management', path: '/app/documents', icon: FolderOpen }
         ]
       },
       { id: 'reports-analytics', name: 'Reports & Analytics', icon: BarChart3, path: `/tenant/${tenantContext?.id}/reports`, items: [], category: 'GRC' },
       { id: 'vendors-partners', name: 'Vendors & Partners', icon: Briefcase, path: `/tenant/${tenantContext?.id}/partners`, items: [], category: 'Team' },
       { id: 'documents-evidence', name: 'Documents & Evidence', icon: FileText, path: `/tenant/${tenantContext?.id}/documents`, items: [], category: 'Team' },
-      { id: 'workflows', name: 'Workflows', icon: Zap, path: `/tenant/${tenantContext?.id}/workflows`, items: [], category: 'Team' },
+      { id: 'workflows', name: 'Workflows', icon: Workflow, path: `/tenant/${tenantContext?.id}/workflows`, items: [], category: 'Team' },
       { id: 'team-communication', name: 'Team Communication', icon: Users, collapsed: true, category: 'Team',
         items: [
           { id: 'announcements', name: 'Announcements', path: '/app/notifications', icon: Bell },
@@ -155,6 +200,8 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
         id: 'advanced-ui-grc', name: 'Advanced UI', icon: BarChart3, collapsed: true, category: 'GRC',
         items: [
           { id: 'advanced-dashboard', name: 'Advanced Dashboard', path: '/advanced', icon: BarChart3 },
+          { id: 'modern-dashboard', name: 'Modern Advanced Dashboard', path: '/app/dashboard/advanced', icon: LayoutDashboard },
+          { id: 'regulatory-market', name: 'Regulatory Market Dashboard', path: '/app/dashboard/regulatory-market', icon: Globe2 },
           { id: 'advanced-assessments', name: 'Advanced Assessments', path: '/advanced/assessments', icon: FileText },
           { id: 'advanced-frameworks', name: 'Advanced Frameworks', path: '/advanced/frameworks', icon: Target },
           { id: 'advanced-controls', name: 'Advanced Controls', path: '/app/controls', icon: Shield },
@@ -162,25 +209,55 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
         ],
         visible: advancedEnabled
       },
-      { id: 'team-communication', name: 'Team Communication', icon: FileText, collapsed: true, category: 'Team',
+      { id: 'team-communication', name: 'Team Communication', icon: MessageSquare, collapsed: true, category: 'Team',
         items: [
           { id: 'announcements', name: 'Announcements', path: '/app/notifications', icon: Bell },
           { id: 'collaborations', name: 'Collaborations', path: `/tenant/${tenantContext?.id}/partners`, icon: Users },
           { id: 'share-center', name: 'Shared Documents', path: `/tenant/${tenantContext?.id}/documents`, icon: FolderOpen }
         ]
       },
-      { id: 'ai-services', name: 'AI Services', icon: Bot, path: `/tenant/${tenantContext?.id}/rag`, items: [], category: 'GRC', visible: !!(stats.aiLicensed || tenantContext?.aiLicensed) }
+      { id: 'ai-services', name: 'AI Services', icon: Bot, path: `/tenant/${tenantContext?.id}/rag`, items: [], category: 'GRC', visible: !!(stats.aiLicensed || tenantContext?.aiLicensed) },
+      {
+        id: 'sales-module', name: 'Sales', icon: TrendingUp, collapsed: true, category: 'Business',
+        items: [
+          { id: 'sales-dashboard', name: 'Sales Dashboard', path: '/app/sales', icon: BarChart3 },
+          { id: 'sales-pipeline', name: 'Sales Pipeline', path: '/app/sales/pipeline', icon: Target },
+          { id: 'sales-deals', name: 'Deals', path: '/app/sales/deals', icon: Briefcase },
+          { id: 'sales-leads', name: 'Leads', path: '/app/sales/leads', icon: Users },
+          { id: 'sales-quotes', name: 'Quotes', path: '/app/sales/quotes', icon: FileText },
+          { id: 'sales-orders', name: 'Orders', path: '/app/sales/orders', icon: CheckCircle }
+        ]
+      },
+      {
+        id: 'hr-module', name: 'HR Management', icon: UserCheck, collapsed: true, category: 'Business',
+        items: [
+          { id: 'hr-dashboard', name: 'HR Dashboard', path: '/app/hr', icon: BarChart3 },
+          { id: 'hr-employees', name: 'Employees', path: '/app/hr/employees', icon: Users },
+          { id: 'hr-payroll', name: 'Payroll', path: '/app/hr/payroll', icon: DollarSign },
+          { id: 'hr-attendance', name: 'Attendance', path: '/app/hr/attendance', icon: Calendar }
+        ]
+      },
+      {
+        id: 'procurement-module', name: 'Procurement', icon: Package, collapsed: true, category: 'Business',
+        items: [
+          { id: 'procurement-dashboard', name: 'Procurement Dashboard', path: '/app/procurement', icon: BarChart3 },
+          { id: 'procurement-orders', name: 'Purchase Orders', path: '/app/procurement/orders', icon: FileText },
+          { id: 'procurement-vendors', name: 'Vendors', path: '/app/procurement/vendors', icon: Building2 },
+          { id: 'procurement-inventory', name: 'Inventory', path: '/app/procurement/inventory', icon: Package }
+        ]
+      }
     ],
     team_member: [
       { id: 'my-dashboard', name: 'Home Dashboard', icon: Home, path: '/app/dashboard/tenant', items: [], category: 'Team' },
       { id: 'my-assessments', name: 'My Assessments', icon: FileText, path: '/app/assessments', badge: stats.myAssessments || 0, items: [], category: 'Team' },
       { id: 'my-tasks', name: 'My Tasks', icon: CheckCircle, path: '/app/tasks/list', badge: stats.myTasks || 0, items: [], category: 'Team' },
+      { id: 'tasks-board', name: 'Task Board', path: '/app/tasks/board', icon: CheckCircle, items: [], category: 'Team' },
       { id: 'my-documents', name: 'My Documents', icon: FileText, path: '/app/documents', items: [], category: 'Team' },
       { id: 'compliance-status', name: 'Compliance Status', icon: CheckCircle, path: '/app/compliance', items: [], category: 'Team' },
       { id: 'reports-view', name: 'Reports', icon: BarChart3, path: '/app/reports', items: [], category: 'Team' },
       { id: 'team-tools', name: 'Team Tools', icon: Users, collapsed: true, category: 'Team',
         items: [
-          { id: 'chat', name: 'Real-Time Chat', path: '/app/mission-control', icon: FileText },
+          { id: 'chat', name: 'Real-Time Chat', path: '/app/mission-control', icon: MessageSquare },
           { id: 'announcements', name: 'Announcements', path: '/app/notifications', icon: Bell },
           { id: 'shared-docs', name: 'Shared Documents', path: '/app/documents', icon: FolderOpen }
         ]
@@ -189,12 +266,29 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
         id: 'advanced-ui-team', name: 'Advanced UI', icon: BarChart3, collapsed: true, category: 'Team',
         items: [
           { id: 'advanced-dashboard', name: 'Advanced Dashboard', path: '/advanced', icon: BarChart3 },
+          { id: 'modern-dashboard', name: 'Modern Advanced Dashboard', path: '/app/dashboard/advanced', icon: LayoutDashboard },
+          { id: 'regulatory-market', name: 'Regulatory Market Dashboard', path: '/app/dashboard/regulatory-market', icon: Globe2 },
           { id: 'advanced-assessments', name: 'Advanced Assessments', path: '/advanced/assessments', icon: FileText },
           { id: 'advanced-frameworks', name: 'Advanced Frameworks', path: '/advanced/frameworks', icon: Target },
           { id: 'advanced-controls', name: 'Advanced Controls', path: '/app/controls', icon: Shield },
           { id: 'advanced-reports', name: 'Advanced Reports', path: '/app/reports', icon: BarChart3 }
         ],
         visible: advancedEnabled
+      },
+      {
+        id: 'sales-module-team', name: 'Sales', icon: TrendingUp, collapsed: true, category: 'Business',
+        items: [
+          { id: 'sales-pipeline', name: 'Sales Pipeline', path: '/app/sales/pipeline', icon: Target },
+          { id: 'sales-deals', name: 'My Deals', path: '/app/sales/deals', icon: Briefcase },
+          { id: 'sales-leads', name: 'My Leads', path: '/app/sales/leads', icon: Users }
+        ]
+      },
+      {
+        id: 'hr-module-team', name: 'HR', icon: UserCheck, collapsed: true, category: 'Business',
+        items: [
+          { id: 'hr-employees', name: 'Employees', path: '/app/hr/employees', icon: Users },
+          { id: 'hr-attendance', name: 'My Attendance', path: '/app/hr/attendance', icon: Calendar }
+        ]
       }
     ]
   };
@@ -214,55 +308,46 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
 
 /**
  * Tenant Selector Component for Platform Admin
+ * Framework-agnostic - works with both React Router and Next.js
  */
 export const TenantSelector = ({ currentTenant, tenants, onTenantSwitch }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { isDark } = useTheme();
-
-  const iconDefaultClass = isDark ? 'w-5 h-5 text-gray-300' : 'w-5 h-5 text-gray-600';
-  const iconSmallClass = isDark ? 'w-4 h-4 text-gray-300' : 'w-4 h-4 text-gray-600';
-  const titleClass = isDark ? 'text-white' : 'text-gray-900';
-  const subtitleClass = isDark ? 'text-gray-400' : 'text-gray-500';
+  // Note: Theme hook should be imported by the component using this
+  // This is a framework-agnostic component
 
   return (
     <div className="relative mb-4">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full flex items-center justify-between p-3 rounded-lg ${
-          isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'
-        } border ${isDark ? 'border-gray-700' : 'border-gray-200'}`}
+        className="w-full flex items-center justify-between p-3 rounded-lg bg-white hover:bg-gray-50 border border-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700"
       >
         <div className="flex items-center gap-2">
-          <Building2 className={iconDefaultClass} />
+          <Building2 className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           <div className="text-left">
-            <div className={`text-sm font-medium ${titleClass}`}>
+            <div className="text-sm font-medium text-gray-900 dark:text-white">
               {currentTenant?.name || 'All Tenants'}
             </div>
-            <div className={`text-xs ${subtitleClass}`}>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
               {currentTenant ? 'Client Organization' : 'Platform View'}
             </div>
           </div>
         </div>
-        <ChevronDown className={`w-4 h-4 ${subtitleClass} transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform" style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }} />
       </button>
 
       {isOpen && (
-        <div className={`absolute top-full left-0 right-0 mt-1 rounded-lg shadow-lg border z-50 ${
-          isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-        }`}>
+        <div className="absolute top-full left-0 right-0 mt-1 rounded-lg shadow-lg border z-50 bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700">
           <div className="max-h-60 overflow-y-auto">
             <button
               onClick={() => {
                 onTenantSwitch(null);
                 setIsOpen(false);
               }}
-              className={`w-full p-3 text-left hover:bg-gray-700 border-b ${
-                isDark ? 'border-gray-700' : 'border-gray-200'
-              }`}
+              className="w-full p-3 text-left hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
             >
               <div className="flex items-center gap-2">
-                <Crown className={iconSmallClass} />
-                <span className={isDark ? 'text-white' : 'text-gray-900'}>
+                <Crown className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                <span className="text-gray-900 dark:text-white">
                   Platform View
                 </span>
               </div>
@@ -274,15 +359,15 @@ export const TenantSelector = ({ currentTenant, tenants, onTenantSwitch }) => {
                   onTenantSwitch(tenant);
                   setIsOpen(false);
                 }}
-                className={`w-full p-3 text-left hover:bg-gray-700 ${
+                className={`w-full p-3 text-left hover:bg-gray-100 dark:hover:bg-gray-700 ${
                   currentTenant?.id === tenant.id ? 'bg-blue-600 text-white' : ''
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <Building2 className={iconSmallClass} />
+                  <Building2 className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                   <div>
-                    <div className={`text-sm font-medium ${titleClass}`}>{tenant.name}</div>
-                    <div className={`text-xs opacity-75 ${subtitleClass}`}>{tenant.compliance}% Compliant</div>
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">{tenant.name}</div>
+                    <div className="text-xs opacity-75 text-gray-500 dark:text-gray-400">{tenant.compliance}% Compliant</div>
                   </div>
                 </div>
               </button>
@@ -296,6 +381,7 @@ export const TenantSelector = ({ currentTenant, tenants, onTenantSwitch }) => {
 
 /**
  * Role Badge Component
+ * Framework-agnostic
  */
 export const RoleBadge = ({ role }) => {
   const roleConfig = {
@@ -315,22 +401,30 @@ export const RoleBadge = ({ role }) => {
   );
 };
 
-export const RoleActivationPanel = ({ role, currentTenant, tenants = [], onTenantSwitch }) => {
-  const { actions } = useApp();
+/**
+ * Role Activation Panel
+ * Framework-agnostic - requires useApp, useI18n, useTheme to be provided by parent
+ */
+export const RoleActivationPanel = ({ role, currentTenant, tenants = [], onTenantSwitch, useAppHook, useI18nHook, useThemeHook }) => {
   const [list, setList] = useState(tenants || []);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (role === 'platform_admin' && (!list || list.length === 0)) {
+      setLoading(true);
+      // Dynamic import to avoid framework-specific dependencies
       import('../../services/api').then(({ apiServices }) => {
         apiServices.tenants.getAll()
           .then(res => {
             const data = res?.data?.data || res?.data || [];
             setList(Array.isArray(data) ? data : []);
           })
-          .catch(() => setList([]));
-      });
+          .catch(() => setList([]))
+          .finally(() => setLoading(false));
+      }).catch(() => setLoading(false));
     }
-  }, [role, list]);
+  }, [role]);
+  
   return (
     <div className="auto-container w-full max-w-full">
       <div className="flex items-center justify-between gap-2 w-full">
@@ -350,7 +444,9 @@ export const RoleActivationPanel = ({ role, currentTenant, tenants = [], onTenan
                     localStorage.removeItem('tenant_id');
                   }
                 } catch {}
-                actions.setCurrentTenant(tenant || null);
+                if (useAppHook?.actions) {
+                  useAppHook.actions.setCurrentTenant(tenant || null);
+                }
                 onTenantSwitch?.(tenant || null);
               }}
             />
@@ -360,3 +456,11 @@ export const RoleActivationPanel = ({ role, currentTenant, tenants = [], onTenan
     </div>
   );
 };
+
+export default {
+  getNavigationForRole,
+  TenantSelector,
+  RoleBadge,
+  RoleActivationPanel
+};
+

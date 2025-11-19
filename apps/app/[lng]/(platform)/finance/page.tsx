@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { defaultLanguage } from '@/lib/i18n';
 import { 
   Calculator, 
   CreditCard, 
@@ -103,7 +104,7 @@ const financeModules = [
 
 export default function FinancePage() {
   const params = useParams() as any;
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
       login_count: 0,
       two_factor_enabled: body.two_factor_enabled || false,
       timezone: body.timezone,
-      language: body.language || 'en',
+      language: body.language || 'ar',
       theme: body.theme || 'light',
       created_by: body.created_by
     });

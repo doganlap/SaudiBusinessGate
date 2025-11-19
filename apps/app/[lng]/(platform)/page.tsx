@@ -2,11 +2,12 @@
 
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { defaultLanguage } from '@/lib/i18n';
 
 export default function Home() {
   const params = useParams() as any;
   const router = useRouter();
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
 
   useEffect(() => {
     // Redirect to dashboard

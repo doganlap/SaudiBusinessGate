@@ -92,6 +92,14 @@ const financeModules = [
     bgColor: 'bg-orange-500'
   },
   {
+    name: 'Cash Flow',
+    href: '/cash-flow',
+    icon: DollarSign,
+    description: 'Cash flow statement and analysis',
+    color: 'bg-cyan-50 border-cyan-200 text-cyan-700',
+    bgColor: 'bg-cyan-500'
+  },
+  {
     name: 'Acceptance',
     href: '/acceptance',
     icon: CheckCircle,

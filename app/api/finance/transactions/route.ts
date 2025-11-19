@@ -176,6 +176,73 @@ export async function GET(request: NextRequest) {
   }
 }
 
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId;
+    const body = await request.json();
+    
+    if (!body.id) {
+      return NextResponse.json(
+        { success: false, error: 'Transaction ID is required' },
+        { status: 400 }
+      );
+    }
+
+    try {
+      const pool = await getPool();
+      const deleteQuery = `DELETE FROM transactions WHERE id = $1 AND tenant_id = $2`;
+      const result = await pool.query(deleteQuery, [body.id, tenantId]);
+
+      if (result.rowCount === 0) {
+        return NextResponse.json(
+          { success: false, error: 'Transaction not found or already deleted' },
+          { status: 404 }
+        );
+      }
+
+      // Log audit
+      await AuditLogger.log({
+        action: 'DELETE',
+        resource: 'transaction',
+        resourceId: body.id,
+        tenantId,
+        userId: (session.user as any).id,
+        metadata: { transactionId: body.id }
+      });
+
+      return NextResponse.json(
+        { success: true, message: 'Transaction deleted successfully' },
+        { 
+          status: 200,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+            'Pragma': 'no-cache'
+          }
+        }
+      );
+    } catch (dbError: any) {
+      if (dbError.code === '42P01') {
+        return NextResponse.json(
+          { success: false, error: 'Transactions table not found' },
+          { status: 503 }
+        );
+      }
+      throw dbError;
+    }
+  } catch (error) {
+    console.error('Error deleting transaction:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to delete transaction' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

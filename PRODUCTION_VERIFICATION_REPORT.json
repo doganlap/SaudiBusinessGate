@@ -1,0 +1,229 @@
+{
+  "integrations": [
+    {
+      "name": "Stripe Payment",
+      "service": "billing",
+      "status": "ok",
+      "message": "Configured",
+      "missing": [],
+      "optionalMissing": [
+        "STRIPE_PUBLISHABLE_KEY"
+      ]
+    },
+    {
+      "name": "Azure Services",
+      "service": "document-processing",
+      "status": "ok",
+      "message": "Optional - not configured",
+      "missing": [],
+      "optionalMissing": [
+        "AZURE_STORAGE_CONNECTION_STRING",
+        "AZURE_FORM_RECOGNIZER_ENDPOINT",
+        "AZURE_TEXT_ANALYTICS_ENDPOINT",
+        "AZURE_TRANSLATOR_ENDPOINT",
+        "AZURE_OPENAI_ENDPOINT"
+      ]
+    },
+    {
+      "name": "OpenAI",
+      "service": "ai",
+      "status": "ok",
+      "message": "Optional - not configured",
+      "missing": [],
+      "optionalMissing": [
+        "OPENAI_API_KEY",
+        "OPENAI_API_VERSION",
+        "OPENAI_MODEL_DEFAULT"
+      ]
+    },
+    {
+      "name": "Email (SMTP)",
+      "service": "email",
+      "status": "ok",
+      "message": "Configured",
+      "missing": [],
+      "optionalMissing": [
+        "SMTP_USER",
+        "SMTP_PASSWORD"
+      ]
+    },
+    {
+      "name": "Gmail Integration",
+      "service": "email",
+      "status": "warning",
+      "message": "No optional variables configured",
+      "missing": [],
+      "optionalMissing": [
+        "GMAIL_CLIENT_ID",
+        "GMAIL_CLIENT_SECRET",
+        "GMAIL_REFRESH_TOKEN"
+      ]
+    },
+    {
+      "name": "Outlook Integration",
+      "service": "email",
+      "status": "warning",
+      "message": "No optional variables configured",
+      "missing": [],
+      "optionalMissing": [
+        "OUTLOOK_CLIENT_ID",
+        "OUTLOOK_CLIENT_SECRET",
+        "OUTLOOK_TENANT_ID"
+      ]
+    },
+    {
+      "name": "Sentry Error Tracking",
+      "service": "monitoring",
+      "status": "warning",
+      "message": "No optional variables configured",
+      "missing": [],
+      "optionalMissing": [
+        "SENTRY_DSN",
+        "NEXT_PUBLIC_SENTRY_DSN"
+      ]
+    },
+    {
+      "name": "Google Analytics",
+      "service": "analytics",
+      "status": "warning",
+      "message": "No optional variables configured",
+      "missing": [],
+      "optionalMissing": [
+        "NEXT_PUBLIC_GA_MEASUREMENT_ID"
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "next",
+      "status": "ok",
+      "version": "^16.0.1",
+      "message": "Installed"
+    },
+    {
+      "name": "react",
+      "status": "ok",
+      "version": "^19.2.0",
+      "message": "Installed"
+    },
+    {
+      "name": "react-dom",
+      "status": "ok",
+      "version": "^19.2.0",
+      "message": "Installed"
+    },
+    {
+      "name": "@prisma/client",
+      "status": "ok",
+      "version": "^6.19.0",
+      "message": "Installed"
+    },
+    {
+      "name": "prisma",
+      "status": "ok",
+      "version": "^6.19.0",
+      "message": "Installed"
+    },
+    {
+      "name": "pg",
+      "status": "ok",
+      "version": "^8.16.3",
+      "message": "Installed"
+    },
+    {
+      "name": "ioredis",
+      "status": "ok",
+      "version": "^5.8.2",
+      "message": "Installed"
+    },
+    {
+      "name": "next-auth",
+      "status": "ok",
+      "version": "^4.24.13",
+      "message": "Installed"
+    },
+    {
+      "name": "jsonwebtoken",
+      "status": "ok",
+      "version": "^9.0.2",
+      "message": "Installed"
+    },
+    {
+      "name": "bcryptjs",
+      "status": "ok",
+      "version": "^3.0.3",
+      "message": "Installed"
+    }
+  ],
+  "environment": [
+    {
+      "name": "DATABASE_URL",
+      "status": "ok",
+      "message": "Configured"
+    },
+    {
+      "name": "JWT_SECRET",
+      "status": "ok",
+      "message": "Configured"
+    },
+    {
+      "name": "NEXTAUTH_SECRET",
+      "status": "ok",
+      "message": "Configured"
+    },
+    {
+      "name": "NEXTAUTH_URL",
+      "status": "warning",
+      "message": "May contain placeholder value"
+    },
+    {
+      "name": "NODE_ENV",
+      "status": "ok",
+      "message": "Configured"
+    },
+    {
+      "name": "REDIS_URL",
+      "status": "warning",
+      "message": "Optional: Redis connection string"
+    },
+    {
+      "name": "REDIS_HOST",
+      "status": "ok",
+      "message": "Configured"
+    },
+    {
+      "name": "REDIS_PASSWORD",
+      "status": "warning",
+      "message": "Optional: Redis password"
+    },
+    {
+      "name": "NEXT_PUBLIC_API_URL",
+      "status": "ok",
+      "message": "Configured"
+    },
+    {
+      "name": "NEXT_PUBLIC_APP_URL",
+      "status": "ok",
+      "message": "Configured"
+    }
+  ],
+  "database": [
+    {
+      "name": "Database Connection",
+      "status": "ok",
+      "message": "Connected successfully",
+      "details": {
+        "timestamp": "2025-11-18T14:11:06.324Z",
+        "version": "PostgreSQL 17.2"
+      }
+    }
+  ],
+  "services": [
+    {
+      "name": "Redis",
+      "status": "error",
+      "message": "Connection failed: Reached the max retries per request limit (which is 20). Refer to \"maxRetriesPerRequest\" option for details."
+    }
+  ],
+  "errors": []
+}

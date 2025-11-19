@@ -1,16 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { databaseStatsService } from '@/lib/services/database-stats.service';
-import { appConnectionsService } from '@/lib/services/app-connections.service';
 
 export async function GET(request: NextRequest) {
   const startTime = Date.now();
   
   try {
-    // Basic health check
-    const [dbTest, connectionsReport] = await Promise.allSettled([
-      databaseStatsService.testDatabaseConnection(),
-      appConnectionsService.getConnectionsReport()
-    ]);
+    // Try to import services, but don't fail if they're not available
+    let dbTest: PromiseSettledResult<any> = { status: 'rejected', reason: 'Service not available' };
+    let connectionsReport: PromiseSettledResult<any> = { status: 'rejected', reason: 'Service not available' };
+    
+    try {
+      const { databaseStatsService } = await import('@/lib/services/database-stats.service');
+      const { appConnectionsService } = await import('@/lib/services/app-connections.service');
+      
+      // Basic health check
+      [dbTest, connectionsReport] = await Promise.allSettled([
+        databaseStatsService.testDatabaseConnection(),
+        appConnectionsService.getConnectionsReport()
+      ]);
+    } catch (importError) {
+      // Services not available, continue with basic health check
+      console.warn('Health check services not available:', importError);
+    }
 
     const responseTime = Date.now() - startTime;
     

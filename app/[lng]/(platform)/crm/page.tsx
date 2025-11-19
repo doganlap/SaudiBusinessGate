@@ -42,47 +42,31 @@ export default function CRMPage() {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      // Mock data for demo
-      setCustomers([
-        {
-          id: '1',
-          name: 'John Smith',
-          company: 'Tech Corp',
-          email: 'john@techcorp.com',
-          phone: '+1-555-0123',
-          status: 'active',
-          totalValue: 125000,
-          lastContact: '2024-11-10T14:30:00Z',
-          assignedTo: 'Sarah Johnson',
-          createdAt: '2024-01-15T10:00:00Z'
-        },
-        {
-          id: '2',
-          name: 'Emily Davis',
-          company: 'StartupXYZ',
-          email: 'emily@startupxyz.com',
-          phone: '+1-555-0456',
-          status: 'active',
-          totalValue: 75000,
-          lastContact: '2024-11-09T16:45:00Z',
-          assignedTo: 'Mike Wilson',
-          createdAt: '2024-02-20T09:15:00Z'
-        },
-        {
-          id: '3',
-          name: 'Robert Brown',
-          company: 'Enterprise Inc',
-          email: 'robert@enterprise.com',
-          phone: '+1-555-0789',
-          status: 'prospect',
-          totalValue: 0,
-          lastContact: '2024-11-08T11:20:00Z',
-          assignedTo: 'Lisa Chen',
-          createdAt: '2024-11-01T14:00:00Z'
-        }
-      ]);
+      const response = await fetch('/api/crm/customers');
+      if (!response.ok) {
+        throw new Error('Failed to fetch customers');
+      }
+      const data = await response.json();
+      if (data.success && data.customers) {
+        // Map API response to component format
+        const mappedCustomers = data.customers.map((customer: any) => ({
+          id: customer.id,
+          name: customer.name,
+          company: customer.company,
+          email: customer.email,
+          phone: customer.phone,
+          status: customer.status,
+          totalValue: customer.totalValue || 0,
+          lastContact: customer.lastOrder ? new Date(customer.lastOrder).toISOString() : customer.createdAt,
+          assignedTo: customer.assignedTo || '',
+          createdAt: customer.createdAt
+        }));
+        setCustomers(mappedCustomers);
+      }
     } catch (err) {
       console.error('Failed to fetch customers:', err);
+      // Keep empty array on error
+      setCustomers([]);
     } finally {
       setLoading(false);
     }

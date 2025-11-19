@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
       timezone: body.timezone || 'UTC',
       currency: body.currency || 'USD',
       date_format: body.date_format || 'MM/DD/YYYY',
-      language: body.language || 'en',
+      language: body.language || 'ar',
       logo_url: body.logo_url,
       primary_color: body.primary_color,
       secondary_color: body.secondary_color,

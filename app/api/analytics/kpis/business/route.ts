@@ -8,7 +8,7 @@
 
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import RealTimeAnalyticsEngine from '@/app/api/analytics/services/realtime-analytics-mock';
+import RealTimeAnalyticsEngine from '@/app/api/analytics/services/realtime-analytics';
 import { redisCachingService } from '@/app/api/analytics/services/redis-caching-mock';
 import { authorizationService } from '@/app/api/analytics/services/authorization-mock';
 

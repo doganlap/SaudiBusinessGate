@@ -10,11 +10,12 @@ import {
   Loader2, Building2, User, ArrowRight
 } from 'lucide-react';
 import Image from 'next/image';
+import { defaultLanguage } from '@/lib/i18n';
 
 export default function LoginPage() {
   const router = useRouter();
   const params = useParams();
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
   const isArabic = lng === 'ar';
   
   const [formData, setFormData] = useState({

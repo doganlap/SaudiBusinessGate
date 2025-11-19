@@ -16,24 +16,24 @@ export async function GET(request: NextRequest) {
       // Total revenue from subscriptions/invoices
       query(`
         SELECT COALESCE(SUM(amount), 0) as total_revenue
-        FROM invoices 
-        WHERE status = 'paid' 
-        AND created_at >= date_trunc('month', CURRENT_DATE)
-      `).catch(() => ({ rows: [{ total_revenue: 125000 }] })),
+        FROM tenant_subscriptions 
+        WHERE status = 'active' 
+        AND start_date >= date_trunc('month', CURRENT_DATE)
+      `),
       
       // Total active users
       query(`
         SELECT COUNT(*) as total_users
         FROM users 
         WHERE is_active = true
-      `).catch(() => ({ rows: [{ total_users: 1250 }] })),
+      `),
       
       // Active subscriptions
       query(`
         SELECT COUNT(*) as active_subscriptions
-        FROM subscriptions 
+        FROM tenant_subscriptions 
         WHERE status = 'active'
-      `).catch(() => ({ rows: [{ active_subscriptions: 890 }] })),
+      `),
       
       // Monthly growth calculation
       query(`
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
           COUNT(CASE WHEN created_at >= date_trunc('month', CURRENT_DATE - interval '1 month') 
                      AND created_at < date_trunc('month', CURRENT_DATE) THEN 1 END) as previous_month
         FROM users
-      `).catch(() => ({ rows: [{ current_month: 150, previous_month: 130 }] }))
+      `)
     ])
 
     // Calculate growth percentage

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { defaultLanguage } from '@/lib/i18n';
 import { 
   BarChart3, TrendingUp, Users, DollarSign, Activity, 
   Brain, Target, Zap, ChevronRight, Eye, Settings
@@ -33,7 +34,7 @@ interface KPIData {
 
 export default function AnalyticsPage() {
   const params = useParams() as any;
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
   const [kpiData, setKpiData] = useState<KPIData[]>([]);
   const [loading, setLoading] = useState(true);
 

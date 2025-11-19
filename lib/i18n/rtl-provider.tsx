@@ -36,7 +36,7 @@ const RTLContext = createContext<RTLContextType | undefined>(undefined);
  */
 export function RTLProvider({ children }: { children: React.ReactNode }) {
   const params = useParams();
-  const initialLang = (params?.lng as string) || 'en';
+  const initialLang = (params?.lng as string) || 'ar'; // Arabic as default
   const [language, setLanguageState] = useState<string>(initialLang);
   const direction = getDirection(language);
   const isRTLLanguage = isRTL(language);
@@ -92,7 +92,7 @@ export function useRTL(): RTLContextType {
  */
 export function useLanguage(): string {
   const params = useParams();
-  return (params?.lng as string) || 'en';
+  return (params?.lng as string) || 'ar'; // Arabic as default
 }
 
 /**

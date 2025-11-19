@@ -77,7 +77,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ar" dir="rtl" className="scroll-smooth">
+    <html lang="ar" dir="rtl" className="scroll-smooth" data-default-lang="ar">
       <body
         className="font-sans antialiased bg-neutral-50 text-neutral-900 selection:bg-brand-100 selection:text-brand-900"
         suppressHydrationWarning={true}
@@ -116,15 +116,36 @@ export default function RootLayout({
                 }
               })();
               
-              // Language direction detection
+              // Automatic i18n - Arabic (RTL) as default
               (function() {
-                const lang = document.documentElement.lang;
-                const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
-                if (rtlLanguages.includes(lang)) {
-                  document.documentElement.setAttribute('dir', 'rtl');
-                } else {
-                  document.documentElement.setAttribute('dir', 'ltr');
+                const defaultLang = 'ar';
+                const defaultDir = 'rtl';
+                
+                // Set default immediately
+                if (!document.documentElement.lang) {
+                  document.documentElement.lang = defaultLang;
+                  document.documentElement.dir = defaultDir;
                 }
+                
+                // Function to update direction based on language
+                const updateDirection = () => {
+                  const lang = document.documentElement.lang || defaultLang;
+                  const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+                  const direction = rtlLanguages.includes(lang) ? 'rtl' : 'ltr';
+                  document.documentElement.setAttribute('dir', direction);
+                  document.body.classList.remove('rtl', 'ltr');
+                  document.body.classList.add(direction);
+                };
+                
+                // Initial update
+                updateDirection();
+                
+                // Listen for language changes
+                const observer = new MutationObserver(updateDirection);
+                observer.observe(document.documentElement, {
+                  attributes: true,
+                  attributeFilter: ['lang']
+                });
               })();
             `,
           }}

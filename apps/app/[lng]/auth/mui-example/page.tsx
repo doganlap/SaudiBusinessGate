@@ -20,11 +20,12 @@ import {
 } from '@mui/material';
 // استخدام Lucide بدلاً من MUI icons لتجنب dependency إضافية
 import { Eye, EyeOff, Mail, Lock, LogIn } from 'lucide-react';
+import { defaultLanguage } from '@/lib/i18n';
 
 export default function MUIAuthExample() {
   const params = useParams() as any;
   const router = useRouter();
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
   
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);

@@ -24,7 +24,7 @@ export default function LandingPage() {
       
       if (result?.ok) {
         // Redirect to main platform dashboard
-        router.push('/en/dashboard');
+        router.push('/ar/dashboard');
       } else {
         alert('Login failed. Please check your credentials.');
       }
@@ -53,7 +53,7 @@ export default function LandingPage() {
               <a href="#features" className="text-white/80 hover:text-white transition-colors">Features</a>
               <a href="#pricing" className="text-white/80 hover:text-white transition-colors">Pricing</a>
               <button 
-                onClick={() => router.push('/en/dashboard')}
+                onClick={() => router.push('/ar/dashboard')}
                 className="text-white/80 hover:text-white transition-colors"
               >
                 Platform
@@ -93,7 +93,7 @@ export default function LandingPage() {
               Start Free Trial
             </button>
             <button 
-              onClick={() => router.push('/en/dashboard')}
+              onClick={() => router.push('/ar/dashboard')}
               className="border border-white/30 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-all duration-300"
             >
               Enter Platform

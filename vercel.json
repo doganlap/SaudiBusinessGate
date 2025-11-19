@@ -2,28 +2,24 @@
   "version": 2,
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
-  "installCommand": "npm install",
+  "installCommand": "PRISMA_SKIP_POSTINSTALL_GENERATE=1 npm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
   "regions": ["iad1"],
-  "functions": {
-    "app/api/**/*.ts": {
-      "runtime": "@vercel/node",
-      "maxDuration": 30
-    }
-  },
   "env": {
     "DATABASE_URL": "postgres://f9b01b016f6065e1f9d62776a95e03ccb3773e35f2ba4d5ec6f6bbc1afaa2e46:sk_ZDb_YXE5HdKoY5VayB3tN@db.prisma.io:5432/postgres?sslmode=require",
     "POSTGRES_URL": "postgres://f9b01b016f6065e1f9d62776a95e03ccb3773e35f2ba4d5ec6f6bbc1afaa2e46:sk_ZDb_YXE5HdKoY5VayB3tN@db.prisma.io:5432/postgres?sslmode=require",
     "PRISMA_DATABASE_URL": "prisma+postgres://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RfaWQiOjEsInNlY3VyZV9rZXkiOiJza19aRGJfWVhFNUhkS29ZNVZheUIzdE4iLCJhcGlfa2V5IjoiMDFLQTI2MDZLUDJDVkpYU1laWFhTVlFCWFAiLCJ0ZW5hbnRfaWQiOiJmOWIwMWIwMTZmNjA2NWUxZjlkNjI3NzZhOTVlMDNjY2IzNzczZTM1ZjJiYTRkNWVjNmY2YmJjMWFmYWEyZTQ2IiwiaW50ZXJuYWxfc2VjcmV0IjoiOWU1MWIyYjQtNzU3OS00ZmZhLTllMWEtYmFiYTVlMTQxYjdmIn0.4ZQEin9USH0TBlfgFmW_DVhaBy_fOTzlhsUJGn1SdSE",
-    "NEXTAUTH_URL": "@vercel-url",
     "NODE_ENV": "production",
     "NEXT_PUBLIC_APP_URL": "https://saudistore.sa",
     "NEXT_PUBLIC_APP_NAME": "Saudi Business Gate"
   },
   "build": {
     "env": {
-      "NEXT_TELEMETRY_DISABLED": "1"
+      "NEXT_TELEMETRY_DISABLED": "1",
+      "PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING": "1",
+      "PRISMA_SKIP_POSTINSTALL_GENERATE": "1",
+      "PRISMA_ENGINES_MIRROR": "https://binaries.prisma.sh"
     }
   },
   "rewrites": [
@@ -89,11 +85,5 @@
       ]
     }
   ],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/landing",
-      "permanent": false
-    }
-  ]
+  "redirects": []
 }

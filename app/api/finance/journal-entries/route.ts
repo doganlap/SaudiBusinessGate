@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CompleteFinanceService } from '@/lib/services/finance-complete.service';
-import { testConnection } from '@/lib/db/connection';
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,120 +14,40 @@ export async function GET(request: NextRequest) {
       offset: searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : 0
     };
     
-    // Test database connection first
-    const isConnected = await testConnection();
-    
-    if (isConnected) {
-      try {
-        const journalEntries = await CompleteFinanceService.getJournalEntries(tenantId, filters);
-        
-        return NextResponse.json({
-          success: true,
-          data: journalEntries,
-          total: journalEntries.length,
-          filters,
-          source: 'database'
-        });
-      } catch (dbError) {
-        console.error('Database query failed, using fallback:', dbError);
-      }
+    // Get journal entries from database
+    try {
+      const journalEntries = await CompleteFinanceService.getJournalEntries(tenantId, filters);
+      
+      return NextResponse.json({
+        success: true,
+        data: journalEntries || [],
+        total: journalEntries?.length || 0,
+        filters,
+        source: 'database'
+      });
+    } catch (dbError) {
+      console.error('Error fetching journal entries:', dbError);
+      
+      // Return empty array instead of error for graceful degradation
+      return NextResponse.json({
+        success: true,
+        data: [],
+        total: 0,
+        filters,
+        source: 'fallback',
+        message: 'No journal entries found or database unavailable'
+      });
     }
-    
-    // Fallback sample data
-    const fallbackEntries = [
-      {
-        id: '1',
-        tenant_id: 'default-tenant',
-        entry_number: 'JE-000001',
-        entry_date: '2024-11-11',
-        description: 'Opening Balance Entry',
-        total_debit: 10000,
-        total_credit: 10000,
-        status: 'posted',
-        entry_type: 'manual',
-        created_at: '2024-11-11T10:00:00Z',
-        updated_at: '2024-11-11T10:00:00Z',
-        lines: [
-          {
-            id: '1',
-            line_number: 1,
-            account_id: '1',
-            description: 'Cash deposit',
-            debit_amount: 10000,
-            credit_amount: 0,
-            account_name: 'Cash and Cash Equivalents',
-            account_code: '1000'
-          },
-          {
-            id: '2',
-            line_number: 2,
-            account_id: '2',
-            description: 'Owner investment',
-            debit_amount: 0,
-            credit_amount: 10000,
-            account_name: 'Owner\'s Equity',
-            account_code: '3000'
-          }
-        ]
-      }
-    ];
-    
-    return NextResponse.json({
-      success: true,
-      data: fallbackEntries,
-      total: fallbackEntries.length,
-      fallback: true,
-      source: 'mock'
-    });
   } catch (error) {
-    console.error('Error fetching journal entries:', error);
-    
-    // Fallback sample data
-    const fallbackEntries = [
-      {
-        id: '1',
-        tenant_id: 'default-tenant',
-        entry_number: 'JE-000001',
-        entry_date: '2024-11-11',
-        description: 'Opening Balance Entry',
-        total_debit: 10000,
-        total_credit: 10000,
-        status: 'posted',
-        entry_type: 'manual',
-        created_at: '2024-11-11T10:00:00Z',
-        updated_at: '2024-11-11T10:00:00Z',
-        lines: [
-          {
-            id: '1',
-            line_number: 1,
-            account_id: '1',
-            description: 'Cash deposit',
-            debit_amount: 10000,
-            credit_amount: 0,
-            account_name: 'Cash and Cash Equivalents',
-            account_code: '1000'
-          },
-          {
-            id: '2',
-            line_number: 2,
-            account_id: '2',
-            description: 'Owner investment',
-            debit_amount: 0,
-            credit_amount: 10000,
-            account_name: 'Owner\'s Equity',
-            account_code: '3000'
-          }
-        ]
-      }
-    ];
+    console.error('Error in journal entries API:', error);
     
     return NextResponse.json({
-      success: true,
-      data: fallbackEntries,
-      total: fallbackEntries.length,
-      fallback: true,
-      source: 'error_fallback'
-    });
+      success: false,
+      error: 'Failed to process journal entries request',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      data: [],
+      total: 0
+    }, { status: 500 });
   }
 }
 
@@ -145,9 +64,17 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Validate that debits equal credits
-    const totalDebits = body.lines.reduce((sum: number, line: any) => sum + (line.debit_amount || 0), 0);
-    const totalCredits = body.lines.reduce((sum: number, line: any) => sum + (line.credit_amount || 0), 0);
+    // Normalize lines first to handle both debit/credit and debit_amount/credit_amount field names
+    const normalizedLines = body.lines.map((line: any) => ({
+      ...line,
+      account_id: String(line.account_id || line.accountId || '1'),
+      debit_amount: parseFloat(line.debit_amount || line.debit || 0),
+      credit_amount: parseFloat(line.credit_amount || line.credit || 0),
+    }));
+    
+    // Validate that debits equal credits using normalized values
+    const totalDebits = normalizedLines.reduce((sum: number, line: any) => sum + line.debit_amount, 0);
+    const totalCredits = normalizedLines.reduce((sum: number, line: any) => sum + line.credit_amount, 0);
     
     if (Math.abs(totalDebits - totalCredits) > 0.01) {
       return NextResponse.json(
@@ -155,24 +82,43 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    
-    const journalEntry = await CompleteFinanceService.createJournalEntry(tenantId, {
-      description: body.description,
-      entry_date: body.entry_date,
-      reference: body.reference,
-      lines: body.lines,
-      created_by: body.created_by || 'system'
-    });
-    
-    return NextResponse.json({
-      success: true,
-      data: journalEntry,
-      message: 'Journal entry created successfully'
-    });
+
+    try {
+      const journalEntry = await CompleteFinanceService.createJournalEntry(tenantId, {
+        description: body.description,
+        entry_date: body.entry_date,
+        reference: body.reference,
+        lines: normalizedLines,
+        created_by: body.created_by || 'system'
+      });
+      
+      return NextResponse.json({
+        success: true,
+        data: journalEntry,
+        message: 'Journal entry created successfully'
+      });
+    } catch (dbError) {
+      console.error('Database error creating journal entry:', dbError);
+      
+      // Return error response instead of mock data (Zero Mock Zero Fallback Mock)
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Failed to create journal entry',
+          message: 'Database unavailable. Please try again later.',
+          details: dbError instanceof Error ? dbError.message : 'Unknown database error'
+        },
+        { status: 503 }
+      );
+    }
   } catch (error) {
     console.error('Error creating journal entry:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to create journal entry' },
+      { 
+        success: false, 
+        error: 'Failed to create journal entry',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }

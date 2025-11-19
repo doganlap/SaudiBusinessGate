@@ -21,121 +21,85 @@ export async function GET(request: NextRequest) {
     const invoiceId = searchParams.get('invoice_id');
     const action = searchParams.get('action') || 'validate';
     
+    // If no invoice_id provided, return general ZATCA compliance info
     if (!invoiceId) {
-      return NextResponse.json(
-        { success: false, error: 'Invoice ID is required' },
-        { status: 400 }
-      );
-    }
-    
-    // For now, use fallback data since database connection has UUID issues
-    // This provides ZATCA compliance validation with mock data
-    if (action === 'validate') {
-      // Return mock validation for Saudi compliance
-      const validation = {
-        invoice_id: invoiceId,
-        is_compliant: true,
-        compliance_checks: {
-          has_required_fields: true,
-          has_seller_info: true,
-          has_vat_breakdown: true,
-          has_qr_code: true,
-          has_electronic_signature: true,
-          is_dated_correctly: true,
-          has_valid_totals: true
-        },
-        zatca_requirements: ZATCA_REQUIREMENTS,
-        recommendations: [],
-        validation_date: new Date().toISOString(),
-        saudi_compliance: true,
-        note: 'Using mock data for ZATCA compliance validation'
-      };
-      
-      return NextResponse.json({
-        success: true,
-        data: validation,
-        saudi_compliance: true,
-        zatca_valid: validation.is_compliant
-      });
-    }
-    
-    if (action === 'generate-qr') {
-      // Generate ZATCA compliant QR code data (mock)
-      const qrData = {
-        seller_name: 'Saudi Business Gate',
-        vat_registration_number: '300123456789003',
-        invoice_timestamp: new Date().toISOString(),
-        invoice_total: 11500,
-        vat_total: 1500,
-        invoice_hash: 'a1b2c3d4e5f6g7h8i9j0',
-        public_key: 'demo_public_key_for_zatca',
-        qr_generated_at: new Date().toISOString(),
-        zatca_version: '1.0'
-      };
-      
       return NextResponse.json({
         success: true,
         data: {
-          qr_data: qrData,
-          qr_code_base64: generateQRCodeBase64(qrData),
-          zatca_compliant: true,
-          generation_date: new Date().toISOString()
+          zatca_compliance: true,
+          requirements: ZATCA_REQUIREMENTS,
+          status: 'ready',
+          message: 'ZATCA compliance system is active. Provide invoice_id to validate specific invoice.'
         },
-        saudi_compliance: true,
-        qr_type: 'zatca_compliant'
+        saudi_compliance: true
       });
     }
     
+    // Handle ZATCA actions using real invoice data
+    if (action === 'validate') {
+      try {
+        const validation = await validateZATCACompliance(tenantId, invoiceId);
+      
+        return NextResponse.json({
+          success: true,
+          data: validation,
+          saudi_compliance: true,
+          zatca_valid: validation.is_compliant
+        });
+      } catch (error) {
+        console.error('Error validating ZATCA compliance:', error);
+        
+        // Return fallback validation result
+        return NextResponse.json({
+          success: true,
+          data: {
+            invoice_id: invoiceId,
+            is_compliant: false,
+            compliance_checks: {
+              has_required_fields: true,
+              has_seller_info: true,
+              has_vat_breakdown: true,
+              has_qr_code: false,
+              has_electronic_signature: false,
+              is_dated_correctly: true,
+              has_valid_totals: true
+            },
+            zatca_requirements: ZATCA_REQUIREMENTS,
+            recommendations: ['Generate QR code', 'Add electronic signature'],
+            validation_date: new Date().toISOString(),
+            source: 'fallback'
+          },
+          saudi_compliance: true,
+          zatca_valid: false,
+          message: 'Validation completed with fallback data (invoice not found in database)'
+        });
+      }
+    }
+    
+    if (action === 'generate-qr') {
+      try {
+        const qrData = await generateZATCAQRCode(tenantId, invoiceId);
+      
+      return NextResponse.json({
+        success: true,
+          data: qrData,
+        saudi_compliance: true,
+        qr_type: 'zatca_compliant'
+      });
+      } catch (error) {
+        console.error('Error generating ZATCA QR code:', error);
+        return NextResponse.json({
+          success: false,
+          error: 'Failed to generate ZATCA QR code',
+          message: error instanceof Error ? error.message : 'Unknown error',
+          saudi_compliance: false
+        }, { status: 500 });
+      }
+    }
+    
     if (action === 'electronic-report') {
-      // Generate electronic report for ZATCA submission (mock)
-      const report = {
-        invoice_details: {
-          invoice_number: 'INV-' + invoiceId,
-          invoice_date: new Date().toISOString(),
-          invoice_type: 'standard_tax_invoice',
-          currency: 'SAR'
-        },
-        seller_details: {
-          name: 'Saudi Business Gate',
-          vat_number: '300123456789003',
-          address: 'Riyadh, Saudi Arabia'
-        },
-        buyer_details: {
-          name: 'Sample Customer',
-          vat_number: '300987654321009',
-          address: 'Jeddah, Saudi Arabia'
-        },
-        line_items: [
-          {
-            description: 'Sample Product',
-            quantity: 1,
-            unit_price: 10000,
-            line_total: 10000,
-            vat_rate: 0.15,
-            vat_amount: 1500
-          }
-        ],
-        tax_summary: {
-          subtotal: 10000,
-          vat_amount: 1500,
-          total_amount: 11500,
-          tax_breakdown: [
-            {
-              tax_type: 'VAT_15',
-              tax_rate: 0.15,
-              taxable_amount: 10000,
-              tax_amount: 1500
-            }
-          ]
-        },
-        zatca_metadata: {
-          report_generated_at: new Date().toISOString(),
-          report_version: '1.0',
-          compliance_status: 'compliant',
-          electronic_signature: 'demo_signature_' + Date.now(),
-          invoice_hash: 'zatca_hash_' + invoiceId
-        }
-      };
+      try {
+        const report = await generateElectronicReport(tenantId, invoiceId);
       
       return NextResponse.json({
         success: true,
@@ -143,6 +107,15 @@ export async function GET(request: NextRequest) {
         saudi_compliance: true,
         report_type: 'zatca_electronic'
       });
+      } catch (error) {
+        console.error('Error generating electronic report:', error);
+        return NextResponse.json({
+          success: false,
+          error: 'Failed to generate electronic report',
+          message: error instanceof Error ? error.message : 'Unknown error',
+          saudi_compliance: false
+        }, { status: 500 });
+      }
     }
     
     return NextResponse.json(

@@ -1,9 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PlatformService } from '@/lib/services/platform.service';
+import { AccessControlService } from '@/lib/services/access-control.service';
 
 export async function GET(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
+    const tenantId = request.headers.get('tenant-id') || 
+                    request.headers.get('x-tenant-id') || 
+                    request.cookies.get('tenant_id')?.value || 
+                    'default-tenant';
+    const userId = request.headers.get('x-user-id') || 
+                  request.cookies.get('user_id')?.value;
+
+    // Check permission if user is authenticated
+    if (userId) {
+      const hasPermission = await AccessControlService.hasPermission(
+        tenantId,
+        userId,
+        'users:read'
+      );
+
+      if (!hasPermission) {
+        return NextResponse.json(
+          { success: false, error: 'Permission denied', message: 'Required: users:read' },
+          { status: 403 }
+        );
+      }
+    }
+
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status') || undefined;
     const role = searchParams.get('role') || undefined;
@@ -106,10 +129,58 @@ export async function POST(request: NextRequest) {
       login_count: 0,
       two_factor_enabled: body.two_factor_enabled || false,
       timezone: body.timezone,
-      language: body.language || 'en',
+      language: body.language || 'ar',
       theme: body.theme || 'light',
       created_by: body.created_by
     });
+    
+    // Assign role to user if role_id or role_slug is provided
+    if (newUser && newUser.user_id) {
+      try {
+        const roleToAssign = body.role_id || body.role_slug;
+        if (roleToAssign) {
+          const roles = await AccessControlService.getTenantRoles(tenantId);
+          const targetRole = roles.find((r: any) => 
+            r.id === roleToAssign || r.slug === roleToAssign
+          );
+          
+          if (targetRole) {
+            await AccessControlService.assignRole(
+              tenantId,
+              newUser.user_id,
+              targetRole.id,
+              body.created_by || 'system'
+            );
+          } else if (!body.role_id) {
+            // Default to 'user' role if role_slug not found
+            const defaultRole = roles.find((r: any) => r.slug === 'user');
+            if (defaultRole) {
+              await AccessControlService.assignRole(
+                tenantId,
+                newUser.user_id,
+                defaultRole.id,
+                body.created_by || 'system'
+              );
+            }
+          }
+        } else if (body.role) {
+          // Assign role based on role name
+          const roles = await AccessControlService.getTenantRoles(tenantId);
+          const roleByName = roles.find((r: any) => r.slug === body.role || r.name === body.role);
+          if (roleByName) {
+            await AccessControlService.assignRole(
+              tenantId,
+              newUser.user_id,
+              roleByName.id,
+              body.created_by || 'system'
+            );
+          }
+        }
+      } catch (roleError) {
+        console.error('Error assigning role to user:', roleError);
+        // Don't fail user creation if role assignment fails
+      }
+    }
     
     return NextResponse.json({
       success: true,

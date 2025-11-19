@@ -65,17 +65,15 @@ export function setLanguageStorage(lang: Language): void {
 
 async function loadCatalog(locale: Language) {
   try {
-    const { messages } = await import(`@/locales/${locale}/messages`);
+    // Try to load from apps/locales
+    const { messages } = await import(`@/apps/locales/${locale}/messages.js`);
     i18n.load(locale, messages);
     i18n.activate(locale);
   } catch (error) {
     console.warn(`Failed to load catalog for locale: ${locale}`, error);
-    // Fallback to default language if loading fails
-    if (locale !== defaultLanguage) {
-      const { messages } = await import(`@/locales/${defaultLanguage}/messages`);
-      i18n.load(defaultLanguage, messages);
-      i18n.activate(defaultLanguage);
-    }
+    // Fallback: Use empty messages if catalog loading fails
+    i18n.load(locale, {});
+    i18n.activate(locale);
   }
 }
 

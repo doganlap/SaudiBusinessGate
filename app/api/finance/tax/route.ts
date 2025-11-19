@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CompleteFinanceService } from '@/lib/services/finance-complete.service';
-import { testConnection } from '@/lib/db/connection';
 import { apiLogger } from '@/lib/logger';
 
 // Saudi VAT rates and compliance
@@ -31,92 +30,39 @@ export async function GET(request: NextRequest) {
       offset: searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : 0
     };
     
-    // Test database connection first
-    const isConnected = await testConnection();
-    
-    if (isConnected) {
-      try {
-        const taxRecords = await CompleteFinanceService.getTaxRecords(tenantId, filters);
-        
-        return NextResponse.json({
-          success: true,
-          data: taxRecords,
-          total: taxRecords.length,
-          filters,
-          source: 'database',
-          saudi_compliance: true
-        });
-      } catch (dbError) {
-        apiLogger.warn('Tax DB query failed, using fallback', { error: dbError instanceof Error ? dbError.message : String(dbError) });
-      }
+    // Get tax records from database
+    try {
+      const taxRecords = await CompleteFinanceService.getTaxRecords(tenantId, filters);
+      
+      return NextResponse.json({
+        success: true,
+        data: taxRecords || [],
+        total: taxRecords?.length || 0,
+        filters,
+        source: 'database',
+        saudi_compliance: true,
+        vat_rates: SAUDI_VAT_RATES,
+        tax_codes: SAUDI_TAX_CODES
+      });
+    } catch (dbError) {
+      apiLogger.error('Tax DB query failed', { 
+        error: dbError instanceof Error ? dbError.message : String(dbError),
+        tenantId 
+      });
+      
+      // Return empty data instead of error for graceful degradation
+      return NextResponse.json({
+        success: true,
+        data: [],
+        total: 0,
+        filters,
+        source: 'fallback',
+        saudi_compliance: true,
+        vat_rates: SAUDI_VAT_RATES,
+        tax_codes: SAUDI_TAX_CODES,
+        message: 'No tax records found or database unavailable'
+      });
     }
-    
-    
-    if (process.env.NODE_ENV === 'production') {
-      return NextResponse.json({ success: false, error: 'Service unavailable' }, { status: 503 });
-    }
-    const fallbackTaxData = [
-      {
-        id: '1',
-        tenant_id: 'default-tenant',
-        tax_type: 'vat',
-        tax_code: 'VAT_15',
-        tax_rate: 0.15,
-        description: 'Standard VAT 15% - Saudi Compliance',
-        amount: 1500,
-        base_amount: 10000,
-        transaction_type: 'sale',
-        transaction_id: 'INV-001',
-        transaction_date: '2024-11-01',
-        tax_period: '2024-Q4',
-        vat_return_period: '2024-12',
-        status: 'posted',
-        account_id: '2000', // VAT Output Account
-        created_at: '2024-11-01T10:00:00Z',
-        updated_at: '2024-11-01T10:00:00Z',
-        saudi_compliance: {
-          zatca_status: 'compliant',
-          invoice_hash: 'a1b2c3d4e5f6',
-          qr_code_generated: true,
-          electronic_invoice: true
-        }
-      },
-      {
-        id: '2',
-        tenant_id: 'default-tenant',
-        tax_type: 'vat',
-        tax_code: 'VAT_INPUT',
-        tax_rate: 0.15,
-        description: 'Input VAT on purchases',
-        amount: -750,
-        base_amount: 5000,
-        transaction_type: 'purchase',
-        transaction_id: 'BILL-001',
-        transaction_date: '2024-11-02',
-        tax_period: '2024-Q4',
-        vat_return_period: '2024-12',
-        status: 'posted',
-        account_id: '2001', // VAT Input Account
-        created_at: '2024-11-02T10:00:00Z',
-        updated_at: '2024-11-02T10:00:00Z',
-        saudi_compliance: {
-          zatca_status: 'compliant',
-          supplier_vat_number: '300123456789003',
-          invoice_validation: 'passed'
-        }
-      }
-    ];
-    
-    return NextResponse.json({
-      success: true,
-      data: fallbackTaxData,
-      total: fallbackTaxData.length,
-      fallback: true,
-      source: 'mock',
-      saudi_compliance: true,
-      vat_rates: SAUDI_VAT_RATES,
-      tax_codes: SAUDI_TAX_CODES
-    });
   } catch (error) {
     apiLogger.error('Error fetching tax records', { error: error instanceof Error ? error.message : String(error) });
     
@@ -192,7 +138,7 @@ export async function PUT(request: NextRequest) {
       const period = searchParams.get('period') || '2024-Q4';
       
       try {
-        // Try to calculate VAT return for Saudi compliance
+        // Calculate VAT return for Saudi compliance
         const vatReturn = await CompleteFinanceService.calculateVATReturn(tenantId, period);
         
         return NextResponse.json({
@@ -204,58 +150,19 @@ export async function PUT(request: NextRequest) {
           source: 'database'
         });
       } catch (dbError) {
-        apiLogger.warn('VAT return DB calculation failed, using fallback', { error: dbError instanceof Error ? dbError.message : String(dbError) });
-        
-        
-        if (process.env.NODE_ENV === 'production') {
-          return NextResponse.json({ success: false, error: 'Service unavailable' }, { status: 503 });
-        }
-        const fallbackVATReturn = {
-          period: period,
-          output_vat: {
-            amount: 1500,
-            base_amount: 10000,
-            transactions: [
-              {
-                id: '1',
-                tax_code: 'VAT_15',
-                amount: 1500,
-                base_amount: 10000,
-                description: 'Standard VAT 15% on sales'
-              }
-            ]
-          },
-          input_vat: {
-            amount: 750,
-            base_amount: 5000,
-            transactions: [
-              {
-                id: '2',
-                tax_code: 'VAT_INPUT',
-                amount: 750,
-                base_amount: 5000,
-                description: 'Input VAT on purchases'
-              }
-            ]
-          },
-          net_vat_payable: 750,
-          saudi_compliance: {
-            zatca_ready: true,
-            electronic_invoice_compliant: true,
-            qr_code_required: true,
-            vat_return_period: period
-          }
-        };
+        apiLogger.error('VAT return DB calculation failed', { 
+          error: dbError instanceof Error ? dbError.message : String(dbError),
+          tenantId,
+          period
+        });
         
         return NextResponse.json({
-          success: true,
-          data: fallbackVATReturn,
+          success: false,
+          error: 'Failed to calculate VAT return',
+          message: dbError instanceof Error ? dbError.message : 'Database error',
           period,
-          saudi_compliance: true,
-          zatca_ready: true,
-          source: 'fallback',
-          note: 'Using fallback data - tax_records table may not exist'
-        });
+          saudi_compliance: false
+        }, { status: 500 });
       }
     }
     

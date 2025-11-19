@@ -44,61 +44,33 @@ export default function ProcurementPage() {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      // Mock data for demo
-      setOrders([
-        {
-          id: '1',
-          orderNumber: 'PO-2024-001',
-          supplier: 'Office Supplies Inc',
-          description: 'Office furniture and equipment',
-          totalAmount: 15000,
-          status: 'approved',
-          requestedBy: 'Sarah Johnson',
-          approvedBy: 'John Smith',
-          orderDate: '2024-11-01',
-          expectedDelivery: '2024-11-15',
-          items: 12
-        },
-        {
-          id: '2',
-          orderNumber: 'PO-2024-002',
-          supplier: 'Tech Solutions Ltd',
-          description: 'Software licenses and hardware',
-          totalAmount: 25000,
-          status: 'pending',
-          requestedBy: 'Mike Wilson',
-          orderDate: '2024-11-05',
-          expectedDelivery: '2024-11-20',
-          items: 8
-        },
-        {
-          id: '3',
-          orderNumber: 'PO-2024-003',
-          supplier: 'Marketing Materials Co',
-          description: 'Promotional materials and signage',
-          totalAmount: 5000,
-          status: 'draft',
-          requestedBy: 'Emily Davis',
-          orderDate: '2024-11-10',
-          expectedDelivery: '2024-11-25',
-          items: 15
-        },
-        {
-          id: '4',
-          orderNumber: 'PO-2024-004',
-          supplier: 'Catering Services',
-          description: 'Corporate event catering',
-          totalAmount: 3500,
-          status: 'delivered',
-          requestedBy: 'David Kim',
-          approvedBy: 'Jennifer Lee',
-          orderDate: '2024-10-20',
-          expectedDelivery: '2024-10-30',
-          items: 1
-        }
-      ]);
+      const response = await fetch('/api/procurement/orders');
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+      }
+      const data = await response.json();
+      if (data.success && data.orders) {
+        // Map API response to component format
+        const mappedOrders = data.orders.map((order: any) => ({
+          id: order.id,
+          orderNumber: order.orderNumber,
+          supplier: order.vendor,
+          description: order.description || '',
+          totalAmount: order.totalAmount,
+          status: order.status === 'received' ? 'delivered' : 
+                  order.status === 'cancelled' ? 'rejected' : order.status,
+          requestedBy: order.requestedBy,
+          approvedBy: order.approvedBy,
+          orderDate: order.orderDate,
+          expectedDelivery: order.expectedDelivery,
+          items: order.items
+        }));
+        setOrders(mappedOrders);
+      }
     } catch (err) {
       console.error('Failed to fetch orders:', err);
+      // Keep empty array on error
+      setOrders([]);
     } finally {
       setLoading(false);
     }

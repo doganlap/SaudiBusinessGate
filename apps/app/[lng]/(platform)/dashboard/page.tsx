@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
+import { defaultLanguage } from '@/lib/i18n';
 import { 
   BarChart3, 
   Users, 
@@ -44,7 +45,7 @@ interface QuickAction {
 
 export default function DashboardPage() {
   const params = useParams() as any;
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
   const { t } = useTranslation(lng, 'dashboard', {});
   
   const [stats, setStats] = useState<DashboardStats | null>(null);

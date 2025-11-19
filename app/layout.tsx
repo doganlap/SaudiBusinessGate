@@ -130,13 +130,31 @@ export default function RootLayout({
                 }
               })();
               
-              // Language direction detection and dynamic updates
+              // Automatic i18n configuration - Arabic (RTL) as default
               (function() {
+                const defaultLang = 'ar';
+                const defaultDir = 'rtl';
+                
+                // Set default immediately
+                document.documentElement.lang = defaultLang;
+                document.documentElement.dir = defaultDir;
+                document.documentElement.classList.add('lang-ar', 'dir-rtl');
+                document.body.classList.add('rtl');
+                
+                // Function to update direction based on language
                 const updateDirection = () => {
-                  const lang = document.documentElement.lang || 'ar';
+                  const lang = document.documentElement.lang || defaultLang;
                   const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
                   const direction = rtlLanguages.includes(lang) ? 'rtl' : 'ltr';
                   document.documentElement.setAttribute('dir', direction);
+                  document.documentElement.classList.remove('dir-rtl', 'dir-ltr');
+                  if (direction === 'rtl') {
+                    document.documentElement.classList.add('dir-rtl');
+                  } else {
+                    document.documentElement.classList.add('dir-ltr');
+                  }
+                  document.body.classList.remove('rtl', 'ltr');
+                  document.body.classList.add(direction);
                 };
                 
                 // Initial update
@@ -147,6 +165,14 @@ export default function RootLayout({
                 observer.observe(document.documentElement, {
                   attributes: true,
                   attributeFilter: ['lang']
+                });
+                
+                // Listen for localStorage changes
+                window.addEventListener('storage', (e) => {
+                  if (e.key === 'language' && e.newValue) {
+                    document.documentElement.lang = e.newValue;
+                    updateDirection();
+                  }
                 });
               })();
             `,

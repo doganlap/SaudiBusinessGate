@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
+import { defaultLanguage } from '@/lib/i18n';
 
 // Import billing components
 import SubscriptionPlans from '@/components/billing/SubscriptionPlans';
@@ -21,7 +22,7 @@ interface User {
 
 export default function BillingPage() {
   const params = useParams() as any;
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
   
   const [currentView, setCurrentView] = useState<'activation' | 'plans' | 'dashboard'>('dashboard');
   const [loading, setLoading] = useState(true);

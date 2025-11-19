@@ -3,11 +3,12 @@
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
+import { defaultLanguage } from '@/lib/i18n';
 
 export default function AuthPage() {
   const params = useParams() as any;
   const router = useRouter();
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
   
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);

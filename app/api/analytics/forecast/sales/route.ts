@@ -6,7 +6,7 @@
 
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { aiAnalyticsEngine } from '@/app/api/analytics/services/ai-analytics-mock';
+import { aiAnalyticsEngine } from '@/app/api/analytics/services/ai-analytics';
 import { authorizationService } from '@/app/api/analytics/services/authorization-mock';
 import { redisCachingService } from '@/app/api/analytics/services/redis-caching-mock';
 

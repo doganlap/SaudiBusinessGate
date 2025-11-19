@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { defaultLanguage } from '@/lib/i18n';
 import { 
   Shield, 
   Plus, 
@@ -34,7 +35,7 @@ interface Control {
 
 export default function ControlsPage() {
   const params = useParams() as any;
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
   
   const [controls, setControls] = useState<Control[]>([]);
   const [loading, setLoading] = useState(true);

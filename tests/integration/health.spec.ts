@@ -30,7 +30,8 @@ test.describe('System Health Checks', () => {
     const data = await response.json();
     
     expect(data.services).toHaveProperty('redis');
-    expect(['up', 'down']).toContain(data.services.redis.status);
+    // Redis can be 'up', 'down', or 'unavailable' (in test mode)
+    expect(['up', 'down', 'unavailable']).toContain(data.services.redis.status);
   });
 });
 

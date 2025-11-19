@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { defaultLanguage } from '@/lib/i18n';
 import { 
   BarChart3, 
   Download, 
@@ -42,7 +43,7 @@ interface ControlStatusReport {
 
 export default function ReportsPage() {
   const params = useParams() as any;
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
   
   const [complianceData, setComplianceData] = useState<ComplianceReport[]>([]);
   const [controlStatusData, setControlStatusData] = useState<ControlStatusReport[]>([]);

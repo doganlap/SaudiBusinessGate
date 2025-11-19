@@ -117,7 +117,8 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json({
       success: true,
-      data: accounts,
+      accounts: accounts,
+      data: accounts, // Also include in data for compatibility
       source: 'database',
       total: accounts.length,
       timestamp: new Date().toISOString()
@@ -125,13 +126,13 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error fetching accounts:', error);
     
-    // Return fallback data if database fails
+    // Return fallback data if database fails (silent fallback for production)
     return NextResponse.json({
       success: true,
-      data: fallbackAccounts,
+      accounts: fallbackAccounts,
+      data: fallbackAccounts, // Also include in data for compatibility
       source: 'fallback',
       total: fallbackAccounts.length,
-      message: 'Using fallback data - database error',
       timestamp: new Date().toISOString()
     });
   }

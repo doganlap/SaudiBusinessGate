@@ -1,11 +1,11 @@
 import React from 'react';
-import { PlatformNavigation } from '../../../apps/components/navigation/PlatformNavigation';
+// import { PlatformNavigation } from '../../../apps/components/navigation/PlatformNavigation';
 
 export default function TestNavigationPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex">
-        <PlatformNavigation />
+        {/* <PlatformNavigation /> */}
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">

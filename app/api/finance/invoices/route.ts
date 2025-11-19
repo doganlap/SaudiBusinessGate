@@ -33,11 +33,8 @@ export async function GET(request: NextRequest) {
       offset: searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : 0
     };
     
-    // Try to get real invoices from database
+    // Get invoices from database
     try {
-      const isConnected = await testConnection();
-      
-      if (isConnected) {
         const invoices = await CompleteFinanceService.getInvoices(tenantId, filters);
         
         await audit.logDataAccess(userId, organizationId, 'invoice', 0, 'read');
@@ -48,73 +45,31 @@ export async function GET(request: NextRequest) {
           source: 'database',
           filters
         });
-      }
     } catch (dbError) {
-      apiLogger.warn('Database not available for invoices, using fallback data', { error: dbError instanceof Error ? dbError.message : String(dbError) });
+      apiLogger.error('Error fetching invoices from database', { 
+        error: dbError instanceof Error ? dbError.message : String(dbError),
+        tenantId 
+      });
+      
+      await audit.logDataAccess(userId, organizationId, 'invoice', 0, 'read', false);
+      return NextResponse.json({
+        success: false,
+        error: 'Failed to fetch invoices from database',
+        message: dbError instanceof Error ? dbError.message : 'Database error',
+        data: [],
+        total: 0
+      }, { status: 500 });
     }
-    
-    
-    if (process.env.NODE_ENV === 'production') {
-      return NextResponse.json(
-        { success: false, error: 'Service unavailable' },
-        { status: 503 }
-      );
-    }
-    const fallbackInvoices = [
-      {
-        id: '1',
-        tenant_id: 'default-tenant',
-        invoice_number: 'INV-000001',
-        customer_name: 'TechCorp Solutions',
-        customer_email: 'billing@techcorp.com',
-        invoice_date: '2024-11-01',
-        due_date: '2024-11-30',
-        subtotal: 5000,
-        tax_amount: 750,
-        discount_amount: 0,
-        total_amount: 5750,
-        paid_amount: 0,
-        balance_due: 5750,
-        status: 'sent',
-        payment_terms: 'Net 30',
-        created_at: '2024-11-01T10:00:00Z',
-        updated_at: '2024-11-01T10:00:00Z'
-      },
-      {
-        id: '2',
-        tenant_id: 'default-tenant',
-        invoice_number: 'INV-000002',
-        customer_name: 'Innovate.io',
-        customer_email: 'accounts@innovate.io',
-        invoice_date: '2024-11-05',
-        due_date: '2024-12-05',
-        subtotal: 3200,
-        tax_amount: 480,
-        discount_amount: 200,
-        total_amount: 3480,
-        paid_amount: 3480,
-        balance_due: 0,
-        status: 'paid',
-        payment_terms: 'Net 30',
-        created_at: '2024-11-05T14:30:00Z',
-        updated_at: '2024-11-10T09:15:00Z'
-      }
-    ];
-    
-    return NextResponse.json({
-      success: true,
-      data: fallbackInvoices,
-      total: fallbackInvoices.length,
-      source: 'fallback',
-      filters
-    });
   } catch (error) {
     apiLogger.error('Error fetching invoices', { error: error instanceof Error ? error.message : String(error) });
     
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch invoices' },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to fetch invoices',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      data: [],
+      total: 0
+    }, { status: 500 });
   }
 }
 

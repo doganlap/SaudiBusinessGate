@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-11-18T23:09:39.102Z",
+  "summary": {
+    "kept": 117,
+    "deleted": 169,
+    "archived": [
+      "apps/web (if exists)",
+      "apps/app (if exists)"
+    ]
+  },
+  "note": "Manual steps required: Archive apps/web and apps/app directories"
+}

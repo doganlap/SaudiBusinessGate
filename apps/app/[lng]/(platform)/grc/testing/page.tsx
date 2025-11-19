@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { defaultLanguage } from '@/lib/i18n';
 import { 
   Target, 
   Plus, 
@@ -36,7 +37,7 @@ interface ControlTest {
 
 export default function TestingPage() {
   const params = useParams() as any;
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
   
   const [tests, setTests] = useState<ControlTest[]>([]);
   const [loading, setLoading] = useState(true);

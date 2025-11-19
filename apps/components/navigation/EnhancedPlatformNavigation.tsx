@@ -61,7 +61,7 @@ const translations = {
 export default function EnhancedPlatformNavigation() {
   const params = useParams();
   const pathname = usePathname();
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || 'ar';
   const isRTL = lng === 'ar';
   
   const [user, setUser] = useState<User | null>(null);

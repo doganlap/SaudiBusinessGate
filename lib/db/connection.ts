@@ -21,38 +21,29 @@ export interface DatabaseConfig {
 export function getPool(): Pool {
   if (!pool) {
     const url = process.env.DATABASE_URL;
-    if (url) {
-      pool = new Pool({
-        connectionString: url,
-        ssl: /prisma-data\.net|db\.prisma\.io/.test(url)
-          ? { rejectUnauthorized: false }
-          : undefined,
-        max: parseInt(process.env.DB_POOL_MAX || '20'),
-        idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 10000,
-      });
-    } else {
-      const config: DatabaseConfig = {
-        host: process.env.POSTGRES_HOST || 'localhost',
-        port: parseInt(process.env.POSTGRES_PORT || '5432'),
-        database: process.env.POSTGRES_DB || 'doganhubstore',
-        user: process.env.POSTGRES_USER || 'postgres',
-        password: process.env.POSTGRES_PASSWORD || '',
-        ssl: process.env.POSTGRES_SSL === 'true',
-        max: parseInt(process.env.DB_POOL_MAX || '20'),
-        idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 10000,
-      };
-
-      pool = new Pool(config);
+    
+    if (!url) {
+      throw new Error('DATABASE_URL environment variable is not set. Cannot proceed without database connection.');
     }
 
-    // Handle pool errors
-    pool.on('error', (err) => {
-      console.error('Unexpected database pool error:', err);
+    pool = new Pool({
+      connectionString: url,
+      ssl: url.includes('sslmode=require') || url.includes('localhost') === false
+        ? { rejectUnauthorized: false }
+        : false,
+      max: parseInt(process.env.DB_POOL_MAX || '20'),
+      min: parseInt(process.env.DB_POOL_MIN || '2'),
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 10000,
     });
 
-    console.log('Database connection pool created');
+    // Handle pool errors - FAIL FAST in production
+    pool.on('error', (err) => {
+      console.error('❌ CRITICAL: Database pool error:', err);
+      throw err;
+    });
+
+    console.log('✅ Database connection pool created');
   }
 
   return pool;

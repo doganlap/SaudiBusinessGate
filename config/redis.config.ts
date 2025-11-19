@@ -36,9 +36,15 @@ export const redisConfig = {
   },
   
   test: {
-    host: 'localhost',
-    port: 6380,
-    db: 1,
+    host: process.env.REDIS_HOST || 'localhost',
+    port: parseInt(process.env.REDIS_PORT || '6379'),
+    password: process.env.REDIS_PASSWORD,
+    db: parseInt(process.env.REDIS_DB || '1'),
+    retryStrategy: () => null, // Don't retry in test mode
+    maxRetriesPerRequest: 1,
+    connectTimeout: 1000,
+    lazyConnect: true,
+    enableOfflineQueue: false,
   },
 };
 

@@ -11,22 +11,35 @@ let redis: Redis | null = null;
 export function getRedisClient(): Redis {
   if (!redis) {
     const config = getRedisConfig();
+    const isTest = process.env.NODE_ENV === 'test';
+    
     redis = new Redis({
       ...(config as any),
       lazyConnect: true,
       enableOfflineQueue: false,
+      // In test mode, don't retry on connection failure
+      retryStrategy: isTest ? () => null : undefined,
+      maxRetriesPerRequest: isTest ? 1 : 3,
+      connectTimeout: isTest ? 1000 : 10000,
     });
     
     redis.on('connect', () => {
-      console.log('Redis client connected');
+      if (!isTest) {
+        console.log('Redis client connected');
+      }
     });
     
     redis.on('error', (err) => {
-      console.error('Redis client error:', err);
+      // In test mode, silently handle connection errors
+      if (!isTest || err.code !== 'ECONNREFUSED') {
+        console.error('Redis client error:', err);
+      }
     });
     
     redis.on('ready', () => {
-      console.log('Redis client ready');
+      if (!isTest) {
+        console.log('Redis client ready');
+      }
     });
   }
   
@@ -36,12 +49,23 @@ export function getRedisClient(): Redis {
 export async function get<T = any>(key: string): Promise<T | null> {
   try {
     const client = getRedisClient();
+    // Check if client is connected before attempting operation
+    if (client.status !== 'ready' && client.status !== 'connect') {
+      await client.connect().catch(() => {
+        // Silently fail in test mode
+        if (process.env.NODE_ENV === 'test') return null;
+      });
+    }
     const value = await client.get(key);
     
     if (!value) return null;
     
     return JSON.parse(value) as T;
-  } catch (error) {
+  } catch (error: any) {
+    // In test mode, gracefully handle connection errors
+    if (process.env.NODE_ENV === 'test' && (error.code === 'ECONNREFUSED' || error.message?.includes('connect'))) {
+      return null;
+    }
     console.error('Redis get error:', error);
     return null;
   }
@@ -54,6 +78,13 @@ export async function set(
 ): Promise<boolean> {
   try {
     const client = getRedisClient();
+    // Check if client is connected before attempting operation
+    if (client.status !== 'ready' && client.status !== 'connect') {
+      await client.connect().catch(() => {
+        // Silently fail in test mode
+        if (process.env.NODE_ENV === 'test') return false;
+      });
+    }
     const serialized = JSON.stringify(value);
     
     if (ttl > 0) {
@@ -63,7 +94,11 @@ export async function set(
     }
     
     return true;
-  } catch (error) {
+  } catch (error: any) {
+    // In test mode, gracefully handle connection errors
+    if (process.env.NODE_ENV === 'test' && (error.code === 'ECONNREFUSED' || error.message?.includes('connect'))) {
+      return false;
+    }
     console.error('Redis set error:', error);
     return false;
   }
@@ -119,11 +154,34 @@ export async function clearPattern(pattern: string): Promise<number> {
 export async function testConnection(): Promise<boolean> {
   try {
     const client = getRedisClient();
+    // In test mode, don't actually connect if Redis is not available
+    if (process.env.NODE_ENV === 'test') {
+      try {
+        if (client.status !== 'ready' && client.status !== 'connect') {
+          await client.connect();
+        }
+        const result = await client.ping();
+        return result === 'PONG';
+      } catch (error: any) {
+        // In test mode, return false without logging if connection is refused
+        if (error.code === 'ECONNREFUSED') {
+          return false;
+        }
+        throw error;
+      }
+    }
+    
+    if (client.status !== 'ready' && client.status !== 'connect') {
+      await client.connect();
+    }
     const result = await client.ping();
     console.log('Redis connection successful:', result);
     return result === 'PONG';
-  } catch (error) {
-    console.error('Redis connection failed:', error);
+  } catch (error: any) {
+    // Don't log connection errors in test mode
+    if (process.env.NODE_ENV !== 'test' || error.code !== 'ECONNREFUSED') {
+      console.error('Redis connection failed:', error);
+    }
     return false;
   }
 }

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PlatformService } from '@/lib/services/platform.service';
+import { AccessControlService } from '@/lib/services/access-control.service';
+import { query } from '@/lib/db/connection';
+import bcrypt from 'bcrypt';
 
 export async function GET(request: NextRequest) {
   try {
@@ -79,32 +82,47 @@ export async function POST(request: NextRequest) {
     // Generate unique tenant ID if not provided
     const tenantId = body.tenant_id || `tenant-${Date.now()}`;
     
+    // Map registration form fields to tenant data
+    // Support both registration form field names and direct tenant field names
+    const subscriptionPlan = body.subscription_plan || body.subscription_tier || 'basic';
+    
+    // Get max_users based on subscription plan if not provided
+    const getMaxUsers = (plan: string) => {
+      if (body.max_users) return body.max_users;
+      switch (plan) {
+        case 'basic': return 10;
+        case 'professional': return 25;
+        case 'enterprise': return 1000;
+        default: return 10;
+      }
+    };
+    
     // Create tenant in database
     const newTenant = await PlatformService.createTenant({
       tenant_id: tenantId,
-      tenant_name: body.tenant_name,
+      tenant_name: body.tenant_name || body.company_name || 'New Tenant',
       domain: body.domain,
       subdomain: body.subdomain,
       status: body.status || 'trial',
-      subscription_plan: body.subscription_plan || 'basic',
+      subscription_plan: subscriptionPlan,
       subscription_status: body.subscription_status || 'trial',
-      max_users: body.max_users || 10,
+      max_users: getMaxUsers(subscriptionPlan),
       current_users: 0,
-      storage_limit_gb: body.storage_limit_gb || 10,
+      storage_limit_gb: body.storage_limit_gb || (subscriptionPlan === 'enterprise' ? 1000 : subscriptionPlan === 'professional' ? 100 : 10),
       storage_used_gb: 0,
-      company_name: body.company_name,
-      contact_email: body.contact_email,
-      contact_phone: body.contact_phone,
-      billing_email: body.billing_email,
+      company_name: body.company_name || body.tenant_name || 'New Company',
+      contact_email: body.contact_email || body.primary_contact_email,
+      contact_phone: body.contact_phone || body.primary_contact_phone,
+      billing_email: body.billing_email || body.contact_email || body.primary_contact_email,
       address: body.address,
       city: body.city,
       state: body.state,
-      country: body.country || 'US',
+      country: body.country || 'Saudi Arabia',
       postal_code: body.postal_code,
-      timezone: body.timezone || 'UTC',
-      currency: body.currency || 'USD',
-      date_format: body.date_format || 'MM/DD/YYYY',
-      language: body.language || 'en',
+      timezone: body.timezone || 'Asia/Riyadh',
+      currency: body.currency || 'SAR',
+      date_format: body.date_format || 'DD/MM/YYYY',
+      language: body.language || 'ar',
       logo_url: body.logo_url,
       primary_color: body.primary_color,
       secondary_color: body.secondary_color,
@@ -112,15 +130,79 @@ export async function POST(request: NextRequest) {
       created_by: body.created_by
     });
     
+    // Create admin user if admin_email and admin_password are provided
+    let adminUser = null;
+    if (body.admin_email && body.admin_password) {
+      try {
+        const passwordHash = await bcrypt.hash(body.admin_password, 10);
+        const contactName = body.primary_contact_name || body.contact_name || 'Admin';
+        const nameParts = contactName.split(' ');
+        const firstName = nameParts[0] || 'Admin';
+        const lastName = nameParts.slice(1).join(' ') || 'User';
+        
+        adminUser = await PlatformService.createUser(tenantId, {
+          user_id: `user-${Date.now()}`,
+          email: body.admin_email,
+          first_name: firstName,
+          last_name: lastName,
+          full_name: contactName,
+          password_hash: passwordHash,
+          email_verified: false,
+          phone: body.contact_phone || body.primary_contact_phone,
+          status: 'active',
+          role: 'tenant_admin',
+          permissions: ['*'],
+          is_super_admin: false,
+          accessible_tenants: [tenantId],
+          login_count: 0,
+          two_factor_enabled: false,
+          timezone: body.timezone || 'Asia/Riyadh',
+          language: body.language || 'ar',
+          theme: 'light',
+          created_by: 'system'
+        });
+        
+        // Assign tenant_admin role to the new admin user
+        if (adminUser && adminUser.user_id) {
+          try {
+            // Get tenant_admin role (system role)
+            const roles = await AccessControlService.getTenantRoles(tenantId);
+            const tenantAdminRole = roles.find((r: any) => r.slug === 'tenant_admin');
+            
+            if (tenantAdminRole) {
+              await AccessControlService.assignRole(
+                tenantId,
+                adminUser.user_id,
+                tenantAdminRole.id,
+                'system'
+              );
+            }
+          } catch (roleError) {
+            console.error('Error assigning role to admin user:', roleError);
+            // Don't fail tenant creation if role assignment fails
+          }
+        }
+      } catch (userError) {
+        console.error('Error creating admin user:', userError);
+        // Don't fail tenant creation if user creation fails
+      }
+    }
+    
     return NextResponse.json({
       success: true,
       tenant: newTenant,
+      adminUser: adminUser,
       message: 'Tenant created successfully'
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating tenant:', error);
+    const errorMessage = error?.message || 'Failed to create tenant';
     return NextResponse.json(
-      { success: false, error: 'Failed to create tenant' },
+      { 
+        success: false, 
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? error?.stack : undefined
+      },
       { status: 500 }
     );
   }

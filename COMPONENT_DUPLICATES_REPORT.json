@@ -1,0 +1,4378 @@
+{
+  "summary": {
+    "unique": 73,
+    "duplicates": 104,
+    "total": 177
+  },
+  "duplicates": {
+    "AdvancedAssessmentManager": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\AdvancedAssessmentManager.jsx",
+        "relative": "components\\AdvancedAssessmentManager.jsx",
+        "name": "AdvancedAssessmentManager.jsx",
+        "size": 37736,
+        "modified": "2025-11-15T16:38:48.854Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\AdvancedAssessmentManager.jsx",
+        "relative": "app\\components\\AdvancedAssessmentManager.jsx",
+        "name": "AdvancedAssessmentManager.jsx",
+        "size": 37507,
+        "modified": "2025-11-17T07:13:03.177Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\AdvancedAssessmentManager.jsx",
+        "relative": "apps\\web\\src\\components\\AdvancedAssessmentManager.jsx",
+        "name": "AdvancedAssessmentManager.jsx",
+        "size": 37591,
+        "modified": "2025-11-13T06:01:31.296Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AdvancedFrameworkManager": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\AdvancedFrameworkManager.jsx",
+        "relative": "components\\AdvancedFrameworkManager.jsx",
+        "name": "AdvancedFrameworkManager.jsx",
+        "size": 22349,
+        "modified": "2025-11-13T10:07:48.001Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\AdvancedFrameworkManager.jsx",
+        "relative": "app\\components\\AdvancedFrameworkManager.jsx",
+        "name": "AdvancedFrameworkManager.jsx",
+        "size": 22349,
+        "modified": "2025-11-13T10:07:48.001Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\AdvancedFrameworkManager.jsx",
+        "relative": "apps\\web\\src\\components\\AdvancedFrameworkManager.jsx",
+        "name": "AdvancedFrameworkManager.jsx",
+        "size": 22349,
+        "modified": "2025-11-13T10:07:48.001Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AdvancedGRCDashboard": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\AdvancedGRCDashboard.jsx",
+        "relative": "components\\AdvancedGRCDashboard.jsx",
+        "name": "AdvancedGRCDashboard.jsx",
+        "size": 26364,
+        "modified": "2025-11-15T05:56:53.238Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\AdvancedGRCDashboard.jsx",
+        "relative": "app\\components\\AdvancedGRCDashboard.jsx",
+        "name": "AdvancedGRCDashboard.jsx",
+        "size": 26113,
+        "modified": "2025-11-17T19:53:40.250Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\AdvancedGRCDashboard.jsx",
+        "relative": "apps\\web\\src\\components\\AdvancedGRCDashboard.jsx",
+        "name": "AdvancedGRCDashboard.jsx",
+        "size": 26364,
+        "modified": "2025-11-15T05:56:53.238Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AIAgentsPanel": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\agents\\AIAgentsPanel.jsx",
+        "relative": "components\\agents\\AIAgentsPanel.jsx",
+        "name": "AIAgentsPanel.jsx",
+        "size": 2597,
+        "modified": "2025-11-11T19:02:46.792Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\agents\\AIAgentsPanel.jsx",
+        "relative": "app\\components\\agents\\AIAgentsPanel.jsx",
+        "name": "AIAgentsPanel.jsx",
+        "size": 2597,
+        "modified": "2025-11-11T19:02:46.792Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\agents\\AIAgentsPanel.jsx",
+        "relative": "apps\\web\\src\\components\\agents\\AIAgentsPanel.jsx",
+        "name": "AIAgentsPanel.jsx",
+        "size": 2597,
+        "modified": "2025-11-11T19:02:46.792Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AIStatusPanel": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\ai\\AIStatusPanel.jsx",
+        "relative": "components\\ai\\AIStatusPanel.jsx",
+        "name": "AIStatusPanel.jsx",
+        "size": 6702,
+        "modified": "2025-11-12T07:51:05.538Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\ai\\AIStatusPanel.jsx",
+        "relative": "app\\components\\ai\\AIStatusPanel.jsx",
+        "name": "AIStatusPanel.jsx",
+        "size": 6702,
+        "modified": "2025-11-12T07:51:05.538Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ai\\AIStatusPanel.jsx",
+        "relative": "apps\\web\\src\\components\\ai\\AIStatusPanel.jsx",
+        "name": "AIStatusPanel.jsx",
+        "size": 6702,
+        "modified": "2025-11-12T07:51:05.538Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AdvancedAnalyticsDashboard": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\analytics\\AdvancedAnalyticsDashboard.jsx",
+        "relative": "components\\analytics\\AdvancedAnalyticsDashboard.jsx",
+        "name": "AdvancedAnalyticsDashboard.jsx",
+        "size": 23518,
+        "modified": "2025-11-13T18:08:42.336Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\analytics\\AdvancedAnalyticsDashboard.jsx",
+        "relative": "apps\\web\\src\\components\\analytics\\AdvancedAnalyticsDashboard.jsx",
+        "name": "AdvancedAnalyticsDashboard.jsx",
+        "size": 23518,
+        "modified": "2025-11-13T18:08:42.336Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AdvancedAnalyticsPanel": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\analytics\\AdvancedAnalyticsPanel.jsx",
+        "relative": "components\\analytics\\AdvancedAnalyticsPanel.jsx",
+        "name": "AdvancedAnalyticsPanel.jsx",
+        "size": 6833,
+        "modified": "2025-11-13T05:33:09.016Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\dashboard\\AdvancedAnalyticsPanel.jsx",
+        "relative": "components\\dashboard\\AdvancedAnalyticsPanel.jsx",
+        "name": "AdvancedAnalyticsPanel.jsx",
+        "size": 1654,
+        "modified": "2025-11-13T06:46:17.872Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\dashboard\\AdvancedAnalyticsPanel.jsx",
+        "relative": "app\\components\\dashboard\\AdvancedAnalyticsPanel.jsx",
+        "name": "AdvancedAnalyticsPanel.jsx",
+        "size": 1654,
+        "modified": "2025-11-13T06:46:17.872Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\analytics\\AdvancedAnalyticsPanel.jsx",
+        "relative": "apps\\web\\src\\components\\analytics\\AdvancedAnalyticsPanel.jsx",
+        "name": "AdvancedAnalyticsPanel.jsx",
+        "size": 6833,
+        "modified": "2025-11-13T05:33:09.016Z",
+        "location": "apps/web/src/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\dashboard\\AdvancedAnalyticsPanel.jsx",
+        "relative": "apps\\web\\src\\components\\dashboard\\AdvancedAnalyticsPanel.jsx",
+        "name": "AdvancedAnalyticsPanel.jsx",
+        "size": 1654,
+        "modified": "2025-11-13T06:46:17.872Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "InteractiveAnimationToolkit": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Animation\\InteractiveAnimationToolkit.jsx",
+        "relative": "components\\Animation\\InteractiveAnimationToolkit.jsx",
+        "name": "InteractiveAnimationToolkit.jsx",
+        "size": 14778,
+        "modified": "2025-11-11T08:32:23.303Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Animation\\InteractiveAnimationToolkit.jsx",
+        "relative": "apps\\web\\src\\components\\Animation\\InteractiveAnimationToolkit.jsx",
+        "name": "InteractiveAnimationToolkit.jsx",
+        "size": 14778,
+        "modified": "2025-11-11T08:32:23.303Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ArabicTextEngine": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Arabic\\ArabicTextEngine.jsx",
+        "relative": "components\\Arabic\\ArabicTextEngine.jsx",
+        "name": "ArabicTextEngine.jsx",
+        "size": 5920,
+        "modified": "2025-11-16T16:24:42.876Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\Arabic\\ArabicTextEngine.jsx",
+        "relative": "app\\components\\Arabic\\ArabicTextEngine.jsx",
+        "name": "ArabicTextEngine.jsx",
+        "size": 6204,
+        "modified": "2025-11-10T21:24:44.552Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Arabic\\ArabicTextEngine.jsx",
+        "relative": "apps\\web\\src\\components\\Arabic\\ArabicTextEngine.jsx",
+        "name": "ArabicTextEngine.jsx",
+        "size": 6204,
+        "modified": "2025-11-10T21:24:44.552Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ProtectedRoute": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\auth\\ProtectedRoute.jsx",
+        "relative": "components\\auth\\ProtectedRoute.jsx",
+        "name": "ProtectedRoute.jsx",
+        "size": 2829,
+        "modified": "2025-11-16T10:03:00.235Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\auth\\ProtectedRoute.jsx",
+        "relative": "app\\components\\auth\\ProtectedRoute.jsx",
+        "name": "ProtectedRoute.jsx",
+        "size": 351,
+        "modified": "2025-11-18T13:40:30.729Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\auth\\ProtectedRoute.jsx",
+        "relative": "apps\\web\\src\\components\\auth\\ProtectedRoute.jsx",
+        "name": "ProtectedRoute.jsx",
+        "size": 2415,
+        "modified": "2025-11-15T07:17:20.663Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AssessmentCards": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\cards\\AssessmentCards.jsx",
+        "relative": "components\\cards\\AssessmentCards.jsx",
+        "name": "AssessmentCards.jsx",
+        "size": 18961,
+        "modified": "2025-11-14T14:49:15.180Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\cards\\AssessmentCards.jsx",
+        "relative": "app\\components\\cards\\AssessmentCards.jsx",
+        "name": "AssessmentCards.jsx",
+        "size": 18961,
+        "modified": "2025-11-14T14:49:15.180Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\cards\\AssessmentCards.jsx",
+        "relative": "apps\\web\\src\\components\\cards\\AssessmentCards.jsx",
+        "name": "AssessmentCards.jsx",
+        "size": 18961,
+        "modified": "2025-11-14T14:49:15.180Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "PlotlyCharts": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\charts\\PlotlyCharts.jsx",
+        "relative": "components\\charts\\PlotlyCharts.jsx",
+        "name": "PlotlyCharts.jsx",
+        "size": 11178,
+        "modified": "2025-11-13T06:11:05.354Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\charts\\PlotlyCharts.jsx",
+        "relative": "app\\components\\charts\\PlotlyCharts.jsx",
+        "name": "PlotlyCharts.jsx",
+        "size": 11410,
+        "modified": "2025-11-17T19:54:14.794Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\charts\\PlotlyCharts.jsx",
+        "relative": "apps\\web\\src\\components\\charts\\PlotlyCharts.jsx",
+        "name": "PlotlyCharts.jsx",
+        "size": 11178,
+        "modified": "2025-11-13T06:11:05.354Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "CollaborationIndicator": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\collaboration\\CollaborationIndicator.jsx",
+        "relative": "components\\collaboration\\CollaborationIndicator.jsx",
+        "name": "CollaborationIndicator.jsx",
+        "size": 2060,
+        "modified": "2025-11-11T09:57:06.078Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\collaboration\\CollaborationIndicator.jsx",
+        "relative": "app\\components\\collaboration\\CollaborationIndicator.jsx",
+        "name": "CollaborationIndicator.jsx",
+        "size": 2060,
+        "modified": "2025-11-17T06:44:35.874Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\collaboration\\CollaborationIndicator.jsx",
+        "relative": "apps\\web\\src\\components\\collaboration\\CollaborationIndicator.jsx",
+        "name": "CollaborationIndicator.jsx",
+        "size": 2060,
+        "modified": "2025-11-11T09:57:06.078Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "index": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\collaboration\\index.js",
+        "relative": "components\\collaboration\\index.js",
+        "name": "index.js",
+        "size": 322,
+        "modified": "2025-11-11T09:58:35.857Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\collaboration\\index.js",
+        "relative": "app\\components\\collaboration\\index.js",
+        "name": "index.js",
+        "size": 322,
+        "modified": "2025-11-11T09:58:35.857Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\finance\\charts\\index.ts",
+        "relative": "app\\components\\finance\\charts\\index.ts",
+        "name": "index.ts",
+        "size": 241,
+        "modified": "2025-11-18T17:36:04.339Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\finance\\index.ts",
+        "relative": "app\\components\\finance\\index.ts",
+        "name": "index.ts",
+        "size": 581,
+        "modified": "2025-11-18T18:24:46.766Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\collaboration\\index.js",
+        "relative": "apps\\web\\src\\components\\collaboration\\index.js",
+        "name": "index.js",
+        "size": 322,
+        "modified": "2025-11-11T09:58:35.857Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "RealTimeEditor": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\collaboration\\RealTimeEditor.jsx",
+        "relative": "components\\collaboration\\RealTimeEditor.jsx",
+        "name": "RealTimeEditor.jsx",
+        "size": 3766,
+        "modified": "2025-11-11T09:58:35.404Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\collaboration\\RealTimeEditor.jsx",
+        "relative": "app\\components\\collaboration\\RealTimeEditor.jsx",
+        "name": "RealTimeEditor.jsx",
+        "size": 3766,
+        "modified": "2025-11-17T06:44:30.533Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\collaboration\\RealTimeEditor.jsx",
+        "relative": "apps\\web\\src\\components\\collaboration\\RealTimeEditor.jsx",
+        "name": "RealTimeEditor.jsx",
+        "size": 3766,
+        "modified": "2025-11-11T09:58:35.404Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "RealtimeField": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\collaboration\\RealtimeField.jsx",
+        "relative": "components\\collaboration\\RealtimeField.jsx",
+        "name": "RealtimeField.jsx",
+        "size": 1930,
+        "modified": "2025-11-11T10:25:56.303Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\collaboration\\RealtimeField.jsx",
+        "relative": "app\\components\\collaboration\\RealtimeField.jsx",
+        "name": "RealtimeField.jsx",
+        "size": 2590,
+        "modified": "2025-11-17T19:52:57.513Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\collaboration\\RealtimeField.jsx",
+        "relative": "apps\\web\\src\\components\\collaboration\\RealtimeField.jsx",
+        "name": "RealtimeField.jsx",
+        "size": 1930,
+        "modified": "2025-11-11T10:25:56.303Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "WorkflowNotificationPanel": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\collaboration\\WorkflowNotificationPanel.jsx",
+        "relative": "components\\collaboration\\WorkflowNotificationPanel.jsx",
+        "name": "WorkflowNotificationPanel.jsx",
+        "size": 5231,
+        "modified": "2025-11-11T09:57:31.940Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\collaboration\\WorkflowNotificationPanel.jsx",
+        "relative": "app\\components\\collaboration\\WorkflowNotificationPanel.jsx",
+        "name": "WorkflowNotificationPanel.jsx",
+        "size": 5231,
+        "modified": "2025-11-17T06:44:43.606Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\collaboration\\WorkflowNotificationPanel.jsx",
+        "relative": "apps\\web\\src\\components\\collaboration\\WorkflowNotificationPanel.jsx",
+        "name": "WorkflowNotificationPanel.jsx",
+        "size": 5231,
+        "modified": "2025-11-11T09:57:31.940Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "CommandPalette": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\CommandPalette.tsx",
+        "relative": "components\\CommandPalette.tsx",
+        "name": "CommandPalette.tsx",
+        "size": 8551,
+        "modified": "2025-11-11T17:41:13.443Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\CommandPalette.jsx",
+        "relative": "components\\common\\CommandPalette.jsx",
+        "name": "CommandPalette.jsx",
+        "size": 13089,
+        "modified": "2025-11-11T08:28:29.231Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\CommandPalette.jsx",
+        "relative": "app\\components\\common\\CommandPalette.jsx",
+        "name": "CommandPalette.jsx",
+        "size": 13089,
+        "modified": "2025-11-11T08:28:29.231Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\CommandPalette.jsx",
+        "relative": "apps\\web\\src\\components\\common\\CommandPalette.jsx",
+        "name": "CommandPalette.jsx",
+        "size": 13089,
+        "modified": "2025-11-11T08:28:29.231Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ActionButtons": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\ActionButtons.jsx",
+        "relative": "components\\common\\ActionButtons.jsx",
+        "name": "ActionButtons.jsx",
+        "size": 9516,
+        "modified": "2025-11-12T13:31:23.494Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\ActionButtons.jsx",
+        "relative": "app\\components\\common\\ActionButtons.jsx",
+        "name": "ActionButtons.jsx",
+        "size": 9516,
+        "modified": "2025-11-12T13:31:23.494Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\ActionButtons.jsx",
+        "relative": "apps\\web\\src\\components\\common\\ActionButtons.jsx",
+        "name": "ActionButtons.jsx",
+        "size": 9516,
+        "modified": "2025-11-12T13:31:23.494Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "BulkOperationsBar": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\BulkOperationsBar.jsx",
+        "relative": "components\\common\\BulkOperationsBar.jsx",
+        "name": "BulkOperationsBar.jsx",
+        "size": 5738,
+        "modified": "2025-11-12T11:46:57.181Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\BulkOperationsBar.jsx",
+        "relative": "app\\components\\common\\BulkOperationsBar.jsx",
+        "name": "BulkOperationsBar.jsx",
+        "size": 5738,
+        "modified": "2025-11-12T11:46:57.181Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\BulkOperationsBar.jsx",
+        "relative": "apps\\web\\src\\components\\common\\BulkOperationsBar.jsx",
+        "name": "BulkOperationsBar.jsx",
+        "size": 5738,
+        "modified": "2025-11-12T11:46:57.181Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "DataTable": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\DataTable.jsx",
+        "relative": "components\\common\\DataTable.jsx",
+        "name": "DataTable.jsx",
+        "size": 13011,
+        "modified": "2025-11-13T18:31:20.957Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\DataTable.jsx",
+        "relative": "app\\components\\common\\DataTable.jsx",
+        "name": "DataTable.jsx",
+        "size": 12908,
+        "modified": "2025-11-17T19:52:57.868Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\DataTable.jsx",
+        "relative": "apps\\web\\src\\components\\common\\DataTable.jsx",
+        "name": "DataTable.jsx",
+        "size": 13011,
+        "modified": "2025-11-13T18:31:20.957Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ErrorBoundary": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\ErrorBoundary.jsx",
+        "relative": "components\\common\\ErrorBoundary.jsx",
+        "name": "ErrorBoundary.jsx",
+        "size": 6539,
+        "modified": "2025-11-12T07:13:00.567Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\ErrorBoundary.jsx",
+        "relative": "app\\components\\common\\ErrorBoundary.jsx",
+        "name": "ErrorBoundary.jsx",
+        "size": 6539,
+        "modified": "2025-11-12T07:13:00.567Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\ErrorBoundary.jsx",
+        "relative": "apps\\web\\src\\components\\common\\ErrorBoundary.jsx",
+        "name": "ErrorBoundary.jsx",
+        "size": 6539,
+        "modified": "2025-11-12T07:13:00.567Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ErrorFallback": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\ErrorFallback.jsx",
+        "relative": "components\\common\\ErrorFallback.jsx",
+        "name": "ErrorFallback.jsx",
+        "size": 4100,
+        "modified": "2025-11-09T23:41:15.027Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\ErrorFallback.jsx",
+        "relative": "app\\components\\common\\ErrorFallback.jsx",
+        "name": "ErrorFallback.jsx",
+        "size": 4100,
+        "modified": "2025-11-09T23:41:15.027Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\ErrorFallback.jsx",
+        "relative": "apps\\web\\src\\components\\common\\ErrorFallback.jsx",
+        "name": "ErrorFallback.jsx",
+        "size": 4100,
+        "modified": "2025-11-09T23:41:15.027Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ErrorHandler": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\ErrorHandler.jsx",
+        "relative": "components\\common\\ErrorHandler.jsx",
+        "name": "ErrorHandler.jsx",
+        "size": 7861,
+        "modified": "2025-11-12T21:35:39.581Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\ErrorHandler.jsx",
+        "relative": "app\\components\\common\\ErrorHandler.jsx",
+        "name": "ErrorHandler.jsx",
+        "size": 7888,
+        "modified": "2025-11-18T08:56:30.006Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\ErrorHandler.jsx",
+        "relative": "apps\\web\\src\\components\\common\\ErrorHandler.jsx",
+        "name": "ErrorHandler.jsx",
+        "size": 7861,
+        "modified": "2025-11-12T21:35:39.581Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "LoadingSpinner": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\LoadingSpinner.jsx",
+        "relative": "components\\common\\LoadingSpinner.jsx",
+        "name": "LoadingSpinner.jsx",
+        "size": 576,
+        "modified": "2025-11-09T19:14:33.233Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\LoadingSpinner.jsx",
+        "relative": "app\\components\\common\\LoadingSpinner.jsx",
+        "name": "LoadingSpinner.jsx",
+        "size": 576,
+        "modified": "2025-11-09T19:14:33.233Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\LoadingSpinner.jsx",
+        "relative": "apps\\web\\src\\components\\common\\LoadingSpinner.jsx",
+        "name": "LoadingSpinner.jsx",
+        "size": 576,
+        "modified": "2025-11-09T19:14:33.233Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "Navigation": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\Navigation.jsx",
+        "relative": "components\\common\\Navigation.jsx",
+        "name": "Navigation.jsx",
+        "size": 3059,
+        "modified": "2025-11-12T07:28:14.319Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\Navigation.jsx",
+        "relative": "app\\components\\common\\Navigation.jsx",
+        "name": "Navigation.jsx",
+        "size": 3040,
+        "modified": "2025-11-17T19:52:59.090Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\Navigation.jsx",
+        "relative": "apps\\web\\src\\components\\common\\Navigation.jsx",
+        "name": "Navigation.jsx",
+        "size": 3059,
+        "modified": "2025-11-12T07:28:14.319Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "PermissionBasedCard": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\PermissionBasedCard.jsx",
+        "relative": "components\\common\\PermissionBasedCard.jsx",
+        "name": "PermissionBasedCard.jsx",
+        "size": 11084,
+        "modified": "2025-11-13T06:49:32.834Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\PermissionBasedCard.jsx",
+        "relative": "app\\components\\common\\PermissionBasedCard.jsx",
+        "name": "PermissionBasedCard.jsx",
+        "size": 10779,
+        "modified": "2025-11-17T19:52:59.460Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\PermissionBasedCard.jsx",
+        "relative": "apps\\web\\src\\components\\common\\PermissionBasedCard.jsx",
+        "name": "PermissionBasedCard.jsx",
+        "size": 11084,
+        "modified": "2025-11-13T06:49:32.834Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "PermissionPageTemplate": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\common\\PermissionPageTemplate.jsx",
+        "relative": "components\\common\\PermissionPageTemplate.jsx",
+        "name": "PermissionPageTemplate.jsx",
+        "size": 11523,
+        "modified": "2025-11-13T05:06:10.647Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\common\\PermissionPageTemplate.jsx",
+        "relative": "app\\components\\common\\PermissionPageTemplate.jsx",
+        "name": "PermissionPageTemplate.jsx",
+        "size": 11523,
+        "modified": "2025-11-13T05:06:10.647Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\PermissionPageTemplate.jsx",
+        "relative": "apps\\web\\src\\components\\common\\PermissionPageTemplate.jsx",
+        "name": "PermissionPageTemplate.jsx",
+        "size": 11523,
+        "modified": "2025-11-13T05:06:10.647Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "CulturalAdaptationProvider": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Cultural\\CulturalAdaptationProvider.jsx",
+        "relative": "components\\Cultural\\CulturalAdaptationProvider.jsx",
+        "name": "CulturalAdaptationProvider.jsx",
+        "size": 11969,
+        "modified": "2025-11-10T21:29:01.288Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\Cultural\\CulturalAdaptationProvider.jsx",
+        "relative": "app\\components\\Cultural\\CulturalAdaptationProvider.jsx",
+        "name": "CulturalAdaptationProvider.jsx",
+        "size": 11969,
+        "modified": "2025-11-10T21:29:01.288Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Cultural\\CulturalAdaptationProvider.jsx",
+        "relative": "apps\\web\\src\\components\\Cultural\\CulturalAdaptationProvider.jsx",
+        "name": "CulturalAdaptationProvider.jsx",
+        "size": 11969,
+        "modified": "2025-11-10T21:29:01.288Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "QuickActionsToolbar": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\dashboard\\QuickActionsToolbar.jsx",
+        "relative": "components\\dashboard\\QuickActionsToolbar.jsx",
+        "name": "QuickActionsToolbar.jsx",
+        "size": 1386,
+        "modified": "2025-11-13T06:45:34.641Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\ui\\QuickActionsToolbar.jsx",
+        "relative": "components\\ui\\QuickActionsToolbar.jsx",
+        "name": "QuickActionsToolbar.jsx",
+        "size": 2053,
+        "modified": "2025-11-15T06:38:59.292Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\dashboard\\QuickActionsToolbar.jsx",
+        "relative": "app\\components\\dashboard\\QuickActionsToolbar.jsx",
+        "name": "QuickActionsToolbar.jsx",
+        "size": 1386,
+        "modified": "2025-11-13T06:45:34.641Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\dashboard\\QuickActionsToolbar.jsx",
+        "relative": "apps\\web\\src\\components\\dashboard\\QuickActionsToolbar.jsx",
+        "name": "QuickActionsToolbar.jsx",
+        "size": 1386,
+        "modified": "2025-11-13T06:45:34.641Z",
+        "location": "apps/web/src/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\QuickActionsToolbar.jsx",
+        "relative": "apps\\web\\src\\components\\ui\\QuickActionsToolbar.jsx",
+        "name": "QuickActionsToolbar.jsx",
+        "size": 2053,
+        "modified": "2025-11-15T06:38:59.292Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "RealTimeMonitor": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\dashboard\\RealTimeMonitor.jsx",
+        "relative": "components\\dashboard\\RealTimeMonitor.jsx",
+        "name": "RealTimeMonitor.jsx",
+        "size": 1591,
+        "modified": "2025-11-13T06:46:47.029Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\monitoring\\RealTimeMonitor.jsx",
+        "relative": "components\\monitoring\\RealTimeMonitor.jsx",
+        "name": "RealTimeMonitor.jsx",
+        "size": 7130,
+        "modified": "2025-11-15T16:18:34.625Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\dashboard\\RealTimeMonitor.jsx",
+        "relative": "app\\components\\dashboard\\RealTimeMonitor.jsx",
+        "name": "RealTimeMonitor.jsx",
+        "size": 1591,
+        "modified": "2025-11-13T06:46:47.029Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\dashboard\\RealTimeMonitor.jsx",
+        "relative": "apps\\web\\src\\components\\dashboard\\RealTimeMonitor.jsx",
+        "name": "RealTimeMonitor.jsx",
+        "size": 1591,
+        "modified": "2025-11-13T06:46:47.029Z",
+        "location": "apps/web/src/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\monitoring\\RealTimeMonitor.jsx",
+        "relative": "apps\\web\\src\\components\\monitoring\\RealTimeMonitor.jsx",
+        "name": "RealTimeMonitor.jsx",
+        "size": 7137,
+        "modified": "2025-11-13T05:33:46.580Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "RoleDashboardCards": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\dashboard\\RoleDashboardCards.jsx",
+        "relative": "components\\dashboard\\RoleDashboardCards.jsx",
+        "name": "RoleDashboardCards.jsx",
+        "size": 2093,
+        "modified": "2025-11-13T06:55:05.658Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\dashboard\\RoleDashboardCards.jsx",
+        "relative": "app\\components\\dashboard\\RoleDashboardCards.jsx",
+        "name": "RoleDashboardCards.jsx",
+        "size": 2065,
+        "modified": "2025-11-17T19:53:00.074Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\dashboard\\RoleDashboardCards.jsx",
+        "relative": "apps\\web\\src\\components\\dashboard\\RoleDashboardCards.jsx",
+        "name": "RoleDashboardCards.jsx",
+        "size": 2093,
+        "modified": "2025-11-13T06:55:05.658Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "GlassSidebarEnhanced": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\enhanced-sidebar\\GlassSidebarEnhanced.jsx",
+        "relative": "components\\enhanced-sidebar\\GlassSidebarEnhanced.jsx",
+        "name": "GlassSidebarEnhanced.jsx",
+        "size": 5928,
+        "modified": "2025-11-11T20:53:55.597Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\enhanced-sidebar\\GlassSidebarEnhanced.jsx",
+        "relative": "app\\components\\enhanced-sidebar\\GlassSidebarEnhanced.jsx",
+        "name": "GlassSidebarEnhanced.jsx",
+        "size": 5928,
+        "modified": "2025-11-11T20:53:55.597Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\enhanced-sidebar\\GlassSidebarEnhanced.jsx",
+        "relative": "apps\\web\\src\\components\\enhanced-sidebar\\GlassSidebarEnhanced.jsx",
+        "name": "GlassSidebarEnhanced.jsx",
+        "size": 5928,
+        "modified": "2025-11-11T20:53:55.597Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "DataGrid": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\enterprise\\DataGrid.tsx",
+        "relative": "components\\enterprise\\DataGrid.tsx",
+        "name": "DataGrid.tsx",
+        "size": 8223,
+        "modified": "2025-11-11T14:10:08.151Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\ui\\DataGrid.jsx",
+        "relative": "components\\ui\\DataGrid.jsx",
+        "name": "DataGrid.jsx",
+        "size": 13396,
+        "modified": "2025-11-15T16:18:35.146Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\DataGrid.jsx",
+        "relative": "apps\\web\\src\\components\\ui\\DataGrid.jsx",
+        "name": "DataGrid.jsx",
+        "size": 13426,
+        "modified": "2025-11-12T06:55:59.891Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "EvidenceUpload": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\evidence\\EvidenceUpload.jsx",
+        "relative": "components\\evidence\\EvidenceUpload.jsx",
+        "name": "EvidenceUpload.jsx",
+        "size": 13226,
+        "modified": "2025-11-14T20:45:39.275Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\evidence\\EvidenceUpload.jsx",
+        "relative": "app\\components\\evidence\\EvidenceUpload.jsx",
+        "name": "EvidenceUpload.jsx",
+        "size": 13222,
+        "modified": "2025-11-17T09:14:34.615Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\evidence\\EvidenceUpload.jsx",
+        "relative": "apps\\web\\src\\components\\evidence\\EvidenceUpload.jsx",
+        "name": "EvidenceUpload.jsx",
+        "size": 13226,
+        "modified": "2025-11-14T20:45:39.275Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "SubscriptionUsageExample": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\examples\\SubscriptionUsageExample.jsx",
+        "relative": "components\\examples\\SubscriptionUsageExample.jsx",
+        "name": "SubscriptionUsageExample.jsx",
+        "size": 7372,
+        "modified": "2025-11-10T21:41:15.488Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Examples\\SubscriptionUsageExample.jsx",
+        "relative": "apps\\web\\src\\components\\Examples\\SubscriptionUsageExample.jsx",
+        "name": "SubscriptionUsageExample.jsx",
+        "size": 7372,
+        "modified": "2025-11-10T21:41:15.488Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "FeatureFlagPanel": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\FeatureFlagPanel.jsx",
+        "relative": "components\\FeatureFlagPanel.jsx",
+        "name": "FeatureFlagPanel.jsx",
+        "size": 4709,
+        "modified": "2025-11-13T21:07:12.934Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\FeatureFlagPanel.jsx",
+        "relative": "app\\components\\FeatureFlagPanel.jsx",
+        "name": "FeatureFlagPanel.jsx",
+        "size": 4709,
+        "modified": "2025-11-13T21:07:12.934Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\FeatureFlagPanel.jsx",
+        "relative": "apps\\web\\src\\components\\FeatureFlagPanel.jsx",
+        "name": "FeatureFlagPanel.jsx",
+        "size": 4709,
+        "modified": "2025-11-13T21:07:12.934Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ProcessGuideBanner": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\guidance\\ProcessGuideBanner.jsx",
+        "relative": "components\\guidance\\ProcessGuideBanner.jsx",
+        "name": "ProcessGuideBanner.jsx",
+        "size": 3738,
+        "modified": "2025-11-15T16:20:08.502Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\guidance\\ProcessGuideBanner.jsx",
+        "relative": "app\\components\\guidance\\ProcessGuideBanner.jsx",
+        "name": "ProcessGuideBanner.jsx",
+        "size": 3735,
+        "modified": "2025-11-17T19:53:00.267Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\guidance\\ProcessGuideBanner.jsx",
+        "relative": "apps\\web\\src\\components\\guidance\\ProcessGuideBanner.jsx",
+        "name": "ProcessGuideBanner.jsx",
+        "size": 3738,
+        "modified": "2025-11-15T07:34:31.139Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AboutUs": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\AboutUs.jsx",
+        "relative": "components\\landing\\AboutUs.jsx",
+        "name": "AboutUs.jsx",
+        "size": 6602,
+        "modified": "2025-11-14T00:34:41.946Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\AboutUs.jsx",
+        "relative": "app\\components\\landing\\AboutUs.jsx",
+        "name": "AboutUs.jsx",
+        "size": 6602,
+        "modified": "2025-11-14T00:34:41.946Z",
+        "location": "app/components/"
+      }
+    ],
+    "AdvancedStats": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\AdvancedStats.jsx",
+        "relative": "components\\landing\\AdvancedStats.jsx",
+        "name": "AdvancedStats.jsx",
+        "size": 9225,
+        "modified": "2025-11-02T13:28:07.538Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\AdvancedStats.jsx",
+        "relative": "app\\components\\landing\\AdvancedStats.jsx",
+        "name": "AdvancedStats.jsx",
+        "size": 9218,
+        "modified": "2025-11-17T19:53:00.588Z",
+        "location": "app/components/"
+      }
+    ],
+    "AITeamShowcase": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\AITeamShowcase.jsx",
+        "relative": "components\\landing\\AITeamShowcase.jsx",
+        "name": "AITeamShowcase.jsx",
+        "size": 9026,
+        "modified": "2025-11-02T13:11:14.583Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\AITeamShowcase.jsx",
+        "relative": "app\\components\\landing\\AITeamShowcase.jsx",
+        "name": "AITeamShowcase.jsx",
+        "size": 9021,
+        "modified": "2025-11-17T19:53:01.139Z",
+        "location": "app/components/"
+      }
+    ],
+    "AutoScroll": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\AutoScroll.jsx",
+        "relative": "components\\landing\\AutoScroll.jsx",
+        "name": "AutoScroll.jsx",
+        "size": 2978,
+        "modified": "2025-11-14T06:09:41.458Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\AutoScroll.jsx",
+        "relative": "app\\components\\landing\\AutoScroll.jsx",
+        "name": "AutoScroll.jsx",
+        "size": 2978,
+        "modified": "2025-11-14T06:09:41.458Z",
+        "location": "app/components/"
+      }
+    ],
+    "CompetitiveAdvantage": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\CompetitiveAdvantage.jsx",
+        "relative": "components\\landing\\CompetitiveAdvantage.jsx",
+        "name": "CompetitiveAdvantage.jsx",
+        "size": 9702,
+        "modified": "2025-11-02T13:08:24.550Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\CompetitiveAdvantage.jsx",
+        "relative": "app\\components\\landing\\CompetitiveAdvantage.jsx",
+        "name": "CompetitiveAdvantage.jsx",
+        "size": 9695,
+        "modified": "2025-11-17T19:53:01.624Z",
+        "location": "app/components/"
+      }
+    ],
+    "Contact": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\Contact.jsx",
+        "relative": "components\\landing\\Contact.jsx",
+        "name": "Contact.jsx",
+        "size": 9357,
+        "modified": "2025-11-14T06:47:31.899Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\Contact.jsx",
+        "relative": "app\\components\\landing\\Contact.jsx",
+        "name": "Contact.jsx",
+        "size": 9367,
+        "modified": "2025-11-17T19:53:02.149Z",
+        "location": "app/components/"
+      }
+    ],
+    "DashboardPreview": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\DashboardPreview.jsx",
+        "relative": "components\\landing\\DashboardPreview.jsx",
+        "name": "DashboardPreview.jsx",
+        "size": 18752,
+        "modified": "2025-11-02T12:28:25.324Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\DashboardPreview.jsx",
+        "relative": "app\\components\\landing\\DashboardPreview.jsx",
+        "name": "DashboardPreview.jsx",
+        "size": 18751,
+        "modified": "2025-11-17T19:53:40.434Z",
+        "location": "app/components/"
+      }
+    ],
+    "FAQ": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\FAQ.jsx",
+        "relative": "components\\landing\\FAQ.jsx",
+        "name": "FAQ.jsx",
+        "size": 15541,
+        "modified": "2025-11-14T06:18:50.682Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\FAQ.jsx",
+        "relative": "app\\components\\landing\\FAQ.jsx",
+        "name": "FAQ.jsx",
+        "size": 15541,
+        "modified": "2025-11-14T06:18:50.682Z",
+        "location": "app/components/"
+      }
+    ],
+    "FinalCTA": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\FinalCTA.jsx",
+        "relative": "components\\landing\\FinalCTA.jsx",
+        "name": "FinalCTA.jsx",
+        "size": 6186,
+        "modified": "2025-11-14T06:15:36.244Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\FinalCTA.jsx",
+        "relative": "app\\components\\landing\\FinalCTA.jsx",
+        "name": "FinalCTA.jsx",
+        "size": 5729,
+        "modified": "2025-11-17T19:53:03.009Z",
+        "location": "app/components/"
+      }
+    ],
+    "FloatingAIAgent": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\FloatingAIAgent.jsx",
+        "relative": "components\\landing\\FloatingAIAgent.jsx",
+        "name": "FloatingAIAgent.jsx",
+        "size": 53779,
+        "modified": "2025-11-16T11:29:58.778Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\FloatingAIAgent.jsx",
+        "relative": "app\\components\\landing\\FloatingAIAgent.jsx",
+        "name": "FloatingAIAgent.jsx",
+        "size": 53821,
+        "modified": "2025-11-18T11:10:36.200Z",
+        "location": "app/components/"
+      }
+    ],
+    "FloatingGlassCard": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\FloatingGlassCard.jsx",
+        "relative": "components\\landing\\FloatingGlassCard.jsx",
+        "name": "FloatingGlassCard.jsx",
+        "size": 9407,
+        "modified": "2025-11-14T06:22:08.814Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\FloatingGlassCard.jsx",
+        "relative": "app\\components\\landing\\FloatingGlassCard.jsx",
+        "name": "FloatingGlassCard.jsx",
+        "size": 9407,
+        "modified": "2025-11-14T06:22:08.814Z",
+        "location": "app/components/"
+      }
+    ],
+    "FloatingNav": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\FloatingNav.jsx",
+        "relative": "components\\landing\\FloatingNav.jsx",
+        "name": "FloatingNav.jsx",
+        "size": 6662,
+        "modified": "2025-11-14T15:15:48.176Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\FloatingNav.jsx",
+        "relative": "app\\components\\landing\\FloatingNav.jsx",
+        "name": "FloatingNav.jsx",
+        "size": 6637,
+        "modified": "2025-11-17T19:53:03.516Z",
+        "location": "app/components/"
+      }
+    ],
+    "Footer": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\Footer.jsx",
+        "relative": "components\\landing\\Footer.jsx",
+        "name": "Footer.jsx",
+        "size": 5534,
+        "modified": "2025-11-14T06:20:43.911Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\Footer.jsx",
+        "relative": "components\\layout\\Footer.jsx",
+        "name": "Footer.jsx",
+        "size": 917,
+        "modified": "2025-11-15T06:59:12.302Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\Footer.tsx",
+        "relative": "components\\layout\\Footer.tsx",
+        "name": "Footer.tsx",
+        "size": 7622,
+        "modified": "2025-11-14T10:47:48.399Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\Footer.jsx",
+        "relative": "app\\components\\landing\\Footer.jsx",
+        "name": "Footer.jsx",
+        "size": 5486,
+        "modified": "2025-11-17T19:53:03.702Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\layout\\Footer.jsx",
+        "relative": "app\\components\\layout\\Footer.jsx",
+        "name": "Footer.jsx",
+        "size": 917,
+        "modified": "2025-11-15T06:59:12.302Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\Footer.jsx",
+        "relative": "apps\\web\\src\\components\\layout\\Footer.jsx",
+        "name": "Footer.jsx",
+        "size": 917,
+        "modified": "2025-11-15T06:59:12.302Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "GlassCard": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\GlassCard.jsx",
+        "relative": "components\\landing\\GlassCard.jsx",
+        "name": "GlassCard.jsx",
+        "size": 3318,
+        "modified": "2025-11-02T13:28:07.538Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\GlassCard.jsx",
+        "relative": "app\\components\\landing\\GlassCard.jsx",
+        "name": "GlassCard.jsx",
+        "size": 3318,
+        "modified": "2025-11-02T13:28:07.538Z",
+        "location": "app/components/"
+      }
+    ],
+    "Header": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\Header.jsx",
+        "relative": "components\\landing\\Header.jsx",
+        "name": "Header.jsx",
+        "size": 20248,
+        "modified": "2025-11-14T06:53:18.699Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\Header.jsx",
+        "relative": "components\\layout\\Header.jsx",
+        "name": "Header.jsx",
+        "size": 11370,
+        "modified": "2025-11-15T07:31:07.913Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\Header.tsx",
+        "relative": "components\\layout\\Header.tsx",
+        "name": "Header.tsx",
+        "size": 2074,
+        "modified": "2025-11-16T10:30:31.453Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\Header.jsx",
+        "relative": "app\\components\\landing\\Header.jsx",
+        "name": "Header.jsx",
+        "size": 20815,
+        "modified": "2025-11-17T19:52:50.274Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\layout\\Header.jsx",
+        "relative": "app\\components\\layout\\Header.jsx",
+        "name": "Header.jsx",
+        "size": 11366,
+        "modified": "2025-11-17T09:14:34.615Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\Header.jsx",
+        "relative": "apps\\web\\src\\components\\layout\\Header.jsx",
+        "name": "Header.jsx",
+        "size": 11370,
+        "modified": "2025-11-15T07:31:07.913Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "Hero": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\Hero.jsx",
+        "relative": "components\\landing\\Hero.jsx",
+        "name": "Hero.jsx",
+        "size": 6365,
+        "modified": "2025-11-10T05:26:56.454Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\Hero.jsx",
+        "relative": "app\\components\\landing\\Hero.jsx",
+        "name": "Hero.jsx",
+        "size": 5863,
+        "modified": "2025-11-17T19:53:04.009Z",
+        "location": "app/components/"
+      }
+    ],
+    "Interactive3DCards": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\Interactive3DCards.jsx",
+        "relative": "components\\landing\\Interactive3DCards.jsx",
+        "name": "Interactive3DCards.jsx",
+        "size": 8213,
+        "modified": "2025-11-10T05:27:34.153Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\Interactive3DCards.jsx",
+        "relative": "app\\components\\landing\\Interactive3DCards.jsx",
+        "name": "Interactive3DCards.jsx",
+        "size": 8213,
+        "modified": "2025-11-10T05:27:34.153Z",
+        "location": "app/components/"
+      }
+    ],
+    "KeyFeatures": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\KeyFeatures.jsx",
+        "relative": "components\\landing\\KeyFeatures.jsx",
+        "name": "KeyFeatures.jsx",
+        "size": 8722,
+        "modified": "2025-11-02T18:10:55.427Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\KeyFeatures.jsx",
+        "relative": "app\\components\\landing\\KeyFeatures.jsx",
+        "name": "KeyFeatures.jsx",
+        "size": 8722,
+        "modified": "2025-11-02T18:10:55.427Z",
+        "location": "app/components/"
+      }
+    ],
+    "LoginModal": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\LoginModal.jsx",
+        "relative": "components\\landing\\LoginModal.jsx",
+        "name": "LoginModal.jsx",
+        "size": 12923,
+        "modified": "2025-11-15T20:58:16.224Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\LoginModal.jsx",
+        "relative": "app\\components\\landing\\LoginModal.jsx",
+        "name": "LoginModal.jsx",
+        "size": 12923,
+        "modified": "2025-11-15T20:58:16.224Z",
+        "location": "app/components/"
+      }
+    ],
+    "ParallaxSection": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\ParallaxSection.jsx",
+        "relative": "components\\landing\\ParallaxSection.jsx",
+        "name": "ParallaxSection.jsx",
+        "size": 5023,
+        "modified": "2025-11-02T15:15:45.213Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\ParallaxSection.jsx",
+        "relative": "app\\components\\landing\\ParallaxSection.jsx",
+        "name": "ParallaxSection.jsx",
+        "size": 5033,
+        "modified": "2025-11-17T19:53:04.650Z",
+        "location": "app/components/"
+      }
+    ],
+    "Pricing": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\Pricing.jsx",
+        "relative": "components\\landing\\Pricing.jsx",
+        "name": "Pricing.jsx",
+        "size": 6082,
+        "modified": "2025-11-02T12:28:25.324Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\Pricing.jsx",
+        "relative": "app\\components\\landing\\Pricing.jsx",
+        "name": "Pricing.jsx",
+        "size": 5899,
+        "modified": "2025-11-17T19:53:04.851Z",
+        "location": "app/components/"
+      }
+    ],
+    "ProblemSolution": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\ProblemSolution.jsx",
+        "relative": "components\\landing\\ProblemSolution.jsx",
+        "name": "ProblemSolution.jsx",
+        "size": 9036,
+        "modified": "2025-11-02T12:28:25.324Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\ProblemSolution.jsx",
+        "relative": "app\\components\\landing\\ProblemSolution.jsx",
+        "name": "ProblemSolution.jsx",
+        "size": 9041,
+        "modified": "2025-11-17T19:53:05.165Z",
+        "location": "app/components/"
+      }
+    ],
+    "QuickAccess": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\QuickAccess.jsx",
+        "relative": "components\\landing\\QuickAccess.jsx",
+        "name": "QuickAccess.jsx",
+        "size": 6014,
+        "modified": "2025-11-02T12:28:25.324Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\QuickAccess.jsx",
+        "relative": "app\\components\\landing\\QuickAccess.jsx",
+        "name": "QuickAccess.jsx",
+        "size": 6007,
+        "modified": "2025-11-17T19:53:05.302Z",
+        "location": "app/components/"
+      }
+    ],
+    "QuickSectionNav": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\QuickSectionNav.jsx",
+        "relative": "components\\landing\\QuickSectionNav.jsx",
+        "name": "QuickSectionNav.jsx",
+        "size": 7935,
+        "modified": "2025-11-14T06:53:08.512Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\QuickSectionNav.jsx",
+        "relative": "app\\components\\landing\\QuickSectionNav.jsx",
+        "name": "QuickSectionNav.jsx",
+        "size": 7977,
+        "modified": "2025-11-17T19:53:05.450Z",
+        "location": "app/components/"
+      }
+    ],
+    "SaudiFrameworks": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\SaudiFrameworks.jsx",
+        "relative": "components\\landing\\SaudiFrameworks.jsx",
+        "name": "SaudiFrameworks.jsx",
+        "size": 8833,
+        "modified": "2025-11-02T13:29:15.445Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\SaudiFrameworks.jsx",
+        "relative": "app\\components\\landing\\SaudiFrameworks.jsx",
+        "name": "SaudiFrameworks.jsx",
+        "size": 8821,
+        "modified": "2025-11-17T19:53:05.604Z",
+        "location": "app/components/"
+      }
+    ],
+    "SmallIconSidebar": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\SmallIconSidebar.jsx",
+        "relative": "components\\landing\\SmallIconSidebar.jsx",
+        "name": "SmallIconSidebar.jsx",
+        "size": 6728,
+        "modified": "2025-11-14T15:15:11.550Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\SmallIconSidebar.jsx",
+        "relative": "app\\components\\landing\\SmallIconSidebar.jsx",
+        "name": "SmallIconSidebar.jsx",
+        "size": 6728,
+        "modified": "2025-11-14T15:15:11.550Z",
+        "location": "app/components/"
+      }
+    ],
+    "TargetSectors": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\TargetSectors.jsx",
+        "relative": "components\\landing\\TargetSectors.jsx",
+        "name": "TargetSectors.jsx",
+        "size": 7359,
+        "modified": "2025-11-02T15:49:13.017Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\TargetSectors.jsx",
+        "relative": "app\\components\\landing\\TargetSectors.jsx",
+        "name": "TargetSectors.jsx",
+        "size": 7359,
+        "modified": "2025-11-02T15:49:13.017Z",
+        "location": "app/components/"
+      }
+    ],
+    "Testimonials": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\Testimonials.jsx",
+        "relative": "components\\landing\\Testimonials.jsx",
+        "name": "Testimonials.jsx",
+        "size": 12046,
+        "modified": "2025-11-02T12:28:25.324Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\Testimonials.jsx",
+        "relative": "app\\components\\landing\\Testimonials.jsx",
+        "name": "Testimonials.jsx",
+        "size": 12042,
+        "modified": "2025-11-17T19:53:05.785Z",
+        "location": "app/components/"
+      }
+    ],
+    "ThemeToggle": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\ThemeToggle.jsx",
+        "relative": "components\\landing\\ThemeToggle.jsx",
+        "name": "ThemeToggle.jsx",
+        "size": 1625,
+        "modified": "2025-11-14T06:52:22.932Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\theme\\ThemeToggle.jsx",
+        "relative": "components\\theme\\ThemeToggle.jsx",
+        "name": "ThemeToggle.jsx",
+        "size": 3354,
+        "modified": "2025-11-15T16:18:35.047Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\theme\\ThemeToggle.tsx",
+        "relative": "components\\theme\\ThemeToggle.tsx",
+        "name": "ThemeToggle.tsx",
+        "size": 946,
+        "modified": "2025-11-16T07:28:01.417Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\ThemeToggle.jsx",
+        "relative": "app\\components\\landing\\ThemeToggle.jsx",
+        "name": "ThemeToggle.jsx",
+        "size": 1625,
+        "modified": "2025-11-14T06:52:22.932Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\theme\\ThemeToggle.jsx",
+        "relative": "app\\components\\theme\\ThemeToggle.jsx",
+        "name": "ThemeToggle.jsx",
+        "size": 3354,
+        "modified": "2025-11-15T16:18:35.047Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\theme\\ThemeToggle.jsx",
+        "relative": "apps\\web\\src\\components\\theme\\ThemeToggle.jsx",
+        "name": "ThemeToggle.jsx",
+        "size": 3377,
+        "modified": "2025-11-13T20:03:14.152Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "TransformationStory": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\TransformationStory.jsx",
+        "relative": "components\\landing\\TransformationStory.jsx",
+        "name": "TransformationStory.jsx",
+        "size": 41098,
+        "modified": "2025-11-02T20:28:54.523Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\TransformationStory.jsx",
+        "relative": "app\\components\\landing\\TransformationStory.jsx",
+        "name": "TransformationStory.jsx",
+        "size": 41041,
+        "modified": "2025-11-17T19:53:05.976Z",
+        "location": "app/components/"
+      }
+    ],
+    "TrustBar": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\TrustBar.jsx",
+        "relative": "components\\landing\\TrustBar.jsx",
+        "name": "TrustBar.jsx",
+        "size": 2893,
+        "modified": "2025-11-10T05:27:09.465Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\TrustBar.jsx",
+        "relative": "app\\components\\landing\\TrustBar.jsx",
+        "name": "TrustBar.jsx",
+        "size": 2893,
+        "modified": "2025-11-10T05:27:09.465Z",
+        "location": "app/components/"
+      }
+    ],
+    "UnifiedLogo": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\UnifiedLogo.jsx",
+        "relative": "components\\landing\\UnifiedLogo.jsx",
+        "name": "UnifiedLogo.jsx",
+        "size": 3910,
+        "modified": "2025-11-02T12:28:25.324Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\UnifiedLogo.jsx",
+        "relative": "app\\components\\landing\\UnifiedLogo.jsx",
+        "name": "UnifiedLogo.jsx",
+        "size": 3910,
+        "modified": "2025-11-02T12:28:25.324Z",
+        "location": "app/components/"
+      }
+    ],
+    "UnifiedValueSection": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\UnifiedValueSection.jsx",
+        "relative": "components\\landing\\UnifiedValueSection.jsx",
+        "name": "UnifiedValueSection.jsx",
+        "size": 6074,
+        "modified": "2025-11-02T12:28:25.324Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\UnifiedValueSection.jsx",
+        "relative": "app\\components\\landing\\UnifiedValueSection.jsx",
+        "name": "UnifiedValueSection.jsx",
+        "size": 6079,
+        "modified": "2025-11-17T19:53:06.119Z",
+        "location": "app/components/"
+      }
+    ],
+    "Vision": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\landing\\Vision.jsx",
+        "relative": "components\\landing\\Vision.jsx",
+        "name": "Vision.jsx",
+        "size": 9115,
+        "modified": "2025-11-02T12:28:25.324Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\landing\\Vision.jsx",
+        "relative": "app\\components\\landing\\Vision.jsx",
+        "name": "Vision.jsx",
+        "size": 9115,
+        "modified": "2025-11-02T12:28:25.324Z",
+        "location": "app/components/"
+      }
+    ],
+    "AdvancedAppShell": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\AdvancedAppShell.jsx",
+        "relative": "components\\layout\\AdvancedAppShell.jsx",
+        "name": "AdvancedAppShell.jsx",
+        "size": 19967,
+        "modified": "2025-11-15T16:18:33.788Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\layout\\AdvancedAppShell.jsx",
+        "relative": "app\\components\\layout\\AdvancedAppShell.jsx",
+        "name": "AdvancedAppShell.jsx",
+        "size": 19841,
+        "modified": "2025-11-18T22:50:10.732Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\AdvancedAppShell.jsx",
+        "relative": "apps\\web\\src\\components\\layout\\AdvancedAppShell.jsx",
+        "name": "AdvancedAppShell.jsx",
+        "size": 20061,
+        "modified": "2025-11-18T22:57:02.198Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AdvancedShell": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\AdvancedShell.jsx",
+        "relative": "components\\layout\\AdvancedShell.jsx",
+        "name": "AdvancedShell.jsx",
+        "size": 19822,
+        "modified": "2025-11-15T16:20:08.719Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\layout\\AdvancedShell.jsx",
+        "relative": "app\\components\\layout\\AdvancedShell.jsx",
+        "name": "AdvancedShell.jsx",
+        "size": 19822,
+        "modified": "2025-11-15T16:20:08.719Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\AdvancedShell.jsx",
+        "relative": "apps\\web\\src\\components\\layout\\AdvancedShell.jsx",
+        "name": "AdvancedShell.jsx",
+        "size": 19831,
+        "modified": "2025-11-18T22:57:02.202Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AppLayout": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\AppLayout.jsx",
+        "relative": "components\\layout\\AppLayout.jsx",
+        "name": "AppLayout.jsx",
+        "size": 1910,
+        "modified": "2025-11-15T06:26:28.516Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\layout\\AppLayout.jsx",
+        "relative": "app\\components\\layout\\AppLayout.jsx",
+        "name": "AppLayout.jsx",
+        "size": 3137,
+        "modified": "2025-11-17T19:53:52.132Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\AppLayout.jsx",
+        "relative": "apps\\web\\src\\components\\layout\\AppLayout.jsx",
+        "name": "AppLayout.jsx",
+        "size": 1910,
+        "modified": "2025-11-15T06:26:28.516Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "EnhancedAppShell": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\EnhancedAppShell.jsx",
+        "relative": "components\\layout\\EnhancedAppShell.jsx",
+        "name": "EnhancedAppShell.jsx",
+        "size": 20917,
+        "modified": "2025-11-15T05:43:02.446Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\layout\\EnhancedAppShell.jsx",
+        "relative": "app\\components\\layout\\EnhancedAppShell.jsx",
+        "name": "EnhancedAppShell.jsx",
+        "size": 22163,
+        "modified": "2025-11-18T22:50:10.731Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\EnhancedAppShell.jsx",
+        "relative": "apps\\web\\src\\components\\layout\\EnhancedAppShell.jsx",
+        "name": "EnhancedAppShell.jsx",
+        "size": 20945,
+        "modified": "2025-11-18T22:50:10.729Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "EnterprisePageLayout": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\EnterprisePageLayout.jsx",
+        "relative": "components\\layout\\EnterprisePageLayout.jsx",
+        "name": "EnterprisePageLayout.jsx",
+        "size": 6011,
+        "modified": "2025-11-15T16:37:46.377Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\layout\\EnterprisePageLayout.jsx",
+        "relative": "app\\components\\layout\\EnterprisePageLayout.jsx",
+        "name": "EnterprisePageLayout.jsx",
+        "size": 6011,
+        "modified": "2025-11-15T16:37:46.377Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\EnterprisePageLayout.jsx",
+        "relative": "apps\\web\\src\\components\\layout\\EnterprisePageLayout.jsx",
+        "name": "EnterprisePageLayout.jsx",
+        "size": 5987,
+        "modified": "2025-11-18T22:57:02.204Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "MainLayout": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\MainLayout.jsx",
+        "relative": "components\\layout\\MainLayout.jsx",
+        "name": "MainLayout.jsx",
+        "size": 10859,
+        "modified": "2025-11-15T16:18:33.843Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\layout\\MainLayout.jsx",
+        "relative": "app\\components\\layout\\MainLayout.jsx",
+        "name": "MainLayout.jsx",
+        "size": 10859,
+        "modified": "2025-11-15T16:18:33.843Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\MainLayout.jsx",
+        "relative": "apps\\web\\src\\components\\layout\\MainLayout.jsx",
+        "name": "MainLayout.jsx",
+        "size": 10967,
+        "modified": "2025-11-15T04:59:11.673Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "Sidebar": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\Sidebar.jsx",
+        "relative": "components\\layout\\Sidebar.jsx",
+        "name": "Sidebar.jsx",
+        "size": 49547,
+        "modified": "2025-11-16T05:10:27.864Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\Sidebar.tsx",
+        "relative": "components\\layout\\Sidebar.tsx",
+        "name": "Sidebar.tsx",
+        "size": 3388,
+        "modified": "2025-11-16T10:30:31.729Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\layout\\Sidebar.jsx",
+        "relative": "app\\components\\layout\\Sidebar.jsx",
+        "name": "Sidebar.jsx",
+        "size": 49908,
+        "modified": "2025-11-18T22:50:10.731Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\Sidebar.jsx",
+        "relative": "apps\\web\\src\\components\\layout\\Sidebar.jsx",
+        "name": "Sidebar.jsx",
+        "size": 53418,
+        "modified": "2025-11-18T22:50:10.727Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "UtilityHeader": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\layout\\UtilityHeader.jsx",
+        "relative": "components\\layout\\UtilityHeader.jsx",
+        "name": "UtilityHeader.jsx",
+        "size": 1743,
+        "modified": "2025-11-12T20:19:51.057Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\layout\\UtilityHeader.jsx",
+        "relative": "app\\components\\layout\\UtilityHeader.jsx",
+        "name": "UtilityHeader.jsx",
+        "size": 1743,
+        "modified": "2025-11-12T20:19:51.057Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\UtilityHeader.jsx",
+        "relative": "apps\\web\\src\\components\\layout\\UtilityHeader.jsx",
+        "name": "UtilityHeader.jsx",
+        "size": 1743,
+        "modified": "2025-11-12T20:19:51.057Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "PerformanceMonitor": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\monitoring\\PerformanceMonitor.jsx",
+        "relative": "components\\monitoring\\PerformanceMonitor.jsx",
+        "name": "PerformanceMonitor.jsx",
+        "size": 15644,
+        "modified": "2025-11-15T16:18:34.548Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\monitoring\\PerformanceMonitor.jsx",
+        "relative": "apps\\web\\src\\components\\monitoring\\PerformanceMonitor.jsx",
+        "name": "PerformanceMonitor.jsx",
+        "size": 15712,
+        "modified": "2025-11-13T08:01:21.089Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "MultiTenancyGuide": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\MultiTenancy\\MultiTenancyGuide.jsx",
+        "relative": "components\\MultiTenancy\\MultiTenancyGuide.jsx",
+        "name": "MultiTenancyGuide.jsx",
+        "size": 18522,
+        "modified": "2025-11-10T21:41:32.837Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\MultiTenancy\\MultiTenancyGuide.jsx",
+        "relative": "apps\\web\\src\\components\\MultiTenancy\\MultiTenancyGuide.jsx",
+        "name": "MultiTenancyGuide.jsx",
+        "size": 18522,
+        "modified": "2025-11-10T21:41:32.837Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "Navigation_temp": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Navigation_temp.jsx",
+        "relative": "components\\Navigation_temp.jsx",
+        "name": "Navigation_temp.jsx",
+        "size": 492,
+        "modified": "2025-11-11T19:05:18.039Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Navigation_temp.jsx",
+        "relative": "apps\\web\\src\\components\\Navigation_temp.jsx",
+        "name": "Navigation_temp.jsx",
+        "size": 492,
+        "modified": "2025-11-11T19:05:18.039Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "NewItem": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\NewItem.jsx",
+        "relative": "components\\NewItem.jsx",
+        "name": "NewItem.jsx",
+        "size": 757,
+        "modified": "2025-11-12T23:38:29.371Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\NewItem.jsx",
+        "relative": "apps\\web\\src\\components\\NewItem.jsx",
+        "name": "NewItem.jsx",
+        "size": 757,
+        "modified": "2025-11-12T23:38:29.371Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "NotificationCenter": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\notifications\\NotificationCenter.jsx",
+        "relative": "components\\notifications\\NotificationCenter.jsx",
+        "name": "NotificationCenter.jsx",
+        "size": 11801,
+        "modified": "2025-11-15T16:18:34.719Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\notifications\\NotificationCenter.jsx",
+        "relative": "app\\components\\notifications\\NotificationCenter.jsx",
+        "name": "NotificationCenter.jsx",
+        "size": 12248,
+        "modified": "2025-11-17T09:51:43.194Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\notifications\\NotificationCenter.jsx",
+        "relative": "apps\\web\\src\\components\\notifications\\NotificationCenter.jsx",
+        "name": "NotificationCenter.jsx",
+        "size": 16009,
+        "modified": "2025-11-11T15:30:52.076Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ExitIntentPopup": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\popups\\ExitIntentPopup.jsx",
+        "relative": "components\\popups\\ExitIntentPopup.jsx",
+        "name": "ExitIntentPopup.jsx",
+        "size": 11250,
+        "modified": "2025-11-15T16:18:34.808Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\popups\\ExitIntentPopup.jsx",
+        "relative": "app\\components\\popups\\ExitIntentPopup.jsx",
+        "name": "ExitIntentPopup.jsx",
+        "size": 11250,
+        "modified": "2025-11-15T16:18:34.808Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\popups\\ExitIntentPopup.jsx",
+        "relative": "apps\\web\\src\\components\\popups\\ExitIntentPopup.jsx",
+        "name": "ExitIntentPopup.jsx",
+        "size": 11276,
+        "modified": "2025-11-12T08:03:49.169Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ThemeProvider": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\providers\\ThemeProvider.tsx",
+        "relative": "components\\providers\\ThemeProvider.tsx",
+        "name": "ThemeProvider.tsx",
+        "size": 385,
+        "modified": "2025-11-12T12:37:28.631Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\components\\theme\\ThemeProvider.jsx",
+        "relative": "components\\theme\\ThemeProvider.jsx",
+        "name": "ThemeProvider.jsx",
+        "size": 13576,
+        "modified": "2025-11-15T16:18:34.873Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\theme\\ThemeProvider.jsx",
+        "relative": "app\\components\\theme\\ThemeProvider.jsx",
+        "name": "ThemeProvider.jsx",
+        "size": 13576,
+        "modified": "2025-11-15T16:18:34.873Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\theme\\ThemeProvider.jsx",
+        "relative": "apps\\web\\src\\components\\theme\\ThemeProvider.jsx",
+        "name": "ThemeProvider.jsx",
+        "size": 13902,
+        "modified": "2025-11-16T07:28:25.602Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ComplianceCalendarWidget": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Regulatory\\ComplianceCalendarWidget.jsx",
+        "relative": "components\\Regulatory\\ComplianceCalendarWidget.jsx",
+        "name": "ComplianceCalendarWidget.jsx",
+        "size": 6232,
+        "modified": "2025-11-11T03:52:52.122Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\Regulatory\\ComplianceCalendarWidget.jsx",
+        "relative": "app\\components\\Regulatory\\ComplianceCalendarWidget.jsx",
+        "name": "ComplianceCalendarWidget.jsx",
+        "size": 5981,
+        "modified": "2025-11-17T19:53:06.338Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Regulatory\\ComplianceCalendarWidget.jsx",
+        "relative": "apps\\web\\src\\components\\Regulatory\\ComplianceCalendarWidget.jsx",
+        "name": "ComplianceCalendarWidget.jsx",
+        "size": 6232,
+        "modified": "2025-11-11T03:52:52.122Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "ImpactAssessmentModal": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Regulatory\\ImpactAssessmentModal.jsx",
+        "relative": "components\\Regulatory\\ImpactAssessmentModal.jsx",
+        "name": "ImpactAssessmentModal.jsx",
+        "size": 10636,
+        "modified": "2025-11-15T23:40:38.274Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\Regulatory\\ImpactAssessmentModal.jsx",
+        "relative": "app\\components\\Regulatory\\ImpactAssessmentModal.jsx",
+        "name": "ImpactAssessmentModal.jsx",
+        "size": 10680,
+        "modified": "2025-11-17T19:52:51.482Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Regulatory\\ImpactAssessmentModal.jsx",
+        "relative": "apps\\web\\src\\components\\Regulatory\\ImpactAssessmentModal.jsx",
+        "name": "ImpactAssessmentModal.jsx",
+        "size": 10417,
+        "modified": "2025-11-11T03:52:52.122Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "RegulatoryDashboardWidget": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Regulatory\\RegulatoryDashboardWidget.jsx",
+        "relative": "components\\Regulatory\\RegulatoryDashboardWidget.jsx",
+        "name": "RegulatoryDashboardWidget.jsx",
+        "size": 4178,
+        "modified": "2025-11-11T03:52:52.122Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\Regulatory\\RegulatoryDashboardWidget.jsx",
+        "relative": "app\\components\\Regulatory\\RegulatoryDashboardWidget.jsx",
+        "name": "RegulatoryDashboardWidget.jsx",
+        "size": 4178,
+        "modified": "2025-11-11T03:52:52.122Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Regulatory\\RegulatoryDashboardWidget.jsx",
+        "relative": "apps\\web\\src\\components\\Regulatory\\RegulatoryDashboardWidget.jsx",
+        "name": "RegulatoryDashboardWidget.jsx",
+        "size": 4178,
+        "modified": "2025-11-11T03:52:52.122Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "RegulatoryFeedWidget": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Regulatory\\RegulatoryFeedWidget.jsx",
+        "relative": "components\\Regulatory\\RegulatoryFeedWidget.jsx",
+        "name": "RegulatoryFeedWidget.jsx",
+        "size": 6510,
+        "modified": "2025-11-11T03:52:52.122Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\Regulatory\\RegulatoryFeedWidget.jsx",
+        "relative": "app\\components\\Regulatory\\RegulatoryFeedWidget.jsx",
+        "name": "RegulatoryFeedWidget.jsx",
+        "size": 6510,
+        "modified": "2025-11-11T03:52:52.122Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Regulatory\\RegulatoryFeedWidget.jsx",
+        "relative": "apps\\web\\src\\components\\Regulatory\\RegulatoryFeedWidget.jsx",
+        "name": "RegulatoryFeedWidget.jsx",
+        "size": 6510,
+        "modified": "2025-11-11T03:52:52.122Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "RegulatoryIntelligenceCenter": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Regulatory\\RegulatoryIntelligenceCenter.jsx",
+        "relative": "components\\Regulatory\\RegulatoryIntelligenceCenter.jsx",
+        "name": "RegulatoryIntelligenceCenter.jsx",
+        "size": 17068,
+        "modified": "2025-11-15T07:17:48.624Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\Regulatory\\RegulatoryIntelligenceCenter.jsx",
+        "relative": "app\\components\\Regulatory\\RegulatoryIntelligenceCenter.jsx",
+        "name": "RegulatoryIntelligenceCenter.jsx",
+        "size": 14980,
+        "modified": "2025-11-17T19:53:52.585Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Regulatory\\RegulatoryIntelligenceCenter.jsx",
+        "relative": "apps\\web\\src\\components\\Regulatory\\RegulatoryIntelligenceCenter.jsx",
+        "name": "RegulatoryIntelligenceCenter.jsx",
+        "size": 17068,
+        "modified": "2025-11-15T07:17:48.624Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AdvancedFeatureExamples": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Subscription\\AdvancedFeatureExamples.jsx",
+        "relative": "components\\Subscription\\AdvancedFeatureExamples.jsx",
+        "name": "AdvancedFeatureExamples.jsx",
+        "size": 20696,
+        "modified": "2025-11-10T21:41:15.488Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Subscription\\AdvancedFeatureExamples.jsx",
+        "relative": "apps\\web\\src\\components\\Subscription\\AdvancedFeatureExamples.jsx",
+        "name": "AdvancedFeatureExamples.jsx",
+        "size": 20696,
+        "modified": "2025-11-10T21:41:15.488Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "SubscriptionManager": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Subscription\\SubscriptionManager.jsx",
+        "relative": "components\\Subscription\\SubscriptionManager.jsx",
+        "name": "SubscriptionManager.jsx",
+        "size": 20642,
+        "modified": "2025-11-11T15:28:03.500Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Subscription\\SubscriptionManager.jsx",
+        "relative": "apps\\web\\src\\components\\Subscription\\SubscriptionManager.jsx",
+        "name": "SubscriptionManager.jsx",
+        "size": 20642,
+        "modified": "2025-11-11T15:28:03.500Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "SimpleTest": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\Test\\SimpleTest.jsx",
+        "relative": "components\\Test\\SimpleTest.jsx",
+        "name": "SimpleTest.jsx",
+        "size": 2998,
+        "modified": "2025-11-10T21:29:42.863Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Test\\SimpleTest.jsx",
+        "relative": "apps\\web\\src\\components\\Test\\SimpleTest.jsx",
+        "name": "SimpleTest.jsx",
+        "size": 2998,
+        "modified": "2025-11-10T21:29:42.863Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "AccessibleComponents": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\ui\\AccessibleComponents.jsx",
+        "relative": "components\\ui\\AccessibleComponents.jsx",
+        "name": "AccessibleComponents.jsx",
+        "size": 7081,
+        "modified": "2025-11-13T05:51:07.830Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\AccessibleComponents.jsx",
+        "relative": "apps\\web\\src\\components\\ui\\AccessibleComponents.jsx",
+        "name": "AccessibleComponents.jsx",
+        "size": 7081,
+        "modified": "2025-11-13T05:51:07.830Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "EnterpriseComponents": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\ui\\EnterpriseComponents.jsx",
+        "relative": "components\\ui\\EnterpriseComponents.jsx",
+        "name": "EnterpriseComponents.jsx",
+        "size": 13978,
+        "modified": "2025-11-15T16:18:35.222Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\EnterpriseComponents.jsx",
+        "relative": "apps\\web\\src\\components\\ui\\EnterpriseComponents.jsx",
+        "name": "EnterpriseComponents.jsx",
+        "size": 13996,
+        "modified": "2025-11-18T22:57:02.210Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "InteractiveComponents": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\ui\\InteractiveComponents.jsx",
+        "relative": "components\\ui\\InteractiveComponents.jsx",
+        "name": "InteractiveComponents.jsx",
+        "size": 17976,
+        "modified": "2025-11-16T03:50:49.922Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\InteractiveComponents.jsx",
+        "relative": "apps\\web\\src\\components\\ui\\InteractiveComponents.jsx",
+        "name": "InteractiveComponents.jsx",
+        "size": 15381,
+        "modified": "2025-11-13T05:52:14.193Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "Tooltip": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\ui\\Tooltip.jsx",
+        "relative": "components\\ui\\Tooltip.jsx",
+        "name": "Tooltip.jsx",
+        "size": 8541,
+        "modified": "2025-11-15T16:18:35.419Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\Tooltip.jsx",
+        "relative": "apps\\web\\src\\components\\ui\\Tooltip.jsx",
+        "name": "Tooltip.jsx",
+        "size": 8436,
+        "modified": "2025-11-12T08:32:32.744Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "UniversalTableViewer": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\UniversalTableViewer.jsx",
+        "relative": "components\\UniversalTableViewer.jsx",
+        "name": "UniversalTableViewer.jsx",
+        "size": 12213,
+        "modified": "2025-11-10T14:22:19.026Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\UniversalTableViewer.jsx",
+        "relative": "app\\components\\UniversalTableViewer.jsx",
+        "name": "UniversalTableViewer.jsx",
+        "size": 11842,
+        "modified": "2025-11-17T19:53:41.194Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\UniversalTableViewer.jsx",
+        "relative": "apps\\web\\src\\components\\UniversalTableViewer.jsx",
+        "name": "UniversalTableViewer.jsx",
+        "size": 12213,
+        "modified": "2025-11-10T14:22:19.026Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "UserFlowGuide": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\UserFlow\\UserFlowGuide.jsx",
+        "relative": "components\\UserFlow\\UserFlowGuide.jsx",
+        "name": "UserFlowGuide.jsx",
+        "size": 12027,
+        "modified": "2025-11-10T21:35:58.682Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\UserFlow\\UserFlowGuide.jsx",
+        "relative": "app\\components\\UserFlow\\UserFlowGuide.jsx",
+        "name": "UserFlowGuide.jsx",
+        "size": 12027,
+        "modified": "2025-11-10T21:35:58.682Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\UserFlow\\UserFlowGuide.jsx",
+        "relative": "apps\\web\\src\\components\\UserFlow\\UserFlowGuide.jsx",
+        "name": "UserFlowGuide.jsx",
+        "size": 12027,
+        "modified": "2025-11-10T21:35:58.682Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "VendorOnboarding": [
+      {
+        "path": "D:\\Projects\\SBG\\components\\vendors\\VendorOnboarding.jsx",
+        "relative": "components\\vendors\\VendorOnboarding.jsx",
+        "name": "VendorOnboarding.jsx",
+        "size": 15788,
+        "modified": "2025-11-15T23:35:41.183Z",
+        "location": "components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\vendors\\VendorOnboarding.jsx",
+        "relative": "app\\components\\vendors\\VendorOnboarding.jsx",
+        "name": "VendorOnboarding.jsx",
+        "size": 15788,
+        "modified": "2025-11-15T23:35:41.183Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\vendors\\VendorOnboarding.jsx",
+        "relative": "apps\\web\\src\\components\\vendors\\VendorOnboarding.jsx",
+        "name": "VendorOnboarding.jsx",
+        "size": 15502,
+        "modified": "2025-11-13T19:14:08.396Z",
+        "location": "apps/web/src/components/"
+      }
+    ],
+    "FinancePlotlyCharts": [
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\finance\\charts\\FinancePlotlyCharts.tsx",
+        "relative": "app\\components\\finance\\charts\\FinancePlotlyCharts.tsx",
+        "name": "FinancePlotlyCharts.tsx",
+        "size": 9187,
+        "modified": "2025-11-18T17:33:39.299Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\finance\\FinancePlotlyCharts.tsx",
+        "relative": "app\\components\\finance\\FinancePlotlyCharts.tsx",
+        "name": "FinancePlotlyCharts.tsx",
+        "size": 8243,
+        "modified": "2025-11-18T18:24:46.773Z",
+        "location": "app/components/"
+      }
+    ],
+    "ModernSlideNavigator": [
+      {
+        "path": "D:\\Projects\\SBG\\app\\components\\Navigation\\ModernSlideNavigator.jsx",
+        "relative": "app\\components\\Navigation\\ModernSlideNavigator.jsx",
+        "name": "ModernSlideNavigator.jsx",
+        "size": 15730,
+        "modified": "2025-11-18T22:50:10.733Z",
+        "location": "app/components/"
+      },
+      {
+        "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Navigation\\ModernSlideNavigator.jsx",
+        "relative": "apps\\web\\src\\components\\Navigation\\ModernSlideNavigator.jsx",
+        "name": "ModernSlideNavigator.jsx",
+        "size": 15730,
+        "modified": "2025-11-18T22:50:10.733Z",
+        "location": "apps/web/src/components/"
+      }
+    ]
+  },
+  "recommendations": {
+    "keepInComponents": [
+      "AdvancedAssessmentManager",
+      "AdvancedFrameworkManager",
+      "AdvancedGRCDashboard",
+      "AIAgentsPanel",
+      "AIStatusPanel",
+      "AdvancedAnalyticsDashboard",
+      "AdvancedAnalyticsPanel",
+      "InteractiveAnimationToolkit",
+      "ArabicTextEngine",
+      "ProtectedRoute",
+      "AssessmentCards",
+      "PlotlyCharts",
+      "CollaborationIndicator",
+      "index",
+      "RealTimeEditor",
+      "RealtimeField",
+      "WorkflowNotificationPanel",
+      "CommandPalette",
+      "ActionButtons",
+      "BulkOperationsBar",
+      "DataTable",
+      "ErrorBoundary",
+      "ErrorFallback",
+      "ErrorHandler",
+      "LoadingSpinner",
+      "Navigation",
+      "PermissionBasedCard",
+      "PermissionPageTemplate",
+      "CulturalAdaptationProvider",
+      "QuickActionsToolbar",
+      "RealTimeMonitor",
+      "RoleDashboardCards",
+      "GlassSidebarEnhanced",
+      "DataGrid",
+      "EvidenceUpload",
+      "SubscriptionUsageExample",
+      "FeatureFlagPanel",
+      "ProcessGuideBanner",
+      "AboutUs",
+      "AdvancedStats",
+      "AITeamShowcase",
+      "AutoScroll",
+      "CompetitiveAdvantage",
+      "Contact",
+      "DashboardPreview",
+      "FAQ",
+      "FinalCTA",
+      "FloatingAIAgent",
+      "FloatingGlassCard",
+      "FloatingNav",
+      "Footer",
+      "GlassCard",
+      "Header",
+      "Hero",
+      "Interactive3DCards",
+      "KeyFeatures",
+      "LoginModal",
+      "ParallaxSection",
+      "Pricing",
+      "ProblemSolution",
+      "QuickAccess",
+      "QuickSectionNav",
+      "SaudiFrameworks",
+      "SmallIconSidebar",
+      "TargetSectors",
+      "Testimonials",
+      "ThemeToggle",
+      "TransformationStory",
+      "TrustBar",
+      "UnifiedLogo",
+      "UnifiedValueSection",
+      "Vision",
+      "AdvancedAppShell",
+      "AdvancedShell",
+      "AppLayout",
+      "EnhancedAppShell",
+      "EnterprisePageLayout",
+      "MainLayout",
+      "Sidebar",
+      "UtilityHeader",
+      "PerformanceMonitor",
+      "MultiTenancyGuide",
+      "Navigation_temp",
+      "NewItem",
+      "NotificationCenter",
+      "ExitIntentPopup",
+      "ThemeProvider",
+      "ComplianceCalendarWidget",
+      "ImpactAssessmentModal",
+      "RegulatoryDashboardWidget",
+      "RegulatoryFeedWidget",
+      "RegulatoryIntelligenceCenter",
+      "AdvancedFeatureExamples",
+      "SubscriptionManager",
+      "SimpleTest",
+      "AccessibleComponents",
+      "EnterpriseComponents",
+      "InteractiveComponents",
+      "Tooltip",
+      "UniversalTableViewer",
+      "UserFlowGuide",
+      "VendorOnboarding"
+    ],
+    "moveToComponents": [
+      {
+        "name": "FinancePlotlyCharts",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\finance\\charts\\FinancePlotlyCharts.tsx",
+          "relative": "app\\components\\finance\\charts\\FinancePlotlyCharts.tsx",
+          "name": "FinancePlotlyCharts.tsx",
+          "size": 9187,
+          "modified": "2025-11-18T17:33:39.299Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ModernSlideNavigator",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\Navigation\\ModernSlideNavigator.jsx",
+          "relative": "app\\components\\Navigation\\ModernSlideNavigator.jsx",
+          "name": "ModernSlideNavigator.jsx",
+          "size": 15730,
+          "modified": "2025-11-18T22:50:10.733Z",
+          "location": "app/components/"
+        }
+      }
+    ],
+    "delete": [
+      {
+        "name": "AdvancedAssessmentManager",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\AdvancedAssessmentManager.jsx",
+          "relative": "app\\components\\AdvancedAssessmentManager.jsx",
+          "name": "AdvancedAssessmentManager.jsx",
+          "size": 37507,
+          "modified": "2025-11-17T07:13:03.177Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AdvancedAssessmentManager",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\AdvancedAssessmentManager.jsx",
+          "relative": "apps\\web\\src\\components\\AdvancedAssessmentManager.jsx",
+          "name": "AdvancedAssessmentManager.jsx",
+          "size": 37591,
+          "modified": "2025-11-13T06:01:31.296Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AdvancedFrameworkManager",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\AdvancedFrameworkManager.jsx",
+          "relative": "app\\components\\AdvancedFrameworkManager.jsx",
+          "name": "AdvancedFrameworkManager.jsx",
+          "size": 22349,
+          "modified": "2025-11-13T10:07:48.001Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AdvancedFrameworkManager",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\AdvancedFrameworkManager.jsx",
+          "relative": "apps\\web\\src\\components\\AdvancedFrameworkManager.jsx",
+          "name": "AdvancedFrameworkManager.jsx",
+          "size": 22349,
+          "modified": "2025-11-13T10:07:48.001Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AdvancedGRCDashboard",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\AdvancedGRCDashboard.jsx",
+          "relative": "app\\components\\AdvancedGRCDashboard.jsx",
+          "name": "AdvancedGRCDashboard.jsx",
+          "size": 26113,
+          "modified": "2025-11-17T19:53:40.250Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AdvancedGRCDashboard",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\AdvancedGRCDashboard.jsx",
+          "relative": "apps\\web\\src\\components\\AdvancedGRCDashboard.jsx",
+          "name": "AdvancedGRCDashboard.jsx",
+          "size": 26364,
+          "modified": "2025-11-15T05:56:53.238Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AIAgentsPanel",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\agents\\AIAgentsPanel.jsx",
+          "relative": "app\\components\\agents\\AIAgentsPanel.jsx",
+          "name": "AIAgentsPanel.jsx",
+          "size": 2597,
+          "modified": "2025-11-11T19:02:46.792Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AIAgentsPanel",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\agents\\AIAgentsPanel.jsx",
+          "relative": "apps\\web\\src\\components\\agents\\AIAgentsPanel.jsx",
+          "name": "AIAgentsPanel.jsx",
+          "size": 2597,
+          "modified": "2025-11-11T19:02:46.792Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AIStatusPanel",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\ai\\AIStatusPanel.jsx",
+          "relative": "app\\components\\ai\\AIStatusPanel.jsx",
+          "name": "AIStatusPanel.jsx",
+          "size": 6702,
+          "modified": "2025-11-12T07:51:05.538Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AIStatusPanel",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ai\\AIStatusPanel.jsx",
+          "relative": "apps\\web\\src\\components\\ai\\AIStatusPanel.jsx",
+          "name": "AIStatusPanel.jsx",
+          "size": 6702,
+          "modified": "2025-11-12T07:51:05.538Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AdvancedAnalyticsDashboard",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\analytics\\AdvancedAnalyticsDashboard.jsx",
+          "relative": "apps\\web\\src\\components\\analytics\\AdvancedAnalyticsDashboard.jsx",
+          "name": "AdvancedAnalyticsDashboard.jsx",
+          "size": 23518,
+          "modified": "2025-11-13T18:08:42.336Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AdvancedAnalyticsPanel",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\dashboard\\AdvancedAnalyticsPanel.jsx",
+          "relative": "app\\components\\dashboard\\AdvancedAnalyticsPanel.jsx",
+          "name": "AdvancedAnalyticsPanel.jsx",
+          "size": 1654,
+          "modified": "2025-11-13T06:46:17.872Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AdvancedAnalyticsPanel",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\analytics\\AdvancedAnalyticsPanel.jsx",
+          "relative": "apps\\web\\src\\components\\analytics\\AdvancedAnalyticsPanel.jsx",
+          "name": "AdvancedAnalyticsPanel.jsx",
+          "size": 6833,
+          "modified": "2025-11-13T05:33:09.016Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "InteractiveAnimationToolkit",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Animation\\InteractiveAnimationToolkit.jsx",
+          "relative": "apps\\web\\src\\components\\Animation\\InteractiveAnimationToolkit.jsx",
+          "name": "InteractiveAnimationToolkit.jsx",
+          "size": 14778,
+          "modified": "2025-11-11T08:32:23.303Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ArabicTextEngine",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\Arabic\\ArabicTextEngine.jsx",
+          "relative": "app\\components\\Arabic\\ArabicTextEngine.jsx",
+          "name": "ArabicTextEngine.jsx",
+          "size": 6204,
+          "modified": "2025-11-10T21:24:44.552Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ArabicTextEngine",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Arabic\\ArabicTextEngine.jsx",
+          "relative": "apps\\web\\src\\components\\Arabic\\ArabicTextEngine.jsx",
+          "name": "ArabicTextEngine.jsx",
+          "size": 6204,
+          "modified": "2025-11-10T21:24:44.552Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ProtectedRoute",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\auth\\ProtectedRoute.jsx",
+          "relative": "app\\components\\auth\\ProtectedRoute.jsx",
+          "name": "ProtectedRoute.jsx",
+          "size": 351,
+          "modified": "2025-11-18T13:40:30.729Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ProtectedRoute",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\auth\\ProtectedRoute.jsx",
+          "relative": "apps\\web\\src\\components\\auth\\ProtectedRoute.jsx",
+          "name": "ProtectedRoute.jsx",
+          "size": 2415,
+          "modified": "2025-11-15T07:17:20.663Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AssessmentCards",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\cards\\AssessmentCards.jsx",
+          "relative": "app\\components\\cards\\AssessmentCards.jsx",
+          "name": "AssessmentCards.jsx",
+          "size": 18961,
+          "modified": "2025-11-14T14:49:15.180Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AssessmentCards",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\cards\\AssessmentCards.jsx",
+          "relative": "apps\\web\\src\\components\\cards\\AssessmentCards.jsx",
+          "name": "AssessmentCards.jsx",
+          "size": 18961,
+          "modified": "2025-11-14T14:49:15.180Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "PlotlyCharts",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\charts\\PlotlyCharts.jsx",
+          "relative": "app\\components\\charts\\PlotlyCharts.jsx",
+          "name": "PlotlyCharts.jsx",
+          "size": 11410,
+          "modified": "2025-11-17T19:54:14.794Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "PlotlyCharts",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\charts\\PlotlyCharts.jsx",
+          "relative": "apps\\web\\src\\components\\charts\\PlotlyCharts.jsx",
+          "name": "PlotlyCharts.jsx",
+          "size": 11178,
+          "modified": "2025-11-13T06:11:05.354Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "CollaborationIndicator",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\collaboration\\CollaborationIndicator.jsx",
+          "relative": "app\\components\\collaboration\\CollaborationIndicator.jsx",
+          "name": "CollaborationIndicator.jsx",
+          "size": 2060,
+          "modified": "2025-11-17T06:44:35.874Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "CollaborationIndicator",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\collaboration\\CollaborationIndicator.jsx",
+          "relative": "apps\\web\\src\\components\\collaboration\\CollaborationIndicator.jsx",
+          "name": "CollaborationIndicator.jsx",
+          "size": 2060,
+          "modified": "2025-11-11T09:57:06.078Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "index",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\collaboration\\index.js",
+          "relative": "app\\components\\collaboration\\index.js",
+          "name": "index.js",
+          "size": 322,
+          "modified": "2025-11-11T09:58:35.857Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "index",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\collaboration\\index.js",
+          "relative": "apps\\web\\src\\components\\collaboration\\index.js",
+          "name": "index.js",
+          "size": 322,
+          "modified": "2025-11-11T09:58:35.857Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "RealTimeEditor",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\collaboration\\RealTimeEditor.jsx",
+          "relative": "app\\components\\collaboration\\RealTimeEditor.jsx",
+          "name": "RealTimeEditor.jsx",
+          "size": 3766,
+          "modified": "2025-11-17T06:44:30.533Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "RealTimeEditor",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\collaboration\\RealTimeEditor.jsx",
+          "relative": "apps\\web\\src\\components\\collaboration\\RealTimeEditor.jsx",
+          "name": "RealTimeEditor.jsx",
+          "size": 3766,
+          "modified": "2025-11-11T09:58:35.404Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "RealtimeField",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\collaboration\\RealtimeField.jsx",
+          "relative": "app\\components\\collaboration\\RealtimeField.jsx",
+          "name": "RealtimeField.jsx",
+          "size": 2590,
+          "modified": "2025-11-17T19:52:57.513Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "RealtimeField",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\collaboration\\RealtimeField.jsx",
+          "relative": "apps\\web\\src\\components\\collaboration\\RealtimeField.jsx",
+          "name": "RealtimeField.jsx",
+          "size": 1930,
+          "modified": "2025-11-11T10:25:56.303Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "WorkflowNotificationPanel",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\collaboration\\WorkflowNotificationPanel.jsx",
+          "relative": "app\\components\\collaboration\\WorkflowNotificationPanel.jsx",
+          "name": "WorkflowNotificationPanel.jsx",
+          "size": 5231,
+          "modified": "2025-11-17T06:44:43.606Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "WorkflowNotificationPanel",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\collaboration\\WorkflowNotificationPanel.jsx",
+          "relative": "apps\\web\\src\\components\\collaboration\\WorkflowNotificationPanel.jsx",
+          "name": "WorkflowNotificationPanel.jsx",
+          "size": 5231,
+          "modified": "2025-11-11T09:57:31.940Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "CommandPalette",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\CommandPalette.jsx",
+          "relative": "app\\components\\common\\CommandPalette.jsx",
+          "name": "CommandPalette.jsx",
+          "size": 13089,
+          "modified": "2025-11-11T08:28:29.231Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "CommandPalette",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\CommandPalette.jsx",
+          "relative": "apps\\web\\src\\components\\common\\CommandPalette.jsx",
+          "name": "CommandPalette.jsx",
+          "size": 13089,
+          "modified": "2025-11-11T08:28:29.231Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ActionButtons",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\ActionButtons.jsx",
+          "relative": "app\\components\\common\\ActionButtons.jsx",
+          "name": "ActionButtons.jsx",
+          "size": 9516,
+          "modified": "2025-11-12T13:31:23.494Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ActionButtons",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\ActionButtons.jsx",
+          "relative": "apps\\web\\src\\components\\common\\ActionButtons.jsx",
+          "name": "ActionButtons.jsx",
+          "size": 9516,
+          "modified": "2025-11-12T13:31:23.494Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "BulkOperationsBar",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\BulkOperationsBar.jsx",
+          "relative": "app\\components\\common\\BulkOperationsBar.jsx",
+          "name": "BulkOperationsBar.jsx",
+          "size": 5738,
+          "modified": "2025-11-12T11:46:57.181Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "BulkOperationsBar",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\BulkOperationsBar.jsx",
+          "relative": "apps\\web\\src\\components\\common\\BulkOperationsBar.jsx",
+          "name": "BulkOperationsBar.jsx",
+          "size": 5738,
+          "modified": "2025-11-12T11:46:57.181Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "DataTable",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\DataTable.jsx",
+          "relative": "app\\components\\common\\DataTable.jsx",
+          "name": "DataTable.jsx",
+          "size": 12908,
+          "modified": "2025-11-17T19:52:57.868Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "DataTable",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\DataTable.jsx",
+          "relative": "apps\\web\\src\\components\\common\\DataTable.jsx",
+          "name": "DataTable.jsx",
+          "size": 13011,
+          "modified": "2025-11-13T18:31:20.957Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ErrorBoundary",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\ErrorBoundary.jsx",
+          "relative": "app\\components\\common\\ErrorBoundary.jsx",
+          "name": "ErrorBoundary.jsx",
+          "size": 6539,
+          "modified": "2025-11-12T07:13:00.567Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ErrorBoundary",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\ErrorBoundary.jsx",
+          "relative": "apps\\web\\src\\components\\common\\ErrorBoundary.jsx",
+          "name": "ErrorBoundary.jsx",
+          "size": 6539,
+          "modified": "2025-11-12T07:13:00.567Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ErrorFallback",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\ErrorFallback.jsx",
+          "relative": "app\\components\\common\\ErrorFallback.jsx",
+          "name": "ErrorFallback.jsx",
+          "size": 4100,
+          "modified": "2025-11-09T23:41:15.027Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ErrorFallback",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\ErrorFallback.jsx",
+          "relative": "apps\\web\\src\\components\\common\\ErrorFallback.jsx",
+          "name": "ErrorFallback.jsx",
+          "size": 4100,
+          "modified": "2025-11-09T23:41:15.027Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ErrorHandler",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\ErrorHandler.jsx",
+          "relative": "app\\components\\common\\ErrorHandler.jsx",
+          "name": "ErrorHandler.jsx",
+          "size": 7888,
+          "modified": "2025-11-18T08:56:30.006Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ErrorHandler",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\ErrorHandler.jsx",
+          "relative": "apps\\web\\src\\components\\common\\ErrorHandler.jsx",
+          "name": "ErrorHandler.jsx",
+          "size": 7861,
+          "modified": "2025-11-12T21:35:39.581Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "LoadingSpinner",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\LoadingSpinner.jsx",
+          "relative": "app\\components\\common\\LoadingSpinner.jsx",
+          "name": "LoadingSpinner.jsx",
+          "size": 576,
+          "modified": "2025-11-09T19:14:33.233Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "LoadingSpinner",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\LoadingSpinner.jsx",
+          "relative": "apps\\web\\src\\components\\common\\LoadingSpinner.jsx",
+          "name": "LoadingSpinner.jsx",
+          "size": 576,
+          "modified": "2025-11-09T19:14:33.233Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "Navigation",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\Navigation.jsx",
+          "relative": "app\\components\\common\\Navigation.jsx",
+          "name": "Navigation.jsx",
+          "size": 3040,
+          "modified": "2025-11-17T19:52:59.090Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Navigation",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\Navigation.jsx",
+          "relative": "apps\\web\\src\\components\\common\\Navigation.jsx",
+          "name": "Navigation.jsx",
+          "size": 3059,
+          "modified": "2025-11-12T07:28:14.319Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "PermissionBasedCard",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\PermissionBasedCard.jsx",
+          "relative": "app\\components\\common\\PermissionBasedCard.jsx",
+          "name": "PermissionBasedCard.jsx",
+          "size": 10779,
+          "modified": "2025-11-17T19:52:59.460Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "PermissionBasedCard",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\PermissionBasedCard.jsx",
+          "relative": "apps\\web\\src\\components\\common\\PermissionBasedCard.jsx",
+          "name": "PermissionBasedCard.jsx",
+          "size": 11084,
+          "modified": "2025-11-13T06:49:32.834Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "PermissionPageTemplate",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\common\\PermissionPageTemplate.jsx",
+          "relative": "app\\components\\common\\PermissionPageTemplate.jsx",
+          "name": "PermissionPageTemplate.jsx",
+          "size": 11523,
+          "modified": "2025-11-13T05:06:10.647Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "PermissionPageTemplate",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\common\\PermissionPageTemplate.jsx",
+          "relative": "apps\\web\\src\\components\\common\\PermissionPageTemplate.jsx",
+          "name": "PermissionPageTemplate.jsx",
+          "size": 11523,
+          "modified": "2025-11-13T05:06:10.647Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "CulturalAdaptationProvider",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\Cultural\\CulturalAdaptationProvider.jsx",
+          "relative": "app\\components\\Cultural\\CulturalAdaptationProvider.jsx",
+          "name": "CulturalAdaptationProvider.jsx",
+          "size": 11969,
+          "modified": "2025-11-10T21:29:01.288Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "CulturalAdaptationProvider",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Cultural\\CulturalAdaptationProvider.jsx",
+          "relative": "apps\\web\\src\\components\\Cultural\\CulturalAdaptationProvider.jsx",
+          "name": "CulturalAdaptationProvider.jsx",
+          "size": 11969,
+          "modified": "2025-11-10T21:29:01.288Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "QuickActionsToolbar",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\dashboard\\QuickActionsToolbar.jsx",
+          "relative": "app\\components\\dashboard\\QuickActionsToolbar.jsx",
+          "name": "QuickActionsToolbar.jsx",
+          "size": 1386,
+          "modified": "2025-11-13T06:45:34.641Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "QuickActionsToolbar",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\dashboard\\QuickActionsToolbar.jsx",
+          "relative": "apps\\web\\src\\components\\dashboard\\QuickActionsToolbar.jsx",
+          "name": "QuickActionsToolbar.jsx",
+          "size": 1386,
+          "modified": "2025-11-13T06:45:34.641Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "RealTimeMonitor",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\dashboard\\RealTimeMonitor.jsx",
+          "relative": "app\\components\\dashboard\\RealTimeMonitor.jsx",
+          "name": "RealTimeMonitor.jsx",
+          "size": 1591,
+          "modified": "2025-11-13T06:46:47.029Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "RealTimeMonitor",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\dashboard\\RealTimeMonitor.jsx",
+          "relative": "apps\\web\\src\\components\\dashboard\\RealTimeMonitor.jsx",
+          "name": "RealTimeMonitor.jsx",
+          "size": 1591,
+          "modified": "2025-11-13T06:46:47.029Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "RoleDashboardCards",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\dashboard\\RoleDashboardCards.jsx",
+          "relative": "app\\components\\dashboard\\RoleDashboardCards.jsx",
+          "name": "RoleDashboardCards.jsx",
+          "size": 2065,
+          "modified": "2025-11-17T19:53:00.074Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "RoleDashboardCards",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\dashboard\\RoleDashboardCards.jsx",
+          "relative": "apps\\web\\src\\components\\dashboard\\RoleDashboardCards.jsx",
+          "name": "RoleDashboardCards.jsx",
+          "size": 2093,
+          "modified": "2025-11-13T06:55:05.658Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "GlassSidebarEnhanced",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\enhanced-sidebar\\GlassSidebarEnhanced.jsx",
+          "relative": "app\\components\\enhanced-sidebar\\GlassSidebarEnhanced.jsx",
+          "name": "GlassSidebarEnhanced.jsx",
+          "size": 5928,
+          "modified": "2025-11-11T20:53:55.597Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "GlassSidebarEnhanced",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\enhanced-sidebar\\GlassSidebarEnhanced.jsx",
+          "relative": "apps\\web\\src\\components\\enhanced-sidebar\\GlassSidebarEnhanced.jsx",
+          "name": "GlassSidebarEnhanced.jsx",
+          "size": 5928,
+          "modified": "2025-11-11T20:53:55.597Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "DataGrid",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\DataGrid.jsx",
+          "relative": "apps\\web\\src\\components\\ui\\DataGrid.jsx",
+          "name": "DataGrid.jsx",
+          "size": 13426,
+          "modified": "2025-11-12T06:55:59.891Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "EvidenceUpload",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\evidence\\EvidenceUpload.jsx",
+          "relative": "app\\components\\evidence\\EvidenceUpload.jsx",
+          "name": "EvidenceUpload.jsx",
+          "size": 13222,
+          "modified": "2025-11-17T09:14:34.615Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "EvidenceUpload",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\evidence\\EvidenceUpload.jsx",
+          "relative": "apps\\web\\src\\components\\evidence\\EvidenceUpload.jsx",
+          "name": "EvidenceUpload.jsx",
+          "size": 13226,
+          "modified": "2025-11-14T20:45:39.275Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "SubscriptionUsageExample",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Examples\\SubscriptionUsageExample.jsx",
+          "relative": "apps\\web\\src\\components\\Examples\\SubscriptionUsageExample.jsx",
+          "name": "SubscriptionUsageExample.jsx",
+          "size": 7372,
+          "modified": "2025-11-10T21:41:15.488Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "FeatureFlagPanel",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\FeatureFlagPanel.jsx",
+          "relative": "app\\components\\FeatureFlagPanel.jsx",
+          "name": "FeatureFlagPanel.jsx",
+          "size": 4709,
+          "modified": "2025-11-13T21:07:12.934Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "FeatureFlagPanel",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\FeatureFlagPanel.jsx",
+          "relative": "apps\\web\\src\\components\\FeatureFlagPanel.jsx",
+          "name": "FeatureFlagPanel.jsx",
+          "size": 4709,
+          "modified": "2025-11-13T21:07:12.934Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ProcessGuideBanner",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\guidance\\ProcessGuideBanner.jsx",
+          "relative": "app\\components\\guidance\\ProcessGuideBanner.jsx",
+          "name": "ProcessGuideBanner.jsx",
+          "size": 3735,
+          "modified": "2025-11-17T19:53:00.267Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ProcessGuideBanner",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\guidance\\ProcessGuideBanner.jsx",
+          "relative": "apps\\web\\src\\components\\guidance\\ProcessGuideBanner.jsx",
+          "name": "ProcessGuideBanner.jsx",
+          "size": 3738,
+          "modified": "2025-11-15T07:34:31.139Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AboutUs",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\AboutUs.jsx",
+          "relative": "app\\components\\landing\\AboutUs.jsx",
+          "name": "AboutUs.jsx",
+          "size": 6602,
+          "modified": "2025-11-14T00:34:41.946Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AdvancedStats",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\AdvancedStats.jsx",
+          "relative": "app\\components\\landing\\AdvancedStats.jsx",
+          "name": "AdvancedStats.jsx",
+          "size": 9218,
+          "modified": "2025-11-17T19:53:00.588Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AITeamShowcase",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\AITeamShowcase.jsx",
+          "relative": "app\\components\\landing\\AITeamShowcase.jsx",
+          "name": "AITeamShowcase.jsx",
+          "size": 9021,
+          "modified": "2025-11-17T19:53:01.139Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AutoScroll",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\AutoScroll.jsx",
+          "relative": "app\\components\\landing\\AutoScroll.jsx",
+          "name": "AutoScroll.jsx",
+          "size": 2978,
+          "modified": "2025-11-14T06:09:41.458Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "CompetitiveAdvantage",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\CompetitiveAdvantage.jsx",
+          "relative": "app\\components\\landing\\CompetitiveAdvantage.jsx",
+          "name": "CompetitiveAdvantage.jsx",
+          "size": 9695,
+          "modified": "2025-11-17T19:53:01.624Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Contact",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\Contact.jsx",
+          "relative": "app\\components\\landing\\Contact.jsx",
+          "name": "Contact.jsx",
+          "size": 9367,
+          "modified": "2025-11-17T19:53:02.149Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "DashboardPreview",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\DashboardPreview.jsx",
+          "relative": "app\\components\\landing\\DashboardPreview.jsx",
+          "name": "DashboardPreview.jsx",
+          "size": 18751,
+          "modified": "2025-11-17T19:53:40.434Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "FAQ",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\FAQ.jsx",
+          "relative": "app\\components\\landing\\FAQ.jsx",
+          "name": "FAQ.jsx",
+          "size": 15541,
+          "modified": "2025-11-14T06:18:50.682Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "FinalCTA",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\FinalCTA.jsx",
+          "relative": "app\\components\\landing\\FinalCTA.jsx",
+          "name": "FinalCTA.jsx",
+          "size": 5729,
+          "modified": "2025-11-17T19:53:03.009Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "FloatingAIAgent",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\FloatingAIAgent.jsx",
+          "relative": "app\\components\\landing\\FloatingAIAgent.jsx",
+          "name": "FloatingAIAgent.jsx",
+          "size": 53821,
+          "modified": "2025-11-18T11:10:36.200Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "FloatingGlassCard",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\FloatingGlassCard.jsx",
+          "relative": "app\\components\\landing\\FloatingGlassCard.jsx",
+          "name": "FloatingGlassCard.jsx",
+          "size": 9407,
+          "modified": "2025-11-14T06:22:08.814Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "FloatingNav",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\FloatingNav.jsx",
+          "relative": "app\\components\\landing\\FloatingNav.jsx",
+          "name": "FloatingNav.jsx",
+          "size": 6637,
+          "modified": "2025-11-17T19:53:03.516Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Footer",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\Footer.jsx",
+          "relative": "app\\components\\landing\\Footer.jsx",
+          "name": "Footer.jsx",
+          "size": 5486,
+          "modified": "2025-11-17T19:53:03.702Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Footer",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\Footer.jsx",
+          "relative": "apps\\web\\src\\components\\layout\\Footer.jsx",
+          "name": "Footer.jsx",
+          "size": 917,
+          "modified": "2025-11-15T06:59:12.302Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "GlassCard",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\GlassCard.jsx",
+          "relative": "app\\components\\landing\\GlassCard.jsx",
+          "name": "GlassCard.jsx",
+          "size": 3318,
+          "modified": "2025-11-02T13:28:07.538Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Header",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\Header.jsx",
+          "relative": "app\\components\\landing\\Header.jsx",
+          "name": "Header.jsx",
+          "size": 20815,
+          "modified": "2025-11-17T19:52:50.274Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Header",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\Header.jsx",
+          "relative": "apps\\web\\src\\components\\layout\\Header.jsx",
+          "name": "Header.jsx",
+          "size": 11370,
+          "modified": "2025-11-15T07:31:07.913Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "Hero",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\Hero.jsx",
+          "relative": "app\\components\\landing\\Hero.jsx",
+          "name": "Hero.jsx",
+          "size": 5863,
+          "modified": "2025-11-17T19:53:04.009Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Interactive3DCards",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\Interactive3DCards.jsx",
+          "relative": "app\\components\\landing\\Interactive3DCards.jsx",
+          "name": "Interactive3DCards.jsx",
+          "size": 8213,
+          "modified": "2025-11-10T05:27:34.153Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "KeyFeatures",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\KeyFeatures.jsx",
+          "relative": "app\\components\\landing\\KeyFeatures.jsx",
+          "name": "KeyFeatures.jsx",
+          "size": 8722,
+          "modified": "2025-11-02T18:10:55.427Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "LoginModal",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\LoginModal.jsx",
+          "relative": "app\\components\\landing\\LoginModal.jsx",
+          "name": "LoginModal.jsx",
+          "size": 12923,
+          "modified": "2025-11-15T20:58:16.224Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ParallaxSection",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\ParallaxSection.jsx",
+          "relative": "app\\components\\landing\\ParallaxSection.jsx",
+          "name": "ParallaxSection.jsx",
+          "size": 5033,
+          "modified": "2025-11-17T19:53:04.650Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Pricing",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\Pricing.jsx",
+          "relative": "app\\components\\landing\\Pricing.jsx",
+          "name": "Pricing.jsx",
+          "size": 5899,
+          "modified": "2025-11-17T19:53:04.851Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ProblemSolution",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\ProblemSolution.jsx",
+          "relative": "app\\components\\landing\\ProblemSolution.jsx",
+          "name": "ProblemSolution.jsx",
+          "size": 9041,
+          "modified": "2025-11-17T19:53:05.165Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "QuickAccess",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\QuickAccess.jsx",
+          "relative": "app\\components\\landing\\QuickAccess.jsx",
+          "name": "QuickAccess.jsx",
+          "size": 6007,
+          "modified": "2025-11-17T19:53:05.302Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "QuickSectionNav",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\QuickSectionNav.jsx",
+          "relative": "app\\components\\landing\\QuickSectionNav.jsx",
+          "name": "QuickSectionNav.jsx",
+          "size": 7977,
+          "modified": "2025-11-17T19:53:05.450Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "SaudiFrameworks",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\SaudiFrameworks.jsx",
+          "relative": "app\\components\\landing\\SaudiFrameworks.jsx",
+          "name": "SaudiFrameworks.jsx",
+          "size": 8821,
+          "modified": "2025-11-17T19:53:05.604Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "SmallIconSidebar",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\SmallIconSidebar.jsx",
+          "relative": "app\\components\\landing\\SmallIconSidebar.jsx",
+          "name": "SmallIconSidebar.jsx",
+          "size": 6728,
+          "modified": "2025-11-14T15:15:11.550Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "TargetSectors",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\TargetSectors.jsx",
+          "relative": "app\\components\\landing\\TargetSectors.jsx",
+          "name": "TargetSectors.jsx",
+          "size": 7359,
+          "modified": "2025-11-02T15:49:13.017Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Testimonials",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\Testimonials.jsx",
+          "relative": "app\\components\\landing\\Testimonials.jsx",
+          "name": "Testimonials.jsx",
+          "size": 12042,
+          "modified": "2025-11-17T19:53:05.785Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ThemeToggle",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\ThemeToggle.jsx",
+          "relative": "app\\components\\landing\\ThemeToggle.jsx",
+          "name": "ThemeToggle.jsx",
+          "size": 1625,
+          "modified": "2025-11-14T06:52:22.932Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ThemeToggle",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\theme\\ThemeToggle.jsx",
+          "relative": "apps\\web\\src\\components\\theme\\ThemeToggle.jsx",
+          "name": "ThemeToggle.jsx",
+          "size": 3377,
+          "modified": "2025-11-13T20:03:14.152Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "TransformationStory",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\TransformationStory.jsx",
+          "relative": "app\\components\\landing\\TransformationStory.jsx",
+          "name": "TransformationStory.jsx",
+          "size": 41041,
+          "modified": "2025-11-17T19:53:05.976Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "TrustBar",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\TrustBar.jsx",
+          "relative": "app\\components\\landing\\TrustBar.jsx",
+          "name": "TrustBar.jsx",
+          "size": 2893,
+          "modified": "2025-11-10T05:27:09.465Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "UnifiedLogo",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\UnifiedLogo.jsx",
+          "relative": "app\\components\\landing\\UnifiedLogo.jsx",
+          "name": "UnifiedLogo.jsx",
+          "size": 3910,
+          "modified": "2025-11-02T12:28:25.324Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "UnifiedValueSection",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\UnifiedValueSection.jsx",
+          "relative": "app\\components\\landing\\UnifiedValueSection.jsx",
+          "name": "UnifiedValueSection.jsx",
+          "size": 6079,
+          "modified": "2025-11-17T19:53:06.119Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Vision",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\landing\\Vision.jsx",
+          "relative": "app\\components\\landing\\Vision.jsx",
+          "name": "Vision.jsx",
+          "size": 9115,
+          "modified": "2025-11-02T12:28:25.324Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AdvancedAppShell",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\layout\\AdvancedAppShell.jsx",
+          "relative": "app\\components\\layout\\AdvancedAppShell.jsx",
+          "name": "AdvancedAppShell.jsx",
+          "size": 19841,
+          "modified": "2025-11-18T22:50:10.732Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AdvancedAppShell",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\AdvancedAppShell.jsx",
+          "relative": "apps\\web\\src\\components\\layout\\AdvancedAppShell.jsx",
+          "name": "AdvancedAppShell.jsx",
+          "size": 20061,
+          "modified": "2025-11-18T22:57:02.198Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AdvancedShell",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\layout\\AdvancedShell.jsx",
+          "relative": "app\\components\\layout\\AdvancedShell.jsx",
+          "name": "AdvancedShell.jsx",
+          "size": 19822,
+          "modified": "2025-11-15T16:20:08.719Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AdvancedShell",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\AdvancedShell.jsx",
+          "relative": "apps\\web\\src\\components\\layout\\AdvancedShell.jsx",
+          "name": "AdvancedShell.jsx",
+          "size": 19831,
+          "modified": "2025-11-18T22:57:02.202Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AppLayout",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\layout\\AppLayout.jsx",
+          "relative": "app\\components\\layout\\AppLayout.jsx",
+          "name": "AppLayout.jsx",
+          "size": 3137,
+          "modified": "2025-11-17T19:53:52.132Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "AppLayout",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\AppLayout.jsx",
+          "relative": "apps\\web\\src\\components\\layout\\AppLayout.jsx",
+          "name": "AppLayout.jsx",
+          "size": 1910,
+          "modified": "2025-11-15T06:26:28.516Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "EnhancedAppShell",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\layout\\EnhancedAppShell.jsx",
+          "relative": "app\\components\\layout\\EnhancedAppShell.jsx",
+          "name": "EnhancedAppShell.jsx",
+          "size": 22163,
+          "modified": "2025-11-18T22:50:10.731Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "EnhancedAppShell",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\EnhancedAppShell.jsx",
+          "relative": "apps\\web\\src\\components\\layout\\EnhancedAppShell.jsx",
+          "name": "EnhancedAppShell.jsx",
+          "size": 20945,
+          "modified": "2025-11-18T22:50:10.729Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "EnterprisePageLayout",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\layout\\EnterprisePageLayout.jsx",
+          "relative": "app\\components\\layout\\EnterprisePageLayout.jsx",
+          "name": "EnterprisePageLayout.jsx",
+          "size": 6011,
+          "modified": "2025-11-15T16:37:46.377Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "EnterprisePageLayout",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\EnterprisePageLayout.jsx",
+          "relative": "apps\\web\\src\\components\\layout\\EnterprisePageLayout.jsx",
+          "name": "EnterprisePageLayout.jsx",
+          "size": 5987,
+          "modified": "2025-11-18T22:57:02.204Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "MainLayout",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\layout\\MainLayout.jsx",
+          "relative": "app\\components\\layout\\MainLayout.jsx",
+          "name": "MainLayout.jsx",
+          "size": 10859,
+          "modified": "2025-11-15T16:18:33.843Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "MainLayout",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\MainLayout.jsx",
+          "relative": "apps\\web\\src\\components\\layout\\MainLayout.jsx",
+          "name": "MainLayout.jsx",
+          "size": 10967,
+          "modified": "2025-11-15T04:59:11.673Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "Sidebar",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\layout\\Sidebar.jsx",
+          "relative": "app\\components\\layout\\Sidebar.jsx",
+          "name": "Sidebar.jsx",
+          "size": 49908,
+          "modified": "2025-11-18T22:50:10.731Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "Sidebar",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\Sidebar.jsx",
+          "relative": "apps\\web\\src\\components\\layout\\Sidebar.jsx",
+          "name": "Sidebar.jsx",
+          "size": 53418,
+          "modified": "2025-11-18T22:50:10.727Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "UtilityHeader",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\layout\\UtilityHeader.jsx",
+          "relative": "app\\components\\layout\\UtilityHeader.jsx",
+          "name": "UtilityHeader.jsx",
+          "size": 1743,
+          "modified": "2025-11-12T20:19:51.057Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "UtilityHeader",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\layout\\UtilityHeader.jsx",
+          "relative": "apps\\web\\src\\components\\layout\\UtilityHeader.jsx",
+          "name": "UtilityHeader.jsx",
+          "size": 1743,
+          "modified": "2025-11-12T20:19:51.057Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "PerformanceMonitor",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\monitoring\\PerformanceMonitor.jsx",
+          "relative": "apps\\web\\src\\components\\monitoring\\PerformanceMonitor.jsx",
+          "name": "PerformanceMonitor.jsx",
+          "size": 15712,
+          "modified": "2025-11-13T08:01:21.089Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "MultiTenancyGuide",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\MultiTenancy\\MultiTenancyGuide.jsx",
+          "relative": "apps\\web\\src\\components\\MultiTenancy\\MultiTenancyGuide.jsx",
+          "name": "MultiTenancyGuide.jsx",
+          "size": 18522,
+          "modified": "2025-11-10T21:41:32.837Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "Navigation_temp",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Navigation_temp.jsx",
+          "relative": "apps\\web\\src\\components\\Navigation_temp.jsx",
+          "name": "Navigation_temp.jsx",
+          "size": 492,
+          "modified": "2025-11-11T19:05:18.039Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "NewItem",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\NewItem.jsx",
+          "relative": "apps\\web\\src\\components\\NewItem.jsx",
+          "name": "NewItem.jsx",
+          "size": 757,
+          "modified": "2025-11-12T23:38:29.371Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "NotificationCenter",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\notifications\\NotificationCenter.jsx",
+          "relative": "app\\components\\notifications\\NotificationCenter.jsx",
+          "name": "NotificationCenter.jsx",
+          "size": 12248,
+          "modified": "2025-11-17T09:51:43.194Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "NotificationCenter",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\notifications\\NotificationCenter.jsx",
+          "relative": "apps\\web\\src\\components\\notifications\\NotificationCenter.jsx",
+          "name": "NotificationCenter.jsx",
+          "size": 16009,
+          "modified": "2025-11-11T15:30:52.076Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ExitIntentPopup",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\popups\\ExitIntentPopup.jsx",
+          "relative": "app\\components\\popups\\ExitIntentPopup.jsx",
+          "name": "ExitIntentPopup.jsx",
+          "size": 11250,
+          "modified": "2025-11-15T16:18:34.808Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ExitIntentPopup",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\popups\\ExitIntentPopup.jsx",
+          "relative": "apps\\web\\src\\components\\popups\\ExitIntentPopup.jsx",
+          "name": "ExitIntentPopup.jsx",
+          "size": 11276,
+          "modified": "2025-11-12T08:03:49.169Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ThemeProvider",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\theme\\ThemeProvider.jsx",
+          "relative": "app\\components\\theme\\ThemeProvider.jsx",
+          "name": "ThemeProvider.jsx",
+          "size": 13576,
+          "modified": "2025-11-15T16:18:34.873Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ThemeProvider",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\theme\\ThemeProvider.jsx",
+          "relative": "apps\\web\\src\\components\\theme\\ThemeProvider.jsx",
+          "name": "ThemeProvider.jsx",
+          "size": 13902,
+          "modified": "2025-11-16T07:28:25.602Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ComplianceCalendarWidget",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\Regulatory\\ComplianceCalendarWidget.jsx",
+          "relative": "app\\components\\Regulatory\\ComplianceCalendarWidget.jsx",
+          "name": "ComplianceCalendarWidget.jsx",
+          "size": 5981,
+          "modified": "2025-11-17T19:53:06.338Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ComplianceCalendarWidget",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Regulatory\\ComplianceCalendarWidget.jsx",
+          "relative": "apps\\web\\src\\components\\Regulatory\\ComplianceCalendarWidget.jsx",
+          "name": "ComplianceCalendarWidget.jsx",
+          "size": 6232,
+          "modified": "2025-11-11T03:52:52.122Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ImpactAssessmentModal",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\Regulatory\\ImpactAssessmentModal.jsx",
+          "relative": "app\\components\\Regulatory\\ImpactAssessmentModal.jsx",
+          "name": "ImpactAssessmentModal.jsx",
+          "size": 10680,
+          "modified": "2025-11-17T19:52:51.482Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "ImpactAssessmentModal",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Regulatory\\ImpactAssessmentModal.jsx",
+          "relative": "apps\\web\\src\\components\\Regulatory\\ImpactAssessmentModal.jsx",
+          "name": "ImpactAssessmentModal.jsx",
+          "size": 10417,
+          "modified": "2025-11-11T03:52:52.122Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "RegulatoryDashboardWidget",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\Regulatory\\RegulatoryDashboardWidget.jsx",
+          "relative": "app\\components\\Regulatory\\RegulatoryDashboardWidget.jsx",
+          "name": "RegulatoryDashboardWidget.jsx",
+          "size": 4178,
+          "modified": "2025-11-11T03:52:52.122Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "RegulatoryDashboardWidget",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Regulatory\\RegulatoryDashboardWidget.jsx",
+          "relative": "apps\\web\\src\\components\\Regulatory\\RegulatoryDashboardWidget.jsx",
+          "name": "RegulatoryDashboardWidget.jsx",
+          "size": 4178,
+          "modified": "2025-11-11T03:52:52.122Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "RegulatoryFeedWidget",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\Regulatory\\RegulatoryFeedWidget.jsx",
+          "relative": "app\\components\\Regulatory\\RegulatoryFeedWidget.jsx",
+          "name": "RegulatoryFeedWidget.jsx",
+          "size": 6510,
+          "modified": "2025-11-11T03:52:52.122Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "RegulatoryFeedWidget",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Regulatory\\RegulatoryFeedWidget.jsx",
+          "relative": "apps\\web\\src\\components\\Regulatory\\RegulatoryFeedWidget.jsx",
+          "name": "RegulatoryFeedWidget.jsx",
+          "size": 6510,
+          "modified": "2025-11-11T03:52:52.122Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "RegulatoryIntelligenceCenter",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\Regulatory\\RegulatoryIntelligenceCenter.jsx",
+          "relative": "app\\components\\Regulatory\\RegulatoryIntelligenceCenter.jsx",
+          "name": "RegulatoryIntelligenceCenter.jsx",
+          "size": 14980,
+          "modified": "2025-11-17T19:53:52.585Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "RegulatoryIntelligenceCenter",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Regulatory\\RegulatoryIntelligenceCenter.jsx",
+          "relative": "apps\\web\\src\\components\\Regulatory\\RegulatoryIntelligenceCenter.jsx",
+          "name": "RegulatoryIntelligenceCenter.jsx",
+          "size": 17068,
+          "modified": "2025-11-15T07:17:48.624Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AdvancedFeatureExamples",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Subscription\\AdvancedFeatureExamples.jsx",
+          "relative": "apps\\web\\src\\components\\Subscription\\AdvancedFeatureExamples.jsx",
+          "name": "AdvancedFeatureExamples.jsx",
+          "size": 20696,
+          "modified": "2025-11-10T21:41:15.488Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "SubscriptionManager",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Subscription\\SubscriptionManager.jsx",
+          "relative": "apps\\web\\src\\components\\Subscription\\SubscriptionManager.jsx",
+          "name": "SubscriptionManager.jsx",
+          "size": 20642,
+          "modified": "2025-11-11T15:28:03.500Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "SimpleTest",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Test\\SimpleTest.jsx",
+          "relative": "apps\\web\\src\\components\\Test\\SimpleTest.jsx",
+          "name": "SimpleTest.jsx",
+          "size": 2998,
+          "modified": "2025-11-10T21:29:42.863Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "AccessibleComponents",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\AccessibleComponents.jsx",
+          "relative": "apps\\web\\src\\components\\ui\\AccessibleComponents.jsx",
+          "name": "AccessibleComponents.jsx",
+          "size": 7081,
+          "modified": "2025-11-13T05:51:07.830Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "EnterpriseComponents",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\EnterpriseComponents.jsx",
+          "relative": "apps\\web\\src\\components\\ui\\EnterpriseComponents.jsx",
+          "name": "EnterpriseComponents.jsx",
+          "size": 13996,
+          "modified": "2025-11-18T22:57:02.210Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "InteractiveComponents",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\InteractiveComponents.jsx",
+          "relative": "apps\\web\\src\\components\\ui\\InteractiveComponents.jsx",
+          "name": "InteractiveComponents.jsx",
+          "size": 15381,
+          "modified": "2025-11-13T05:52:14.193Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "Tooltip",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\ui\\Tooltip.jsx",
+          "relative": "apps\\web\\src\\components\\ui\\Tooltip.jsx",
+          "name": "Tooltip.jsx",
+          "size": 8436,
+          "modified": "2025-11-12T08:32:32.744Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "UniversalTableViewer",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\UniversalTableViewer.jsx",
+          "relative": "app\\components\\UniversalTableViewer.jsx",
+          "name": "UniversalTableViewer.jsx",
+          "size": 11842,
+          "modified": "2025-11-17T19:53:41.194Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "UniversalTableViewer",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\UniversalTableViewer.jsx",
+          "relative": "apps\\web\\src\\components\\UniversalTableViewer.jsx",
+          "name": "UniversalTableViewer.jsx",
+          "size": 12213,
+          "modified": "2025-11-10T14:22:19.026Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "UserFlowGuide",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\UserFlow\\UserFlowGuide.jsx",
+          "relative": "app\\components\\UserFlow\\UserFlowGuide.jsx",
+          "name": "UserFlowGuide.jsx",
+          "size": 12027,
+          "modified": "2025-11-10T21:35:58.682Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "UserFlowGuide",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\UserFlow\\UserFlowGuide.jsx",
+          "relative": "apps\\web\\src\\components\\UserFlow\\UserFlowGuide.jsx",
+          "name": "UserFlowGuide.jsx",
+          "size": 12027,
+          "modified": "2025-11-10T21:35:58.682Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "VendorOnboarding",
+        "file": {
+          "path": "D:\\Projects\\SBG\\app\\components\\vendors\\VendorOnboarding.jsx",
+          "relative": "app\\components\\vendors\\VendorOnboarding.jsx",
+          "name": "VendorOnboarding.jsx",
+          "size": 15788,
+          "modified": "2025-11-15T23:35:41.183Z",
+          "location": "app/components/"
+        }
+      },
+      {
+        "name": "VendorOnboarding",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\vendors\\VendorOnboarding.jsx",
+          "relative": "apps\\web\\src\\components\\vendors\\VendorOnboarding.jsx",
+          "name": "VendorOnboarding.jsx",
+          "size": 15502,
+          "modified": "2025-11-13T19:14:08.396Z",
+          "location": "apps/web/src/components/"
+        }
+      },
+      {
+        "name": "ModernSlideNavigator",
+        "file": {
+          "path": "D:\\Projects\\SBG\\apps\\web\\src\\components\\Navigation\\ModernSlideNavigator.jsx",
+          "relative": "apps\\web\\src\\components\\Navigation\\ModernSlideNavigator.jsx",
+          "name": "ModernSlideNavigator.jsx",
+          "size": 15730,
+          "modified": "2025-11-18T22:50:10.733Z",
+          "location": "apps/web/src/components/"
+        }
+      }
+    ]
+  }
+}

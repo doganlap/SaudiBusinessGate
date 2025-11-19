@@ -19,6 +19,9 @@ const nextConfig = {
     },
   },
 
+  // Add empty turbopack config to silence the warning
+  turbopack: {},
+
   // Webpack configuration for Lingui and module resolution
   webpack: (config, { isServer }) => {
     // Add PO file loader for Lingui

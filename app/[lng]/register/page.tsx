@@ -2,10 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Building2, Mail, Phone, User, Globe, CreditCard, CheckCircle, AlertCircle, Info, Upload, FileText, CheckSquare, XCircle } from 'lucide-react';
+import { Building2, Mail, Phone, User, Globe, CreditCard, CheckCircle, AlertCircle, Info, Upload, FileText, CheckSquare, XCircle, Lock, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
+import { GlassBackground, GlassContainer, GlassInput, GlassButton } from '@/components/ui/glass-container';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -124,7 +122,7 @@ export default function RegisterPage() {
       if (data.success) {
         setSuccess(true);
         setTimeout(() => {
-          router.push('/en/login');
+          router.push('/ar/login');
         }, 3000);
       } else {
         setErrors({ submit: data.error || 'Registration failed' });
@@ -137,111 +135,153 @@ export default function RegisterPage() {
     }
   };
 
+  const params = useParams();
+  const lng = (params?.lng as string) || 'ar';
+  const isArabic = lng === 'ar';
+
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-        <Card className="w-full max-w-md">
-          <CardContent className="pt-6">
+      <GlassBackground>
+        <div className="w-full max-w-md">
+          <GlassContainer>
             <div className="text-center">
-              <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <CheckCircle className="w-10 h-10 text-green-600" />
+              <div className="mx-auto w-20 h-20 backdrop-blur-xl bg-green-500/20 border border-green-300/30 rounded-full flex items-center justify-center mb-6 shadow-2xl">
+                <CheckCircle className="w-12 h-12 text-green-200" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Registration Successful!</h2>
-              <p className="text-gray-600 mb-4">
-                Your account has been created successfully. You will receive a verification email shortly.
+              <h2 className="text-3xl font-bold text-white drop-shadow-lg mb-3">
+                {isArabic ? 'تم التسجيل بنجاح!' : 'Registration Successful!'}
+              </h2>
+              <p className="text-white/90 mb-4">
+                {isArabic 
+                  ? 'تم إنشاء حسابك بنجاح. سوف تتلقى بريد التحقق قريباً.'
+                  : 'Your account has been created successfully. You will receive a verification email shortly.'}
               </p>
-              <p className="text-sm text-gray-500">
-                Redirecting to login page...
+              <p className="text-sm text-white/70">
+                {isArabic ? 'جارٍ إعادة التوجيه إلى صفحة تسجيل الدخول...' : 'Redirecting to login page...'}
               </p>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </GlassContainer>
+        </div>
+      </GlassBackground>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <Card className="w-full max-w-2xl">
-        <CardHeader>
-          <CardTitle className="text-2xl text-center">Customer Registration</CardTitle>
-          <p className="text-center text-gray-600">تسجيل العملاء الجدد</p>
-          
+    <GlassBackground dir={isArabic ? 'rtl' : 'ltr'}>
+      <div className="w-full max-w-3xl">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 mb-4 backdrop-blur-xl bg-white/20 rounded-2xl border border-white/30 shadow-2xl">
+            <Building2 className="w-12 h-12 text-white drop-shadow-lg" />
+          </div>
+          <h1 className="text-4xl font-bold text-white drop-shadow-lg mb-2">
+            {isArabic ? 'تسجيل جديد' : 'New Registration'}
+          </h1>
+          <p className="text-white/90 text-lg drop-shadow-md">
+            {isArabic ? 'تسجيل العملاء الجدد' : 'Customer Registration'}
+          </p>
+        </div>
+
+        <GlassContainer padding="lg">
           {/* Progress Steps */}
-          <div className="flex items-center justify-center mt-6 space-x-4">
-            <div className={`flex items-center ${step >= 1 ? 'text-blue-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>
-                1
+          <div className="flex items-center justify-center mb-8 space-x-4">
+            <div className={`flex items-center ${step >= 1 ? 'text-white' : 'text-white/50'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md border-2 transition-all ${
+                step >= 1 
+                  ? 'bg-white/30 border-white/50 shadow-lg' 
+                  : 'bg-white/10 border-white/20'
+              }`}>
+                {step > 1 ? <CheckCircle className="w-6 h-6" /> : '1'}
               </div>
-              <span className="ml-2 text-sm font-medium">Company</span>
+              <span className={`ml-2 text-sm font-medium ${step >= 1 ? 'text-white' : 'text-white/60'}`}>
+                {isArabic ? 'الشركة' : 'Company'}
+              </span>
             </div>
-            <div className="w-16 h-0.5 bg-gray-300"></div>
-            <div className={`flex items-center ${step >= 2 ? 'text-blue-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>
-                2
+            <div className={`w-16 h-0.5 transition-all ${step >= 2 ? 'bg-white/50' : 'bg-white/20'}`}></div>
+            <div className={`flex items-center ${step >= 2 ? 'text-white' : 'text-white/50'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md border-2 transition-all ${
+                step >= 2 
+                  ? 'bg-white/30 border-white/50 shadow-lg' 
+                  : 'bg-white/10 border-white/20'
+              }`}>
+                {step > 2 ? <CheckCircle className="w-6 h-6" /> : '2'}
               </div>
-              <span className="ml-2 text-sm font-medium">Contact</span>
+              <span className={`ml-2 text-sm font-medium ${step >= 2 ? 'text-white' : 'text-white/60'}`}>
+                {isArabic ? 'جهة الاتصال' : 'Contact'}
+              </span>
             </div>
-            <div className="w-16 h-0.5 bg-gray-300"></div>
-            <div className={`flex items-center ${step >= 3 ? 'text-blue-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 3 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>
+            <div className={`w-16 h-0.5 transition-all ${step >= 3 ? 'bg-white/50' : 'bg-white/20'}`}></div>
+            <div className={`flex items-center ${step >= 3 ? 'text-white' : 'text-white/50'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md border-2 transition-all ${
+                step >= 3 
+                  ? 'bg-white/30 border-white/50 shadow-lg' 
+                  : 'bg-white/10 border-white/20'
+              }`}>
                 3
               </div>
-              <span className="ml-2 text-sm font-medium">Account</span>
+              <span className={`ml-2 text-sm font-medium ${step >= 3 ? 'text-white' : 'text-white/60'}`}>
+                {isArabic ? 'الحساب' : 'Account'}
+              </span>
             </div>
           </div>
-        </CardHeader>
 
-        <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Step 1: Company Information */}
             {step === 1 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold mb-4">Company Information</h3>
+              <div className="space-y-5">
+                <h3 className="text-2xl font-bold text-white drop-shadow-lg mb-6 text-center">
+                  {isArabic ? 'معلومات الشركة' : 'Company Information'}
+                </h3>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Company Name (English) *
+                  <label className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'اسم الشركة (بالإنجليزية) *' : 'Company Name (English) *'}
                   </label>
-                  <div className="relative">
-                    <Building2 className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                    <Input
-                      type="text"
-                      name="companyName"
-                      value={formData.companyName}
-                      onChange={handleChange}
-                      className="pl-10"
-                      placeholder="Enter company name"
-                    />
-                  </div>
-                  {errors.companyName && <p className="text-red-500 text-sm mt-1">{errors.companyName}</p>}
+                  <GlassInput
+                    type="text"
+                    name="companyName"
+                    value={formData.companyName}
+                    onChange={handleChange}
+                    icon={<Building2 className="w-5 h-5" />}
+                    iconPosition={isArabic ? 'right' : 'left'}
+                    isArabic={isArabic}
+                    placeholder={isArabic ? 'أدخل اسم الشركة' : 'Enter company name'}
+                  />
+                  {errors.companyName && (
+                    <p className="text-red-200 text-sm mt-2 backdrop-blur-md bg-red-500/20 px-3 py-1 rounded-lg">
+                      {errors.companyName}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Company Name (Arabic)
+                  <label className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'اسم الشركة (بالعربية)' : 'Company Name (Arabic)'}
                   </label>
-                  <Input
+                  <GlassInput
                     type="text"
                     name="companyNameAr"
                     value={formData.companyNameAr}
                     onChange={handleChange}
-                    placeholder="اسم الشركة بالعربية"
+                    isArabic={isArabic}
+                    placeholder={isArabic ? 'اسم الشركة بالعربية' : 'Company name in Arabic'}
                     dir="rtl"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Industry *
+                  <label htmlFor="industry" className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'الصناعة *' : 'Industry *'}
                   </label>
                   <select
+                    id="industry"
                     name="industry"
                     value={formData.industry}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    aria-label="Select Industry"
+                    className="w-full py-3 px-4 backdrop-blur-md bg-white/20 border border-white/30 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all"
                   >
-                    <option value="">Select Industry</option>
+                    <option value="" className="bg-gray-800 text-white">{isArabic ? 'اختر الصناعة' : 'Select Industry'}</option>
                     <option value="technology">Technology</option>
                     <option value="finance">Finance & Banking</option>
                     <option value="healthcare">Healthcare</option>
@@ -251,20 +291,26 @@ export default function RegisterPage() {
                     <option value="government">Government</option>
                     <option value="other">Other</option>
                   </select>
-                  {errors.industry && <p className="text-red-500 text-sm mt-1">{errors.industry}</p>}
+                  {errors.industry && (
+                    <p className="text-red-200 text-sm mt-2 backdrop-blur-md bg-red-500/20 px-3 py-1 rounded-lg">
+                      {errors.industry}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Country *
+                  <label htmlFor="country" className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'الدولة *' : 'Country *'}
                   </label>
                   <div className="relative">
-                    <Globe className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Globe className={`absolute ${isArabic ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/70`} />
                     <select
+                      id="country"
                       name="country"
                       value={formData.country}
                       onChange={handleChange}
-                      className="w-full pl-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      aria-label="Select Country"
+                      className={`w-full ${isArabic ? 'pr-12' : 'pl-12'} py-3 px-4 backdrop-blur-md bg-white/20 border border-white/30 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all`}
                     >
                       <option value="Saudi Arabia">Saudi Arabia</option>
                       <option value="UAE">United Arab Emirates</option>
@@ -274,85 +320,102 @@ export default function RegisterPage() {
                       <option value="Oman">Oman</option>
                     </select>
                   </div>
-                  {errors.country && <p className="text-red-500 text-sm mt-1">{errors.country}</p>}
+                  {errors.country && (
+                    <p className="text-red-200 text-sm mt-2 backdrop-blur-md bg-red-500/20 px-3 py-1 rounded-lg">
+                      {errors.country}
+                    </p>
+                  )}
                 </div>
               </div>
             )}
 
             {/* Step 2: Contact Information */}
             {step === 2 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold mb-4">Contact Information</h3>
+              <div className="space-y-5">
+                <h3 className="text-2xl font-bold text-white drop-shadow-lg mb-6 text-center">
+                  {isArabic ? 'معلومات الاتصال' : 'Contact Information'}
+                </h3>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact Person Name *
+                  <label className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'اسم جهة الاتصال *' : 'Contact Person Name *'}
                   </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                    <Input
-                      type="text"
-                      name="contactName"
-                      value={formData.contactName}
-                      onChange={handleChange}
-                      className="pl-10"
-                      placeholder="Full name"
-                    />
-                  </div>
-                  {errors.contactName && <p className="text-red-500 text-sm mt-1">{errors.contactName}</p>}
+                  <GlassInput
+                    type="text"
+                    name="contactName"
+                    value={formData.contactName}
+                    onChange={handleChange}
+                    icon={<User className="w-5 h-5" />}
+                    iconPosition={isArabic ? 'right' : 'left'}
+                    isArabic={isArabic}
+                    placeholder={isArabic ? 'الاسم الكامل' : 'Full name'}
+                  />
+                  {errors.contactName && (
+                    <p className="text-red-200 text-sm mt-2 backdrop-blur-md bg-red-500/20 px-3 py-1 rounded-lg">
+                      {errors.contactName}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email Address *
+                  <label className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'عنوان البريد الإلكتروني *' : 'Email Address *'}
                   </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                    <Input
-                      type="email"
-                      name="contactEmail"
-                      value={formData.contactEmail}
-                      onChange={handleChange}
-                      className="pl-10"
-                      placeholder="email@company.com"
-                    />
-                  </div>
-                  {errors.contactEmail && <p className="text-red-500 text-sm mt-1">{errors.contactEmail}</p>}
+                  <GlassInput
+                    type="email"
+                    name="contactEmail"
+                    value={formData.contactEmail}
+                    onChange={handleChange}
+                    icon={<Mail className="w-5 h-5" />}
+                    iconPosition={isArabic ? 'right' : 'left'}
+                    isArabic={isArabic}
+                    placeholder={isArabic ? 'البريد الإلكتروني' : 'email@company.com'}
+                  />
+                  {errors.contactEmail && (
+                    <p className="text-red-200 text-sm mt-2 backdrop-blur-md bg-red-500/20 px-3 py-1 rounded-lg">
+                      {errors.contactEmail}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone Number *
+                  <label className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'رقم الهاتف *' : 'Phone Number *'}
                   </label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                    <Input
-                      type="tel"
-                      name="contactPhone"
-                      value={formData.contactPhone}
-                      onChange={handleChange}
-                      className="pl-10"
-                      placeholder="+966 5X XXX XXXX"
-                    />
-                  </div>
-                  {errors.contactPhone && <p className="text-red-500 text-sm mt-1">{errors.contactPhone}</p>}
+                  <GlassInput
+                    type="tel"
+                    name="contactPhone"
+                    value={formData.contactPhone}
+                    onChange={handleChange}
+                    icon={<Phone className="w-5 h-5" />}
+                    iconPosition={isArabic ? 'right' : 'left'}
+                    isArabic={isArabic}
+                    placeholder={isArabic ? '+966 5X XXX XXXX' : '+966 5X XXX XXXX'}
+                  />
+                  {errors.contactPhone && (
+                    <p className="text-red-200 text-sm mt-2 backdrop-blur-md bg-red-500/20 px-3 py-1 rounded-lg">
+                      {errors.contactPhone}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Subscription Plan *
+                  <label htmlFor="subscriptionPlan" className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'خطة الاشتراك *' : 'Subscription Plan *'}
                   </label>
                   <div className="relative">
-                    <CreditCard className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <CreditCard className={`absolute ${isArabic ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/70`} />
                     <select
+                      id="subscriptionPlan"
                       name="subscriptionPlan"
                       value={formData.subscriptionPlan}
                       onChange={handleChange}
-                      className="w-full pl-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      aria-label="Select Subscription Plan"
+                      className={`w-full ${isArabic ? 'pr-12' : 'pl-12'} py-3 px-4 backdrop-blur-md bg-white/20 border border-white/30 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all`}
                     >
-                      <option value="basic">Basic - 10 Users - $99/month</option>
-                      <option value="professional">Professional - 25 Users - $299/month</option>
-                      <option value="enterprise">Enterprise - Unlimited - $999/month</option>
+                      <option value="basic" className="bg-gray-800 text-white">Basic - 10 Users - $99/month</option>
+                      <option value="professional" className="bg-gray-800 text-white">Professional - 25 Users - $299/month</option>
+                      <option value="enterprise" className="bg-gray-800 text-white">Enterprise - Unlimited - $999/month</option>
                     </select>
                   </div>
                 </div>
@@ -361,106 +424,156 @@ export default function RegisterPage() {
 
             {/* Step 3: Account Setup */}
             {step === 3 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold mb-4">Admin Account Setup</h3>
+              <div className="space-y-5">
+                <h3 className="text-2xl font-bold text-white drop-shadow-lg mb-6 text-center">
+                  {isArabic ? 'إعداد حساب المدير' : 'Admin Account Setup'}
+                </h3>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Admin Email *
+                  <label className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'بريد المدير الإلكتروني *' : 'Admin Email *'}
                   </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                    <Input
-                      type="email"
-                      name="adminEmail"
-                      value={formData.adminEmail}
-                      onChange={handleChange}
-                      className="pl-10"
-                      placeholder="admin@company.com"
-                    />
-                  </div>
-                  {errors.adminEmail && <p className="text-red-500 text-sm mt-1">{errors.adminEmail}</p>}
+                  <GlassInput
+                    type="email"
+                    name="adminEmail"
+                    value={formData.adminEmail}
+                    onChange={handleChange}
+                    icon={<Mail className="w-5 h-5" />}
+                    iconPosition={isArabic ? 'right' : 'left'}
+                    isArabic={isArabic}
+                    placeholder={isArabic ? 'admin@company.com' : 'admin@company.com'}
+                  />
+                  {errors.adminEmail && (
+                    <p className="text-red-200 text-sm mt-2 backdrop-blur-md bg-red-500/20 px-3 py-1 rounded-lg">
+                      {errors.adminEmail}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Password *
+                  <label className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'كلمة المرور *' : 'Password *'}
                   </label>
-                  <Input
+                  <GlassInput
                     type="password"
                     name="adminPassword"
                     value={formData.adminPassword}
                     onChange={handleChange}
-                    placeholder="Minimum 8 characters"
+                    icon={<Lock className="w-5 h-5" />}
+                    iconPosition={isArabic ? 'right' : 'left'}
+                    isArabic={isArabic}
+                    placeholder={isArabic ? 'الحد الأدنى 8 أحرف' : 'Minimum 8 characters'}
                   />
-                  {errors.adminPassword && <p className="text-red-500 text-sm mt-1">{errors.adminPassword}</p>}
+                  {errors.adminPassword && (
+                    <p className="text-red-200 text-sm mt-2 backdrop-blur-md bg-red-500/20 px-3 py-1 rounded-lg">
+                      {errors.adminPassword}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Confirm Password *
+                  <label className="block text-sm font-semibold text-white/90 mb-2 drop-shadow-sm">
+                    {isArabic ? 'تأكيد كلمة المرور *' : 'Confirm Password *'}
                   </label>
-                  <Input
+                  <GlassInput
                     type="password"
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    placeholder="Re-enter password"
+                    icon={<Lock className="w-5 h-5" />}
+                    iconPosition={isArabic ? 'right' : 'left'}
+                    isArabic={isArabic}
+                    placeholder={isArabic ? 'أعد إدخال كلمة المرور' : 'Re-enter password'}
                   />
-                  {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+                  {errors.confirmPassword && (
+                    <p className="text-red-200 text-sm mt-2 backdrop-blur-md bg-red-500/20 px-3 py-1 rounded-lg">
+                      {errors.confirmPassword}
+                    </p>
+                  )}
                 </div>
 
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-blue-900 mb-2">Summary</h4>
-                  <div className="text-sm text-blue-800 space-y-1">
-                    <p><strong>Company:</strong> {formData.companyName}</p>
-                    <p><strong>Contact:</strong> {formData.contactName}</p>
-                    <p><strong>Email:</strong> {formData.contactEmail}</p>
-                    <p><strong>Plan:</strong> {formData.subscriptionPlan}</p>
+                <div className="backdrop-blur-md bg-blue-500/20 border border-blue-300/30 rounded-xl p-6 shadow-lg">
+                  <h4 className="font-semibold text-white mb-4 text-lg">
+                    {isArabic ? 'ملخص' : 'Summary'}
+                  </h4>
+                  <div className="text-sm text-white/90 space-y-2">
+                    <p><strong className="text-white">{isArabic ? 'الشركة:' : 'Company:'}</strong> {formData.companyName}</p>
+                    <p><strong className="text-white">{isArabic ? 'جهة الاتصال:' : 'Contact:'}</strong> {formData.contactName}</p>
+                    <p><strong className="text-white">{isArabic ? 'البريد:' : 'Email:'}</strong> {formData.contactEmail}</p>
+                    <p><strong className="text-white">{isArabic ? 'الخطة:' : 'Plan:'}</strong> {formData.subscriptionPlan}</p>
                   </div>
                 </div>
 
                 {errors.submit && (
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                    <p className="text-red-800 text-sm">{errors.submit}</p>
+                  <div className="backdrop-blur-md bg-red-500/20 border border-red-300/30 rounded-xl p-4">
+                    <p className="text-red-100 text-sm font-medium">{errors.submit}</p>
                   </div>
                 )}
               </div>
             )}
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between mt-6">
+            <div className={`flex justify-between mt-8 gap-4 ${step === 1 ? 'justify-end' : ''}`}>
               {step > 1 && (
-                <Button
+                <GlassButton
                   type="button"
                   onClick={handleBack}
-                  variant="outline"
+                  variant="secondary"
+                  className="flex-1"
                 >
-                  Back
-                </Button>
+                  <ArrowLeft className={`w-5 h-5 ${isArabic ? 'ml-2' : 'mr-2'}`} />
+                  {isArabic ? 'السابق' : 'Back'}
+                </GlassButton>
               )}
               
               {step < 3 ? (
-                <Button
+                <GlassButton
                   type="button"
                   onClick={handleNext}
-                  className="ml-auto"
+                  variant="primary"
+                  className={step === 1 ? 'w-full' : 'flex-1'}
                 >
-                  Next
-                </Button>
+                  {isArabic ? 'التالي' : 'Next'}
+                  <ArrowRight className={`w-5 h-5 ${isArabic ? 'mr-2' : 'ml-2'}`} />
+                </GlassButton>
               ) : (
-                <Button
+                <GlassButton
                   type="submit"
                   disabled={loading}
-                  className="ml-auto"
+                  variant="primary"
+                  className="flex-1"
                 >
-                  {loading ? 'Registering...' : 'Complete Registration'}
-                </Button>
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span className={isArabic ? 'mr-2' : 'ml-2'}>
+                        {isArabic ? 'جارٍ التسجيل...' : 'Registering...'}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      {isArabic ? 'تسجيل' : 'Complete Registration'}
+                      <CheckCircle className={`w-5 h-5 ${isArabic ? 'mr-2' : 'ml-2'}`} />
+                    </>
+                  )}
+                </GlassButton>
               )}
             </div>
           </form>
-        </CardContent>
-      </Card>
-    </div>
+        </GlassContainer>
+
+        {/* Footer */}
+        <div className="mt-8 text-center text-sm text-white/80 backdrop-blur-md bg-white/5 rounded-xl p-4 border border-white/10">
+          <p className="drop-shadow-sm">
+            {isArabic ? '© 2025 دوجان هب. جميع الحقوق محفوظة.' : '© 2025 DoganHub. All rights reserved.'}
+          </p>
+          <div className="mt-2 space-x-4">
+            <a href={`/${lng}/login`} className="hover:text-white transition-colors underline">
+              {isArabic ? 'لديك حساب بالفعل؟' : 'Already have an account?'}
+            </a>
+          </div>
+        </div>
+      </div>
+    </GlassBackground>
   );
 }

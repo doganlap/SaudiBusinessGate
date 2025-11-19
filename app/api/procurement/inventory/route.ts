@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { query } from '@/lib/db/connection';
+import { getServerSession } from 'next-auth/next';
 
 interface InventoryItem {
   id: string;
@@ -18,54 +20,104 @@ interface InventoryItem {
   movementType: 'fast' | 'medium' | 'slow';
 }
 
-const mockInventory: InventoryItem[] = [
-  {
-    id: '1', sku: 'OFF-001', name: 'Office Chairs', category: 'Furniture',
-    description: 'Ergonomic office chairs with lumbar support', currentStock: 25, minStock: 10, maxStock: 50,
-    unitPrice: 299, totalValue: 7475, location: 'Warehouse A', supplier: 'Furniture Solutions',
-    lastRestocked: '2024-01-05', status: 'in-stock', movementType: 'medium'
-  },
-  {
-    id: '2', sku: 'IT-002', name: 'Laptops', category: 'IT Equipment',
-    description: 'Business laptops for development team', currentStock: 3, minStock: 5, maxStock: 20,
-    unitPrice: 1299, totalValue: 3897, location: 'IT Storage', supplier: 'Tech Equipment Co',
-    lastRestocked: '2024-01-10', status: 'low-stock', movementType: 'fast'
-  },
-  {
-    id: '3', sku: 'SUP-003', name: 'Printer Paper', category: 'Office Supplies',
-    description: 'A4 white printer paper, 500 sheets per pack', currentStock: 0, minStock: 20, maxStock: 100,
-    unitPrice: 8, totalValue: 0, location: 'Supply Room', supplier: 'Office Supplies Inc',
-    lastRestocked: '2023-12-15', status: 'out-of-stock', movementType: 'fast'
-  },
-  {
-    id: '4', sku: 'OFF-004', name: 'Desk Lamps', category: 'Furniture',
-    description: 'LED desk lamps with adjustable brightness', currentStock: 45, minStock: 15, maxStock: 30,
-    unitPrice: 89, totalValue: 4005, location: 'Warehouse A', supplier: 'Furniture Solutions',
-    lastRestocked: '2024-01-08', status: 'overstocked', movementType: 'slow'
-  },
-  {
-    id: '5', sku: 'IT-005', name: 'Monitors', category: 'IT Equipment',
-    description: '24-inch LED monitors for workstations', currentStock: 18, minStock: 10, maxStock: 25,
-    unitPrice: 249, totalValue: 4482, location: 'IT Storage', supplier: 'Tech Equipment Co',
-    lastRestocked: '2024-01-12', status: 'in-stock', movementType: 'medium'
-  }
-];
-
 export async function GET(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'default-tenant';
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
-    
-    let filteredInventory = mockInventory;
+    const category = searchParams.get('category');
+
+    try {
+      let whereClause = 'WHERE tenant_id = $1';
+      const params: any[] = [tenantId];
+      let paramIndex = 2;
+
+      if (category) {
+        whereClause += ` AND category = $${paramIndex++}`;
+        params.push(category);
+      }
+
+      const result = await query(`
+        SELECT 
+          id, item_code, item_name, item_name_ar, category, subcategory,
+          unit_of_measure, description, sku, barcode,
+          current_stock, min_stock_level, max_stock_level, reorder_point,
+          unit_cost, selling_price, currency, location, status, vendor_id
+        FROM inventory_items
+        ${whereClause}
+        ORDER BY item_name
+      `, params);
+
+      // Get vendor names and last restocked date
+      const inventory: InventoryItem[] = await Promise.all(result.rows.map(async (row: any) => {
+        let vendorName = '';
+        let lastRestocked = '';
+
+        if (row.vendor_id) {
+          const vendorResult = await query('SELECT vendor_name FROM vendors WHERE id = $1', [row.vendor_id]);
+          vendorName = vendorResult.rows[0]?.vendor_name || '';
+        }
+
+        // Get last receiving note date
+        const receivingResult = await query(`
+          SELECT MAX(rn.receiving_date) as last_restocked
+          FROM receiving_notes rn
+          JOIN receiving_note_items rni ON rn.id = rni.receiving_note_id
+          WHERE rni.inventory_item_id = $1 AND rn.tenant_id = $2
+        `, [row.id, tenantId]);
+        lastRestocked = receivingResult.rows[0]?.last_restocked 
+          ? new Date(receivingResult.rows[0].last_restocked).toISOString().split('T')[0]
+          : '';
+
+        // Determine status
+        let status: 'in-stock' | 'low-stock' | 'out-of-stock' | 'overstocked' = 'in-stock';
+        if (row.current_stock === 0) {
+          status = 'out-of-stock';
+        } else if (row.current_stock <= row.min_stock_level) {
+          status = 'low-stock';
+        } else if (row.max_stock_level && row.current_stock > row.max_stock_level) {
+          status = 'overstocked';
+        }
+
+        // Determine movement type (simplified - would need historical data)
+        const movementType: 'fast' | 'medium' | 'slow' = 
+          row.current_stock < row.min_stock_level * 2 ? 'fast' :
+          row.current_stock > row.max_stock_level * 0.8 ? 'slow' : 'medium';
+
+        return {
+          id: row.id.toString(),
+          sku: row.item_code || row.sku || '',
+          name: row.item_name_ar || row.item_name,
+          category: row.category || '',
+          description: row.description || '',
+          currentStock: Number(row.current_stock || 0),
+          minStock: Number(row.min_stock_level || 0),
+          maxStock: Number(row.max_stock_level || 0),
+          unitPrice: Number(row.unit_cost || 0),
+          totalValue: Number(row.current_stock || 0) * Number(row.unit_cost || 0),
+          location: row.location || '',
+          supplier: vendorName,
+          lastRestocked,
+          status,
+          movementType
+        };
+      }));
+
+      // Apply status filter if provided
+      let filteredInventory = inventory;
     if (status && status !== 'all') {
-      filteredInventory = mockInventory.filter(item => item.status === status);
+        filteredInventory = inventory.filter(item => item.status === status);
     }
     
-    const totalItems = mockInventory.length;
-    const totalValue = mockInventory.reduce((sum, item) => sum + item.totalValue, 0);
-    const lowStockItems = mockInventory.filter(item => item.status === 'low-stock' || item.status === 'out-of-stock').length;
-    const inStockItems = mockInventory.filter(item => item.status === 'in-stock').length;
+      const totalItems = inventory.length;
+      const totalValue = inventory.reduce((sum, item) => sum + item.totalValue, 0);
+      const lowStockItems = inventory.filter(item => item.status === 'low-stock' || item.status === 'out-of-stock').length;
+      const inStockItems = inventory.filter(item => item.status === 'in-stock').length;
     
     return NextResponse.json({
       success: true,
@@ -75,9 +127,27 @@ export async function GET(request: NextRequest) {
         totalValue,
         lowStockItems,
         inStockItems,
-        stockRate: Math.round((inStockItems / totalItems) * 100)
+          stockRate: totalItems > 0 ? Math.round((inStockItems / totalItems) * 100) : 0
+        },
+        source: 'database'
+      });
+    } catch (error: any) {
+      if (error.code === '42P01') {
+        return NextResponse.json({
+          success: true,
+          inventory: [],
+          summary: {
+            totalItems: 0,
+            totalValue: 0,
+            lowStockItems: 0,
+            inStockItems: 0,
+            stockRate: 0
+          },
+          source: 'empty'
+        });
       }
-    });
+      throw error;
+    }
   } catch (error) {
     console.error('Error fetching inventory:', error);
     return NextResponse.json(
@@ -89,26 +159,81 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'default-tenant';
     const body = await request.json();
     
-    const newItem: InventoryItem = {
-      id: Date.now().toString(),
-      ...body,
-      totalValue: body.currentStock * body.unitPrice,
-      status: body.currentStock <= body.minStock ? 'low-stock' : 
-              body.currentStock === 0 ? 'out-of-stock' :
-              body.currentStock > body.maxStock ? 'overstocked' : 'in-stock',
-      lastRestocked: new Date().toISOString().split('T')[0]
-    };
+    const {
+      item_name, item_name_ar, category, subcategory, unit_of_measure,
+      description, sku, current_stock, min_stock_level, max_stock_level,
+      unit_cost, selling_price, location, vendor_id
+    } = body;
+
+    if (!item_name) {
+      return NextResponse.json(
+        { success: false, error: 'item_name is required' },
+        { status: 400 }
+      );
+    }
+
+    // Generate item code
+    const countResult = await query('SELECT COUNT(*) as count FROM inventory_items WHERE tenant_id = $1', [tenantId]);
+    const count = parseInt(countResult.rows[0]?.count || '0');
+    const itemCode = `INV-${String(count + 1).padStart(3, '0')}`;
+
+    try {
+      const result = await query(`
+        INSERT INTO inventory_items (
+          tenant_id, item_code, item_name, item_name_ar, category, subcategory,
+          unit_of_measure, description, sku, current_stock, min_stock_level,
+          max_stock_level, unit_cost, selling_price, currency, location, status, vendor_id, created_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, NOW())
+        RETURNING id, item_code, item_name, item_name_ar, category, current_stock,
+          min_stock_level, max_stock_level, unit_cost, location, status
+      `, [
+        tenantId, itemCode, item_name, item_name_ar || item_name, category || '',
+        subcategory || '', unit_of_measure || 'piece', description || '', sku || itemCode,
+        current_stock || 0, min_stock_level || 0, max_stock_level || 0,
+        unit_cost || 0, selling_price || 0, 'SAR', location || '', 'active', vendor_id || null
+      ]);
     
-    mockInventory.push(newItem);
+    const newItem: InventoryItem = {
+        id: result.rows[0].id.toString(),
+        sku: result.rows[0].item_code,
+        name: result.rows[0].item_name_ar || result.rows[0].item_name,
+        category: result.rows[0].category || '',
+        description: description || '',
+        currentStock: Number(result.rows[0].current_stock || 0),
+        minStock: Number(result.rows[0].min_stock_level || 0),
+        maxStock: Number(result.rows[0].max_stock_level || 0),
+        unitPrice: Number(result.rows[0].unit_cost || 0),
+        totalValue: Number(result.rows[0].current_stock || 0) * Number(result.rows[0].unit_cost || 0),
+        location: result.rows[0].location || '',
+        supplier: '',
+        lastRestocked: '',
+        status: result.rows[0].current_stock === 0 ? 'out-of-stock' :
+                result.rows[0].current_stock <= result.rows[0].min_stock_level ? 'low-stock' : 'in-stock',
+        movementType: 'medium'
+      };
     
     return NextResponse.json({
       success: true,
       item: newItem,
       message: 'Inventory item created successfully'
-    });
+      }, { status: 201 });
+    } catch (error: any) {
+      if (error.code === '42P01') {
+        return NextResponse.json(
+          { success: false, error: 'Inventory items table not found. Please run database migrations.' },
+          { status: 503 }
+        );
+      }
+      throw error;
+    }
   } catch (error) {
     console.error('Error creating inventory item:', error);
     return NextResponse.json(

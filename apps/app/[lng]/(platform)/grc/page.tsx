@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { defaultLanguage } from '@/lib/i18n';
 import { 
   Shield, 
   AlertTriangle, 
@@ -44,7 +45,7 @@ interface GRCOverview {
 
 export default function GRCDashboard() {
   const params = useParams() as any;
-  const lng = (params?.lng as string) || 'en';
+  const lng = (params?.lng as string) || defaultLanguage;
   
   const [overview, setOverview] = useState<GRCOverview | null>(null);
   const [loading, setLoading] = useState(true);

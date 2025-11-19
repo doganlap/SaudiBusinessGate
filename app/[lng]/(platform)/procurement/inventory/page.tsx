@@ -42,46 +42,20 @@ export default function InventoryPage() {
 
   const fetchInventory = async () => {
     try {
-      const response = await fetch('/api/procurement/inventory', {
-        headers: { 'tenant-id': 'default-tenant' }
-      });
+      setLoading(true);
+      const response = await fetch('/api/procurement/inventory');
+      if (!response.ok) {
+        throw new Error('Failed to fetch inventory');
+      }
       const data = await response.json();
-      setInventory(data.inventory || []);
+      if (data.success && data.inventory) {
+        setInventory(data.inventory);
+      } else {
+        setInventory([]);
+      }
     } catch (error) {
       console.error('Error fetching inventory:', error);
-      // Mock data
-      setInventory([
-        {
-          id: '1', sku: 'OFF-001', name: 'Office Chairs', category: 'Furniture',
-          description: 'Ergonomic office chairs with lumbar support', currentStock: 25, minStock: 10, maxStock: 50,
-          unitPrice: 299, totalValue: 7475, location: 'Warehouse A', supplier: 'Furniture Solutions',
-          lastRestocked: '2024-01-05', status: 'in-stock', movementType: 'medium'
-        },
-        {
-          id: '2', sku: 'IT-002', name: 'Laptops', category: 'IT Equipment',
-          description: 'Business laptops for development team', currentStock: 3, minStock: 5, maxStock: 20,
-          unitPrice: 1299, totalValue: 3897, location: 'IT Storage', supplier: 'Tech Equipment Co',
-          lastRestocked: '2024-01-10', status: 'low-stock', movementType: 'fast'
-        },
-        {
-          id: '3', sku: 'SUP-003', name: 'Printer Paper', category: 'Office Supplies',
-          description: 'A4 white printer paper, 500 sheets per pack', currentStock: 0, minStock: 20, maxStock: 100,
-          unitPrice: 8, totalValue: 0, location: 'Supply Room', supplier: 'Office Supplies Inc',
-          lastRestocked: '2023-12-15', status: 'out-of-stock', movementType: 'fast'
-        },
-        {
-          id: '4', sku: 'OFF-004', name: 'Desk Lamps', category: 'Furniture',
-          description: 'LED desk lamps with adjustable brightness', currentStock: 45, minStock: 15, maxStock: 30,
-          unitPrice: 89, totalValue: 4005, location: 'Warehouse A', supplier: 'Furniture Solutions',
-          lastRestocked: '2024-01-08', status: 'overstocked', movementType: 'slow'
-        },
-        {
-          id: '5', sku: 'IT-005', name: 'Monitors', category: 'IT Equipment',
-          description: '24-inch LED monitors for workstations', currentStock: 18, minStock: 10, maxStock: 25,
-          unitPrice: 249, totalValue: 4482, location: 'IT Storage', supplier: 'Tech Equipment Co',
-          lastRestocked: '2024-01-12', status: 'in-stock', movementType: 'medium'
-        }
-      ]);
+      setInventory([]);
     } finally {
       setLoading(false);
     }

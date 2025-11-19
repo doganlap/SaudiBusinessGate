@@ -9,18 +9,18 @@ import { GRCService } from '@/lib/services/grc.service';
 
 const grcService = new GRCService();
 
+import { getServerSession } from 'next-auth/next';
+
 // GET /api/grc/controls - List controls with filtering
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const tenantId = request.headers.get('x-tenant-id');
-    
-    if (!tenantId) {
-      return NextResponse.json(
-        { error: 'Tenant ID is required' },
-        { status: 400 }
-      );
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const { searchParams } = new URL(request.url);
+    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'default-tenant';
 
     // Extract filters from query parameters
     const filters = {
@@ -65,15 +65,13 @@ export async function GET(request: NextRequest) {
 // POST /api/grc/controls - Create new control
 export async function POST(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('x-tenant-id');
-    const userId = request.headers.get('x-user-id');
-    
-    if (!tenantId) {
-      return NextResponse.json(
-        { error: 'Tenant ID is required' },
-        { status: 400 }
-      );
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'default-tenant';
+    const userId = (session.user as any).id || request.headers.get('x-user-id');
 
     const body = await request.json();
     

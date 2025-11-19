@@ -1,0 +1,19 @@
+# Vercel Environment Variables - Production
+# Copy these to Vercel Dashboard: https://vercel.com/dashboard → donganksa/saudi-store → Settings → Environment Variables
+# Select "Production" environment for each variable
+
+# Authentication (CRITICAL - Required)
+JWT_SECRET=fe9fd0e777a2e0d7560d38f99e7711551f45c071954765f194ae3c246a6aaee5
+NEXTAUTH_SECRET=yI0dfqt0DU6gs5bpSMesQOhzGjEFsDExG/mHx31g4tI=
+NEXTAUTH_URL=https://saudi-store-l9a1p16w5-donganksa.vercel.app
+
+# Application URLs
+NODE_ENV=production
+NEXT_PUBLIC_APP_URL=https://saudi-store-l9a1p16w5-donganksa.vercel.app
+NEXT_PUBLIC_API_URL=https://saudi-store-l9a1p16w5-donganksa.vercel.app/api
+
+# Database (Already in vercel.json, but add here too for consistency)
+DATABASE_URL=postgres://f9b01b016f6065e1f9d62776a95e03ccb3773e35f2ba4d5ec6f6bbc1afaa2e46:sk_ZDb_YXE5HdKoY5VayB3tN@db.prisma.io:5432/postgres?sslmode=require
+POSTGRES_URL=postgres://f9b01b016f6065e1f9d62776a95e03ccb3773e35f2ba4d5ec6f6bbc1afaa2e46:sk_ZDb_YXE5HdKoY5VayB3tN@db.prisma.io:5432/postgres?sslmode=require
+PRISMA_DATABASE_URL=prisma+postgres://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RfaWQiOjEsInNlY3VyZV9rZXkiOiJza19aRGJfWVhFNUhkS29ZNVZheUIzdE4iLCJhcGlfa2V5IjoiMDFLQTI2MDZLUDJDVkpYU1laWFhTVlFCWFAiLCJ0ZW5hbnRfaWQiOiJmOWIwMWIwMTZmNjA2NWUxZjlkNjI3NzZhOTVlMDNjY2IzNzczZTM1ZjJiYTRkNWVjNmY2YmJjMWFmYWEyZTQ2IiwiaW50ZXJuYWxfc2VjcmV0IjoiOWU1MWIyYjQtNzU3OS00ZmZhLTllMWEtYmFiYTVlMTQxYjdmIn0.4ZQEin9USH0TBlfgFmW_DVhaBy_fOTzlhsUJGn1SdSE
+

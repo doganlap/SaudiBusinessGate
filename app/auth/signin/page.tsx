@@ -26,7 +26,7 @@ export default function SignInPage() {
       if (result?.error) {
         setError('Invalid email or password');
       } else {
-        router.push('/dashboard');
+        router.push('/ar/dashboard');
       }
     } catch (error) {
       setError('An error occurred during sign in');

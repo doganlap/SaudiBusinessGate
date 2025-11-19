@@ -1,4 +1,5 @@
 # API TRACKING DASHBOARD
+
 **DoganHubStore Enterprise - Complete API Inventory**
 
 ## ?? OVERVIEW STATISTICS
@@ -16,6 +17,7 @@
 ## ??? MODULE BREAKDOWN
 
 ### 1. Authentication & Authorization (5 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | POST /api/auth/[...nextauth] | ? | Login Page | app/api/auth/[...nextauth]/route.ts |
@@ -29,6 +31,7 @@
 ---
 
 ### 2. Analytics & KPIs (10 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/analytics/kpis/business | ? | **BusinessKpiDashboard** | app/api/analytics/kpis/business/route.ts |
@@ -45,6 +48,7 @@
 **Tables**: `transactions`, `users`, `organizations`, `audit_logs`, `contacts`, `deals`
 
 **Connected UI**:
+
 - `app/dashboard/components/BusinessKpiDashboard.tsx` ? **Main KPI Consumer**
 - `app/analytics/customers/page.tsx`
 - `app/analytics/financial/page.tsx`
@@ -53,6 +57,7 @@
 ---
 
 ### 3. Reports Module (9 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/reports/templates | ? | **Report Builder Step 1** | app/api/reports/templates/route.ts |
@@ -68,6 +73,7 @@
 **Tables**: `custom_reports`, plus varies by template (users, transactions, audit_logs, organizations)
 
 **Connected UI**:
+
 - `app/reports/builder/components/ReportBuilderForm.tsx` ? **Main Report Builder**
 - `app/reports/[reportId]/components/ReportViewer.tsx` ? **Main Report Viewer**
 - `app/reports/builder/page.tsx`
@@ -77,6 +83,7 @@
 ---
 
 ### 4. Finance Module (13 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/finance/invoices | ? | **Financial Hub** | app/api/finance/invoices/route.ts |
@@ -96,6 +103,7 @@
 **Tables**: `invoices`, `invoice_line_items`, `chart_of_accounts`, `budgets`, `transactions`, `journal_entries`, `deals`, `payments`
 
 **Connected UI**:
+
 - `app/finance/hub/components/FinancialHubClient.tsx` ? **Main Finance UI**
 - `app/finance/invoices/[id]/page.tsx`
 - `app/finance/accounts/page.tsx`
@@ -105,6 +113,7 @@
 ---
 
 ### 5. CRM Module (11 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/crm/contacts | ? | Contacts List | app/api/crm/contacts/route.ts |
@@ -122,6 +131,7 @@
 **Tables**: `contacts`, `deals`, `quotes`, `quote_line_items`, `activities`, `customers`
 
 **Connected UI**:
+
 - `app/crm/pipeline/components/PipelineBoard.tsx` ? **Main CRM UI (Kanban)**
 - `app/crm/contacts/page.tsx`
 - `app/crm/deals/page.tsx`
@@ -130,6 +140,7 @@
 ---
 
 ### 6. Billing & Licensing (9 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/billing/plans | ? | Pricing Page | app/api/billing/plans/route.ts |
@@ -145,6 +156,7 @@
 **Tables**: `subscriptions`, `licenses`, `license_usage_logs`
 
 **Connected UI**:
+
 - `hooks/useLicensedDashboard.ts` ? **Main License Hook (used everywhere)**
 - `app/billing/pricing/page.tsx`
 - `app/billing/activate/page.tsx`
@@ -153,6 +165,7 @@
 ---
 
 ### 7. GRC (Governance, Risk, Compliance) (11 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/grc/controls | ? | Controls List | app/api/grc/controls/route.ts |
@@ -170,6 +183,7 @@
 **Tables**: `grc_controls`, `grc_frameworks`, `grc_framework_sections`, `grc_tests`, `grc_test_results`, `grc_exceptions`, `grc_alerts`
 
 **Connected UI**:
+
 - `app/grc/controls/page.tsx`
 - `app/grc/frameworks/page.tsx`
 - `app/grc/tests/page.tsx`
@@ -178,6 +192,7 @@
 ---
 
 ### 8. HR Module (6 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/hr/employees | ? | Employee List | app/api/hr/employees/route.ts |
@@ -190,6 +205,7 @@
 **Tables**: `employees`, `attendance_records`, `payroll_records`
 
 **Connected UI**:
+
 - `app/hr/employees/page.tsx`
 - `app/hr/attendance/page.tsx`
 - `app/hr/payroll/page.tsx`
@@ -197,6 +213,7 @@
 ---
 
 ### 9. Dashboard & Stats (3 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/dashboard/stats | ? | **Main Dashboard** | app/api/dashboard/stats/route.ts |
@@ -206,12 +223,14 @@
 **Tables**: Multiple aggregated tables, `audit_logs`, `activities`, `user_preferences`
 
 **Connected UI**:
+
 - `app/dashboard/page.tsx` ? **Main Dashboard Page**
 - `app/dashboard/components/ActivityFeed.tsx`
 
 ---
 
 ### 10. AI & Agents (5 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | POST /api/ai-agents | ? | AI Assistant | app/api/ai-agents/route.ts |
@@ -223,6 +242,7 @@
 **Tables**: `agent_execution_logs`, `transactions`, `invoices`, `ai_configurations`
 
 **Connected UI**:
+
 - `app/components/AIAssistant.tsx`
 - `app/admin/monitoring/page.tsx`
 - `app/tools/content-generator/page.tsx`
@@ -230,6 +250,7 @@
 ---
 
 ### 11. Integrations & Webhooks (3 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/integrations/webhooks | ? | Webhooks List | app/api/integrations/webhooks/route.ts |
@@ -239,12 +260,14 @@
 **Tables**: `webhooks`
 
 **Connected UI**:
+
 - `app/integrations/webhooks/page.tsx`
 - `app/integrations/webhooks/create/page.tsx`
 
 ---
 
 ### 12. Themes & White-Label (2 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/themes/[organizationId] | ? | **All Pages (Global)** | app/api/themes/[organizationId]/route.ts |
@@ -253,12 +276,14 @@
 **Tables**: `organization_themes`
 
 **Connected UI**:
+
 - `app/layout.tsx` (ThemeProvider) ? **GLOBAL**
 - `app/settings/theme/page.tsx`
 
 ---
 
 ### 13. Workflows (3 APIs)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/workflows | ? | Workflows List | app/api/workflows/route.ts |
@@ -268,6 +293,7 @@
 **Tables**: `workflows`, `workflow_executions`
 
 **Connected UI**:
+
 - `app/workflows/page.tsx`
 - `app/workflows/create/page.tsx`
 - `app/workflows/[id]/page.tsx`
@@ -275,6 +301,7 @@
 ---
 
 ### 14. Platform Management (1 API)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | GET /api/platform/owner-permissions | ? | Admin Dashboard | app/api/platform/owner-permissions/route.ts |
@@ -282,11 +309,13 @@
 **Tables**: `permissions`, `roles`
 
 **Connected UI**:
+
 - `app/admin/permissions/page.tsx`
 
 ---
 
 ### 15. Payment (1 API)
+
 | API | DB | UI Component | File |
 |-----|----|--------------| |
 | POST /api/payment | ? | Payment Form | app/api/payment/route.ts |
@@ -294,15 +323,17 @@
 **Tables**: `transactions`, `payments`
 
 **Connected UI**:
+
 - `app/payments/checkout/page.tsx`
 
 ---
 
 ## ?? KEY API-TO-UI MAPPINGS
 
-### Most Important Connections:
+### Most Important Connections
 
 #### 1. **Dashboard Ecosystem**
+
 ```
 /api/analytics/kpis/business
   ?
@@ -312,6 +343,7 @@ app/dashboard/page.tsx
 ```
 
 #### 2. **Report Builder Flow**
+
 ```
 /api/reports/templates (Step 1: Select Template)
   ?
@@ -326,6 +358,7 @@ app/reports/[reportId]/components/ReportViewer.tsx
 ```
 
 #### 3. **CRM Pipeline**
+
 ```
 /api/crm/pipeline (Load)
   ?
@@ -335,6 +368,7 @@ app/crm/pipeline/components/PipelineBoard.tsx
 ```
 
 #### 4. **Finance Hub**
+
 ```
 /api/finance/invoices (Load)
 /api/crm/deals (Load)
@@ -343,6 +377,7 @@ app/finance/hub/components/FinancialHubClient.tsx
 ```
 
 #### 5. **License System (Global)**
+
 ```
 /api/license/check
   ?
@@ -355,17 +390,20 @@ ALL Protected Components
 
 ## ?? FILE LOCATIONS
 
-### API Routes:
+### API Routes
+
 - All in `app/api/` directory
 - Follow Next.js 13+ App Router pattern
 - Each route.ts exports GET, POST, PUT, DELETE handlers
 
-### UI Components:
+### UI Components
+
 - Pages: `app/[module]/page.tsx`
 - Components: `app/[module]/components/`
 - Hooks: `hooks/`
 
-### Services:
+### Services
+
 - `Services/AI/` - AI & Analytics engines
 - `Services/Security/` - Authorization
 - `Services/Reports/` - Query builder
@@ -379,13 +417,15 @@ ALL Protected Components
 
 ## ?? QUICK REFERENCE
 
-### To add a new API:
+### To add a new API
+
 1. Create `app/api/[module]/[endpoint]/route.ts`
 2. Add to this tracking table
 3. Create UI component in `app/[module]/components/`
 4. Update `API_MASTER_TRACKING_TABLE.csv`
 
-### To find API usage:
+### To find API usage
+
 1. Search `API_MASTER_TRACKING_TABLE.csv` for endpoint
 2. Check UI_File_Path column for consuming component
 3. Check File_Path column for API implementation

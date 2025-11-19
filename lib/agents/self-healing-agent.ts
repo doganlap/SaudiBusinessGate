@@ -36,6 +36,7 @@ class SelfHealingAgent {
   // تشغيل الوكيل الذاتي
   async startSelfHealing(): Promise<void> {
     if (this.isRunning) return;
+    if (process.env.NODE_ENV === 'production') return;
     
     this.isRunning = true;
     console.log('🤖 Self-Healing Agent Started');

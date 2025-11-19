@@ -13,17 +13,20 @@ This guide will help you configure real Stripe keys and deploy the billing servi
 ## 🔑 Step 1: Stripe Account Setup
 
 ### 1.1 Create Stripe Account
+
 1. Go to [https://stripe.com](https://stripe.com)
 2. Sign up for a new account
 3. Complete business verification
 4. Enable live mode
 
 ### 1.2 Get API Keys
+
 1. Go to **Developers > API keys** in Stripe Dashboard
 2. Copy your **Publishable key** (starts with `pk_live_`)
 3. Copy your **Secret key** (starts with `sk_live_`)
 
 ### 1.3 Create Products and Prices
+
 ```bash
 # Using Stripe CLI (recommended)
 stripe products create --name="Basic Plan" --description="Up to 5 users with basic features"
@@ -39,6 +42,7 @@ stripe prices create --product=prod_xxx --unit-amount=29900 --currency=usd --rec
 ## 🔧 Step 2: Environment Configuration
 
 ### 2.1 Update Production .env
+
 ```bash
 # Server Configuration
 PORT=3001
@@ -81,6 +85,7 @@ LOG_LEVEL=info
 ```
 
 ### 2.2 Secure Environment Variables
+
 ```bash
 # Using Azure Key Vault (recommended)
 az keyvault secret set --vault-name "your-keyvault" --name "stripe-secret-key" --value "sk_live_..."
@@ -95,10 +100,12 @@ aws secretsmanager create-secret --name "doganhub/billing/webhook-secret" --secr
 ## 🌐 Step 3: Webhook Configuration
 
 ### 3.1 Create Webhook Endpoint
+
 1. Go to **Developers > Webhooks** in Stripe Dashboard
 2. Click **Add endpoint**
 3. Set URL: `https://yourdomain.com/webhooks/stripe`
 4. Select events to listen for:
+
    ```
    ✅ customer.created
    ✅ customer.updated
@@ -112,11 +119,13 @@ aws secretsmanager create-secret --name "doganhub/billing/webhook-secret" --secr
    ```
 
 ### 3.2 Get Webhook Secret
+
 1. Click on your webhook endpoint
 2. Copy the **Signing secret** (starts with `whsec_`)
 3. Add to your environment variables
 
 ### 3.3 Test Webhook
+
 ```bash
 # Using Stripe CLI
 stripe listen --forward-to localhost:3001/webhooks/stripe
@@ -126,6 +135,7 @@ stripe trigger customer.created
 ## 🗄️ Step 4: Database Setup
 
 ### 4.1 Create Production Database
+
 ```sql
 -- Create database
 CREATE DATABASE doganhub_billing;
@@ -141,12 +151,14 @@ GRANT ALL PRIVILEGES ON DATABASE doganhub_billing TO billing_user;
 ```
 
 ### 4.2 Run Migrations
+
 ```bash
 cd Services/Billing
 npm run migrate:prod
 ```
 
 ### 4.3 Database Schema
+
 ```sql
 -- Billing customers table
 CREATE TABLE billing_customers (
@@ -232,6 +244,7 @@ CREATE INDEX idx_billing_events_type ON billing_events(event_type);
 ## 🚀 Step 5: Deployment
 
 ### 5.1 Docker Production Build
+
 ```dockerfile
 # Dockerfile.production
 FROM node:18-alpine
@@ -260,6 +273,7 @@ CMD ["npm", "start"]
 ```
 
 ### 5.2 Build and Deploy
+
 ```bash
 # Build production image
 docker build -f Dockerfile.production -t doganhub-billing:latest .
@@ -273,6 +287,7 @@ docker run -d \
 ```
 
 ### 5.3 Kubernetes Deployment
+
 ```yaml
 # k8s-deployment.yaml
 apiVersion: apps/v1
@@ -331,6 +346,7 @@ spec:
 ## 🔒 Step 6: Security Checklist
 
 ### 6.1 Environment Security
+
 - [ ] All secrets stored in secure vault (Azure Key Vault, AWS Secrets Manager)
 - [ ] No hardcoded credentials in code
 - [ ] Environment variables validated on startup
@@ -338,6 +354,7 @@ spec:
 - [ ] JWT secrets are cryptographically secure (32+ characters)
 
 ### 6.2 API Security
+
 - [ ] HTTPS enforced for all endpoints
 - [ ] CORS configured for specific domains
 - [ ] Rate limiting implemented
@@ -346,6 +363,7 @@ spec:
 - [ ] SQL injection protection (parameterized queries)
 
 ### 6.3 Monitoring & Logging
+
 - [ ] Application logs configured
 - [ ] Error tracking (Sentry, Bugsnag)
 - [ ] Performance monitoring (New Relic, DataDog)
@@ -356,6 +374,7 @@ spec:
 ## 🧪 Step 7: Testing Production Setup
 
 ### 7.1 Test API Endpoints
+
 ```bash
 # Health check
 curl https://yourdomain.com/api/health
@@ -369,6 +388,7 @@ stripe trigger checkout.session.completed
 ```
 
 ### 7.2 Test Payment Flow
+
 1. Create test checkout session
 2. Complete payment with test card: `4242 4242 4242 4242`
 3. Verify webhook received
@@ -376,6 +396,7 @@ stripe trigger checkout.session.completed
 5. Test billing portal access
 
 ### 7.3 Load Testing
+
 ```bash
 # Using Apache Bench
 ab -n 1000 -c 10 https://yourdomain.com/api/billing/plans
@@ -387,6 +408,7 @@ artillery run load-test.yml
 ## 📊 Step 8: Monitoring & Maintenance
 
 ### 8.1 Key Metrics to Monitor
+
 - API response times
 - Database connection pool usage
 - Webhook processing success rate
@@ -395,6 +417,7 @@ artillery run load-test.yml
 - Revenue metrics
 
 ### 8.2 Alerts to Set Up
+
 - Service downtime
 - Database connection failures
 - Webhook processing failures
@@ -403,6 +426,7 @@ artillery run load-test.yml
 - Security events
 
 ### 8.3 Regular Maintenance
+
 - [ ] Update dependencies monthly
 - [ ] Review security logs weekly
 - [ ] Monitor Stripe dashboard daily
@@ -412,6 +436,7 @@ artillery run load-test.yml
 ## 🆘 Troubleshooting
 
 ### Common Issues
+
 1. **Webhook not receiving events**
    - Check webhook URL is accessible
    - Verify SSL certificate
@@ -428,6 +453,7 @@ artillery run load-test.yml
    - Review webhook events
 
 ### Support Resources
+
 - [Stripe Documentation](https://stripe.com/docs)
 - [Stripe Support](https://support.stripe.com)
 - [DoganHub Billing Service Logs](./logs/)

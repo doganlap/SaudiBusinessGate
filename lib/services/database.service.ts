@@ -70,35 +70,50 @@ export interface JobEvent {
 }
 
 export class DatabaseService {
-  private pool: any;
+  private pool: any = null;
 
-  constructor() {
-    this.pool = this.initializeConnectionPool();
+  /**
+   * Get connection pool (lazy initialization)
+   */
+  private getPoolInstance(): any {
+    if (!this.pool) {
+      // Import the real database connection
+      const { getPool } = require('@/lib/db/connection');
+      this.pool = getPool();
+    }
+    return this.pool;
   }
 
   /**
-   * Initialize database connection pool
+   * Execute database query
    */
-  private initializeConnectionPool(): any {
-    // Mock connection pool - in production use actual database connection
-    return {
-      query: async (sql: string, params?: any[]) => {
-        console.log('Database query:', sql, params);
-        return { rows: [], rowCount: 0 };
-      }
-    };
+  public async query(sql: string, params?: any[]): Promise<any> {
+    const pool = this.getPoolInstance();
+    return pool.query(sql, params);
   }
 
+  /**
+   * Begin transaction
+   */
   public async beginTransaction(): Promise<void> {
-    await this.pool.query('BEGIN');
+    const pool = this.getPoolInstance();
+    await pool.query('BEGIN');
   }
 
+  /**
+   * Commit transaction
+   */
   public async commitTransaction(): Promise<void> {
-    await this.pool.query('COMMIT');
+    const pool = this.getPoolInstance();
+    await pool.query('COMMIT');
   }
 
+  /**
+   * Rollback transaction
+   */
   public async rollbackTransaction(): Promise<void> {
-    await this.pool.query('ROLLBACK');
+    const pool = this.getPoolInstance();
+    await pool.query('ROLLBACK');
   }
 
   /**
@@ -122,7 +137,7 @@ export class DatabaseService {
         new Date()
       ];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log(`Logged job execution: ${execution.jobName} - ${execution.status}`);
     } catch (error) {
       console.error('Failed to log job execution:', error);
@@ -149,7 +164,7 @@ export class DatabaseService {
         new Date()
       ];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log(`Logged license event: ${event.eventType} for license ${event.licenseId}`);
     } catch (error) {
       console.error('Failed to log license event:', error);
@@ -175,7 +190,7 @@ export class DatabaseService {
         new Date()
       ];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log(`Logged system event: ${event.eventType}`);
     } catch (error) {
       console.error('Failed to log system event:', error);
@@ -209,7 +224,7 @@ export class DatabaseService {
         config.createdAt
       ];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log(`Stored cron job config: ${config.name}`);
     } catch (error) {
       console.error('Failed to store cron job config:', error);
@@ -238,7 +253,7 @@ export class DatabaseService {
         aggregation.createdAt
       ];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log(`Stored usage aggregation for tenant ${aggregation.tenantId}`);
     } catch (error) {
       console.error('Failed to store usage aggregation:', error);
@@ -259,7 +274,7 @@ export class DatabaseService {
 
       const values = [licenseId, reminderType, sentAt, new Date()];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log(`Updated reminder status for license ${licenseId}: ${reminderType}`);
     } catch (error) {
       console.error('Failed to update reminder status:', error);
@@ -287,7 +302,7 @@ export class DatabaseService {
         new Date()
       ];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log(`Logged compliance check for license ${check.licenseId}`);
     } catch (error) {
       console.error('Failed to log compliance check:', error);
@@ -314,7 +329,7 @@ export class DatabaseService {
         new Date()
       ];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log('Stored weekly usage report');
     } catch (error) {
       console.error('Failed to store weekly report:', error);
@@ -340,7 +355,7 @@ export class DatabaseService {
         event.timestamp || new Date()
       ];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log(`Logged billing event for tenant ${event.tenantId}: ${event.eventType}`);
     } catch (error) {
       console.error('Failed to log billing event:', error);
@@ -367,7 +382,7 @@ export class DatabaseService {
         new Date()
       ];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log('Stored health check result');
     } catch (error) {
       console.error('Failed to store health check result:', error);
@@ -388,7 +403,7 @@ export class DatabaseService {
 
       const values = [event.jobName, event.eventType, event.timestamp, new Date()];
 
-      await this.pool.query(query, values);
+      await this.getPoolInstance().query(query, values);
       console.log(`Logged job event: ${event.eventType} for ${event.jobName}`);
     } catch (error) {
       console.error('Failed to log job event:', error);
@@ -408,7 +423,7 @@ export class DatabaseService {
         LIMIT $2
       `;
 
-      const result = await this.pool.query(query, [jobName, limit]);
+      const result = await this.getPoolInstance().query(query, [jobName, limit]);
       return result.rows;
     } catch (error) {
       console.error('Failed to get job execution history:', error);
@@ -433,7 +448,7 @@ export class DatabaseService {
         WHERE start_time >= NOW() - INTERVAL '24 hours'
       `;
 
-      const result = await this.pool.query(metricsQuery);
+      const result = await this.getPoolInstance().query(metricsQuery);
       return result.rows[0] || {};
     } catch (error) {
       console.error('Failed to get cron job metrics:', error);
@@ -467,7 +482,7 @@ export class DatabaseService {
       ];
 
       for (const cleanup of cleanupQueries) {
-        const result = await this.pool.query(cleanup.query);
+        const result = await this.getPoolInstance().query(cleanup.query);
         console.log(`Cleaned up ${result.rowCount} old records from ${cleanup.name}`);
       }
 
@@ -482,7 +497,7 @@ export class DatabaseService {
    */
   public async getConnectionStatus(): Promise<boolean> {
     try {
-      await this.pool.query('SELECT 1');
+      await this.getPoolInstance().query('SELECT 1');
       return true;
     } catch (error) {
       console.error('Database connection failed:', error);
@@ -511,7 +526,7 @@ export class DatabaseService {
   public async getStripeCustomer(tenantId: string): Promise<any> {
     try {
       const query = `SELECT * FROM stripe_customers WHERE tenant_id = $1`;
-      const result = await this.pool.query(query, [tenantId]);
+      const result = await this.getPoolInstance().query(query, [tenantId]);
       return result.rows[0] || null;
     } catch (error) {
       console.error('Failed to get Stripe customer:', error);
@@ -525,7 +540,7 @@ export class DatabaseService {
   public async getTenant(tenantId: string): Promise<any> {
     try {
       const query = `SELECT * FROM tenants WHERE id = $1`;
-      const result = await this.pool.query(query, [tenantId]);
+      const result = await this.getPoolInstance().query(query, [tenantId]);
       return result.rows[0] || null;
     } catch (error) {
       console.error('Failed to get tenant:', error);
@@ -538,6 +553,7 @@ export class DatabaseService {
    */
   public async saveStripeCustomer(tenantId: string, customerId: string): Promise<void> {
     try {
+      const pool = this.getPoolInstance();
       const query = `
         INSERT INTO stripe_customers (tenant_id, customer_id, created_at)
         VALUES ($1, $2, $3)
@@ -545,7 +561,7 @@ export class DatabaseService {
           customer_id = EXCLUDED.customer_id,
           updated_at = CURRENT_TIMESTAMP
       `;
-      await this.pool.query(query, [tenantId, customerId, new Date()]);
+      await pool.query(query, [tenantId, customerId, new Date()]);
       console.log(`Saved Stripe customer for tenant ${tenantId}`);
     } catch (error) {
       console.error('Failed to save Stripe customer:', error);
@@ -554,55 +570,11 @@ export class DatabaseService {
   }
 
   /**
-   * Begin transaction
-   */
-  public async beginTransaction(): Promise<void> {
-    try {
-      await this.pool.query('BEGIN');
-      console.log('Transaction begun');
-    } catch (error) {
-      console.error('Failed to begin transaction:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Commit transaction
-   */
-  public async commitTransaction(): Promise<void> {
-    try {
-      await this.pool.query('COMMIT');
-      console.log('Transaction committed');
-    } catch (error) {
-      console.error('Failed to commit transaction:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Rollback transaction
-   */
-  public async rollbackTransaction(): Promise<void> {
-    try {
-      await this.pool.query('ROLLBACK');
-      console.log('Transaction rolled back');
-    } catch (error) {
-      console.error('Failed to rollback transaction:', error);
-      throw error;
-    }
-  }
-
-  /**
    * Static method to get connection pool
    */
   public static getPool(): any {
-    // This is a mock implementation
-    return {
-      query: async (sql: string, params?: any[]) => {
-        console.log('Database query:', sql, params);
-        return { rows: [], rowCount: 0 };
-      }
-    };
+    const { getPool } = require('@/lib/db/connection');
+    return getPool();
   }
 
   /**
@@ -610,6 +582,16 @@ export class DatabaseService {
    */
   public static async closePool(): Promise<void> {
     console.log('Database connection pool closed');
+  }
+
+  public static async testConnection(): Promise<boolean> {
+    const { testConnection } = require('@/lib/db/connection');
+    return testConnection();
+  }
+
+  public static async transaction<T>(callback: (client: any) => Promise<T>): Promise<T> {
+    const { transaction } = require('@/lib/db/connection');
+    return transaction(callback);
   }
 
   /**
@@ -625,7 +607,7 @@ export class DatabaseService {
         ORDER BY l.created_at DESC 
         LIMIT 1
       `;
-      const result = await this.pool.query(query, [tenantId]);
+      const result = await this.getPoolInstance().query(query, [tenantId]);
       return result.rows[0] || null;
     } catch (error) {
       console.error('Failed to get current license:', error);
@@ -646,7 +628,7 @@ export class DatabaseService {
         FROM daily_usage_aggregations 
         WHERE tenant_id = $1 AND usage_date >= $2 AND usage_date <= $3
       `;
-      const result = await this.pool.query(query, [tenantId, period.start, period.end]);
+      const result = await this.getPoolInstance().query(query, [tenantId, period.start, period.end]);
       return result.rows[0] || { total_users: 0, total_storage: 0, total_api_calls: 0 };
     } catch (error) {
       console.error('Failed to get usage for period:', error);

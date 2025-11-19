@@ -84,11 +84,13 @@ export default function MyPage() {
 The animated background wrapper with gradient and floating blobs.
 
 **Props:**
+
 - `children` (React.ReactNode) - Content to display
 - `className?` (string) - Additional CSS classes
 - `dir?` ('ltr' | 'rtl') - Text direction (default: 'ltr')
 
 **Example:**
+
 ```typescript
 <GlassBackground dir="rtl">
   {/* Your content */}
@@ -102,11 +104,13 @@ The animated background wrapper with gradient and floating blobs.
 A glass card container with backdrop blur effect.
 
 **Props:**
+
 - `children` (React.ReactNode) - Content to display
 - `className?` (string) - Additional CSS classes
 - `padding?` ('sm' | 'md' | 'lg') - Padding size (default: 'md')
 
 **Example:**
+
 ```typescript
 <GlassContainer padding="lg">
   <h2>Content here</h2>
@@ -114,6 +118,7 @@ A glass card container with backdrop blur effect.
 ```
 
 **Padding Sizes:**
+
 - `sm` - Small padding (p-4)
 - `md` - Medium padding (p-6) - Default
 - `lg` - Large padding (p-8)
@@ -125,6 +130,7 @@ A glass card container with backdrop blur effect.
 A glass-styled input field with optional icon.
 
 **Props:**
+
 - All standard HTML input props
 - `icon?` (React.ReactNode) - Icon to display
 - `iconPosition?` ('left' | 'right') - Icon position (default: 'left')
@@ -132,6 +138,7 @@ A glass-styled input field with optional icon.
 - `className?` (string) - Additional CSS classes
 
 **Example:**
+
 ```typescript
 <GlassInput
   type="text"
@@ -144,6 +151,7 @@ A glass-styled input field with optional icon.
 ```
 
 **With Arabic/RTL:**
+
 ```typescript
 <GlassInput
   type="text"
@@ -162,11 +170,13 @@ A glass-styled input field with optional icon.
 A glass-styled button with variants.
 
 **Props:**
+
 - All standard HTML button props
 - `variant?` ('primary' | 'secondary' | 'success') - Button style (default: 'primary')
 - `className?` (string) - Additional CSS classes
 
 **Example:**
+
 ```typescript
 <GlassButton variant="primary" onClick={handleClick}>
   Click Me
@@ -182,6 +192,7 @@ A glass-styled button with variants.
 ```
 
 **Variants:**
+
 - `primary` - White/30 background with white/40 hover
 - `secondary` - White/20 background with white/30 hover
 - `success` - Green/30 background with green/40 hover
@@ -297,6 +308,7 @@ You can override colors by adding custom classes:
 ### Text Colors
 
 Always use white text with appropriate opacity:
+
 - `text-white` - Main text
 - `text-white/90` - Slightly transparent
 - `text-white/80` - More transparent
@@ -305,6 +317,7 @@ Always use white text with appropriate opacity:
 ### Shadows
 
 Add drop shadows for depth:
+
 ```typescript
 <h1 className="text-3xl font-bold text-white drop-shadow-lg">
   Title
@@ -323,6 +336,7 @@ For Arabic/RTL support:
 4. Adjust margins/padding with RTL-aware classes
 
 **Example:**
+
 ```typescript
 <GlassBackground dir="rtl">
   <GlassInput
@@ -360,6 +374,7 @@ export default function HybridCard() {
 ### Custom Animations
 
 The background includes automatic animations:
+
 - Gradient animation (15s loop)
 - Blob animations (3 floating blobs)
 
@@ -381,15 +396,19 @@ No additional setup needed!
 ## 🐛 Troubleshooting
 
 ### Issue: Text not visible
+
 **Solution:** Ensure you're using white text colors (`text-white`, `text-white/90`, etc.)
 
 ### Issue: Icons not aligned
+
 **Solution:** Check `iconPosition` matches your `isArabic` setting
 
 ### Issue: Background not animating
+
 **Solution:** Ensure `GlassBackground` is the outermost wrapper
 
 ### Issue: RTL not working
+
 **Solution:** Set `dir="rtl"` on `GlassBackground` and `isArabic={true}` on inputs
 
 ---
@@ -405,6 +424,7 @@ No additional setup needed!
 ## ✅ Summary
 
 The glassmorphism components provide:
+
 - ✨ Modern, beautiful UI
 - 🌈 Animated backgrounds
 - 💎 Glass effect with blur
@@ -413,4 +433,3 @@ The glassmorphism components provide:
 - 🎨 Easy to customize
 
 Start using them in your pages today!
-

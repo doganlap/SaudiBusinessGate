@@ -39,7 +39,9 @@
 ## 🎯 Next Steps
 
 ### Immediate Actions (Phase 1 - Continue)
+
 Remove mock from remaining 30 pages with REST services:
+
 - system/DatabasePage.jsx (36 occurrences)
 - regulatory/SectorIntelligence.jsx (25 occurrences)
 - grc-modules/RiskManagementPage.jsx (19 occurrences)
@@ -47,9 +49,11 @@ Remove mock from remaining 30 pages with REST services:
 - ... and 26 more
 
 ### Phase 2: Implement REST for Mock-Only Pages
+
 21 pages need REST services first
 
 ### Phase 3: Remove Fallback Patterns
+
 6 pages with fallback patterns remaining
 
 ---
@@ -57,6 +61,7 @@ Remove mock from remaining 30 pages with REST services:
 ## 📋 Removal Pattern
 
 **Before:**
+
 ```javascript
 catch (error) {
   const mock = [{ id: 1, name: 'Test' }];
@@ -65,6 +70,7 @@ catch (error) {
 ```
 
 **After:**
+
 ```javascript
 catch (error) {
   console.error('Error:', error);
@@ -77,4 +83,3 @@ catch (error) {
 
 **Progress:** 3/54 pages completed (5.6%)  
 **Target:** 0/54 pages with mock data ✅
-

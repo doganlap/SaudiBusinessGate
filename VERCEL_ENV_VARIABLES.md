@@ -4,11 +4,12 @@
 
 The `vercel.json` file has database URLs, but you **MUST** add these in Vercel Dashboard:
 
-### Go to: https://vercel.com/dashboard → Your Project → Settings → Environment Variables
+### Go to: <https://vercel.com/dashboard> → Your Project → Settings → Environment Variables
 
 ## Required Variables
 
 ### 1. Authentication (CRITICAL)
+
 ```bash
 JWT_SECRET=fe9fd0e777a2e0d7560d38f99e7711551f45c071954765f194ae3c246a6aaee5
 NEXTAUTH_SECRET=yI0dfqt0DU6gs5bpSMesQOhzGjEFsDExG/mHx31g4tI=
@@ -18,12 +19,14 @@ NEXTAUTH_URL=https://your-project.vercel.app
 **Note:** After first deployment, update `NEXTAUTH_URL` with your actual Vercel URL.
 
 ### 2. Application URLs
+
 ```bash
 NEXT_PUBLIC_APP_URL=https://your-project.vercel.app
 NEXT_PUBLIC_API_URL=https://your-project.vercel.app/api
 ```
 
 ### 3. Database (Already in vercel.json, but verify)
+
 ```bash
 DATABASE_URL=postgres://f9b01b016f6065e1f9d62776a95e03ccb3773e35f2ba4d5ec6f6bbc1afaa2e46:sk_ZDb_YXE5HdKoY5VayB3tN@db.prisma.io:5432/postgres?sslmode=require
 POSTGRES_URL=postgres://f9b01b016f6065e1f9d62776a95e03ccb3773e35f2ba4d5ec6f6bbc1afaa2e46:sk_ZDb_YXE5HdKoY5VayB3tN@db.prisma.io:5432/postgres?sslmode=require
@@ -48,4 +51,3 @@ vercel --prod
 ---
 
 **Status:** ✅ **Configuration Updated - Ready to Deploy**
-

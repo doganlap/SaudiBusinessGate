@@ -101,9 +101,6 @@ export class NotificationService {
     }
   }
 
-  /**
-   * Send user limit warnings
-   */
   public async sendUserLimitWarning(tenantId: string, violationData: any): Promise<void> {
     try {
       const notification = {
@@ -114,8 +111,8 @@ export class NotificationService {
         data: violationData,
         timestamp: new Date()
       };
-
-      await this.sendNotification(notification);
+      await this.inAppNotificationService.sendNotification(notification);
+      await this.emailService.sendGenericNotification(notification);
       console.log(`User limit warning sent for tenant ${tenantId}`);
     } catch (error) {
       console.error('Failed to send user limit warning:', error);
@@ -123,9 +120,6 @@ export class NotificationService {
     }
   }
 
-  /**
-   * Send feature usage warnings
-   */
   public async sendFeatureUsageWarning(tenantId: string, violationData: any): Promise<void> {
     try {
       const notification = {
@@ -136,8 +130,8 @@ export class NotificationService {
         data: violationData,
         timestamp: new Date()
       };
-
-      await this.sendNotification(notification);
+      await this.inAppNotificationService.sendNotification(notification);
+      await this.emailService.sendGenericNotification(notification);
       console.log(`Feature usage warning sent for tenant ${tenantId}`);
     } catch (error) {
       console.error('Failed to send feature usage warning:', error);
@@ -145,9 +139,6 @@ export class NotificationService {
     }
   }
 
-  /**
-   * Send API limit warnings
-   */
   public async sendApiLimitWarning(tenantId: string, violationData: any): Promise<void> {
     try {
       const notification = {
@@ -158,8 +149,8 @@ export class NotificationService {
         data: violationData,
         timestamp: new Date()
       };
-
-      await this.sendNotification(notification);
+      await this.inAppNotificationService.sendNotification(notification);
+      await this.emailService.sendGenericNotification(notification);
       console.log(`API limit warning sent for tenant ${tenantId}`);
     } catch (error) {
       console.error('Failed to send API limit warning:', error);
@@ -167,9 +158,6 @@ export class NotificationService {
     }
   }
 
-  /**
-   * Send storage warnings
-   */
   public async sendStorageWarning(tenantId: string, violationData: any): Promise<void> {
     try {
       const notification = {
@@ -180,8 +168,8 @@ export class NotificationService {
         data: violationData,
         timestamp: new Date()
       };
-
-      await this.sendNotification(notification);
+      await this.inAppNotificationService.sendNotification(notification);
+      await this.emailService.sendGenericNotification(notification);
       console.log(`Storage warning sent for tenant ${tenantId}`);
     } catch (error) {
       console.error('Failed to send storage warning:', error);
@@ -212,17 +200,10 @@ export class NotificationService {
     }
   }
 
-  /**
-   * Send long-running job alerts
-   */
   public async sendJobLongRunningAlert(data: JobLongRunningAlert): Promise<void> {
     try {
-      // Send email alert
       await this.emailService.sendJobLongRunningAlert(data);
-
-      // Send in-app notification
       await this.inAppNotificationService.sendJobLongRunningAlert(data);
-
       console.log(`Long-running job alert sent for job ${data.jobName}`);
     } catch (error) {
       console.error('Failed to send long-running job alert:', error);
@@ -230,9 +211,6 @@ export class NotificationService {
     }
   }
 
-  /**
-   * Send recent failure alerts
-   */
   public async sendJobRecentFailureAlert(data: JobRecentFailureAlert): Promise<void> {
     try {
       const notification = {
@@ -242,7 +220,6 @@ export class NotificationService {
         data,
         timestamp: new Date()
       };
-
       await this.inAppNotificationService.sendSystemAlert(notification);
       console.log(`Recent failure alert sent for job ${data.jobName}`);
     } catch (error) {
@@ -252,37 +229,76 @@ export class NotificationService {
   }
 
   /**
-   * Generic notification sender
+   * Get notification history for a tenant
    */
-  private async sendNotification(notification: any): Promise<void> {
+  public async getNotificationHistory(tenantId: string, limit: number = 50): Promise<any[]> {
     try {
-      // Send email if severity is warning or higher
-      if (['warning', 'error', 'critical'].includes(notification.severity)) {
-        await this.emailService.sendGenericNotification(notification);
-      }
-
-      // Always send in-app notification
-      await this.inAppNotificationService.sendNotification(notification);
-
-      // Send webhook if configured
-      if (notification.tenantId && await this.hasWebhookConfigured(notification.tenantId, notification.type)) {
-        await this.webhookService.sendGenericWebhook(notification);
-      }
-
-      // Log notification
-      await this.logNotification(notification);
-
+      const { query } = require('@/lib/db/connection');
+      const result = await query(
+        `SELECT id, type, message, severity, data, created_at, read_at 
+         FROM notifications 
+         WHERE tenant_id = $1 
+         ORDER BY created_at DESC 
+         LIMIT $2`,
+        [tenantId, limit]
+      );
+      return result.rows;
     } catch (error) {
-      console.error('Failed to send notification:', error);
-      throw error;
+      console.error('Failed to get notification history:', error);
+      return [];
     }
   }
 
   /**
-   * Initialize services
+   * Mark notification as read
+   */
+  public async markNotificationAsRead(notificationId: string): Promise<void> {
+    try {
+      const { query } = require('@/lib/db/connection');
+      await query(
+        'UPDATE notifications SET read_at = NOW() WHERE id = $1',
+        [notificationId]
+      );
+      console.log(`Marked notification ${notificationId} as read`);
+    } catch (error) {
+      console.error('Failed to mark notification as read:', error);
+    }
+  }
+
+  /**
+   * Check if tenant has webhook configured for specific event type
+   */
+  private async hasWebhookConfigured(tenantId: string, eventType: string): Promise<boolean> {
+    try {
+      const { query } = require('@/lib/db/connection');
+      const result = await query(
+        'SELECT webhook_url FROM tenant_webhook_configs WHERE tenant_id = $1 AND event_type = $2 AND is_active = true',
+        [tenantId, eventType]
+      );
+      return result.rows.length > 0;
+    } catch (error) {
+      console.error('Failed to check webhook configuration:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Check if job is critical
+   */
+  private isCriticalJob(jobName: string): boolean {
+    const criticalJobs = [
+      'license-expiry-check',
+      'monthly-billing-cycle',
+      'license-compliance-check',
+      'license-status-sync'
+    ];
+    return criticalJobs.includes(jobName);
+  }
+
+  /**
+   * Initialize email service
    */
   private initializeEmailService(): any {
-    // Return email service instance
     return {
       sendLicenseExpiryAlert: async (data: any) => console.log('Email: License expiry alert', data),
       sendUsageWarnings: async (data: any) => console.log('Email: Usage warnings', data),
@@ -292,8 +308,10 @@ export class NotificationService {
     };
   }
 
+  /**
+   * Initialize Slack service
+   */
   private initializeSlackService(): any {
-    // Initialize Slack service
     const webhookUrl = process.env.SLACK_WEBHOOK_URL;
     
     if (!webhookUrl) {
@@ -310,6 +328,9 @@ export class NotificationService {
     };
   }
 
+  /**
+   * Initialize webhook service
+   */
   private initializeWebhookService(): any {
     return {
       sendLicenseExpiryWebhook: async (data: any) => {
@@ -318,12 +339,12 @@ export class NotificationService {
       sendUsageWarningsWebhook: async (data: any) => {
         console.log('Webhook: Usage warnings', data);
       },
-      sendGenericWebhook: async (data: any) => {
-        console.log('Webhook: Generic notification', data);
-      }
     };
   }
 
+  /**
+   * Initialize in-app notification service
+   */
   private initializeInAppNotificationService(): any {
     return {
       sendLicenseExpiryNotification: async (data: any) => {
@@ -345,119 +366,6 @@ export class NotificationService {
         console.log('In-app: Generic notification', data);
       }
     };
-  }
-
-  /**
-   * Helper methods
-   */
-  private async hasWebhookConfigured(tenantId: string, eventType: string): Promise<boolean> {
-    // Check if tenant has webhook configured for specific event type
-    return false; // Mock implementation
-  }
-
-  private isCriticalJob(jobName: string): boolean {
-    const criticalJobs = [
-      'license-expiry-check',
-      'monthly-billing-cycle',
-      'license-compliance-check',
-      'license-status-sync'
-    ];
-    return criticalJobs.includes(jobName);
-  }
-
-  private async logNotification(notification: any): Promise<void> {
-    // Log notification for audit trail
-    console.log('Notification logged:', {
-      type: notification.type,
-      severity: notification.severity,
-      timestamp: notification.timestamp
-    });
-  }
-
-  /**
-   * Notification preferences management
-   */
-  public async updateNotificationPreferences(tenantId: string, preferences: any): Promise<void> {
-    // Update notification preferences for a tenant
-    console.log(`Updated notification preferences for tenant ${tenantId}`, preferences);
-  }
-
-  public async getNotificationPreferences(tenantId: string): Promise<any> {
-    // Get notification preferences for a tenant
-    return {
-      email: true,
-      inApp: true,
-      webhook: false,
-      sms: false
-    };
-  }
-
-  /**
-   * Notification history and tracking
-   */
-  public async getNotificationHistory(tenantId: string, limit: number = 50): Promise<any[]> {
-    // Get notification history for a tenant
-    return []; // Mock implementation
-  }
-
-  public async markNotificationAsRead(notificationId: string): Promise<void> {
-    // Mark notification as read
-    console.log(`Marked notification ${notificationId} as read`);
-  }
-
-  /**
-   * Bulk notification operations
-   */
-  public async sendBulkNotification(tenantIds: string[], notification: any): Promise<void> {
-    // Send notification to multiple tenants
-    for (const tenantId of tenantIds) {
-      await this.sendNotification({ ...notification, tenantId });
-    }
-  }
-
-  public async scheduleNotification(notification: any, scheduleTime: Date): Promise<string> {
-    // Schedule a notification for future delivery
-    const notificationId = `scheduled_${Date.now()}`;
-    console.log(`Scheduled notification ${notificationId} for ${scheduleTime}`);
-    return notificationId;
-  }
-
-  public async cancelScheduledNotification(notificationId: string): Promise<void> {
-    // Cancel a scheduled notification
-    console.log(`Cancelled scheduled notification ${notificationId}`);
-  }
-
-  /**
-   * Send general alert
-   */
-  public async sendAlert(alert: {
-    tenantId: string;
-    type: string;
-    title: string;
-    message: string;
-    data?: any;
-  }): Promise<void> {
-    try {
-      const { tenantId, type, title, message, data } = alert;
-      
-      // Send email notification
-      await this.emailService.send({
-        to: `admin@${tenantId}.com`, // This should be replaced with actual admin email
-        subject: title,
-        text: message,
-        html: `<h3>${title}</h3><p>${message}</p>`
-      });
-      
-      // Log the alert
-      console.log(`Alert sent to tenant ${tenantId}: ${type} - ${title}`);
-      
-      // Store in database for audit
-      // This would typically be stored in a notifications/alerts table
-      
-    } catch (error) {
-      console.error('Failed to send alert:', error);
-      throw error;
-    }
   }
 }
 

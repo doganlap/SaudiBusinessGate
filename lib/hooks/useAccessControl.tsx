@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import { AccessControlService, type AccessCheckResult } from '@/lib/services/access-control.service';
 
@@ -187,13 +187,13 @@ export function PermissionGuard({
   }, [access, permission, resourceType, resourceId]);
 
   if (access.isLoading || hasAccess === null) {
-    return <>{fallback}</>;
+    return <React.Fragment>{fallback}</React.Fragment>;
   }
 
   if (!hasAccess) {
-    return <>{fallback}</>;
+    return <React.Fragment>{fallback}</React.Fragment>;
   }
 
-  return <>{children}</>;
+  return <React.Fragment>{children}</React.Fragment>;
 }
 

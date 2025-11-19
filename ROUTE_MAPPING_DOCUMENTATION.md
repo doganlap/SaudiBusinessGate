@@ -9,6 +9,7 @@ This document maps all routes to their respective routing systems and identifies
 ## 📍 React Router Routes (`apps/web/src/App.jsx`)
 
 ### Public Routes
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/` | Redirect to `/app` or external | ✅ Active | `app/page.tsx` (redirects to `/[lng]`) |
@@ -20,6 +21,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/home` | External redirect | ✅ Active | - |
 
 ### Partner Access Routes
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/partner` | `PartnerLanding` | ✅ Active | ❌ **MISSING** |
@@ -27,6 +29,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/partner/app/*` | `PartnerAppLayout` | ✅ Active | ❌ **MISSING** |
 
 ### POC Access Routes
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/poc` | `PocLanding` | ✅ Active | ❌ **MISSING** |
@@ -34,6 +37,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/poc/app/*` | `PocAppLayout` | ✅ Active | ❌ **MISSING** |
 
 ### Advanced Dashboard Routes
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/advanced` | `AdvancedAppShell` | ✅ Active | ❌ **MISSING** |
@@ -41,6 +45,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/advanced/frameworks` | `AdvancedFrameworkManager` | ✅ Active | ❌ **MISSING** |
 
 ### Main App Routes (`/app/*`)
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app` | `EnhancedDashboard` | ✅ Active | `app/[lng]/(platform)/dashboard/page.tsx` ✅ |
@@ -51,6 +56,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/dashboard/regulatory-market` | `RegulatoryMarketDashboard` | ✅ Active | ❌ **MISSING** |
 
 ### GRC Module Routes
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/assessments` | `AssessmentsModuleEnhanced` | ✅ Active | ❌ **MISSING** |
@@ -69,6 +75,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/evidence/:id` | `Evidence` | ✅ Active | ❌ **MISSING** (dynamic) |
 
 ### Organization & Tenant Routes
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/organizations` | `OrganizationsPage` | ✅ Active | ❌ **MISSING** |
@@ -78,6 +85,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/onboarding` | `OnboardingPage` | ✅ Active | ❌ **MISSING** |
 
 ### User & Access Management
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/users` | `UserManagementPage` | ✅ Active | `app/[lng]/(platform)/platform/users/page.tsx` ✅ |
@@ -85,6 +93,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/audit` | `AuditLogsPage` | ✅ Active | `app/[lng]/(platform)/audit-logs/page.tsx` ✅ |
 
 ### Reports & Analytics
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/reports` | `ReportsPage` | ✅ Active | ❌ **MISSING** |
@@ -94,6 +103,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/reports/assessments` | `AssessmentsModuleEnhanced` | ✅ Active | ❌ **MISSING** |
 
 ### System Management
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/settings` | `SettingsPage` | ✅ Active | `app/[lng]/(platform)/platform/settings/page.tsx` ✅ |
@@ -103,12 +113,14 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/system/api` | `APIManagementPage` | ✅ Active | `app/[lng]/(platform)/platform/api-status/page.tsx` ✅ |
 
 ### Workflows & Automation
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/workflows` | `WorkflowManagementPage` | ✅ Active | `app/[lng]/(platform)/workflows/designer/page.tsx` ✅ |
 | `/app/workflows/:id` | `WorkflowManagementPage` | ✅ Active | ❌ **MISSING** (dynamic) |
 
 ### Task Management
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/tasks` | `TaskDashboard` | ✅ Active | `app/[lng]/(platform)/pm/tasks/page.tsx` ✅ |
@@ -117,6 +129,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/tasks/:id` | `TaskManagementPage` | ✅ Active | ❌ **MISSING** (dynamic) |
 
 ### Gap Analysis & Remediation
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/gaps` | `GapAnalysisPage` | ✅ Active | ❌ **MISSING** |
@@ -125,6 +138,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/remediation/:id` | `RemediationPlanPage` | ✅ Active | ❌ **MISSING** (dynamic) |
 
 ### AI & RAG Services
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/ai` | `AISchedulerPage` | ✅ Active | `app/[lng]/(platform)/ai-agents/page.tsx` ✅ |
@@ -135,6 +149,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/chat` | `MissionControlPage` | ✅ Active | ❌ **MISSING** |
 
 ### Regulatory Intelligence
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/regulatory` | `RegulatoryIntelligencePage` | ✅ Active | ❌ **MISSING** |
@@ -143,6 +158,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/regulators` | `RegulatorsPage` | ✅ Active | ❌ **MISSING** |
 
 ### License & Renewal Management
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/licenses` | `LicensesManagementPage` | ✅ Active | `app/[lng]/(platform)/licenses/management/page.tsx` ✅ |
@@ -152,6 +168,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/upgrade` | `UpgradePage` | ✅ Active | `app/[lng]/(platform)/licenses/upgrade/page.tsx` ✅ |
 
 ### Finance Routes (React Router)
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/finance` | ❌ Not in React Router | - | `app/[lng]/(platform)/finance/page.tsx` ✅ |
@@ -160,6 +177,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/finance/transactions` | ❌ Not in React Router | - | `app/[lng]/(platform)/finance/transactions/page.tsx` ✅ |
 
 ### CRM Routes (React Router)
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/crm` | ❌ Not in React Router | - | `app/[lng]/(platform)/crm/page.tsx` ✅ |
@@ -167,6 +185,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/crm/customers` | ❌ Not in React Router | - | `app/[lng]/(platform)/crm/customers/page.tsx` ✅ |
 
 ### Sales Routes (React Router)
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/sales` | ❌ Not in React Router | - | `app/[lng]/(platform)/sales/page.tsx` ✅ |
@@ -174,6 +193,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/sales/deals` | ❌ Not in React Router | - | `app/[lng]/(platform)/sales/deals/page.tsx` ✅ |
 
 ### HR Routes (React Router)
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/hr` | ❌ Not in React Router | - | `app/[lng]/(platform)/hr/page.tsx` ✅ |
@@ -181,6 +201,7 @@ This document maps all routes to their respective routing systems and identifies
 | `/app/hr/payroll` | ❌ Not in React Router | - | `app/[lng]/(platform)/hr/payroll/page.tsx` ✅ |
 
 ### Procurement Routes (React Router)
+
 | Route | Component | Status | Next.js Equivalent |
 |-------|-----------|--------|-------------------|
 | `/app/procurement` | ❌ Not in React Router | - | `app/[lng]/(platform)/procurement/page.tsx` ✅ |
@@ -192,6 +213,7 @@ This document maps all routes to their respective routing systems and identifies
 ## 📍 Next.js App Router Routes (`app/[lng]/(platform)/`)
 
 ### Already Migrated Routes ✅
+
 - ✅ Dashboard: `/[lng]/(platform)/dashboard`
 - ✅ Finance: `/[lng]/(platform)/finance/*`
 - ✅ CRM: `/[lng]/(platform)/crm/*`
@@ -211,6 +233,7 @@ This document maps all routes to their respective routing systems and identifies
 ## 🎯 Migration Priority
 
 ### Phase 1: Critical Missing Routes (High Priority)
+
 1. **Partner & POC Routes** - Business critical
 2. **GRC Enhanced Modules** - Core functionality
 3. **Assessments** - High usage
@@ -218,6 +241,7 @@ This document maps all routes to their respective routing systems and identifies
 5. **Gap Analysis & Remediation** - Key workflows
 
 ### Phase 2: Important Routes (Medium Priority)
+
 1. **Advanced Dashboard Routes**
 2. **Dynamic Routes** (`:id` parameters)
 3. **Reports & Analytics** (missing variants)
@@ -225,6 +249,7 @@ This document maps all routes to their respective routing systems and identifies
 5. **Task Management** (board/list views)
 
 ### Phase 3: Nice-to-Have Routes (Low Priority)
+
 1. **Legacy route variants**
 2. **Route aliases** (enhanced/legacy)
 3. **External integration routes**
@@ -243,4 +268,3 @@ This document maps all routes to their respective routing systems and identifies
 ---
 
 **Last Updated**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-

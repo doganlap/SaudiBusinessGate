@@ -18,7 +18,8 @@
 All navigation items are defined in:
 **File**: `apps/web/src/components/layout/MultiTenantNavigation.jsx`
 
-### By Role:
+### By Role
+
 - **Platform Admin**: 23 navigation items
 - **Tenant Admin**: 18 navigation items  
 - **Team Member**: 12 navigation items
@@ -27,7 +28,8 @@ All navigation items are defined in:
 
 ## ❌ Pages NOT Loaded in Navigator (~16)
 
-### Missing Functional Pages:
+### Missing Functional Pages
+
 1. EvidenceUploadPage - `/app/evidence/upload`
 2. SystemHealthDashboard - `/app/system/health`
 3. DatabasePage - `/app/database`
@@ -37,13 +39,15 @@ All navigation items are defined in:
 7. ModernAdvancedDashboard - `/app/dashboard/advanced`
 8. RegulatoryMarketDashboard - `/app/dashboard/regulatory-market`
 
-### Detail/Form Pages (Intentionally Not in Nav):
+### Detail/Form Pages (Intentionally Not in Nav)
+
 - OrganizationDetails - Accessed via Organizations list
 - OrganizationForm - Accessed via "New" button
 - AssessmentPage - Accessed via Assessments list
 - AssessmentDetailsCollaborative - Accessed via Assessment details
 
-### Auth/Public Pages (Separate Access):
+### Auth/Public Pages (Separate Access)
+
 - LoginPage, StoryDrivenRegistration - Direct URLs
 - LandingPage, NotFoundPage - Public pages
 - PartnerLanding, PartnerAppLayout - Partner path
@@ -53,7 +57,8 @@ All navigation items are defined in:
 
 ## 🎯 Action Items
 
-### Add to Navigator (High Priority):
+### Add to Navigator (High Priority)
+
 1. Evidence Upload
 2. System Health
 3. Database Management
@@ -67,4 +72,3 @@ All navigation items are defined in:
 
 **Status**: 77% of functional pages loaded in navigator
 **Next Step**: Add missing functional pages to navigation
-

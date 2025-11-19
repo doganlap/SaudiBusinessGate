@@ -9,7 +9,7 @@
 ## 🌐 Your URLs
 
 - **Vercel URL**: Check dashboard
-- **Custom**: https://dogan-ai.com (after DNS)
+- **Custom**: <https://dogan-ai.com> (after DNS)
 
 ## ⚡ Quick Commands
 
@@ -56,8 +56,8 @@ curl https://[url]/api/health/db
 
 ## 📊 Monitor
 
-- Vercel: https://vercel.com/dashboard
-- Prisma: http://localhost:5555
+- Vercel: <https://vercel.com/dashboard>
+- Prisma: <http://localhost:5555>
 
 ## 🎯 Status
 

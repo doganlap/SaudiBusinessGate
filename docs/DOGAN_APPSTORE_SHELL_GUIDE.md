@@ -11,6 +11,7 @@
 ## **🎨 الميزات الرئيسية - Key Features**
 
 ### **✨ التصميم - Design**
+
 - **Glassmorphic UI** - تأثيرات زجاجية متقدمة
 - **Backdrop Blur** - ضبابية خلفية ديناميكية
 - **Animated Orbs** - كرات متحركة في الخلفية
@@ -18,18 +19,21 @@
 - **Responsive Layout** - تصميم متجاوب لجميع الأجهزة
 
 ### **🌐 اللغات والاتجاهات - Languages & Directions**
+
 - **Arabic (RTL)** - العربية كلغة افتراضية
 - **English (LTR)** - الإنجليزية كخيار ثانوي
 - **Dynamic Direction** - تغيير الاتجاه تلقائياً
 - **Font Support** - دعم الخطوط العربية
 
 ### **🧭 التنقل - Navigation**
+
 - **Left Sidebar** - شريط جانبي أيسر قابل للطي
 - **Mobile Drawer** - درج للهواتف المحمولة
 - **Right Agent Dock** - رصيف الوكلاء الأيمن
 - **Active Link Highlighting** - تمييز الروابط النشطة
 
 ### **🤖 الوكلاء الأذكياء - Smart Agents**
+
 - **6 AI Agents** - 6 وكلاء ذكية متخصصة
 - **Real-time Workflow** - سير عمل في الوقت الفعلي
 - **Agent Status** - حالة الوكلاء المباشرة
@@ -123,6 +127,7 @@ export default function CustomPage({ params }: { params: Promise<{ lng: string }
 ## **🧩 المكونات الفرعية - Sub Components**
 
 ### **1. Header Component**
+
 ```tsx
 <Header 
   locale={locale}
@@ -134,6 +139,7 @@ export default function CustomPage({ params }: { params: Promise<{ lng: string }
 ```
 
 **الميزات:**
+
 - شريط بحث ذكي
 - تبديل اللغة
 - تبديل الوضع المظلم/المضيء
@@ -141,6 +147,7 @@ export default function CustomPage({ params }: { params: Promise<{ lng: string }
 - رقائق الحالة
 
 ### **2. LeftNav Component (قريباً)**
+
 ```tsx
 <LeftNav 
   locale={locale}
@@ -151,12 +158,14 @@ export default function CustomPage({ params }: { params: Promise<{ lng: string }
 ```
 
 **الميزات:**
+
 - 4 مجموعات تنقل (Store, Operations, Analytics, Admin)
 - طي/توسيع تلقائي
 - تمييز الروابط النشطة
 - دعم الهواتف المحمولة
 
 ### **3. RightAgentDock Component (قريباً)**
+
 ```tsx
 <RightAgentDock 
   locale={locale}
@@ -166,6 +175,7 @@ export default function CustomPage({ params }: { params: Promise<{ lng: string }
 ```
 
 **الميزات:**
+
 - 6 وكلاء ذكية
 - سير عمل مباشر
 - تشغيل الوكلاء
@@ -372,12 +382,14 @@ NODE_ENV=production
 ### **مشاكل شائعة:**
 
 #### **1. خطأ في الخطوط العربية:**
+
 ```css
 /* إضافة في globals.css */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
 ```
 
 #### **2. مشكلة RTL:**
+
 ```tsx
 // التأكد من تطبيق الاتجاه
 useEffect(() => {
@@ -386,6 +398,7 @@ useEffect(() => {
 ```
 
 #### **3. خطأ في Framer Motion:**
+
 ```bash
 # تثبيت الإصدار الصحيح
 npm install framer-motion@latest
@@ -441,11 +454,13 @@ const expensiveValue = useMemo(() => {
 ## **📞 الدعم - Support**
 
 ### **للمساعدة:**
+
 - **التوثيق:** راجع هذا الدليل
 - **الأمثلة:** انظر `/app/[lng]/appstore/page.tsx`
 - **المشاكل:** أنشئ issue في المشروع
 
 ### **المساهمة:**
+
 - **Fork** المشروع
 - **Create** فرع جديد
 - **Commit** تغييراتك

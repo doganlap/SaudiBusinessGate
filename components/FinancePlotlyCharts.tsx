@@ -4,7 +4,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 // Dynamically import Plotly to avoid SSR issues
-const Plot = dynamic(() => import('react-plotly.js'), { 
+const Plot = dynamic(() => import('react-plotly.js').then(mod => mod.default), { 
   ssr: false,
   loading: () => <div className="flex items-center justify-center h-64">Loading chart...</div>
 });

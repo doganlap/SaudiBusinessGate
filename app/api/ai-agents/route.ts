@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { query } from '@/lib/db/connection';
+import { getServerSession } from 'next-auth/next';
 
 interface AIAgent {
   id: string;
@@ -34,8 +36,191 @@ interface AIAgent {
   updatedAt: string;
 }
 
-// Mock AI Agents
-const mockAIAgents: AIAgent[] = [
+// Database functions for AI Agent management
+async function getAIAgents(tenantId: string, filters: any = {}): Promise<AIAgent[]> {
+  try {
+    let whereClause = 'WHERE tenant_id = $1';
+    const params: any[] = [tenantId];
+    let paramIndex = 2;
+
+    if (filters.status) {
+      whereClause += ` AND status = $${paramIndex++}`;
+      params.push(filters.status);
+    }
+
+    if (filters.type) {
+      whereClause += ` AND agent_type = $${paramIndex++}`;
+      params.push(filters.type);
+    }
+
+    const result = await query(`
+      SELECT 
+        id, name, name_ar, agent_type, status, description, description_ar,
+        capabilities, model, provider, last_active, tasks_completed, 
+        tasks_in_progress, success_rate, avg_response_time, configuration,
+        metrics, tenant_id, created_at, updated_at
+      FROM ai_agents
+      ${whereClause}
+      ORDER BY created_at DESC
+    `, params);
+
+    return result.rows.map((row: any) => ({
+      id: row.id.toString(),
+      name: row.name,
+      nameAr: row.name_ar,
+      type: row.agent_type,
+      status: row.status,
+      description: row.description,
+      descriptionAr: row.description_ar,
+      capabilities: JSON.parse(row.capabilities || '[]'),
+      model: row.model,
+      provider: row.provider,
+      lastActive: row.last_active?.toISOString() || new Date().toISOString(),
+      tasksCompleted: row.tasks_completed || 0,
+      tasksInProgress: row.tasks_in_progress || 0,
+      successRate: row.success_rate || 0,
+      averageResponseTime: row.avg_response_time || 0,
+      configuration: JSON.parse(row.configuration || '{}'),
+      metrics: JSON.parse(row.metrics || '{}'),
+      tenantId: row.tenant_id,
+      createdAt: row.created_at?.toISOString() || new Date().toISOString(),
+      updatedAt: row.updated_at?.toISOString() || new Date().toISOString()
+    }));
+  } catch (error) {
+    console.error('Error fetching AI agents:', error);
+    return [];
+  }
+}
+
+async function createAIAgent(agentData: Omit<AIAgent, 'id' | 'createdAt' | 'updatedAt'>): Promise<AIAgent | null> {
+  try {
+    const result = await query(`
+      INSERT INTO ai_agents (
+        tenant_id, name, name_ar, agent_type, status, description, description_ar,
+        capabilities, model, provider, tasks_completed, tasks_in_progress,
+        success_rate, avg_response_time, configuration, metrics
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+      RETURNING *
+    `, [
+      agentData.tenantId,
+      agentData.name,
+      agentData.nameAr,
+      agentData.type,
+      agentData.status,
+      agentData.description,
+      agentData.descriptionAr,
+      JSON.stringify(agentData.capabilities),
+      agentData.model,
+      agentData.provider,
+      agentData.tasksCompleted,
+      agentData.tasksInProgress,
+      agentData.successRate,
+      agentData.averageResponseTime,
+      JSON.stringify(agentData.configuration),
+      JSON.stringify(agentData.metrics)
+    ]);
+
+    const row = result.rows[0];
+    return {
+      id: row.id.toString(),
+      name: row.name,
+      nameAr: row.name_ar,
+      type: row.agent_type,
+      status: row.status,
+      description: row.description,
+      descriptionAr: row.description_ar,
+      capabilities: JSON.parse(row.capabilities || '[]'),
+      model: row.model,
+      provider: row.provider,
+      lastActive: row.last_active?.toISOString() || new Date().toISOString(),
+      tasksCompleted: row.tasks_completed || 0,
+      tasksInProgress: row.tasks_in_progress || 0,
+      successRate: row.success_rate || 0,
+      averageResponseTime: row.avg_response_time || 0,
+      configuration: JSON.parse(row.configuration || '{}'),
+      metrics: JSON.parse(row.metrics || '{}'),
+      tenantId: row.tenant_id,
+      createdAt: row.created_at?.toISOString() || new Date().toISOString(),
+      updatedAt: row.updated_at?.toISOString() || new Date().toISOString()
+    };
+  } catch (error) {
+    console.error('Error creating AI agent:', error);
+    return null;
+  }
+}
+
+async function updateAIAgent(id: string, updates: Partial<AIAgent>): Promise<AIAgent | null> {
+  try {
+    const result = await query(`
+      UPDATE ai_agents 
+      SET 
+        name = COALESCE($2, name),
+        name_ar = COALESCE($3, name_ar),
+        status = COALESCE($4, status),
+        description = COALESCE($5, description),
+        description_ar = COALESCE($6, description_ar),
+        configuration = COALESCE($7, configuration),
+        updated_at = NOW()
+      WHERE id = $1
+      RETURNING *
+    `, [
+      id,
+      updates.name,
+      updates.nameAr,
+      updates.status,
+      updates.description,
+      updates.descriptionAr,
+      updates.configuration ? JSON.stringify(updates.configuration) : null
+    ]);
+
+    if (result.rows.length === 0) return null;
+
+    const row = result.rows[0];
+    return {
+      id: row.id.toString(),
+      name: row.name,
+      nameAr: row.name_ar,
+      type: row.agent_type,
+      status: row.status,
+      description: row.description,
+      descriptionAr: row.description_ar,
+      capabilities: JSON.parse(row.capabilities || '[]'),
+      model: row.model,
+      provider: row.provider,
+      lastActive: row.last_active?.toISOString() || new Date().toISOString(),
+      tasksCompleted: row.tasks_completed || 0,
+      tasksInProgress: row.tasks_in_progress || 0,
+      successRate: row.success_rate || 0,
+      averageResponseTime: row.avg_response_time || 0,
+      configuration: JSON.parse(row.configuration || '{}'),
+      metrics: JSON.parse(row.metrics || '{}'),
+      tenantId: row.tenant_id,
+      createdAt: row.created_at?.toISOString() || new Date().toISOString(),
+      updatedAt: row.updated_at?.toISOString() || new Date().toISOString()
+    };
+  } catch (error) {
+    console.error('Update AI agent error:', error);
+    return null;
+  }
+}
+
+async function deleteAIAgent(id: string, tenantId: string): Promise<boolean> {
+  try {
+    const result = await query(`
+      DELETE FROM ai_agents 
+      WHERE (id = $1 OR uuid = $1) AND tenant_id = $2
+      RETURNING id
+    `, [id, tenantId]);
+    
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error('Delete AI agent error:', error);
+    return false;
+  }
+}
+
+// Fallback mock data for when database is not available
+const fallbackAIAgents: AIAgent[] = [
   {
     id: 'agent-1',
     name: 'Finance Analyzer Pro',
@@ -235,39 +420,50 @@ const mockAIAgents: AIAgent[] = [
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
-    const tenantId = request.headers.get('x-tenant-id') || 'demo-tenant';
+    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'demo-tenant';
     const type = searchParams.get('type');
     const status = searchParams.get('status');
     const includeMetrics = searchParams.get('includeMetrics') === 'true';
 
-    let filteredAgents = mockAIAgents.filter(agent => agent.tenantId === tenantId);
+    // Try to get agents from database
+    let filteredAgents = await getAIAgents(tenantId, { type, status });
 
-    // Apply filters
-    if (type) {
-      filteredAgents = filteredAgents.filter(agent => agent.type === type);
-    }
-    if (status) {
-      filteredAgents = filteredAgents.filter(agent => agent.status === status);
+    // If no agents found in database, use fallback data
+    if (filteredAgents.length === 0) {
+      filteredAgents = fallbackAIAgents.filter((agent: AIAgent) => agent.tenantId === tenantId);
+      
+      if (type) {
+        filteredAgents = filteredAgents.filter((agent: AIAgent) => agent.type === type);
+      }
+      if (status) {
+        filteredAgents = filteredAgents.filter((agent: AIAgent) => agent.status === status);
+      }
     }
 
     // Calculate statistics
     const stats = {
       total: filteredAgents.length,
-      active: filteredAgents.filter(a => a.status === 'active').length,
-      inactive: filteredAgents.filter(a => a.status === 'inactive').length,
-      maintenance: filteredAgents.filter(a => a.status === 'maintenance').length,
-      error: filteredAgents.filter(a => a.status === 'error').length,
-      totalTasks: filteredAgents.reduce((sum, a) => sum + a.tasksCompleted, 0),
-      tasksInProgress: filteredAgents.reduce((sum, a) => sum + a.tasksInProgress, 0),
-      averageSuccessRate: filteredAgents.reduce((sum, a) => sum + a.successRate, 0) / filteredAgents.length || 0,
-      averageResponseTime: filteredAgents.reduce((sum, a) => sum + a.averageResponseTime, 0) / filteredAgents.length || 0
+      active: filteredAgents.filter((a: AIAgent) => a.status === 'active').length,
+      inactive: filteredAgents.filter((a: AIAgent) => a.status === 'inactive').length,
+      maintenance: filteredAgents.filter((a: AIAgent) => a.status === 'maintenance').length,
+      error: filteredAgents.filter((a: AIAgent) => a.status === 'error').length,
+      totalTasks: filteredAgents.reduce((sum: number, a: AIAgent) => sum + a.tasksCompleted, 0),
+      tasksInProgress: filteredAgents.reduce((sum: number, a: AIAgent) => sum + a.tasksInProgress, 0),
+      averageSuccessRate: filteredAgents.reduce((sum: number, a: AIAgent) => sum + a.successRate, 0) / filteredAgents.length || 0,
+      averageResponseTime: filteredAgents.reduce((sum: number, a: AIAgent) => sum + a.averageResponseTime, 0) / filteredAgents.length || 0
     };
 
     const response: any = {
       success: true,
-      data: includeMetrics ? filteredAgents : filteredAgents.map(({ metrics, ...agent }) => agent),
-      stats
+      data: includeMetrics ? filteredAgents : filteredAgents.map(({ metrics, ...agent }: AIAgent) => agent),
+      stats,
+      source: filteredAgents.length > 0 ? 'database' : 'fallback'
     };
 
     return NextResponse.json(response);
@@ -281,62 +477,121 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('x-tenant-id') || 'demo-tenant';
-    const { agentId, action, configuration } = await request.json();
-
-    const agentIndex = mockAIAgents.findIndex(agent => agent.id === agentId);
-    if (agentIndex === -1) {
-      return NextResponse.json(
-        { error: 'Agent not found' },
-        { status: 404 }
-      );
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const agent = mockAIAgents[agentIndex];
+    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'demo-tenant';
+    const body = await request.json();
 
-    switch (action) {
-      case 'start':
-        agent.status = 'active';
-        agent.lastActive = new Date().toISOString();
-        break;
+    // Handle different POST actions
+    if (body.agentId && body.action) {
+      // Update existing agent
+      const { agentId, action, configuration } = body;
       
-      case 'stop':
-        agent.status = 'inactive';
-        agent.tasksInProgress = 0;
-        break;
+      let updates: Partial<AIAgent> = {};
       
-      case 'restart':
-        agent.status = 'active';
-        agent.lastActive = new Date().toISOString();
-        agent.tasksInProgress = 0;
-        break;
+      switch (action) {
+        case 'start':
+          updates = { status: 'active' };
+          break;
+        
+        case 'stop':
+          updates = { status: 'inactive' };
+          break;
+        
+        case 'restart':
+          updates = { status: 'active' };
+          break;
+        
+        case 'configure':
+          if (configuration) {
+            updates = { configuration };
+          }
+          break;
+        
+        case 'maintenance':
+          updates = { status: 'maintenance' };
+          break;
+        
+        default:
+          return NextResponse.json(
+            { error: 'Invalid action' },
+            { status: 400 }
+          );
+      }
+
+      const updatedAgent = await updateAIAgent(agentId, updates);
       
-      case 'configure':
-        if (configuration) {
-          agent.configuration = { ...agent.configuration, ...configuration };
-        }
-        break;
-      
-      case 'maintenance':
-        agent.status = 'maintenance';
-        agent.tasksInProgress = 0;
-        break;
-      
-      default:
+      if (!updatedAgent) {
         return NextResponse.json(
-          { error: 'Invalid action' },
+          { error: 'Agent not found or update failed' },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: updatedAgent,
+        message: `Agent ${action} successful`
+      });
+    } else {
+      // Create new agent
+      const {
+        name, nameAr, type, description, descriptionAr, capabilities,
+        model = 'gpt-4', provider = 'OpenAI', configuration = {}
+      } = body;
+
+      if (!name || !type) {
+        return NextResponse.json(
+          { error: 'Name and type are required' },
           { status: 400 }
         );
+      }
+
+      const newAgentData = {
+        name,
+        nameAr: nameAr || name,
+        type,
+        status: 'inactive' as const,
+        description: description || '',
+        descriptionAr: descriptionAr || description || '',
+        capabilities: capabilities || [],
+        model,
+        provider,
+        lastActive: new Date().toISOString(),
+        tasksCompleted: 0,
+        tasksInProgress: 0,
+        successRate: 0,
+        averageResponseTime: 0,
+        configuration,
+        metrics: {
+          totalRequests: 0,
+          successfulRequests: 0,
+          failedRequests: 0,
+          averageProcessingTime: 0,
+          uptime: 0
+        },
+        tenantId
+      };
+
+      const newAgent = await createAIAgent(newAgentData);
+      
+      if (!newAgent) {
+        return NextResponse.json(
+          { error: 'Failed to create agent' },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: newAgent,
+        message: 'Agent created successfully'
+      }, { status: 201 });
     }
 
-    agent.updatedAt = new Date().toISOString();
-    mockAIAgents[agentIndex] = agent;
-
-    return NextResponse.json({
-      success: true,
-      data: agent,
-      message: `Agent ${action} completed successfully`
-    });
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message },
@@ -345,11 +600,15 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function PATCH(request: NextRequest) {
+export async function DELETE(request: NextRequest) {
   try {
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    const body = await request.json();
 
     if (!id) {
       return NextResponse.json(
@@ -358,24 +617,19 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const agentIndex = mockAIAgents.findIndex(agent => agent.id === id);
-    if (agentIndex === -1) {
+    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'demo-tenant';
+
+    const deleted = await deleteAIAgent(id, tenantId);
+    if (!deleted) {
       return NextResponse.json(
         { error: 'Agent not found' },
         { status: 404 }
       );
     }
 
-    // Update the agent
-    mockAIAgents[agentIndex] = {
-      ...mockAIAgents[agentIndex],
-      ...body,
-      updatedAt: new Date().toISOString()
-    };
-
     return NextResponse.json({
       success: true,
-      data: mockAIAgents[agentIndex]
+      message: 'Agent deleted successfully'
     });
   } catch (error: any) {
     return NextResponse.json(

@@ -1,13 +1,17 @@
 import { ReactNode } from 'react';
 import { PlatformShell } from '@/src/components/layout/shell/PlatformShell';
-import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { SaudiBusinessGateFooter } from '@/src/components/SaudiBusinessGateFooter';
+import Providers from '@/app/providers';
 
 export default function PlatformLayout({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider>
-      <PlatformShell>
-        {children}
-      </PlatformShell>
-    </ThemeProvider>
+    <Providers>
+      <div className="flex flex-col min-h-screen">
+        <PlatformShell>
+          {children}
+        </PlatformShell>
+        <SaudiBusinessGateFooter />
+      </div>
+    </Providers>
   );
 }

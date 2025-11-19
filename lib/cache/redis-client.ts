@@ -31,7 +31,7 @@ export function getRedisClient(): Redis {
     
     redis.on('error', (err) => {
       // In test mode, silently handle connection errors
-      if (!isTest || err.code !== 'ECONNREFUSED') {
+      if (!isTest || (err as any).code !== 'ECONNREFUSED') {
         console.error('Redis client error:', err);
       }
     });

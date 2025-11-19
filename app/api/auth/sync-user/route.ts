@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { query } from '@/lib/db/connection';
 
 interface SyncUserRequest {
   microsoftId: string;
@@ -26,82 +27,128 @@ interface DatabaseUser {
   permissions: string[];
 }
 
-// Mock database - في الإنتاج سيتم استبداله بقاعدة البيانات الحقيقية
-const mockUsers: DatabaseUser[] = [
-  {
-    id: 'user-1',
-    microsoftId: 'ms-user-1',
-    email: 'admin@saudistore.com',
-    name: 'أحمد محمد المدير',
-    nameAr: 'أحمد محمد المدير',
-    role: 'super_admin',
-    tenantId: 'saudi-store-main',
-    department: 'IT',
-    jobTitle: 'مدير تقنية المعلومات',
-    isActive: true,
-    lastLogin: new Date().toISOString(),
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: new Date().toISOString(),
-    permissions: [
-      'platform.admin',
-      'users.manage',
-      'tenants.manage',
-      'billing.manage',
-      'security.manage',
-      'data.export',
-      'system.monitor',
-      'api.manage',
-      'backup.restore',
-      'audit.view'
-    ]
-  },
-  {
-    id: 'user-2',
-    microsoftId: 'ms-user-2',
-    email: 'manager@saudistore.com',
-    name: 'فاطمة علي المديرة',
-    nameAr: 'فاطمة علي المديرة',
-    role: 'tenant_admin',
-    tenantId: 'saudi-store-main',
-    department: 'Operations',
-    jobTitle: 'مديرة العمليات',
-    isActive: true,
-    lastLogin: new Date().toISOString(),
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: new Date().toISOString(),
-    permissions: [
-      'users.manage',
-      'licensing.manage',
-      'red_flags.manage',
-      'ai_agents.manage',
-      'workflows.manage',
-      'audit.view',
-      'reports.generate'
-    ]
-  },
-  {
-    id: 'user-3',
-    microsoftId: 'ms-user-3',
-    email: 'user@saudistore.com',
-    name: 'محمد سالم المستخدم',
-    nameAr: 'محمد سالم المستخدم',
-    role: 'user',
-    tenantId: 'saudi-store-main',
-    department: 'Finance',
-    jobTitle: 'محاسب',
-    isActive: true,
-    lastLogin: new Date().toISOString(),
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: new Date().toISOString(),
-    permissions: [
-      'red_flags.view',
-      'licensing.view',
-      'ai_agents.view',
-      'workflows.view',
-      'reports.view'
-    ]
+// Database functions for user management
+async function findUserByMicrosoftIdOrEmail(microsoftId: string, email: string): Promise<DatabaseUser | null> {
+  try {
+    const result = await query(
+      `SELECT u.*, t.slug as tenant_slug 
+       FROM users u 
+       LEFT JOIN tenants t ON u.tenant_id = t.id 
+       WHERE u.email = $1 OR u.microsoft_id = $2 
+       LIMIT 1`,
+      [email, microsoftId]
+    );
+    
+    if (result.rows.length === 0) return null;
+    
+    const row = result.rows[0];
+    return {
+      id: row.id,
+      microsoftId: row.microsoft_id,
+      email: row.email,
+      name: row.full_name,
+      nameAr: row.full_name_ar,
+      role: row.role,
+      tenantId: row.tenant_id,
+      department: row.department,
+      jobTitle: row.job_title,
+      isActive: row.is_active,
+      lastLogin: row.last_login_at?.toISOString() || new Date().toISOString(),
+      createdAt: row.created_at?.toISOString() || new Date().toISOString(),
+      updatedAt: row.updated_at?.toISOString() || new Date().toISOString(),
+      permissions: JSON.parse(row.permissions || '[]')
+    };
+  } catch (error) {
+    console.error('Error finding user:', error);
+    return null;
   }
-];
+}
+
+async function updateUser(user: DatabaseUser): Promise<DatabaseUser | null> {
+  try {
+    const result = await query(
+      `UPDATE users 
+       SET full_name = $1, job_title = $2, department = $3, last_login_at = NOW(), updated_at = NOW()
+       WHERE id = $4 
+       RETURNING *`,
+      [user.name, user.jobTitle, user.department, user.id]
+    );
+    
+    if (result.rows.length === 0) return null;
+    
+    const row = result.rows[0];
+    return {
+      ...user,
+      lastLogin: row.last_login_at?.toISOString() || new Date().toISOString(),
+      updatedAt: row.updated_at?.toISOString() || new Date().toISOString()
+    };
+  } catch (error) {
+    console.error('Error updating user:', error);
+    return null;
+  }
+}
+
+async function createUser(userData: Omit<DatabaseUser, 'id' | 'createdAt' | 'updatedAt'>): Promise<DatabaseUser | null> {
+  try {
+    // First, ensure tenant exists or create it
+    let tenantResult = await query(
+      'SELECT id FROM tenants WHERE id = $1',
+      [userData.tenantId]
+    );
+    
+    if (tenantResult.rows.length === 0) {
+      // Create tenant if it doesn't exist
+      await query(
+        `INSERT INTO tenants (id, name, slug, contact_email, is_active) 
+         VALUES ($1, $2, $3, $4, true)`,
+        [userData.tenantId, userData.tenantId, userData.tenantId, userData.email]
+      );
+    }
+    
+    // Create user
+    const result = await query(
+      `INSERT INTO users (
+         tenant_id, email, microsoft_id, full_name, full_name_ar, role, 
+         department, job_title, permissions, is_active, last_login_at
+       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, true, NOW())
+       RETURNING *`,
+      [
+        userData.tenantId,
+        userData.email,
+        userData.microsoftId,
+        userData.name,
+        userData.nameAr,
+        userData.role,
+        userData.department,
+        userData.jobTitle,
+        JSON.stringify(userData.permissions)
+      ]
+    );
+    
+    if (result.rows.length === 0) return null;
+    
+    const row = result.rows[0];
+    return {
+      id: row.id,
+      microsoftId: row.microsoft_id,
+      email: row.email,
+      name: row.full_name,
+      nameAr: row.full_name_ar,
+      role: row.role,
+      tenantId: row.tenant_id,
+      department: row.department,
+      jobTitle: row.job_title,
+      isActive: row.is_active,
+      lastLogin: row.last_login_at?.toISOString() || new Date().toISOString(),
+      createdAt: row.created_at?.toISOString() || new Date().toISOString(),
+      updatedAt: row.updated_at?.toISOString() || new Date().toISOString(),
+      permissions: JSON.parse(row.permissions || '[]')
+    };
+  } catch (error) {
+    console.error('Error creating user:', error);
+    return null;
+  }
+}
 
 // Role-based permissions mapping
 const rolePermissions = {
@@ -209,23 +256,28 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user already exists
-    let existingUser = mockUsers.find(user => 
-      user.microsoftId === microsoftId || user.email === email
-    );
+    let existingUser = await findUserByMicrosoftIdOrEmail(microsoftId, email);
 
     if (existingUser) {
       // Update existing user
-      existingUser.lastLogin = new Date().toISOString();
-      existingUser.updatedAt = new Date().toISOString();
       existingUser.name = name;
       existingUser.jobTitle = jobTitle;
       existingUser.department = department;
+      
+      const updatedUser = await updateUser(existingUser);
+      
+      if (!updatedUser) {
+        return NextResponse.json(
+          { error: 'Failed to update user' },
+          { status: 500 }
+        );
+      }
 
-      console.log(`✅ User updated: ${existingUser.email} (${existingUser.role})`);
+      console.log(`✅ User updated: ${updatedUser.email} (${updatedUser.role})`);
       
       return NextResponse.json({
         success: true,
-        data: existingUser,
+        data: updatedUser,
         message: 'User updated successfully'
       });
     }
@@ -235,8 +287,7 @@ export async function POST(request: NextRequest) {
     const tenantId = determineTenant(email);
     const permissions = rolePermissions[role] || [];
 
-    const newUser: DatabaseUser = {
-      id: `user-${Date.now()}`,
+    const newUserData = {
       microsoftId,
       email,
       name,
@@ -247,13 +298,18 @@ export async function POST(request: NextRequest) {
       jobTitle,
       isActive: true,
       lastLogin: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
       permissions
     };
 
-    // Add to mock database
-    mockUsers.push(newUser);
+    // Create user in database
+    const newUser = await createUser(newUserData);
+    
+    if (!newUser) {
+      return NextResponse.json(
+        { error: 'Failed to create user' },
+        { status: 500 }
+      );
+    }
 
     console.log(`✅ New user created: ${newUser.email} (${newUser.role})`);
 
@@ -286,10 +342,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const user = mockUsers.find(user => 
-      (microsoftId && user.microsoftId === microsoftId) ||
-      (email && user.email === email)
-    );
+    const user = await findUserByMicrosoftIdOrEmail(microsoftId || '', email || '');
 
     if (!user) {
       return NextResponse.json(

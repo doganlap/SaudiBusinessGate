@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const tenantId = request.headers.get('tenant-id') || String(organizationId);
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
     const { searchParams } = new URL(request.url);
     
     const filters = {
@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
         tenantId 
       });
       
-      await audit.logDataAccess(userId, organizationId, 'invoice', 0, 'read', false);
+      await audit.logDataAccess(userId, organizationId, 'invoice', 0, 'read');
       return NextResponse.json({
         success: false,
         error: 'Failed to fetch invoices from database',
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       await audit.logPermissionCheck(userId, organizationId, 'finance.invoices.write', false);
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
-    const tenantId = request.headers.get('tenant-id') || String(organizationId);
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
     const body = await request.json();
     
     // Validate required fields

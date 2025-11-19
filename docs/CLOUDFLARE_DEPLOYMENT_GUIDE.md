@@ -1,6 +1,7 @@
 # ☁️ دليل النشر على Cloudflare - Cloudflare Deployment Guide
 
 ## **المتجر السعودي - Saudi Store**
+
 ### **نشر LLM على Cloudflare مع Tunnel مباشر**
 
 ---
@@ -8,6 +9,7 @@
 ## **📋 نظرة عامة**
 
 سنقوم بـ:
+
 1. نشر التطبيق على Cloudflare Pages
 2. إنشاء Cloudflare Tunnel للاتصال بالخادم المحلي
 3. تشغيل LLM Models على Cloudflare Workers AI
@@ -546,6 +548,7 @@ wrangler dev
 ## **📈 Monitoring**
 
 ### **Cloudflare Dashboard:**
+
 - Workers Analytics
 - Pages Analytics
 - Tunnel Status
@@ -567,6 +570,7 @@ cloudflared tunnel info saudi-store-tunnel
 ## **💰 التكلفة**
 
 ### **Cloudflare Free Tier:**
+
 - ✅ Workers: 100,000 requests/day
 - ✅ Pages: Unlimited requests
 - ✅ Tunnel: مجاني
@@ -575,6 +579,7 @@ cloudflared tunnel info saudi-store-tunnel
 - ✅ D1: 5GB storage
 
 ### **Paid Plans:**
+
 - Workers Paid: $5/month + usage
 - Workers AI: Pay as you go
 - Enterprise: Custom pricing

@@ -84,13 +84,18 @@ export async function exportToPDF(
         }))
       : []);
 
-    generateTablePDF(data, autoColumns, {
+    const headers = autoColumns.map(col => col.header);
+    const normalizedData = data.map(row => {
+      const mapped: Record<string, any> = {};
+      for (const col of autoColumns) {
+        mapped[col.header] = row[col.dataKey] ?? row[col.dataKey as keyof typeof row];
+      }
+      return mapped;
+    });
+
+    generateTablePDF(normalizedData, headers, {
       title: options.title,
-      subtitle: options.dateRange 
-        ? `Period: ${options.dateRange.start} to ${options.dateRange.end}`
-        : undefined,
-      filename: options.filename || `finance-report-${new Date().toISOString().slice(0, 10)}.pdf`,
-      footer: `Generated on ${new Date().toLocaleDateString()}`
+      filename: options.filename || `finance-report-${new Date().toISOString().slice(0, 10)}.pdf`
     });
   } catch (error) {
     console.error('Error exporting to PDF:', error);

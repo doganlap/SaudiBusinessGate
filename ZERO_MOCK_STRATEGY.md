@@ -18,9 +18,11 @@
 ## 🎯 Implementation Phases
 
 ### Phase 1: Remove Mock from Pages with REST Services ✅
+
 **Priority: HIGH** - Can be done immediately
 
 **33 pages** that have REST services but still use mock data:
+
 1. system\DatabasePage.jsx (36 occurrences)
 2. regulatory\SectorIntelligence.jsx (25 occurrences)
 3. grc-modules\RiskManagementPage.jsx (19 occurrences)
@@ -60,9 +62,11 @@
 ---
 
 ### Phase 2: Implement REST Services for Mock-Only Pages ⚠️
+
 **Priority: MEDIUM** - Need REST services first
 
 **21 pages** that use only mock data:
+
 1. auth\StoryDrivenRegistration.jsx (20 occurrences)
 2. public\DemoAccessForm.jsx (11 occurrences)
 3. system\WorkflowManagementPage.jsx (11 occurrences)
@@ -85,7 +89,8 @@
 20. public\DemoPage.jsx (1 occurrence)
 21. system\NotificationManagementPage.jsx (1 occurrence)
 
-**Action:** 
+**Action:**
+
 1. Implement REST API services
 2. Replace mock data with API calls
 3. Add proper error handling
@@ -93,9 +98,11 @@
 ---
 
 ### Phase 3: Remove Fallback Mock Patterns 🔄
+
 **Priority: HIGH** - Replace with proper error handling
 
 **7 pages** with fallback mock patterns:
+
 1. system\DatabasePage.jsx
 2. regulatory\SectorIntelligence.jsx
 3. grc-modules\RiskManagementPage.jsx
@@ -105,6 +112,7 @@
 7. system\SettingsPage.jsx
 
 **Action:** Replace fallback patterns with:
+
 - Proper error states
 - Loading states
 - Empty state components
@@ -117,12 +125,14 @@
 ### 1. Remove Mock Data Patterns
 
 **Before:**
+
 ```javascript
 const mockData = [{ id: 1, name: 'Test' }];
 const data = apiData || mockData; // ❌ Remove this
 ```
 
 **After:**
+
 ```javascript
 const [data, setData] = useState([]);
 const [error, setError] = useState(null);
@@ -149,11 +159,13 @@ const loadData = async () => {
 ### 2. Replace Fallback Mock
 
 **Before:**
+
 ```javascript
 const data = apiData || fallbackData; // ❌ Remove fallback
 ```
 
 **After:**
+
 ```javascript
 if (loading) return <LoadingSpinner />;
 if (error) return <ErrorState message={error} />;
@@ -166,12 +178,14 @@ return <DataDisplay data={data} />;
 **Note:** HTML `placeholder` attributes are OK - they're UI hints, not mock data.
 
 **Remove:**
+
 - `const mockData = [...]`
 - `const sampleData = [...]`
 - `const fallbackData = [...]`
 - `data || mockData`
 
 **Keep:**
+
 - `<input placeholder="Enter name" />` (UI hint)
 
 ---
@@ -195,4 +209,3 @@ return <DataDisplay data={data} />;
 ---
 
 **Target Completion:** Zero Mock Zero Fallback Mock ✅
-

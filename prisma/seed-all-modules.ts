@@ -11,8 +11,19 @@ const prisma = new PrismaClient();
 async function seedAllModules() {
   console.log('🌱 Starting comprehensive module seeding...');
 
-  // Get first tenant for seeding
-  const tenant = await prisma.tenant.findFirst();
+  // Get first tenant for seeding (fallback to raw query if Prisma schema mismatches)
+  let tenant: { id: string; name: string } | null = null;
+  try {
+    const t = await prisma.tenant.findFirst();
+    if (t) tenant = { id: (t as any).id, name: (t as any).name };
+  } catch (e) {
+    console.warn('⚠️ Prisma tenant lookup failed, falling back to raw query');
+    const res = await query('SELECT id, name FROM tenants ORDER BY created_at DESC LIMIT 1');
+    if (res.rows.length > 0) {
+      tenant = { id: String(res.rows[0].id), name: String(res.rows[0].name) };
+    }
+  }
+
   if (!tenant) {
     console.error('❌ No tenants found. Run main seed first: npm run db:seed:complete');
     return;

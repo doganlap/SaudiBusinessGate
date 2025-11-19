@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +22,9 @@ interface QuoteWithCustomer extends Quote {
 }
 
 export default function QuotesPage() {
+  const params = useParams();
+  const lng = params.lng as string;
+  
   const [quotes, setQuotes] = useState<QuoteWithCustomer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -104,7 +108,7 @@ export default function QuotesPage() {
   const columns = [
     {
       key: 'quote_number',
-      header: 'Quote Number',
+      header: lng === 'ar' ? 'رقم عرض الأسعار' : 'Quote Number',
       render: (quote: QuoteWithCustomer) => (
         <div className="font-medium text-blue-600">
           {quote.quote_number}
@@ -113,14 +117,14 @@ export default function QuotesPage() {
     },
     {
       key: 'customer',
-      header: 'Customer',
+      header: lng === 'ar' ? 'العميل' : 'Customer',
       render: (quote: QuoteWithCustomer) => (
         <div className="space-y-1">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <User className="h-4 w-4 text-gray-400" />
             <span className="font-medium">{quote.customer_name || 'N/A'}</span>
           </div>
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
+          <div className="flex items-center space-x-2 text-sm text-gray-500 rtl:space-x-reverse">
             <Building2 className="h-3 w-3" />
             <span>{quote.customer_company || 'N/A'}</span>
           </div>
@@ -129,16 +133,16 @@ export default function QuotesPage() {
     },
     {
       key: 'deal_title',
-      header: 'Deal',
+      header: lng === 'ar' ? 'الصفقة' : 'Deal',
       render: (quote: QuoteWithCustomer) => (
         <span className="text-sm">{quote.deal_title || 'N/A'}</span>
       )
     },
     {
       key: 'total_amount',
-      header: 'Total Amount',
+      header: lng === 'ar' ? 'إجمالي المبلغ' : 'Total Amount',
       render: (quote: QuoteWithCustomer) => (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 rtl:space-x-reverse">
           <DollarSign className="h-4 w-4 text-green-600" />
           <span className="font-medium">${quote.total_amount.toLocaleString()}</span>
         </div>
@@ -146,14 +150,14 @@ export default function QuotesPage() {
     },
     {
       key: 'status',
-      header: 'Status',
+      header: lng === 'ar' ? 'الحالة' : 'Status',
       render: (quote: QuoteWithCustomer) => getStatusBadge(quote.status)
     },
     {
       key: 'valid_until',
-      header: 'Valid Until',
+      header: lng === 'ar' ? 'صالح حتى' : 'Valid Until',
       render: (quote: QuoteWithCustomer) => (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 rtl:space-x-reverse">
           <Calendar className="h-4 w-4 text-gray-400" />
           <span className="text-sm">
             {quote.valid_until ? new Date(quote.valid_until).toLocaleDateString() : 'N/A'}
@@ -165,7 +169,7 @@ export default function QuotesPage() {
 
   const toolbarActions = [
     {
-      label: 'New Quote',
+      label: lng === 'ar' ? 'عرض أسعار جديد' : 'New Quote',
       icon: Plus,
       onClick: () => console.log('Create new quote'),
       variant: 'primary' as const
@@ -173,13 +177,13 @@ export default function QuotesPage() {
   ];
 
   const filterOptions = [
-    { value: 'all', label: 'All Status' },
-    { value: 'draft', label: 'Draft' },
-    { value: 'sent', label: 'Sent' },
-    { value: 'viewed', label: 'Viewed' },
-    { value: 'accepted', label: 'Accepted' },
-    { value: 'rejected', label: 'Rejected' },
-    { value: 'expired', label: 'Expired' }
+    { value: 'all', label: lng === 'ar' ? 'جميع الحالات' : 'All Status' },
+    { value: 'draft', label: lng === 'ar' ? 'مسودة' : 'Draft' },
+    { value: 'sent', label: lng === 'ar' ? 'مرسل' : 'Sent' },
+    { value: 'viewed', label: lng === 'ar' ? 'تم العرض' : 'Viewed' },
+    { value: 'accepted', label: lng === 'ar' ? 'مقبول' : 'Accepted' },
+    { value: 'rejected', label: lng === 'ar' ? 'مرفوض' : 'Rejected' },
+    { value: 'expired', label: lng === 'ar' ? 'منتهي الصلاحية' : 'Expired' }
   ];
 
   // Calculate summary stats
@@ -189,7 +193,7 @@ export default function QuotesPage() {
   const conversionRate = quotes.length > 0 ? (acceptedQuotes / quotes.length * 100).toFixed(1) : '0';
 
   if (loading) {
-    return <LoadingState message="Loading quotes..." />;
+    return <LoadingState message={lng === 'ar' ? 'جاري تحميل عروض الأسعار...' : 'Loading quotes...'} />;
   }
 
   if (error) {
@@ -199,11 +203,11 @@ export default function QuotesPage() {
           <AlertCircle className="h-12 w-12" />
         </div>
         <div className="text-center space-y-2">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Failed to Load Quotes</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{lng === 'ar' ? 'فشل في تحميل عروض الأسعار' : 'Failed to Load Quotes'}</h3>
           <p className="text-gray-600 dark:text-gray-400 max-w-md">{error}</p>
         </div>
         <Button onClick={handleRetry} variant="outline">
-          Try Again
+          {lng === 'ar' ? 'إعادة المحاولة' : 'Try Again'}
         </Button>
       </div>
     );
@@ -214,9 +218,9 @@ export default function QuotesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Quote Management</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{lng === 'ar' ? 'إدارة عروض الأسعار' : 'Quote Management'}</h1>
           <p className="text-gray-600">
-            Create, manage, and track sales quotes and proposals
+            {lng === 'ar' ? 'إنشاء وإدارة وتتبع عروض الأسعار والمقترحات' : 'Create, manage, and track sales quotes and proposals'}
           </p>
         </div>
       </div>
@@ -225,46 +229,46 @@ export default function QuotesPage() {
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Quotes</CardTitle>
+            <CardTitle className="text-sm font-medium">{lng === 'ar' ? 'إجمالي عروض الأسعار' : 'Total Quotes'}</CardTitle>
             <FileText className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{quotes.length}</div>
             <p className="text-xs text-gray-500">
-              All time quotes
+              {lng === 'ar' ? 'جميع الأوقات' : 'All time quotes'}
             </p>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Accepted</CardTitle>
+            <CardTitle className="text-sm font-medium">{lng === 'ar' ? 'مقبول' : 'Accepted'}</CardTitle>
             <CheckCircle className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">{acceptedQuotes}</div>
             <p className="text-xs text-gray-500">
-              Successfully accepted
+              {lng === 'ar' ? 'مقبول بنجاح' : 'Successfully accepted'}
             </p>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending</CardTitle>
+            <CardTitle className="text-sm font-medium">{lng === 'ar' ? 'معلق' : 'Pending'}</CardTitle>
             <Clock className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-yellow-600">{pendingQuotes}</div>
             <p className="text-xs text-gray-500">
-              Awaiting response
+              {lng === 'ar' ? 'في انتظار الرد' : 'Awaiting response'}
             </p>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">{lng === 'ar' ? 'معدل التحويل' : 'Conversion Rate'}</CardTitle>
             <TrendingUp className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
@@ -272,7 +276,7 @@ export default function QuotesPage() {
               {conversionRate}%
             </div>
             <p className="text-xs text-gray-500">
-              Acceptance rate
+              {lng === 'ar' ? 'معدل القبول' : 'Acceptance rate'}
             </p>
           </CardContent>
         </Card>
@@ -281,13 +285,13 @@ export default function QuotesPage() {
       {/* Quotes Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Quotes Overview</CardTitle>
+          <CardTitle>{lng === 'ar' ? 'نظرة عامة على عروض الأسعار' : 'Quotes Overview'}</CardTitle>
         </CardHeader>
         <CardContent>
           <EnterpriseToolbar
             searchValue={searchTerm}
             onSearchChange={setSearchTerm}
-            searchPlaceholder="Search quotes..."
+            searchPlaceholder={lng === 'ar' ? 'البحث في عروض الأسعار...' : 'Search quotes...'}
             actions={toolbarActions}
             filterValue={filterStatus}
             onFilterChange={setFilterStatus}

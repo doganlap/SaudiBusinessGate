@@ -9,17 +9,20 @@ This guide documents the comprehensive RTL (Right-to-Left) support and enterpris
 ### 1. **Comprehensive RTL Support**
 
 #### Language Configuration
+
 - **Arabic (ar)**: Default RTL layout
 - **English (en)**: LTR layout
 - **Dynamic switching**: Language toggle in navigation
 - **URL-based routing**: `/ar/...` and `/en/...` paths
 
 #### Font Support
+
 - **Noto Sans Arabic**: Primary Arabic font with weights 300-700
 - **Inter**: Primary Latin font
 - **Font loading optimization**: Preload, display swap, performance optimized
 
 #### Direction Handling
+
 - **Automatic detection**: Based on language parameter
 - **CSS utilities**: RTL-aware positioning, margins, padding
 - **Component adaptation**: All components support both directions
@@ -27,6 +30,7 @@ This guide documents the comprehensive RTL (Right-to-Left) support and enterpris
 ### 2. **Enterprise-Level Design System**
 
 #### Color Palette
+
 ```css
 Brand Colors: 50-950 scale (Primary blue theme)
 Neutral Colors: 50-950 scale (Modern grayscale)
@@ -37,11 +41,13 @@ Info Colors: 50-900 scale (Blue theme)
 ```
 
 #### Typography
+
 - **Font families**: Arabic, Latin, Display, Mono
 - **Font sizes**: 2xs to 9xl with proper line heights
 - **Font features**: Kerning, ligatures, Arabic numerals
 
 #### Spacing & Layout
+
 - **Extended spacing**: Up to 144 (36rem)
 - **Border radius**: Up to 5xl (2.5rem)
 - **Enterprise shadows**: Multiple levels with proper opacity
@@ -49,12 +55,14 @@ Info Colors: 50-900 scale (Blue theme)
 ### 3. **Enhanced UI Components**
 
 #### Button Component
+
 - **8 variants**: Primary, Secondary, Destructive, Outline, Ghost, Link, Success, Warning
 - **5 sizes**: SM, Default, LG, XL, Icon
 - **Advanced features**: Loading states, Left/Right icons, RTL support
 - **Animations**: Hover effects, active scaling, focus rings
 
 #### Enterprise Shell
+
 - **Modern sidebar**: Collapsible, RTL-aware positioning
 - **Top navigation**: Search, notifications, user menu
 - **Language switcher**: Seamless AR/EN toggle
@@ -62,6 +70,7 @@ Info Colors: 50-900 scale (Blue theme)
 - **Responsive design**: Mobile-first approach
 
 #### Navigation System
+
 - **Hierarchical structure**: Products, Services, Platform sections
 - **Bilingual labels**: Arabic and English text
 - **Icon integration**: Lucide React icons
@@ -71,6 +80,7 @@ Info Colors: 50-900 scale (Blue theme)
 ### 4. **Advanced CSS Features**
 
 #### CSS Variables
+
 ```css
 :root {
   --color-brand-500: 14 165 233;
@@ -80,6 +90,7 @@ Info Colors: 50-900 scale (Blue theme)
 ```
 
 #### Component Classes
+
 ```css
 .enterprise-card: Modern card with shadows and borders
 .enterprise-button-primary: Primary action button
@@ -89,6 +100,7 @@ Info Colors: 50-900 scale (Blue theme)
 ```
 
 #### RTL Utilities
+
 ```css
 .rtl\:right-0: RTL positioning
 .rtl\:mr-4: RTL margins
@@ -99,6 +111,7 @@ Info Colors: 50-900 scale (Blue theme)
 ### 5. **Accessibility & Performance**
 
 #### Accessibility Features
+
 - **Focus management**: Visible focus rings
 - **High contrast support**: Enhanced borders and colors
 - **Reduced motion**: Respects user preferences
@@ -106,6 +119,7 @@ Info Colors: 50-900 scale (Blue theme)
 - **Keyboard navigation**: Full keyboard accessibility
 
 #### Performance Optimizations
+
 - **Font preloading**: Critical font resources
 - **Lazy loading**: Non-critical resources
 - **Optimized animations**: Hardware acceleration
@@ -115,6 +129,7 @@ Info Colors: 50-900 scale (Blue theme)
 ### 6. **Language Provider System**
 
 #### Translation Management
+
 ```typescript
 const translations = {
   ar: { 'nav.dashboard': 'لوحة التحكم' },
@@ -123,6 +138,7 @@ const translations = {
 ```
 
 #### Context API
+
 - **useLanguage hook**: Access current language and RTL state
 - **Translation function**: `t(key, fallback)` for text
 - **Language switching**: Seamless URL-based switching
@@ -131,6 +147,7 @@ const translations = {
 ### 7. **Enhanced Tailwind Configuration**
 
 #### RTL Plugin
+
 ```javascript
 function({ addUtilities }) {
   const newUtilities = {
@@ -144,6 +161,7 @@ function({ addUtilities }) {
 ```
 
 #### Animations
+
 - **Fade transitions**: In/Out with opacity
 - **Slide animations**: Right/Left/Up directions
 - **Gentle effects**: Bounce and pulse
@@ -152,6 +170,7 @@ function({ addUtilities }) {
 ## 🚀 Implementation Details
 
 ### File Structure
+
 ```
 components/
 ├── layout/
@@ -172,6 +191,7 @@ tailwind.config.ts               # Enhanced configuration
 ```
 
 ### Key Technologies
+
 - **Next.js 16**: App Router with internationalization
 - **Tailwind CSS**: Utility-first styling with RTL support
 - **TypeScript**: Type-safe component development
@@ -179,6 +199,7 @@ tailwind.config.ts               # Enhanced configuration
 - **CSS Variables**: Theme-aware styling
 
 ### Browser Support
+
 - **Modern browsers**: Chrome 90+, Firefox 88+, Safari 14+
 - **RTL languages**: Arabic, Hebrew, Persian, Urdu
 - **Progressive enhancement**: Graceful degradation
@@ -187,6 +208,7 @@ tailwind.config.ts               # Enhanced configuration
 ## 🎯 Usage Examples
 
 ### Language Switching
+
 ```typescript
 const { language, isRTL, switchLanguage, t } = useLanguage();
 
@@ -198,6 +220,7 @@ const title = t('nav.dashboard', 'Dashboard');
 ```
 
 ### Enterprise Components
+
 ```tsx
 <Button 
   variant="primary" 
@@ -210,6 +233,7 @@ const title = t('nav.dashboard', 'Dashboard');
 ```
 
 ### RTL-Aware Styling
+
 ```tsx
 <div className={`flex ${isRTL ? 'space-x-reverse' : ''} space-x-4`}>
   <div className="rtl:mr-4 ltr:ml-4">Content</div>
@@ -219,6 +243,7 @@ const title = t('nav.dashboard', 'Dashboard');
 ## 📱 Responsive Design
 
 ### Breakpoints
+
 - **Mobile**: 0-640px (sm)
 - **Tablet**: 641-768px (md)
 - **Desktop**: 769-1024px (lg)
@@ -226,6 +251,7 @@ const title = t('nav.dashboard', 'Dashboard');
 - **XL**: 1281px+ (2xl)
 
 ### Mobile Optimizations
+
 - **Touch targets**: Minimum 44px
 - **Sidebar**: Overlay on mobile, static on desktop
 - **Typography**: Scalable font sizes
@@ -234,12 +260,14 @@ const title = t('nav.dashboard', 'Dashboard');
 ## 🔧 Configuration
 
 ### Environment Variables
+
 ```env
 NEXT_PUBLIC_APP_URL=http://localhost:3050
 GOOGLE_SITE_VERIFICATION=your_verification_code
 ```
 
 ### Theme Configuration
+
 ```typescript
 // Automatic theme detection
 const theme = localStorage.getItem('theme') || 'light';
@@ -249,6 +277,7 @@ document.documentElement.classList.toggle('dark', theme === 'dark');
 ## 🎨 Design Tokens
 
 ### Shadows
+
 ```css
 --shadow-enterprise: 0 1px 3px 0 rgb(0 0 0 / 0.1)
 --shadow-enterprise-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1)
@@ -256,11 +285,13 @@ document.documentElement.classList.toggle('dark', theme === 'dark');
 ```
 
 ### Transitions
+
 ```css
 --transition-enterprise: all 0.2s cubic-bezier(0.4, 0, 0.2, 1)
 ```
 
 ### Border Radius
+
 ```css
 --border-radius-enterprise: 0.75rem
 ```
@@ -268,6 +299,7 @@ document.documentElement.classList.toggle('dark', theme === 'dark');
 ## 🚦 Status
 
 ### ✅ Completed
+
 - [x] RTL/LTR language support
 - [x] Enterprise design system
 - [x] Enhanced UI components
@@ -278,11 +310,13 @@ document.documentElement.classList.toggle('dark', theme === 'dark');
 - [x] Translation system
 
 ### 🔄 In Progress
+
 - [ ] Dark mode implementation
 - [ ] Advanced animations
 - [ ] Component library expansion
 
 ### 📋 Next Steps
+
 1. **Test RTL functionality** across all pages
 2. **Implement dark mode** theme switching
 3. **Add more UI components** (Input, Select, Modal, etc.)
@@ -292,6 +326,7 @@ document.documentElement.classList.toggle('dark', theme === 'dark');
 ## 🏆 Benefits
 
 ### User Experience
+
 - **Seamless language switching**: No page reload required
 - **Native RTL support**: Proper text alignment and layout
 - **Modern interface**: Enterprise-grade visual design
@@ -299,6 +334,7 @@ document.documentElement.classList.toggle('dark', theme === 'dark');
 - **Fast performance**: Optimized loading and rendering
 
 ### Developer Experience
+
 - **Type-safe components**: Full TypeScript support
 - **Consistent styling**: Design system with tokens
 - **Reusable components**: Modular architecture
@@ -308,11 +344,13 @@ document.documentElement.classList.toggle('dark', theme === 'dark');
 ## 📚 Resources
 
 ### Documentation
+
 - [Tailwind CSS RTL](https://tailwindcss.com/docs/hover-focus-and-other-states#rtl-support)
 - [Next.js Internationalization](https://nextjs.org/docs/app/building-your-application/routing/internationalization)
 - [WCAG Guidelines](https://www.w3.org/WAG/WCAG21/quickref/)
 
 ### Tools
+
 - [RTL Tester](https://rtlcss.com/learn/getting-started/why-rtl/)
 - [Accessibility Checker](https://wave.webaim.org/)
 - [Performance Monitor](https://web.dev/measure/)

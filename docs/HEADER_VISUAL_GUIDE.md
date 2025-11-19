@@ -13,6 +13,7 @@
 ```
 
 **Issues:**
+
 - Basic glass effect
 - Simple language toggle (just globe icon)
 - No visual depth
@@ -30,6 +31,7 @@
 ```
 
 **Enhancements:**
+
 - ✨ Multi-layer glassmorphism
 - 🌍 Integrated language switcher with flags
 - 💫 Animated status chips
@@ -81,6 +83,7 @@ On hover:
 ## 🎬 Animations
 
 ### Notification Badge
+
 ```
 Frame 1: ●     (opacity: 1.0)
 Frame 2:  ●    (opacity: 0.7) ← Pulse
@@ -88,12 +91,14 @@ Frame 3: ●     (opacity: 1.0)
 ```
 
 ### Theme Toggle
+
 ```
 Light Mode:  🌙          → Hover: 🌙 (rotates -12°)
 Dark Mode:   ☀️          → Hover: ☀️  (rotates 90°)
 ```
 
 ### Status Chips
+
 ```
 Initial:  [hidden]
           ↓ (0.3s fade + slide up)
@@ -104,6 +109,7 @@ Final:    ● Online  ● DB  ● Store
 ## 🎨 Color Gradients
 
 ### Brand Logo
+
 ```
 Gradient: from-emerald-400/80
           via-teal-400/80
@@ -115,18 +121,21 @@ Effect:   ✨ with shadow-lg shadow-emerald-500/30
 ### Status Indicators
 
 **Emerald (System Online)**
+
 ```
 ●  Gradient: emerald-400 → teal-400
    Glow: shadow-emerald-400/40
 ```
 
 **Cyan (Database)**
+
 ```
 ●  Gradient: cyan-400 → sky-400
    Glow: shadow-cyan-400/40
 ```
 
 **Violet (Store)**
+
 ```
 ●  Gradient: fuchsia-400 → violet-400
    Glow: shadow-violet-400/40
@@ -135,6 +144,7 @@ Effect:   ✨ with shadow-lg shadow-emerald-500/30
 ## 📱 Responsive Views
 
 ### Desktop (1024px+)
+
 ```
 ┌────────────────────────────────────────────────────────────────┐
 │ ✨ Saudi Store          [🔍 Search...]        🔔 [🇸🇦▼] ☀️    │
@@ -144,6 +154,7 @@ Effect:   ✨ with shadow-lg shadow-emerald-500/30
 ```
 
 ### Tablet (768px - 1023px)
+
 ```
 ┌───────────────────────────────────────────────────────┐
 │ ✨ Saudi Store    [🔍 Search]    🔔 [🇸🇦▼] ☀️        │
@@ -153,6 +164,7 @@ Effect:   ✨ with shadow-lg shadow-emerald-500/30
 ```
 
 ### Mobile (< 768px)
+
 ```
 ┌──────────────────────────────────────┐
 │ [☰] ✨ Store    🔔 [🇸🇦▼] ☀️         │
@@ -164,6 +176,7 @@ Effect:   ✨ with shadow-lg shadow-emerald-500/30
 ## 🌍 RTL vs LTR Layout
 
 ### LTR (English)
+
 ```
 ┌────────────────────────────────────────────────┐
 │ [☰] ✨ Saudi Store    [Search]  🔔 [🇺🇸▼] ☀️  │
@@ -172,6 +185,7 @@ Effect:   ✨ with shadow-lg shadow-emerald-500/30
 ```
 
 ### RTL (Arabic)
+
 ```
 ┌────────────────────────────────────────────────┐
 │  ☀️ [🇸🇦▼] 🔔  [بحث]    المتجر السعودي ✨ [☰] │
@@ -184,6 +198,7 @@ Effect:   ✨ with shadow-lg shadow-emerald-500/30
 ### Language Switcher States
 
 **Default**
+
 ```
 ┌───────────────┐
 │ 🇸🇦 العربية ▼ │  Opacity: 1.0
@@ -191,6 +206,7 @@ Effect:   ✨ with shadow-lg shadow-emerald-500/30
 ```
 
 **Hover**
+
 ```
 ┌───────────────┐
 │ 🇸🇦 العربية ▼ │  Background: white/10
@@ -198,6 +214,7 @@ Effect:   ✨ with shadow-lg shadow-emerald-500/30
 ```
 
 **Active (Dropdown Open)**
+
 ```
 ┌───────────────┐
 │ 🇸🇦 العربية ▲ │
@@ -233,6 +250,7 @@ Header
 ## 🎨 CSS Classes Reference
 
 ### Glass Effect
+
 ```css
 bg-gradient-to-br
 from-white/15 via-white/10 to-white/5
@@ -243,6 +261,7 @@ shadow-[0_8px_32px_rgba(0,0,0,0.15)]
 ```
 
 ### Dark Mode Override
+
 ```css
 dark:from-neutral-900/50
 dark:via-neutral-900/40
@@ -252,6 +271,7 @@ dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]
 ```
 
 ### Hover States
+
 ```css
 hover:bg-white/20
 dark:hover:bg-white/10

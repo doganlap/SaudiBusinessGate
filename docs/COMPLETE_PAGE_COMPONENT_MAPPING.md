@@ -1,4 +1,5 @@
 # COMPLETE PAGE-TO-COMPONENT MAPPING
+
 **DoganHubStore Enterprise Platform**  
 **Component Hierarchy Analysis** | Generated: 2025-01-11
 
@@ -8,7 +9,8 @@
 
 This document maps all 95 APIs to their UI pages and shows the complete component tree inside each page.
 
-### Statistics:
+### Statistics
+
 - **Total Pages**: 40+
 - **Total Components**: 150+
 - **Total APIs**: 95
@@ -21,13 +23,16 @@ This document maps all 95 APIs to their UI pages and shows the complete componen
 ### 1. **DASHBOARD MODULE**
 
 #### Page: `app/dashboard/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #6: `GET /api/analytics/kpis/business`
 - API #78: `GET /api/dashboard/stats`
 - API #79: `GET /api/dashboard/activity`
 - API #80: `GET /api/dashboard/widgets`
 
 **Component Tree**:
+
 ```
 app/dashboard/page.tsx (Main Dashboard)
 ??? components/AppShell.tsx (Layout)
@@ -73,10 +78,13 @@ app/dashboard/page.tsx (Main Dashboard)
 ### 2. **REPORTS MODULE**
 
 #### Page: `app/reports/page.tsx` (Reports List)
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #18: `GET /api/reports`
 
 **Component Tree**:
+
 ```
 app/reports/page.tsx
 ??? components/AppShell.tsx
@@ -97,12 +105,15 @@ app/reports/page.tsx
 ---
 
 #### Page: `app/reports/builder/page.tsx` (Report Builder)
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #16: `GET /api/reports/templates`
 - API #17: `POST /api/reports/preview`
 - API #19: `POST /api/reports`
 
 **Component Tree**:
+
 ```
 app/reports/builder/page.tsx
 ??? components/AppShell.tsx
@@ -147,12 +158,15 @@ app/reports/builder/page.tsx
 ---
 
 #### Page: `app/reports/[reportId]/page.tsx` (Report Details)
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #20: `POST /api/reports/[reportId]/execute`
 - API #21: `GET /api/reports/[reportId]`
 - API #24: `POST /api/reports/export/[format]`
 
 **Component Tree**:
+
 ```
 app/reports/[reportId]/page.tsx
 ??? components/AppShell.tsx
@@ -219,11 +233,14 @@ app/reports/[reportId]/page.tsx
 ---
 
 #### Page: `app/reports/[reportId]/edit/page.tsx` (Report Editor)
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #21: `GET /api/reports/[reportId]`
 - API #22: `PUT /api/reports/[reportId]`
 
 **Component Tree**:
+
 ```
 app/reports/[reportId]/edit/page.tsx
 ??? components/AppShell.tsx
@@ -239,10 +256,13 @@ app/reports/[reportId]/edit/page.tsx
 ### 3. **ANALYTICS MODULE**
 
 #### Page: `app/analytics/customers/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #8: `GET /api/analytics/customer-analytics`
 
 **Component Tree**:
+
 ```
 app/analytics/customers/page.tsx
 ??? components/AppShell.tsx
@@ -272,10 +292,13 @@ app/analytics/customers/page.tsx
 ---
 
 #### Page: `app/analytics/financial/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #9: `GET /api/analytics/financial-analytics`
 
 **Component Tree**:
+
 ```
 app/analytics/financial/page.tsx
 ??? components/AppShell.tsx
@@ -304,10 +327,13 @@ app/analytics/financial/page.tsx
 ---
 
 #### Page: `app/analytics/churn/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #12: `POST /api/analytics/churn-prediction`
 
 **Component Tree**:
+
 ```
 app/analytics/churn/page.tsx
 ??? components/AppShell.tsx
@@ -336,10 +362,13 @@ app/analytics/churn/page.tsx
 ---
 
 #### Page: `app/analytics/trends/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #15: `GET /api/analytics/trend-analysis`
 
 **Component Tree**:
+
 ```
 app/analytics/trends/page.tsx
 ??? components/AppShell.tsx
@@ -368,11 +397,14 @@ app/analytics/trends/page.tsx
 ### 4. **CRM MODULE**
 
 #### Page: `app/crm/pipeline/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #41: `GET /api/crm/pipeline`
 - API #44: `PATCH /api/crm/deals/[dealId]/stage`
 
 **Component Tree**:
+
 ```
 app/crm/pipeline/page.tsx
 ??? components/AppShell.tsx
@@ -420,11 +452,14 @@ app/crm/pipeline/page.tsx
 ---
 
 #### Page: `app/crm/contacts/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #38: `GET /api/crm/contacts`
 - API #39: `POST /api/crm/contacts`
 
 **Component Tree**:
+
 ```
 app/crm/contacts/page.tsx
 ??? components/AppShell.tsx
@@ -462,12 +497,15 @@ app/crm/contacts/page.tsx
 ---
 
 #### Page: `app/crm/contacts/[id]/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #40: `GET /api/crm/contacts/[id]`
 - API #46: `GET /api/crm/activities`
 - API #47: `POST /api/crm/activities`
 
 **Component Tree**:
+
 ```
 app/crm/contacts/[id]/page.tsx
 ??? components/AppShell.tsx
@@ -525,11 +563,14 @@ app/crm/contacts/[id]/page.tsx
 ### 5. **FINANCE MODULE**
 
 #### Page: `app/finance/hub/page.tsx` (Financial Hub)
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #25: `GET /api/finance/invoices`
 - API #41: `GET /api/crm/pipeline` (For linked deals)
 
 **Component Tree**:
+
 ```
 app/finance/hub/page.tsx
 ??? components/AppShell.tsx
@@ -579,10 +620,13 @@ app/finance/hub/page.tsx
 ---
 
 #### Page: `app/finance/invoices/[id]/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #27: `GET /api/finance/invoices/[id]`
 
 **Component Tree**:
+
 ```
 app/finance/invoices/[id]/page.tsx
 ??? components/AppShell.tsx
@@ -631,11 +675,14 @@ app/finance/invoices/[id]/page.tsx
 ---
 
 #### Page: `app/finance/dashboard/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #36: `GET /api/finance/stats`
 - API #83: `POST /api/ai/finance-agents`
 
 **Component Tree**:
+
 ```
 app/finance/dashboard/page.tsx
 ??? components/AppShell.tsx
@@ -679,11 +726,14 @@ app/finance/dashboard/page.tsx
 ### 6. **ADMIN MODULE**
 
 #### Page: `app/admin/license/page.tsx` (License Dashboard)
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #57: `GET /api/license/tenant/[tenantId]`
 - API #96: `GET /api/license/usage-report`
 
 **Component Tree**:
+
 ```
 app/admin/license/page.tsx
 ??? components/AppShell.tsx
@@ -737,10 +787,13 @@ app/admin/license/page.tsx
 ---
 
 #### Page: `app/admin/permissions/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #91: `GET /api/platform/owner-permissions`
 
 **Component Tree**:
+
 ```
 app/admin/permissions/page.tsx
 ??? components/AppShell.tsx
@@ -773,10 +826,13 @@ app/admin/permissions/page.tsx
 ### 7. **WORKFLOWS MODULE**
 
 #### Page: `app/workflows/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #92: `GET /api/workflows`
 
 **Component Tree**:
+
 ```
 app/workflows/page.tsx
 ??? components/AppShell.tsx
@@ -813,10 +869,13 @@ app/workflows/page.tsx
 ---
 
 #### Page: `app/workflows/create/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #93: `POST /api/workflows`
 
 **Component Tree**:
+
 ```
 app/workflows/create/page.tsx
 ??? components/AppShell.tsx
@@ -883,11 +942,14 @@ app/workflows/create/page.tsx
 ---
 
 #### Page: `app/workflows/[id]/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #92: `GET /api/workflows` (Get single workflow)
 - API #94: `POST /api/workflows/[id]/execute`
 
 **Component Tree**:
+
 ```
 app/workflows/[id]/page.tsx
 ??? components/AppShell.tsx
@@ -943,11 +1005,14 @@ app/workflows/[id]/page.tsx
 ### 8. **SETTINGS MODULE**
 
 #### Page: `app/settings/theme/page.tsx`
-**APIs Used**: 
+
+**APIs Used**:
+
 - API #89: `GET /api/themes/[organizationId]`
 - API #90: `PUT /api/themes/[organizationId]`
 
 **Component Tree**:
+
 ```
 app/settings/theme/page.tsx
 ??? components/AppShell.tsx
@@ -1003,7 +1068,7 @@ app/settings/theme/page.tsx
 
 ## ?? COMPONENT REUSE ANALYSIS
 
-### Most Reused Components:
+### Most Reused Components
 
 | Component | Used In | Times Used |
 |-----------|---------|------------|
@@ -1080,6 +1145,7 @@ components/
 This analysis generated **1 comprehensive documentation file**:
 
 **`COMPLETE_PAGE_COMPONENT_MAPPING.md`** - This file, containing:
+
 - Complete page-to-API mappings
 - Full component hierarchies for all 40+ pages
 - Nested component trees showing parent-child relationships

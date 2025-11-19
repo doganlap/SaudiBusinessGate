@@ -202,13 +202,13 @@ export function NewFeature() {
 }
 ```
 
-2. **Extract translations:**
+1. **Extract translations:**
 
 ```bash
 npm run i18n:extract
 ```
 
-3. **Edit translation files:**
+1. **Edit translation files:**
 
 Open `locales/ar/messages.po` and add Arabic translations:
 
@@ -217,13 +217,13 @@ msgid "New Feature Title"
 msgstr "عنوان الميزة الجديدة"
 ```
 
-4. **Compile translations:**
+1. **Compile translations:**
 
 ```bash
 npm run i18n:compile
 ```
 
-5. **Test in your app:**
+1. **Test in your app:**
 
 Your translations will now appear in the app!
 
@@ -232,6 +232,7 @@ Your translations will now appear in the app!
 Common translations are already available:
 
 ### Common
+
 - `common.loading` - "Loading..." / "جاري التحميل..."
 - `common.save` - "Save" / "حفظ"
 - `common.cancel` - "Cancel" / "إلغاء"
@@ -241,21 +242,25 @@ Common translations are already available:
 - `common.search` - "Search" / "بحث"
 
 ### App
+
 - `app.title` - "DoganHub Enterprise Platform" / "منصة دوغان هب للمؤسسات"
 - `app.description` - "Integrated Business Platform" / "منصة الأعمال المتكاملة"
 
 ### Dashboard
+
 - `dashboard.title` - "Dashboard" / "لوحة القيادة"
 - `dashboard.overview` - "Overview" / "نظرة عامة"
 - `dashboard.analytics` - "Analytics" / "التحليلات"
 
 ### Auth
+
 - `auth.login` - "Login" / "تسجيل الدخول"
 - `auth.logout` - "Logout" / "تسجيل الخروج"
 - `auth.email` - "Email" / "البريد الإلكتروني"
 - `auth.password` - "Password" / "كلمة المرور"
 
 ### Navigation
+
 - `nav.home` - "Home" / "الرئيسية"
 - `nav.dashboard` - "Dashboard" / "لوحة القيادة"
 - `nav.billing` - "Billing" / "الفواتير"

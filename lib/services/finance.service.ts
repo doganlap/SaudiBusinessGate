@@ -41,6 +41,15 @@ export interface FinancialStats {
 }
 
 export class FinanceService {
+  private mapTypeToDb(type?: string): string | undefined {
+    if (!type) return undefined;
+    const t = type.toLowerCase();
+    if (t === 'payment' || t === 'payable' || t === 'expense' || t === 'debit') return 'EXPENSE';
+    if (t === 'receipt' || t === 'receivable' || t === 'income' || t === 'credit') return 'INCOME';
+    if (t === 'transfer') return 'TRANSFER';
+    if (t === 'adjustment') return 'ADJUSTMENT';
+    return type;
+  }
   /**
    * Get all financial accounts for a tenant
    */
@@ -54,7 +63,19 @@ export class FinanceService {
     }
   ): Promise<FinancialAccount[]> {
     let sql = `
-      SELECT * FROM financial_accounts 
+      SELECT 
+        id,
+        tenant_id,
+        account_name_en AS account_name,
+        account_code,
+        account_type,
+        balance,
+        parent_account_id,
+        is_active,
+        created_at,
+        updated_at,
+        description
+      FROM chart_of_accounts 
       WHERE tenant_id = $1
     `;
     const params: any[] = [tenantId];
@@ -97,8 +118,8 @@ export class FinanceService {
     accountData: Omit<FinancialAccount, 'id' | 'tenant_id' | 'created_at' | 'updated_at'>
   ): Promise<FinancialAccount> {
     const sql = `
-      INSERT INTO financial_accounts (
-        tenant_id, account_name, account_code, account_type, 
+      INSERT INTO chart_of_accounts (
+        tenant_id, account_name_en, account_code, account_type,
         balance, parent_account_id, is_active, description
       )
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -147,7 +168,7 @@ export class FinanceService {
 
     if (filters?.type && filters.type !== 'all') {
       sql += ` AND transaction_type = $${paramIndex}`;
-      params.push(filters.type);
+      params.push(this.mapTypeToDb(filters.type));
       paramIndex++;
     }
 
@@ -199,12 +220,12 @@ export class FinanceService {
         transactionData.status
       ];
 
-      const result = await client.query<Transaction>(insertSql, insertParams);
+      const result = await client.query<Transaction>(insertSql, insertParams.map((v, i) => (i === 2 ? this.mapTypeToDb(String(v)) : v)));
       const newTransaction = result.rows[0];
 
       // Update account balance
       const balanceUpdateSql = `
-        UPDATE financial_accounts 
+        UPDATE chart_of_accounts 
         SET balance = balance + $1, updated_at = NOW()
         WHERE id = $2 AND tenant_id = $3
       `;
@@ -231,7 +252,7 @@ export class FinanceService {
     // Get revenue (from revenue accounts)
     const revenueResult = await query<{ total: number }>(
       `SELECT COALESCE(SUM(balance), 0) as total 
-       FROM financial_accounts 
+       FROM chart_of_accounts 
        WHERE tenant_id = $1 AND account_type = 'revenue' AND is_active = true`,
       [tenantId]
     );
@@ -239,31 +260,31 @@ export class FinanceService {
     // Get expenses (from expense accounts)
     const expensesResult = await query<{ total: number }>(
       `SELECT COALESCE(SUM(balance), 0) as total 
-       FROM financial_accounts 
+       FROM chart_of_accounts 
        WHERE tenant_id = $1 AND account_type = 'expense' AND is_active = true`,
       [tenantId]
     );
 
     // Get accounts receivable
     const arResult = await query<{ total: number }>(
-      `SELECT COALESCE(SUM(amount), 0) as total 
-       FROM transactions 
-       WHERE tenant_id = $1 AND transaction_type = 'receipt' AND status = 'pending'`,
+      `SELECT COALESCE(SUM(balance), 0) as total 
+       FROM accounts_receivable 
+       WHERE tenant_id = $1 AND status IN ('pending','partial')`,
       [tenantId]
     );
 
     // Get accounts payable
     const apResult = await query<{ total: number }>(
-      `SELECT COALESCE(SUM(amount), 0) as total 
-       FROM transactions 
-       WHERE tenant_id = $1 AND transaction_type = 'payment' AND status = 'pending'`,
+      `SELECT COALESCE(SUM(balance), 0) as total 
+       FROM accounts_payable 
+       WHERE tenant_id = $1 AND status IN ('pending','partial')`,
       [tenantId]
     );
 
     // Get cash balance (from asset accounts)
     const cashResult = await query<{ total: number }>(
       `SELECT COALESCE(SUM(balance), 0) as total 
-       FROM financial_accounts 
+       FROM chart_of_accounts 
        WHERE tenant_id = $1 AND account_type = 'asset' AND is_active = true`,
       [tenantId]
     );
@@ -296,7 +317,7 @@ export class FinanceService {
   async getAccountSummary(tenantId: string): Promise<Record<string, number>> {
     const result = await query<{ account_type: string; total: number }>(
       `SELECT account_type, COALESCE(SUM(balance), 0) as total 
-       FROM financial_accounts 
+       FROM chart_of_accounts 
        WHERE tenant_id = $1 AND is_active = true
        GROUP BY account_type`,
       [tenantId]

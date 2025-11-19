@@ -11,6 +11,7 @@ Complete testing implementation for **Saudi Store** CRUD operations covering the
 ### 1. **API Endpoints** (Full CRUD)
 
 #### Users API
+
 - **POST** `/api/users` - Create new user
 - **GET** `/api/users` - List users with pagination & search
 - **GET** `/api/users/:id` - Get single user
@@ -19,6 +20,7 @@ Complete testing implementation for **Saudi Store** CRUD operations covering the
 - **DELETE** `/api/users/:id` - Delete user
 
 #### Organizations API
+
 - **POST** `/api/organizations` - Create organization
 - **GET** `/api/organizations` - List organizations
 - **GET** `/api/organizations/:id` - Get organization with members
@@ -28,6 +30,7 @@ Complete testing implementation for **Saudi Store** CRUD operations covering the
 ### 2. **Test Suites**
 
 #### Integration Tests (`tests/integration/crud-flow.test.ts`)
+
 - ✅ **Users CRUD** (20+ test cases)
   - Create with validation
   - Duplicate detection
@@ -46,11 +49,13 @@ Complete testing implementation for **Saudi Store** CRUD operations covering the
   - Register → Update Profile → Create Org → Verify
 
 #### API Tests (`tests/api/ai-chat.test.ts`)
+
 - ✅ AI chat endpoint testing
 - ✅ Bilingual support (Arabic + English)
 - ✅ Fallback responses
 
 #### Performance Tests (`tests/lib/performance.test.ts`)
+
 - ✅ Response time tracking
 - ✅ Error rate monitoring
 - ✅ Health status validation
@@ -74,19 +79,22 @@ npm run test:lib       # Library tests
 ### Prerequisites
 
 1. **Database Setup**
+
 ```bash
 # Ensure PostgreSQL is running
 # Apply schema
 psql -U postgres -d saudistore -f database/schema.sql
 ```
 
-2. **Start Development Server**
+1. **Start Development Server**
+
 ```bash
 npm run dev
 # Server should be at http://localhost:3050
 ```
 
-3. **Environment Variables**
+1. **Environment Variables**
+
 ```env
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/saudistore
 REDIS_HOST=localhost
@@ -147,6 +155,7 @@ npm run test:watch
 ## 🔍 Test Scenarios Covered
 
 ### 1. **Create Operations (POST)**
+
 ```typescript
 // Example: Create user
 const response = await fetch('/api/users', {
@@ -164,6 +173,7 @@ const response = await fetch('/api/users', {
 ```
 
 **Tests:**
+
 - Valid data creation
 - Duplicate detection (email/username/slug)
 - Required field validation
@@ -172,6 +182,7 @@ const response = await fetch('/api/users', {
 - Database insertion verification
 
 ### 2. **Read Operations (GET)**
+
 ```typescript
 // Example: Get users with pagination
 const response = await fetch('/api/users?page=1&limit=10&search=ahmed');
@@ -181,6 +192,7 @@ const response = await fetch('/api/users?page=1&limit=10&search=ahmed');
 ```
 
 **Tests:**
+
 - List all with pagination
 - Single record retrieval
 - Search/filter functionality
@@ -188,6 +200,7 @@ const response = await fetch('/api/users?page=1&limit=10&search=ahmed');
 - Query parameter handling
 
 ### 3. **Update Operations (PUT/PATCH)**
+
 ```typescript
 // Example: Update user
 const response = await fetch(`/api/users/${userId}`, {
@@ -203,6 +216,7 @@ const response = await fetch(`/api/users/${userId}`, {
 ```
 
 **Tests:**
+
 - Full update (PUT)
 - Partial update (PATCH)
 - Duplicate prevention on updates
@@ -210,6 +224,7 @@ const response = await fetch(`/api/users/${userId}`, {
 - Timestamp updates
 
 ### 4. **Delete Operations (DELETE)**
+
 ```typescript
 // Example: Delete user
 const response = await fetch(`/api/users/${userId}`, {
@@ -221,6 +236,7 @@ const response = await fetch(`/api/users/${userId}`, {
 ```
 
 **Tests:**
+
 - Successful deletion
 - Cascade delete verification
 - 404 for non-existent records

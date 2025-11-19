@@ -32,6 +32,7 @@ src/
 ## 📊 Database
 
 The database is fully seeded with:
+
 - 5 tenants with different subscription tiers
 - 8 users across different tenants and roles
 - 5 active subscriptions
@@ -40,6 +41,7 @@ The database is fully seeded with:
 ## 🌐 Deployment
 
 The project is configured for Vercel deployment with:
+
 - Proper environment variables
 - Database connection to Prisma Cloud
 - Optimized build configuration

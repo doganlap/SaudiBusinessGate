@@ -66,7 +66,12 @@ export default function DoganAppStoreShell({
       <Header locale={locale} setLocale={setLocale} dark={dark} setDark={setDark} onToggleDrawer={()=>setDrawerOpen(v=>!v)} />
       <div className="flex">
         <LeftNav locale={locale} collapsedAt={1280} drawerOpen={drawerOpen} onCloseDrawer={()=>setDrawerOpen(false)} />
-        <main className="flex-1 pt-28 px-4 sm:px-6" style={{ marginInlineStart: 300, marginInlineEnd: rightDockOpen ? 360 : 24 }}>
+        <main 
+          className={`flex-1 pt-28 px-4 sm:px-6 transition-all duration-300 ${
+            rightDockOpen ? 'mr-[360px]' : 'mr-6'
+          }`}
+          style={{ marginInlineStart: 300 }}
+        >
           {children || (
             <div className="mx-auto max-w-7xl">
               <HeroBanner locale={locale} />

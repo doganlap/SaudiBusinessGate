@@ -1,4 +1,5 @@
 # 🏗️ Saudi Store - UI Architecture & Deployment Scenarios
+
 ## The 1st Autonomous Store in the World - من السعودية إلى العالم 🇸🇦
 
 **Generated:** November 14, 2025  
@@ -46,8 +47,10 @@
 ## 🎨 Layout Hierarchy
 
 ### Level 1: Root Layout (`app/layout.tsx`)
+
 **Purpose:** Global application wrapper  
 **Features:**
+
 - ✅ Bilingual metadata (Arabic primary, English secondary)
 - ✅ RTL/LTR support via CSS
 - ✅ Global CSS imports
@@ -58,6 +61,7 @@
 - ✅ Performance monitoring (Sentry, GA)
 
 **Loads:**
+
 ```tsx
 - ./globals.css (Tailwind + custom)
 - ../styles/rtl.css (Arabic RTL)
@@ -66,25 +70,31 @@
 ```
 
 ### Level 2: Language Layout (`app/[lng]/layout.tsx`)
+
 **Purpose:** Internationalization wrapper  
 **Dynamic Routes:**
+
 - `/en/*` - English (LTR)
 - `/ar/*` - Arabic (RTL)
 
 **Features:**
+
 - Language-specific metadata
 - Direction switching (dir="rtl" or dir="ltr")
 - Locale context provider
 
 ### Level 3: Platform Layout (`app/[lng]/(platform)/layout.tsx`)
+
 **Purpose:** Main application shell for authenticated users  
 **Components:**
+
 - `PlatformShell` - Container with navigation
 - `PlatformNavigation` - Sidebar menu
 - `Header` - Top navigation bar
 - `ThemeProvider` - Dark/Light mode
 
 **Routes Under This Layout (~100 pages):**
+
 ```
 /[lng]/(platform)/
   ├── dashboard/
@@ -117,14 +127,16 @@
 
 ## 1️⃣ Scenario 1: Vercel Cloud Deployment (Recommended)
 
-### 🎯 Best For:
+### 🎯 Best For
+
 - ✅ Quick production deployment
 - ✅ Automatic scaling
 - ✅ Global CDN
 - ✅ Zero DevOps
 - ✅ Serverless functions
 
-### Architecture:
+### Architecture
+
 ```
 Internet
     ↓
@@ -144,8 +156,10 @@ PostgreSQL  Redis    Ollama LLM  External APIs
 (Supabase) (Upstash) (Self-host) (Stripe, etc.)
 ```
 
-### Configuration:
+### Configuration
+
 **File:** `vercel.json`
+
 ```json
 {
   "version": 2,
@@ -168,7 +182,8 @@ PostgreSQL  Redis    Ollama LLM  External APIs
 }
 ```
 
-### Environment Variables Required:
+### Environment Variables Required
+
 ```env
 # Database
 DATABASE_URL=postgresql://user:pass@host:5432/db
@@ -196,7 +211,8 @@ SENTRY_DSN=https://xxx@sentry.io/xxx
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
-### Deployment Commands:
+### Deployment Commands
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -214,13 +230,15 @@ vercel --prod
 vercel env add DATABASE_URL production
 ```
 
-### Scaling:
+### Scaling
+
 - **Automatic** - Vercel handles all scaling
 - **Regions:** Deploy to 30+ edge locations globally
 - **Cold starts:** < 100ms
 - **Concurrent requests:** Unlimited
 
-### Cost Estimate:
+### Cost Estimate
+
 - **Hobby:** Free (good for testing)
 - **Pro:** $20/month (recommended for production)
 - **Enterprise:** Custom pricing (large scale)
@@ -229,13 +247,15 @@ vercel env add DATABASE_URL production
 
 ## 2️⃣ Scenario 2: Azure Cloud Deployment
 
-### 🎯 Best For:
+### 🎯 Best For
+
 - ✅ Enterprise compliance
 - ✅ Saudi data residency
 - ✅ Advanced security
 - ✅ Integration with Azure services
 
-### Architecture:
+### Architecture
+
 ```
 Azure Front Door (CDN)
     ↓
@@ -253,8 +273,10 @@ Azure DB    Azure Cache  Azure AI   Key Vault
 for Postgres for Redis  Services   (Secrets)
 ```
 
-### Configuration:
+### Configuration
+
 **File:** `azure/deploy.bicep`
+
 ```bicep
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: 'saudi-store-app'
@@ -278,7 +300,8 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
 }
 ```
 
-### Deployment Commands:
+### Deployment Commands
+
 ```powershell
 # Login to Azure
 az login
@@ -294,13 +317,15 @@ cd azure
 az webapp up --name saudi-store-app --resource-group saudi-store-rg
 ```
 
-### Scaling:
+### Scaling
+
 - **Manual/Auto:** Configure auto-scaling rules
 - **Instances:** 2-20 instances
 - **Scale triggers:** CPU > 70%, Memory > 80%
 - **Geographic:** Deploy to Saudi Arabia + failover region
 
-### Cost Estimate:
+### Cost Estimate
+
 - **Basic (B1):** $13/month (dev/test)
 - **Standard (S1):** $74/month (production)
 - **Premium (P1V3):** $145/month (high performance)
@@ -311,13 +336,15 @@ az webapp up --name saudi-store-app --resource-group saudi-store-rg
 
 ## 3️⃣ Scenario 3: Docker Self-Hosted
 
-### 🎯 Best For:
+### 🎯 Best For
+
 - ✅ Full control
 - ✅ On-premise deployment
 - ✅ Cost optimization
 - ✅ Air-gapped environments
 
-### Architecture:
+### Architecture
+
 ```
 Nginx Reverse Proxy (Port 80/443)
     ↓
@@ -338,8 +365,10 @@ Docker Host
 └──────────────────────────────────────┘
 ```
 
-### Configuration:
+### Configuration
+
 **File:** `docker-compose.yml`
+
 ```yaml
 version: '3.8'
 
@@ -382,7 +411,8 @@ volumes:
   redis-data:
 ```
 
-### Deployment Commands:
+### Deployment Commands
+
 ```bash
 # Build and start
 docker-compose up -d
@@ -400,12 +430,14 @@ docker-compose down
 docker-compose exec postgres pg_dump -U postgres saudistore > backup.sql
 ```
 
-### Scaling:
+### Scaling
+
 - **Manual:** Use Docker Swarm or add load balancer
 - **Instances:** 1-5 containers per host
 - **Resources:** 2GB RAM, 2 CPU cores minimum per instance
 
-### Cost Estimate:
+### Cost Estimate
+
 - **Hardware:** $500-2000 one-time (server)
 - **Hosting:** $50-200/month (VPS)
 - **Total:** ~$100/month (small scale)
@@ -414,13 +446,15 @@ docker-compose exec postgres pg_dump -U postgres saudistore > backup.sql
 
 ## 4️⃣ Scenario 4: Kubernetes (Enterprise Scale)
 
-### 🎯 Best For:
+### 🎯 Best For
+
 - ✅ 50K+ concurrent users
 - ✅ Multi-region deployment
 - ✅ High availability (99.99%)
 - ✅ Advanced orchestration
 
-### Architecture:
+### Architecture
+
 ```
 Global Load Balancer
     ↓
@@ -443,8 +477,10 @@ Global Load Balancer
 └─────────────────────────────────────────┘
 ```
 
-### Configuration:
+### Configuration
+
 **File:** `k8s/deployment.yaml`
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -505,7 +541,8 @@ spec:
         averageUtilization: 70
 ```
 
-### Deployment Commands:
+### Deployment Commands
+
 ```bash
 # Apply configurations
 kubectl apply -f k8s/
@@ -523,13 +560,15 @@ kubectl set image deployment/saudi-store app=saudistore/app:v2
 kubectl logs -f deployment/saudi-store
 ```
 
-### Scaling:
+### Scaling
+
 - **Automatic (HPA):** 5-100 pods based on CPU/memory
 - **Cluster:** 10-100 nodes
 - **Multi-region:** Deploy across 3+ regions
 - **Load balancing:** Distributed across all pods
 
-### Cost Estimate:
+### Cost Estimate
+
 - **GKE/AKS:** $300-3000/month (cluster)
 - **Nodes:** $50-200/month per node
 - **Total:** $500-5000+/month (enterprise)
@@ -538,13 +577,15 @@ kubectl logs -f deployment/saudi-store
 
 ## 5️⃣ Scenario 5: Edge/CDN Distribution
 
-### 🎯 Best For:
+### 🎯 Best For
+
 - ✅ Global audience
 - ✅ Ultra-low latency (<50ms)
 - ✅ Millions of requests
 - ✅ Static content delivery
 
-### Architecture:
+### Architecture
+
 ```
 ┌─────────────────────────────────────────────┐
 │         Global CDN (Cloudflare/AWS)         │
@@ -566,8 +607,10 @@ kubectl logs -f deployment/saudi-store
 └─────────────────────────────────────────────┘
 ```
 
-### Configuration:
+### Configuration
+
 **Cloudflare Workers + Vercel:**
+
 ```javascript
 // workers/edge-handler.js
 addEventListener('fetch', event => {
@@ -601,7 +644,8 @@ async function handleRequest(request) {
 }
 ```
 
-### Deployment:
+### Deployment
+
 ```bash
 # Deploy to Cloudflare Workers
 wrangler publish
@@ -610,13 +654,15 @@ wrangler publish
 # Domain: saudistore.com → Cloudflare → Vercel
 ```
 
-### Performance:
+### Performance
+
 - **TTFB:** <50ms globally
 - **Cache Hit Ratio:** 95%+
 - **Bandwidth:** Unlimited
 - **DDoS Protection:** Built-in
 
-### Cost Estimate:
+### Cost Estimate
+
 - **Cloudflare Free:** $0 (limited)
 - **Cloudflare Pro:** $20/month
 - **Cloudflare Business:** $200/month
@@ -643,31 +689,41 @@ wrangler publish
 ## 🎯 Recommended Scenarios by Use Case
 
 ### Startup / MVP (0-1K users)
+
 **→ Vercel Cloud** ⭐⭐⭐⭐⭐
+
 - Zero DevOps
 - Free tier available
 - Fast deployment
 
 ### Small Business (1K-5K users)
+
 **→ Docker Self-Hosted** ⭐⭐⭐⭐
+
 - Cost effective
 - Full control
 - Easy maintenance
 
 ### Enterprise (5K-50K users)
+
 **→ Azure Cloud** ⭐⭐⭐⭐⭐
+
 - Compliance ready
 - Saudi data center
 - Advanced security
 
 ### Large Enterprise (50K+ users)
+
 **→ Kubernetes** ⭐⭐⭐⭐⭐
+
 - Auto-scaling
 - Multi-region
 - High availability
 
 ### Global SaaS (Millions of users)
+
 **→ Edge/CDN + Vercel** ⭐⭐⭐⭐⭐
+
 - Ultra-low latency
 - Global distribution
 - Infinite scale
@@ -679,6 +735,7 @@ wrangler publish
 ### Pre-Deployment Checklist
 
 #### ✅ Code Ready
+
 - [ ] All 143 pages tested
 - [ ] Build succeeds (`npm run build`)
 - [ ] No TypeScript errors
@@ -686,6 +743,7 @@ wrangler publish
 - [ ] Performance optimized (Lighthouse > 90)
 
 #### ✅ Environment Configuration
+
 - [ ] `.env.production` created
 - [ ] Database connection tested
 - [ ] Redis connection tested
@@ -693,6 +751,7 @@ wrangler publish
 - [ ] Secrets in vault (not in code)
 
 #### ✅ Infrastructure
+
 - [ ] Domain registered
 - [ ] SSL certificate obtained
 - [ ] DNS configured
@@ -700,6 +759,7 @@ wrangler publish
 - [ ] Load balancer configured (if needed)
 
 #### ✅ Database
+
 - [ ] Schema deployed
 - [ ] Migrations run
 - [ ] Indexes created
@@ -707,6 +767,7 @@ wrangler publish
 - [ ] Connection pooling enabled
 
 #### ✅ Monitoring
+
 - [ ] Sentry configured
 - [ ] Google Analytics added
 - [ ] Performance monitoring
@@ -714,6 +775,7 @@ wrangler publish
 - [ ] Log aggregation
 
 #### ✅ Security
+
 - [ ] HTTPS enforced
 - [ ] CORS configured
 - [ ] Rate limiting enabled
@@ -726,21 +788,25 @@ wrangler publish
 ## 📈 Scaling Strategy
 
 ### Phase 1: Launch (0-1K users)
+
 **Infrastructure:** Vercel Free / Docker Single Instance
 **Cost:** $0-50/month
 **Focus:** Product-market fit
 
 ### Phase 2: Growth (1K-10K users)
+
 **Infrastructure:** Vercel Pro / Docker + Load Balancer
 **Cost:** $50-200/month
 **Focus:** Performance optimization
 
 ### Phase 3: Scale (10K-50K users)
+
 **Infrastructure:** Azure / Multi-instance Docker
 **Cost:** $200-1000/month
 **Focus:** Reliability & uptime
 
 ### Phase 4: Enterprise (50K+ users)
+
 **Infrastructure:** Kubernetes Multi-Region
 **Cost:** $1000+/month
 **Focus:** Global expansion
@@ -752,24 +818,28 @@ wrangler publish
 ### Key Metrics to Track
 
 #### Application Metrics
+
 - **Response Time:** Average < 200ms
 - **Error Rate:** < 0.1%
 - **Uptime:** > 99.9%
 - **Throughput:** Requests per second
 
 #### Infrastructure Metrics
+
 - **CPU Usage:** < 70%
 - **Memory Usage:** < 80%
 - **Disk I/O:** Monitor IOPS
 - **Network:** Bandwidth usage
 
 #### Business Metrics
+
 - **Page Load Time:** < 2 seconds
 - **User Sessions:** Active users
 - **Conversion Rate:** Key actions
 - **API Success Rate:** > 99.5%
 
 ### Monitoring Tools
+
 ```yaml
 Sentry: Error tracking & performance
 Google Analytics: User behavior
@@ -784,6 +854,7 @@ New Relic: APM (optional)
 ## 🚨 Disaster Recovery
 
 ### Backup Strategy
+
 ```bash
 # Automated daily backups
 0 2 * * * /scripts/backup-database.sh
@@ -792,11 +863,13 @@ New Relic: APM (optional)
 ```
 
 ### Recovery Time Objectives
+
 - **RTO (Recovery Time):** < 4 hours
 - **RPO (Recovery Point):** < 1 hour
 - **Data Loss:** < 5 minutes
 
 ### Failover Plan
+
 1. **Primary Failure:** Auto-switch to secondary region
 2. **Database Failure:** Restore from latest backup
 3. **CDN Failure:** Direct traffic to origin
@@ -807,12 +880,14 @@ New Relic: APM (optional)
 ## 📞 Support & Resources
 
 ### Documentation
+
 - [Architecture Guide](./docs/ARCHITECTURE.md)
 - [API Documentation](./docs/API_GUIDE.md)
 - [Deployment Guide](./DEPLOYMENT_SUMMARY.md)
 - [Testing Guide](./docs/CRUD_TESTING_GUIDE.md)
 
 ### Quick Commands
+
 ```bash
 # Build
 npm run build

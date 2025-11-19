@@ -13,17 +13,20 @@
 ## 🚀 Quick Deployment (3 Steps)
 
 ### Step 1: Login to Vercel
+
 ```bash
 cd d:\Projects\SBG
 vercel login
 ```
 
 ### Step 2: Deploy to Production
+
 ```bash
 vercel --prod
 ```
 
 ### Step 3: Set Environment Variables (if not already set)
+
 Go to Vercel Dashboard → Your Project → Settings → Environment Variables
 
 ---
@@ -33,6 +36,7 @@ Go to Vercel Dashboard → Your Project → Settings → Environment Variables
 Add these in Vercel Dashboard (Project Settings → Environment Variables):
 
 ### Critical (Required)
+
 ```bash
 # Database (Already in vercel.json, but verify)
 DATABASE_URL=postgres://f9b01b016f6065e1f9d62776a95e03ccb3773e35f2ba4d5ec6f6bbc1afaa2e46:sk_ZDb_YXE5HdKoY5VayB3tN@db.prisma.io:5432/postgres?sslmode=require
@@ -53,6 +57,7 @@ NEXT_PUBLIC_API_URL=https://your-project.vercel.app/api
 ```
 
 ### Optional (Can add later)
+
 ```bash
 # Redis (if using)
 REDIS_URL=redis://...
@@ -73,18 +78,21 @@ STRIPE_PUBLISHABLE_KEY=pk_live_...
 ## 🎯 Deployment Commands
 
 ### Option 1: Direct Production Deploy
+
 ```bash
 cd d:\Projects\SBG
 vercel --prod
 ```
 
 ### Option 2: Using Deployment Script
+
 ```bash
 cd d:\Projects\SBG
 .\scripts\deploy-to-vercel.bat
 ```
 
 ### Option 3: Preview First, Then Production
+
 ```bash
 # Deploy to preview
 vercel
@@ -120,16 +128,19 @@ vercel --prod
 ## ✅ Post-Deployment Verification
 
 ### 1. Check Deployment Status
+
 ```bash
 vercel ls
 ```
 
 ### 2. Test Health Endpoint
+
 ```bash
 curl https://your-project.vercel.app/api/health
 ```
 
 ### 3. Test Application
+
 - Open: `https://your-project.vercel.app`
 - Should redirect to `/ar` (Arabic default)
 - Test login/register
@@ -140,6 +151,7 @@ curl https://your-project.vercel.app/api/health
 ## 🔧 Troubleshooting
 
 ### Build Fails
+
 ```bash
 # Check build logs in Vercel dashboard
 # Common issues:
@@ -149,6 +161,7 @@ curl https://your-project.vercel.app/api/health
 ```
 
 ### Database Connection Issues
+
 ```bash
 # Verify DATABASE_URL is correct
 # Check SSL mode (sslmode=require)
@@ -156,6 +169,7 @@ curl https://your-project.vercel.app/api/health
 ```
 
 ### Environment Variables Not Working
+
 ```bash
 # Make sure variables are set for "Production"
 # Redeploy after adding variables
@@ -167,12 +181,14 @@ vercel --prod
 ## 🌐 Custom Domain (Optional)
 
 ### Add Domain in Vercel
+
 1. Go to Project Settings → Domains
 2. Add your domain (e.g., saudistore.sa)
 3. Update DNS records as shown
 4. SSL auto-configured
 
 ### Update Environment Variables
+
 ```bash
 NEXTAUTH_URL=https://your-domain.com
 NEXT_PUBLIC_APP_URL=https://your-domain.com
@@ -191,13 +207,13 @@ NEXT_PUBLIC_APP_URL=https://your-domain.com
 
 ---
 
-## 🚀 Ready to Deploy!
+## 🚀 Ready to Deploy
 
 Run this command:
+
 ```bash
 cd d:\Projects\SBG
 vercel --prod
 ```
 
 **Status:** ✅ **Ready for Production Deployment**
-

@@ -129,50 +129,58 @@ export default function DashboardPage() {
   const quickActions: QuickAction[] = [
     {
       id: 'finance',
-      title: 'Finance',
-      description: 'Manage accounts, transactions, and reports',
+      title: lng === 'ar' ? 'المالية' : 'Finance',
+      description: lng === 'ar' ? 'إدارة الحسابات والمعاملات والتقارير' : 'Manage accounts, transactions, and reports',
       icon: <DollarSign className="h-6 w-6" />,
-      href: `/${lng}/finance`,
+      href: `/${lng}/(platform)/finance`,
       color: 'bg-green-500'
     },
     {
       id: 'sales',
-      title: 'Sales',
-      description: 'Track leads, deals, and pipeline',
+      title: lng === 'ar' ? 'المبيعات' : 'Sales',
+      description: lng === 'ar' ? 'تتبع العملاء المحتملين والصفقات' : 'Track leads, deals, and pipeline',
       icon: <TrendingUp className="h-6 w-6" />,
-      href: `/${lng}/sales`,
+      href: `/${lng}/(platform)/sales`,
       color: 'bg-blue-500'
     },
     {
       id: 'crm',
-      title: 'CRM',
-      description: 'Customer relationship management',
+      title: lng === 'ar' ? 'إدارة العملاء' : 'CRM',
+      description: lng === 'ar' ? 'إدارة علاقات العملاء' : 'Customer relationship management',
       icon: <Users className="h-6 w-6" />,
-      href: `/${lng}/crm`,
+      href: `/${lng}/(platform)/crm`,
       color: 'bg-purple-500'
     },
     {
       id: 'hr',
-      title: 'HR',
-      description: 'Human resources and payroll',
+      title: lng === 'ar' ? 'الموارد البشرية' : 'HR',
+      description: lng === 'ar' ? 'إدارة الموظفين والرواتب' : 'Human resources and payroll',
       icon: <UserCheck className="h-6 w-6" />,
-      href: `/${lng}/hr`,
+      href: `/${lng}/(platform)/hr`,
       color: 'bg-orange-500'
     },
     {
       id: 'procurement',
-      title: 'Procurement',
-      description: 'Purchase orders and inventory',
+      title: lng === 'ar' ? 'المشتريات' : 'Procurement',
+      description: lng === 'ar' ? 'أوامر الشراء والمخزون' : 'Purchase orders and inventory',
       icon: <Package className="h-6 w-6" />,
-      href: `/${lng}/procurement`,
+      href: `/${lng}/(platform)/procurement`,
       color: 'bg-indigo-500'
+    },
+    {
+      id: 'ai-agents',
+      title: lng === 'ar' ? 'وكلاء الذكاء الاصطناعي' : 'AI Agents',
+      description: lng === 'ar' ? 'إدارة وكلاء الذكاء الاصطناعي' : 'Manage AI agents and automation',
+      icon: <Activity className="h-6 w-6" />,
+      href: `/${lng}/(platform)/ai-agents`,
+      color: 'bg-cyan-500'
     },
     {
       id: 'billing',
       title: lng === 'ar' ? 'الفواتير' : 'Billing',
       description: lng === 'ar' ? 'إدارة الاشتراكات والمدفوعات' : 'Subscription and payment management',
       icon: <CreditCard className="h-6 w-6" />,
-      href: `/${lng}/billing`,
+      href: `/${lng}/(platform)/billing`,
       color: 'bg-pink-500'
     },
     {
@@ -180,16 +188,8 @@ export default function DashboardPage() {
       title: lng === 'ar' ? 'التحليلات' : 'Analytics',
       description: lng === 'ar' ? 'رؤى الأعمال ومؤشرات الأداء' : 'AI-powered business insights and KPIs',
       icon: <BarChart3 className="h-6 w-6" />,
-      href: `/${lng}/analytics`,
+      href: `/${lng}/(platform)/analytics`,
       color: 'bg-teal-500'
-    },
-    {
-      id: 'platform',
-      title: lng === 'ar' ? 'المنصة' : 'Platform',
-      description: lng === 'ar' ? 'إدارة المستخدمين والإعدادات' : 'Users, tenants, and settings',
-      icon: <Settings className="h-6 w-6" />,
-      href: `/${lng}/platform/users`,
-      color: 'bg-gray-500'
     }
   ];
 
@@ -234,7 +234,7 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('dashboard.loading')}</p>
+          <p className="text-gray-600">{lng === 'ar' ? 'جاري التحميل...' : 'Loading...'}</p>
         </div>
       </div>
     );
@@ -248,11 +248,16 @@ export default function DashboardPage() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                {t('dashboard.welcome')} {user?.name || t('common.user')}
+                {lng === 'ar' ? 'لوحة التحكم المؤسسية ذاتية التشغيل' : 'Enterprise Autonomous Dashboard'}
               </h1>
               <p className="mt-1 text-sm text-gray-500">
-                {t('dashboard.overview')}
+                {lng === 'ar' ? 'أول بوابة أعمال ذاتية التشغيل في المنطقة - منصة إدارة الأعمال المؤسسية بالذكاء الاصطناعي' : 'The 1st Autonomous Business Gate in the Region - AI-powered enterprise business management platform'}
               </p>
+              {/* Pioneering Badge */}
+              <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg">
+                <span className="mr-2">⭐</span>
+                {lng === 'ar' ? 'المنصة الرائدة في المنطقة' : 'Pioneering Platform in the Region'}
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />
@@ -286,7 +291,7 @@ export default function DashboardPage() {
                   <DollarSign className="h-6 w-6 text-green-600" />
                 </div>
                 <div className="ml-4 rtl:ml-0 rtl:mr-4">
-                  <p className="text-sm font-medium text-gray-600">{t('dashboard.totalRevenue')}</p>
+                  <p className="text-sm font-medium text-gray-600">{lng === 'ar' ? 'إجمالي الإيرادات' : 'Total Revenue'}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     {formatCurrency(stats.totalRevenue)}
                   </p>
@@ -300,7 +305,7 @@ export default function DashboardPage() {
                   <Users className="h-6 w-6 text-blue-600" />
                 </div>
                 <div className="ml-4 rtl:ml-0 rtl:mr-4">
-                  <p className="text-sm font-medium text-gray-600">{t('dashboard.totalUsers')}</p>
+                  <p className="text-sm font-medium text-gray-600">{lng === 'ar' ? 'إجمالي المستخدمين' : 'Total Users'}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     {stats.totalUsers.toLocaleString()}
                   </p>
@@ -314,7 +319,7 @@ export default function DashboardPage() {
                   <CreditCard className="h-6 w-6 text-purple-600" />
                 </div>
                 <div className="ml-4 rtl:ml-0 rtl:mr-4">
-                  <p className="text-sm font-medium text-gray-600">{t('dashboard.activeSubscriptions')}</p>
+                  <p className="text-sm font-medium text-gray-600">{lng === 'ar' ? 'الاشتراكات النشطة' : 'Active Subscriptions'}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     {stats.activeSubscriptions.toLocaleString()}
                   </p>
@@ -328,7 +333,7 @@ export default function DashboardPage() {
                   <TrendingUp className="h-6 w-6 text-orange-600" />
                 </div>
                 <div className="ml-4 rtl:ml-0 rtl:mr-4">
-                  <p className="text-sm font-medium text-gray-600">{t('dashboard.monthlyGrowth')}</p>
+                  <p className="text-sm font-medium text-gray-600">{lng === 'ar' ? 'النمو الشهري' : 'Monthly Growth'}</p>
                   <p className="text-2xl font-bold text-gray-900">
                     +{stats.monthlyGrowth}%
                   </p>
@@ -343,8 +348,8 @@ export default function DashboardPage() {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow">
               <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">{t('dashboard.quickActions')}</h2>
-                <p className="text-sm text-gray-600">{t('dashboard.quickActionsSubtitle')}</p>
+                <h2 className="text-lg font-semibold text-gray-900">{lng === 'ar' ? 'الإجراءات السريعة' : 'Quick Actions'}</h2>
+                <p className="text-sm text-gray-600">{lng === 'ar' ? 'الوصول السريع إلى وحدات التطبيق' : 'Quick access to application modules'}</p>
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -373,8 +378,8 @@ export default function DashboardPage() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow">
               <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">{t('recentActivity')}</h2>
-                <p className="text-sm text-gray-600">{t('recentActivitySubtitle')}</p>
+                <h2 className="text-lg font-semibold text-gray-900">{lng === 'ar' ? 'النشاط الأخير' : 'Recent Activity'}</h2>
+                <p className="text-sm text-gray-600">{lng === 'ar' ? 'آخر التحديثات والأحداث' : 'Latest updates and events'}</p>
               </div>
               <div className="p-6">
                 <div className="space-y-4">
@@ -397,7 +402,7 @@ export default function DashboardPage() {
                     href={`/${lng}/platform/activity`}
                     className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                   >
-                    View all activity →
+                    {lng === 'ar' ? 'عرض كل النشاط ←' : 'View all activity →'}
                   </a>
                 </div>
               </div>

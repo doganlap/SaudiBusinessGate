@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- [x] Vercel account created at https://vercel.com
+- [x] Vercel account created at <https://vercel.com>
 - [x] GitHub repository connected
 - [x] Node.js 18+ installed locally for testing
 - [x] Environment variables prepared
@@ -12,6 +12,7 @@
 ### Option 1: Deploy via Vercel Dashboard
 
 1. **Import Project**
+
    ```
    - Go to https://vercel.com/new
    - Click "Import Git Repository"
@@ -21,6 +22,7 @@
    ```
 
 2. **Configure Build Settings**
+
    ```
    Build Command: npm run build
    Output Directory: .next
@@ -30,6 +32,7 @@
 
 3. **Add Environment Variables**
    Click "Environment Variables" and add:
+
    ```bash
    # Application
    NEXT_PUBLIC_APP_URL=https://your-domain.vercel.app
@@ -67,16 +70,19 @@
 ### Option 2: Deploy via CLI
 
 1. **Install Vercel CLI**
+
    ```bash
    npm install -g vercel
    ```
 
 2. **Login to Vercel**
+
    ```bash
    vercel login
    ```
 
 3. **Deploy to Production**
+
    ```bash
    # From project root
    cd D:\Projects\DoganHubStore
@@ -86,6 +92,7 @@
    ```
 
 4. **Follow the prompts**
+
    ```
    ? Set up and deploy? [Y/n] Y
    ? Which scope? Your Team/Account
@@ -108,6 +115,7 @@
    - Build Configuration: Auto-detected (Next.js)
 
 3. **Every Push Deploys Automatically**
+
    ```bash
    git push origin main  # Deploys to production
    git push origin develop  # Deploys preview
@@ -118,6 +126,7 @@
 ### Option 1: Vercel Postgres (Recommended)
 
 1. **Add Vercel Postgres**
+
    ```
    - Go to your project in Vercel
    - Click "Storage" tab
@@ -128,6 +137,7 @@
 
 2. **Environment Variables Auto-Added**
    Vercel automatically adds:
+
    ```
    POSTGRES_URL
    POSTGRES_PRISMA_URL
@@ -136,6 +146,7 @@
    ```
 
 3. **Run Migrations**
+
    ```bash
    # Connect to your Vercel Postgres
    vercel env pull .env.local
@@ -148,6 +159,7 @@
 ### Option 2: External PostgreSQL
 
 Use any PostgreSQL provider:
+
 - **Supabase** (Free tier available)
 - **Railway** (Free tier available)
 - **Neon** (Free serverless Postgres)
@@ -155,6 +167,7 @@ Use any PostgreSQL provider:
 - **Azure Database for PostgreSQL**
 
 Add connection string to Vercel environment variables:
+
 ```bash
 DATABASE_URL=postgresql://user:pass@host:5432/dbname
 ```
@@ -164,11 +177,12 @@ DATABASE_URL=postgresql://user:pass@host:5432/dbname
 ### Option 1: Upstash Redis (Recommended for Vercel)
 
 1. **Create Upstash Account**
-   - Go to https://upstash.com
+   - Go to <https://upstash.com>
    - Create free account
    - Create new Redis database
 
 2. **Get Connection Details**
+
    ```
    REDIS_HOST=your-region.upstash.io
    REDIS_PORT=6379
@@ -231,6 +245,7 @@ NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=...
 ## Custom Domain Setup
 
 1. **Add Domain in Vercel**
+
    ```
    Project Settings → Domains → Add Domain
    Enter: doganhubstore.com
@@ -238,6 +253,7 @@ NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=...
 
 2. **Configure DNS**
    Add these records to your domain registrar:
+
    ```
    Type  Name  Value
    A     @     76.76.21.21
@@ -278,6 +294,7 @@ npm start
 ```
 
 Test these pages:
+
 - `/en/dashboard` - Main dashboard
 - `/ar/dashboard` - Arabic dashboard
 - `/api/health` - Health check
@@ -287,16 +304,21 @@ Test these pages:
 ## Performance Optimization
 
 ### 1. Enable Image Optimization
+
 Already configured in `next.config.js`
 
 ### 2. Enable Caching
+
 Vercel automatically caches:
+
 - Static assets (31536000s)
 - API responses (configurable)
 - Build outputs
 
 ### 3. Edge Functions
+
 Consider moving API routes to edge:
+
 ```typescript
 export const runtime = 'edge';
 ```
@@ -304,6 +326,7 @@ export const runtime = 'edge';
 ## Monitoring and Logging
 
 ### 1. Vercel Analytics
+
 ```bash
 # Install
 npm install @vercel/analytics
@@ -314,11 +337,13 @@ import { Analytics } from '@vercel/analytics/react';
 ```
 
 ### 2. Vercel Speed Insights
+
 ```bash
 npm install @vercel/speed-insights
 ```
 
 ### 3. Error Tracking (Sentry)
+
 Already integrated - just add `SENTRY_DSN` env variable
 
 ## Rollback Procedure
@@ -326,11 +351,13 @@ Already integrated - just add `SENTRY_DSN` env variable
 If deployment has issues:
 
 1. **Via Dashboard**
+
    ```
    Deployments → Previous Deployment → Promote to Production
    ```
 
 2. **Via CLI**
+
    ```bash
    vercel rollback
    ```
@@ -343,6 +370,7 @@ If deployment has issues:
    - Vercel Dashboard → Deployments → Failed Build → Logs
 
 2. **Common issues**
+
    ```bash
    # TypeScript errors
    npm run build  # Test locally first
@@ -377,6 +405,7 @@ If deployment has issues:
 ## Cost Estimation
 
 ### Vercel Pricing
+
 - **Hobby Plan**: Free
   - 100GB bandwidth
   - Unlimited deployments
@@ -390,6 +419,7 @@ If deployment has issues:
   - Recommended for production
 
 ### Database Costs
+
 - **Vercel Postgres**: Free tier → $24/month
 - **Upstash Redis**: Free tier → $10/month
 - **Total**: Can start free, scale as needed
@@ -407,10 +437,10 @@ If deployment has issues:
 
 ## Support Resources
 
-- Vercel Docs: https://vercel.com/docs
-- Next.js Docs: https://nextjs.org/docs
-- Vercel Support: https://vercel.com/support
-- Community: https://github.com/vercel/next.js/discussions
+- Vercel Docs: <https://vercel.com/docs>
+- Next.js Docs: <https://nextjs.org/docs>
+- Vercel Support: <https://vercel.com/support>
+- Community: <https://github.com/vercel/next.js/discussions>
 
 ## Quick Commands Reference
 

@@ -7,7 +7,7 @@
 
 ## 📈 Error Status Code Summary
 
-### Error Distribution (Actual Counts):
+### Error Distribution (Actual Counts)
 
 | Status Code | Count | Description | Files Affected |
 |-------------|-------|-------------|----------------|
@@ -20,7 +20,8 @@
 | **405** | **1** | Method Not Allowed | 1 route |
 | **409** | **~10+** | Conflict | Multiple routes |
 
-### Success Status Codes:
+### Success Status Codes
+
 | Status Code | Count | Description |
 |-------------|-------|-------------|
 | **200** | **3** | OK |
@@ -30,14 +31,16 @@
 
 ## 🔴 401 Unauthorized Errors (45 instances)
 
-### Most Common Pattern:
+### Most Common Pattern
+
 ```typescript
 if (!session?.user) {
   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 }
 ```
 
-### Affected API Routes (49 files):
+### Affected API Routes (49 files)
+
 1. Finance APIs (export, invoices, transactions, etc.)
 2. CRM APIs (customers, deals, contacts)
 3. GRC APIs (controls, frameworks)
@@ -54,13 +57,15 @@ if (!session?.user) {
 
 ## 🟠 400 Bad Request Errors (30 instances)
 
-### Common Causes:
+### Common Causes
+
 - Missing required fields
 - Invalid data format
 - Validation failures
 - Missing parameters
 
-### Examples:
+### Examples
+
 ```typescript
 // Missing required fields
 if (!body.name || !body.email) {
@@ -73,7 +78,8 @@ if (!validStatuses.includes(body.status)) {
 }
 ```
 
-### Affected Routes (73 files):
+### Affected Routes (73 files)
+
 - Finance APIs
 - CRM APIs
 - GRC APIs
@@ -87,7 +93,8 @@ if (!validStatuses.includes(body.status)) {
 
 ## 🔵 404 Not Found Errors (4 instances)
 
-### Common Patterns:
+### Common Patterns
+
 ```typescript
 // Resource not found
 if (!resource) {
@@ -100,7 +107,8 @@ if (!user) {
 }
 ```
 
-### Affected Routes (38 files):
+### Affected Routes (38 files)
+
 - `/api/users/[id]` - User not found
 - `/api/organizations/[id]` - Organization not found
 - `/api/finance/accounts-receivable` - Entry not found
@@ -119,7 +127,8 @@ if (!user) {
 
 ## 🟡 403 Forbidden Errors (4 instances)
 
-### Common Pattern:
+### Common Pattern
+
 ```typescript
 // Permission check
 if (!hasPermission) {
@@ -127,7 +136,8 @@ if (!hasPermission) {
 }
 ```
 
-### Affected Routes (14 files):
+### Affected Routes (14 files)
+
 1. `/api/finance/invoices` - No permission to view invoices
 2. `/api/finance/transactions` - No permission to view transactions
 3. `/api/platform/users` - No permission to manage users
@@ -147,13 +157,15 @@ if (!hasPermission) {
 
 ## 🔴 500 Internal Server Error (44 instances)
 
-### Common Causes:
+### Common Causes
+
 - Database connection errors
 - Unexpected exceptions
 - Service failures
 - Data processing errors
 
-### Pattern:
+### Pattern
+
 ```typescript
 catch (error) {
   console.error('Error:', error);
@@ -164,7 +176,8 @@ catch (error) {
 }
 ```
 
-### Affected Routes (129 files):
+### Affected Routes (129 files)
+
 - Almost all API routes have 500 error handling
 - Finance APIs
 - CRM APIs
@@ -181,12 +194,14 @@ catch (error) {
 
 ## 🟣 409 Conflict Errors (~10+ instances)
 
-### Common Causes:
+### Common Causes
+
 - Duplicate email/username
 - Resource already exists
 - Concurrent modification
 
-### Examples:
+### Examples
+
 ```typescript
 // Duplicate email
 if (existingUser) {
@@ -197,7 +212,8 @@ if (existingUser) {
 }
 ```
 
-### Affected Routes:
+### Affected Routes
+
 - `/api/users` - Email/username already exists
 - `/api/crm/customers` - Customer already exists
 - `/api/procurement/vendors` - Vendor already exists
@@ -208,13 +224,15 @@ if (existingUser) {
 
 ## 🟠 503 Service Unavailable (3 instances)
 
-### Common Causes:
+### Common Causes
+
 - Database unavailable
 - External service down
 - Rate limiting
 - Maintenance mode
 
-### Examples:
+### Examples
+
 ```typescript
 // Database unavailable
 if (!dbConnected) {
@@ -225,7 +243,8 @@ if (!dbConnected) {
 }
 ```
 
-### Affected Routes:
+### Affected Routes
+
 - `/api/health` - Service degraded
 - `/api/health/database` - Database unavailable
 - `/api/finance/transactions` - Service unavailable
@@ -241,7 +260,8 @@ if (!dbConnected) {
 
 ## 📊 Error Categories by Module
 
-### Finance Module:
+### Finance Module
+
 - **401:** 15+ instances
 - **400:** 20+ instances
 - **404:** 5+ instances
@@ -249,7 +269,8 @@ if (!dbConnected) {
 - **500:** 30+ instances
 - **503:** 3+ instances
 
-### CRM Module:
+### CRM Module
+
 - **401:** 8+ instances
 - **400:** 10+ instances
 - **404:** 5+ instances
@@ -258,13 +279,15 @@ if (!dbConnected) {
 - **409:** 2+ instances
 - **503:** 3+ instances
 
-### GRC Module:
+### GRC Module
+
 - **401:** 5+ instances
 - **400:** 15+ instances
 - **404:** 3+ instances
 - **500:** 20+ instances
 
-### Procurement Module:
+### Procurement Module
+
 - **401:** 6+ instances
 - **400:** 8+ instances
 - **404:** 2+ instances
@@ -272,7 +295,8 @@ if (!dbConnected) {
 - **409:** 2+ instances
 - **503:** 3+ instances
 
-### HR Module:
+### HR Module
+
 - **401:** 4+ instances
 - **400:** 5+ instances
 - **404:** 2+ instances
@@ -280,26 +304,30 @@ if (!dbConnected) {
 - **409:** 2+ instances
 - **503:** 2+ instances
 
-### Sales Module:
+### Sales Module
+
 - **401:** 4+ instances
 - **400:** 6+ instances
 - **404:** 10+ instances
 - **500:** 15+ instances
 - **503:** 2+ instances
 
-### Platform Module:
+### Platform Module
+
 - **401:** 5+ instances
 - **400:** 8+ instances
 - **404:** 4+ instances
 - **403:** 5+ instances
 - **500:** 10+ instances
 
-### Analytics Module:
+### Analytics Module
+
 - **401:** 6+ instances
 - **403:** 2+ instances
 - **500:** 8+ instances
 
-### Reports Module:
+### Reports Module
+
 - **401:** 5+ instances
 - **400:** 3+ instances
 - **404:** 2+ instances
@@ -310,7 +338,8 @@ if (!dbConnected) {
 
 ## 🎯 Summary
 
-### Total Error Instances (Actual Counts):
+### Total Error Instances (Actual Counts)
+
 - **401 Unauthorized:** 45 instances (49 files)
 - **500 Internal Server Error:** 44 instances (129 files)
 - **400 Bad Request:** 30 instances (73 files)
@@ -337,4 +366,3 @@ if (!dbConnected) {
 ---
 
 **Last Updated:** 2025-11-18
-

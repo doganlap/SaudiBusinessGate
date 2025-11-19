@@ -199,4 +199,3 @@ These are correct - they indicate a requested resource doesn't exist.
 ## Problematic 404 Errors (Needs Review)
 
 These may need to be changed to other status codes (e.g., 503 for database issues).
-

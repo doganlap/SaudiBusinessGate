@@ -3,6 +3,7 @@
 ## Status
 
 ### ✅ Completed
+
 1. **Database Connection** - Successfully connected to Prisma database
 2. **Table Migrations** - All SQL migration files executed:
    - ✅ CRM tables (customers, contacts, deals, activities)
@@ -13,6 +14,7 @@
    - ✅ Procurement tables (vendors, inventory_items, purchase_orders, etc.)
 
 ### ⚠️ Pending
+
 - **Database Seeding** - Seed scripts need to be run manually due to TypeScript execution issues
 
 ## Next Steps
@@ -22,6 +24,7 @@
 The tables are created. You can now:
 
 1. **Start the application**:
+
    ```bash
    npm run dev
    ```
@@ -38,17 +41,20 @@ The tables are created. You can now:
 To run the seed scripts, you need to fix the TypeScript execution. Options:
 
 **A. Install tsx (recommended)**:
+
 ```bash
 npm install -D tsx
 ```
 
 Then update `package.json`:
+
 ```json
 "db:seed:complete": "tsx prisma/seed-complete.ts"
 ```
 
 **B. Use Prisma's built-in seeding**:
 Add to `prisma/schema.prisma`:
+
 ```prisma
 generator client {
   provider = "prisma-client-js"
@@ -67,6 +73,7 @@ seed {
 ```
 
 Then run:
+
 ```bash
 npx prisma db seed
 ```
@@ -74,11 +81,13 @@ npx prisma db seed
 ## Verification
 
 Check your database:
+
 ```bash
 npm run db:studio
 ```
 
 This will open Prisma Studio where you can:
+
 - View all tables
 - Add/edit data manually
 - Verify table structure
@@ -90,4 +99,3 @@ This will open Prisma Studio where you can:
 ⚠️ **Seed data needs to be added manually or via fixed seed scripts**
 
 The application is ready to use! All API endpoints will work, they'll just return empty results until you add data.
-

@@ -9,9 +9,11 @@ Full login system with Microsoft authentication, demo tracking, and automatic ap
 ## **📁 Files Created:**
 
 ### **1. ✅ Login Page**
+
 **File:** `app/[lng]/login/page.tsx`
 
 **Features:**
+
 - ✅ Email/Password login
 - ✅ Microsoft authentication button
 - ✅ Demo account login
@@ -25,9 +27,11 @@ Full login system with Microsoft authentication, demo tracking, and automatic ap
 - ✅ Loading states
 
 ### **2. ✅ Login API**
+
 **File:** `app/api/auth/login/route.ts`
 
 **Features:**
+
 - ✅ Email/password authentication
 - ✅ Password verification with bcrypt
 - ✅ JWT token generation
@@ -43,6 +47,7 @@ Full login system with Microsoft authentication, demo tracking, and automatic ap
 ## **🔐 Authentication Methods:**
 
 ### **1. Email/Password Login**
+
 ```typescript
 POST /api/auth/login
 {
@@ -52,6 +57,7 @@ POST /api/auth/login
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -75,6 +81,7 @@ POST /api/auth/login
 ```
 
 ### **2. Microsoft Authentication**
+
 ```typescript
 POST /api/auth/microsoft/authorize
 {
@@ -85,6 +92,7 @@ POST /api/auth/microsoft/authorize
 ```
 
 **Flow:**
+
 1. User clicks "Sign in with Microsoft"
 2. Redirects to Microsoft OAuth
 3. User authorizes
@@ -96,11 +104,14 @@ POST /api/auth/microsoft/authorize
 9. Redirect to dashboard
 
 ### **3. Demo Account**
+
 **Credentials:**
+
 - Email: `demo@doganhub.com`
 - Password: `Demo123456`
 
 **Features:**
+
 - No database required
 - Instant access
 - Full feature access
@@ -111,6 +122,7 @@ POST /api/auth/microsoft/authorize
 ## **📊 Demo Tracking System:**
 
 ### **Database Table:**
+
 ```sql
 CREATE TABLE demo_tracking (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -141,6 +153,7 @@ CREATE TABLE demo_tracking (
 ```
 
 ### **Track Demo Visit:**
+
 ```typescript
 POST /api/auth/track-demo
 {
@@ -152,6 +165,7 @@ POST /api/auth/track-demo
 ```
 
 ### **What Gets Tracked:**
+
 - ✅ Page visits
 - ✅ Login attempts
 - ✅ Registration completion
@@ -167,12 +181,14 @@ POST /api/auth/track-demo
 ### **When Registration Completes:**
 
 **1. Check Registration Status:**
+
 ```typescript
 // After successful registration in database
 const tenantRecord = await createTenantRegistration(data);
 ```
 
 **2. Auto-Approve if Criteria Met:**
+
 ```typescript
 // Criteria for auto-approval:
 - All required documents uploaded
@@ -182,6 +198,7 @@ const tenantRecord = await createTenantRegistration(data);
 ```
 
 **3. Send Approval Email:**
+
 ```typescript
 await sendApprovalEmail({
   to: tenantRecord.contactEmail,
@@ -193,6 +210,7 @@ await sendApprovalEmail({
 ```
 
 **4. Activate Account:**
+
 ```typescript
 await query(`
   UPDATE tenants
@@ -216,6 +234,7 @@ await query(`
 ## **📧 Email Templates:**
 
 ### **1. Auto-Approval Email**
+
 ```html
 Subject: Account Approved - Welcome to DoganHub!
 
@@ -245,6 +264,7 @@ DoganHub Team
 ```
 
 ### **2. Registration Confirmation Email**
+
 ```html
 Subject: Registration Received - Under Review
 
@@ -271,11 +291,13 @@ DoganHub Team
 ## **🔄 Complete Registration Flow:**
 
 ### **Step 1: User Registers**
+
 ```
 User fills registration form → Submits with documents
 ```
 
 ### **Step 2: Data Saved to Database**
+
 ```
 POST /api/platform/tenants/register-complete
 → Creates tenant + all relations
@@ -285,6 +307,7 @@ POST /api/platform/tenants/register-complete
 ```
 
 ### **Step 3: Auto-Approval Check**
+
 ```typescript
 // Check if auto-approval criteria met
 const autoApprove = await checkAutoApprovalCriteria(tenantId);
@@ -301,12 +324,14 @@ if (autoApprove) {
 ```
 
 ### **Step 4: Email Sent**
+
 ```
 Auto-approved → Approval email with login link
 Manual review → Confirmation email (review in progress)
 ```
 
 ### **Step 5: User Logs In**
+
 ```
 User receives email → Clicks login link → Enters credentials → Access granted
 ```
@@ -316,6 +341,7 @@ User receives email → Clicks login link → Enters credentials → Access gran
 ## **🔐 Microsoft OAuth Setup:**
 
 ### **1. Register App in Azure:**
+
 1. Go to Azure Portal
 2. Navigate to Azure Active Directory
 3. App Registrations → New Registration
@@ -326,12 +352,14 @@ User receives email → Clicks login link → Enters credentials → Access gran
 8. Copy Client Secret value
 
 ### **2. Configure Permissions:**
+
 - User.Read (Read user profile)
 - email (Read user email)
 - profile (Read user profile)
 - openid (OpenID Connect)
 
 ### **3. Environment Variables:**
+
 ```env
 MICROSOFT_CLIENT_ID=your-client-id
 MICROSOFT_CLIENT_SECRET=your-client-secret
@@ -342,6 +370,7 @@ MICROSOFT_REDIRECT_URI=https://yourdomain.com/api/auth/microsoft/callback
 ### **4. API Endpoints:**
 
 **Authorize:**
+
 ```typescript
 POST /api/auth/microsoft/authorize
 → Returns Microsoft OAuth URL
@@ -349,6 +378,7 @@ POST /api/auth/microsoft/authorize
 ```
 
 **Callback:**
+
 ```typescript
 GET /api/auth/microsoft/callback?code=xxx
 → Exchange code for token
@@ -363,6 +393,7 @@ GET /api/auth/microsoft/callback?code=xxx
 ## **📊 Database Updates Required:**
 
 ### **Add Columns to platform_users:**
+
 ```sql
 ALTER TABLE platform_users 
 ADD COLUMN IF NOT EXISTS last_login_at TIMESTAMP,
@@ -375,6 +406,7 @@ CREATE INDEX idx_users_auth_provider ON platform_users(auth_provider);
 ```
 
 ### **Create Demo Tracking Table:**
+
 ```sql
 CREATE TABLE IF NOT EXISTS demo_tracking (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -404,6 +436,7 @@ CREATE INDEX idx_demo_tracking_registered ON demo_tracking(registered);
 ## **🎯 Auto-Approval Criteria:**
 
 ### **Automatic Approval IF:**
+
 ✅ All required documents uploaded  
 ✅ Valid business email (not free email providers)  
 ✅ Commercial registration number verified  
@@ -414,6 +447,7 @@ CREATE INDEX idx_demo_tracking_registered ON demo_tracking(registered);
 ✅ Electronic signature provided  
 
 ### **Manual Review IF:**
+
 ⚠️ Missing required documents  
 ⚠️ Free email provider used  
 ⚠️ Suspicious activity detected  
@@ -426,6 +460,7 @@ CREATE INDEX idx_demo_tracking_registered ON demo_tracking(registered);
 ## **📧 Email Service Integration:**
 
 ### **Option 1: SendGrid**
+
 ```typescript
 import sgMail from '@sendgrid/mail';
 
@@ -440,6 +475,7 @@ await sgMail.send({
 ```
 
 ### **Option 2: AWS SES**
+
 ```typescript
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 
@@ -456,6 +492,7 @@ await ses.send(new SendEmailCommand({
 ```
 
 ### **Option 3: Nodemailer (SMTP)**
+
 ```typescript
 import nodemailer from 'nodemailer';
 
@@ -482,6 +519,7 @@ await transporter.sendMail({
 ## **🚀 Usage:**
 
 ### **1. Access Login Page:**
+
 ```
 http://localhost:3050/en/login
 http://localhost:3050/ar/login
@@ -490,25 +528,30 @@ http://localhost:3050/ar/login
 ### **2. Login Methods:**
 
 **Email/Password:**
+
 - Enter email and password
 - Click "Sign In"
 
 **Microsoft:**
+
 - Click "Sign in with Microsoft"
 - Authorize with Microsoft account
 - Redirected to dashboard
 
 **Demo Account:**
+
 - Click "Try Demo Account"
 - Auto-fills credentials
 - Instant access
 
 ### **3. Demo Tracking:**
+
 ```
 http://localhost:3050/en/login?demo=true&tracking=xyz
 ```
 
 ### **4. After Registration:**
+
 - User registers → Data saved to DB
 - Auto-approval check runs
 - Email sent (approval or confirmation)

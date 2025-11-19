@@ -11,6 +11,7 @@ This document describes the React UI components that have been migrated and crea
 **Purpose**: Displays available subscription plans with pricing and features, allowing users to select and purchase plans.
 
 **Features**:
+
 - Fetches plans from `/api/billing/plans` endpoint
 - Responsive grid layout (1-3 columns)
 - Popular plan highlighting
@@ -20,6 +21,7 @@ This document describes the React UI components that have been migrated and crea
 - Stripe integration ready
 
 **Props**:
+
 ```typescript
 interface SubscriptionPlansProps {
   onSelectPlan?: (plan: SubscriptionPlan) => void;
@@ -29,6 +31,7 @@ interface SubscriptionPlansProps {
 ```
 
 **Usage**:
+
 ```tsx
 import { SubscriptionPlans } from '@/components';
 
@@ -45,6 +48,7 @@ import { SubscriptionPlans } from '@/components';
 **Purpose**: Comprehensive billing dashboard showing subscription status, payment history, and account management.
 
 **Features**:
+
 - Account status overview
 - Current subscription details
 - Next billing date
@@ -54,6 +58,7 @@ import { SubscriptionPlans } from '@/components';
 - Real-time data fetching
 
 **Props**:
+
 ```typescript
 interface BillingDashboardProps {
   tenantId: string;
@@ -63,6 +68,7 @@ interface BillingDashboardProps {
 ```
 
 **Usage**:
+
 ```tsx
 import { BillingDashboard } from '@/components';
 
@@ -80,6 +86,7 @@ import { BillingDashboard } from '@/components';
 **Purpose**: Handles visitor activation workflow including email collection and account activation via tokens.
 
 **Features**:
+
 - Email collection form
 - Activation token processing
 - Multi-step workflow (email → activating → success/error)
@@ -89,6 +96,7 @@ import { BillingDashboard } from '@/components';
 - Integration with activation API
 
 **Props**:
+
 ```typescript
 interface VisitorActivationProps {
   token?: string;
@@ -99,6 +107,7 @@ interface VisitorActivationProps {
 ```
 
 **Usage**:
+
 ```tsx
 import { VisitorActivation } from '@/components';
 
@@ -119,7 +128,9 @@ import { VisitorActivation } from '@/components';
 ## Component Architecture
 
 ### Design System
+
 All components follow a consistent design system:
+
 - **Colors**: Blue primary, green success, red error, gray neutral
 - **Typography**: Consistent font sizes and weights
 - **Spacing**: 4px grid system
@@ -127,12 +138,14 @@ All components follow a consistent design system:
 - **Layout**: Responsive grid and flexbox
 
 ### State Management
+
 - Local state with React hooks (`useState`, `useEffect`)
 - API integration with fetch
 - Loading, error, and success states
 - Form validation and submission
 
 ### Styling
+
 - Tailwind CSS utility classes
 - Responsive design (mobile-first)
 - Hover and focus states
@@ -141,6 +154,7 @@ All components follow a consistent design system:
 ## Integration Points
 
 ### API Endpoints
+
 Components integrate with the following billing service endpoints:
 
 1. **SubscriptionPlans**:
@@ -155,6 +169,7 @@ Components integrate with the following billing service endpoints:
    - `POST /api/billing/activate` - Activate visitor account
 
 ### Data Flow
+
 ```
 User Interaction → Component State → API Call → Response Handling → UI Update
 ```
@@ -164,14 +179,16 @@ User Interaction → Component State → API Call → Response Handling → UI U
 The following components were migrated and adapted from the Archive:
 
 ### From Archive/app/activation/page.tsx
+
 - **Migrated to**: VisitorActivation component
-- **Enhancements**: 
+- **Enhancements**:
   - Added proper TypeScript interfaces
   - Integrated with billing API
   - Added multi-step workflow
   - Enhanced error handling
 
 ### From Archive/app/pricing/page.tsx
+
 - **Migrated to**: SubscriptionPlans component
 - **Enhancements**:
   - Dynamic plan loading from API
@@ -180,6 +197,7 @@ The following components were migrated and adapted from the Archive:
   - Better responsive design
 
 ### Archive Integration Benefits
+
 - Consistent UI patterns from existing codebase
 - Proven user experience flows
 - Familiar design language
@@ -188,6 +206,7 @@ The following components were migrated and adapted from the Archive:
 ## Usage Examples
 
 ### Complete Billing Flow
+
 ```tsx
 import { SubscriptionPlans, BillingDashboard, VisitorActivation } from '@/components';
 
@@ -222,6 +241,7 @@ function BillingApp({ user, tenantId }) {
 ```
 
 ### Standalone Components
+
 ```tsx
 // Just the subscription plans
 <SubscriptionPlans onSelectPlan={handlePlanSelection} />
@@ -236,7 +256,9 @@ function BillingApp({ user, tenantId }) {
 ## Customization
 
 ### Theming
+
 Components use CSS custom properties for easy theming:
+
 ```css
 :root {
   --primary-color: #2563eb;
@@ -247,7 +269,9 @@ Components use CSS custom properties for easy theming:
 ```
 
 ### Feature Flags
+
 Components support feature flags for conditional rendering:
+
 ```tsx
 <SubscriptionPlans 
   showTrialBadge={features.showTrial}
@@ -258,6 +282,7 @@ Components support feature flags for conditional rendering:
 ## Accessibility
 
 All components include:
+
 - Proper ARIA labels
 - Keyboard navigation support
 - Screen reader compatibility
@@ -267,6 +292,7 @@ All components include:
 ## Testing
 
 Components are designed for easy testing:
+
 - Predictable props interface
 - Separated business logic
 - Mockable API calls
@@ -275,6 +301,7 @@ Components are designed for easy testing:
 ## Future Enhancements
 
 Planned improvements:
+
 - Dark mode support
 - Animation and transitions
 - Advanced filtering and search
@@ -285,11 +312,13 @@ Planned improvements:
 ## Dependencies
 
 Required packages:
+
 - `react` - Core React library
 - `lucide-react` - Icon library
 - `tailwindcss` - Styling framework
 
 Optional packages:
+
 - `@stripe/stripe-js` - Stripe frontend integration
 - `react-query` - Advanced data fetching
 - `framer-motion` - Animations

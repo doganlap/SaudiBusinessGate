@@ -13,7 +13,7 @@ The comprehensive rebranding of the platform from "DoganHub" to "Saudi Store" ha
 ### Major Components Updated ✅
 
 1. **Core Application** - Layout, metadata, and branding elements
-2. **Services Architecture** - Billing, AI, and supporting microservices 
+2. **Services Architecture** - Billing, AI, and supporting microservices
 3. **Products Modules** - Finance and related product offerings
 4. **Infrastructure Scripts** - Azure deployment and monitoring automation
 5. **CI/CD Pipeline** - GitHub Actions workflow and deployment configurations

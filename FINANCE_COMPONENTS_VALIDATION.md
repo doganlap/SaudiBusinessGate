@@ -35,6 +35,7 @@ app/components/finance/
 ### Component Usage
 
 The components are used in `CashFlowStatement.tsx`:
+
 - `CashFlowTrendChart` is rendered at line 464
 - `CashFlowWaterfallChart` is rendered at line 495
 - Both are within the "chart" view (selectedView === 'chart')
@@ -42,6 +43,7 @@ The components are used in `CashFlowStatement.tsx`:
 ### Data Structure
 
 The components expect:
+
 ```typescript
 interface CashFlowData {
   period: string;
@@ -70,4 +72,3 @@ If components are not showing:
 2. Navigate to the cash flow page
 3. Click on the "Charts" tab
 4. Verify both charts render correctly
-

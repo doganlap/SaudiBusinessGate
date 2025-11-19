@@ -1,4 +1,5 @@
 # 01 — Branching & Release Policy
+
 - Trunk‑Based, short‑lived branches.
 - Branch names: `feat/*`, `fix/*`, `refactor/*`, `chore/*`, `docs/*`.
 - Conventional Commits => auto SemVer.

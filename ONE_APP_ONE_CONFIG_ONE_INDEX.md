@@ -46,6 +46,7 @@ components/layout/
 ```
 
 **✅ All imports updated** to use shared location:
+
 - `apps/web/src/components/layout/Sidebar.jsx`
 - `app/components/layout/Sidebar.jsx`
 - `apps/web/src/components/layout/EnhancedAppShell.jsx`
@@ -69,6 +70,7 @@ components/
 ```
 
 **TypeScript path mapping** already configured:
+
 ```json
 "@/components/*": [
   "./components/*",
@@ -81,12 +83,14 @@ components/
 ### 📱 App Structure
 
 **Primary App**: `app/` (Next.js App Router)
+
 - ✅ 161 pages
 - ✅ 140 API routes
 - ✅ Internationalized routing `[lng]/(platform)/`
 - ✅ Production-ready
 
 **Legacy App**: `apps/web/` (React Router)
+
 - ⚠️ Can be deprecated or kept for backward compatibility
 - Uses `apps/web/src/pages/index.js` for exports
 
@@ -94,11 +98,13 @@ components/
 
 ### 📑 Index Files
 
-**Next.js App Router**: 
+**Next.js App Router**:
+
 - ✅ Uses file-based routing (no index needed)
 - Routes defined by `app/**/page.tsx` files
 
 **React Router**:
+
 - `apps/web/src/pages/index.js` - Centralized page exports
 - Can be kept for backward compatibility
 
@@ -119,6 +125,7 @@ components/
 ## 📋 Files Updated
 
 ### Config Imports (18 files)
+
 - `apps/web/src/components/layout/AdvancedAppShell.jsx`
 - `apps/web/src/pages/system/MissionControlPage.jsx`
 - `apps/web/src/components/layout/AdvancedShell.jsx`
@@ -139,6 +146,7 @@ components/
 - `apps/web/src/setup-unified-config.js`
 
 ### Navigation Imports (Multiple files)
+
 - All files importing `MultiTenantNavigation` now use `components/layout/MultiTenantNavigation.jsx`
 
 ---
@@ -154,4 +162,3 @@ components/
 ---
 
 **Status**: ✅ **CONSOLIDATION COMPLETE**
-

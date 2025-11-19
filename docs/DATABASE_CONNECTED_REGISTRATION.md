@@ -9,12 +9,14 @@ The registration system is now fully connected to the PostgreSQL database with a
 ## **📊 Database Schema - 10 Related Tables**
 
 ### **1. tenants** (Main Table)
+
 - Company information
 - Subscription details
 - Contact information
 - Status and verification
 
 ### **2. tenant_extended_info** (1:1 Relation)
+
 - Trade names (EN/AR)
 - Registration & tax numbers
 - Commercial license details
@@ -25,6 +27,7 @@ The registration system is now fully connected to the PostgreSQL database with a
 - Website & LinkedIn
 
 ### **3. tenant_contacts** (1:Many Relation)
+
 - Multiple contacts per tenant
 - Contact types: primary, financial, technical, billing
 - Full name (EN/AR)
@@ -33,6 +36,7 @@ The registration system is now fully connected to the PostgreSQL database with a
 - Primary contact flag
 
 ### **4. tenant_billing_info** (1:1 Relation)
+
 - Billing contact details
 - Billing address (if different)
 - Payment method
@@ -41,6 +45,7 @@ The registration system is now fully connected to the PostgreSQL database with a
 - Stripe customer ID
 
 ### **5. tenant_subscriptions** (1:Many Relation)
+
 - Plan details (basic, professional, enterprise)
 - Start & end dates
 - Trial period
@@ -51,6 +56,7 @@ The registration system is now fully connected to the PostgreSQL database with a
 - Auto-renew settings
 
 ### **6. tenant_documents** (1:Many Relation)
+
 - Document type (commercial_license, tax_certificate, etc.)
 - File path & size
 - Verification status (pending, verified, rejected)
@@ -59,6 +65,7 @@ The registration system is now fully connected to the PostgreSQL database with a
 - Required/optional flag
 
 ### **7. tenant_terms_acceptance** (1:1 Relation)
+
 - Terms of Service acceptance
 - Privacy Policy acceptance
 - SLA acceptance
@@ -68,6 +75,7 @@ The registration system is now fully connected to the PostgreSQL database with a
 - Acceptance details (who, when, IP, user agent)
 
 ### **8. tenant_electronic_signatures** (1:Many Relation)
+
 - Signer information
 - Signature data (Base64)
 - Signature type (typed, drawn, digital)
@@ -77,6 +85,7 @@ The registration system is now fully connected to the PostgreSQL database with a
 - Verification status
 
 ### **9. tenant_compliance** (1:1 Relation)
+
 - Data residency
 - GDPR/SDAIA/ISO27001/SOC2/PCI-DSS/HIPAA compliance flags
 - Industry regulations
@@ -86,6 +95,7 @@ The registration system is now fully connected to the PostgreSQL database with a
 - IP whitelist
 
 ### **10. tenant_verification_queue** (1:Many Relation)
+
 - Verification workflow
 - Priority & status
 - Assigned to & timeline
@@ -93,6 +103,7 @@ The registration system is now fully connected to the PostgreSQL database with a
 - SLA deadline tracking
 
 ### **11. tenant_onboarding** (1:1 Relation)
+
 - Onboarding status & progress
 - Steps completed checklist
 - Onboarding call scheduling
@@ -135,6 +146,7 @@ tenants (id)
 ### **Main Function:** `createTenantRegistration()`
 
 **What it does:**
+
 1. ✅ Creates tenant record in `tenants` table
 2. ✅ Inserts extended info in `tenant_extended_info`
 3. ✅ Creates primary contact in `tenant_contacts`
@@ -149,6 +161,7 @@ tenants (id)
 12. ✅ Creates audit log in `platform_audit_logs`
 
 **All in ONE database transaction!**
+
 - If any step fails, everything rolls back
 - Data integrity guaranteed
 - No partial registrations
@@ -158,11 +171,13 @@ tenants (id)
 ## **🔐 Security Features**
 
 ### **Password Hashing:**
+
 - Uses bcrypt with salt rounds
 - Passwords never stored in plain text
 - Admin password hashed before storage
 
 ### **Data Validation:**
+
 - All required fields checked
 - Email format validation
 - Phone number format validation
@@ -171,6 +186,7 @@ tenants (id)
 - File type & size validation
 
 ### **Audit Trail:**
+
 - Every registration logged
 - IP address captured
 - User agent recorded
@@ -182,9 +198,11 @@ tenants (id)
 ## **📁 Files Created/Modified**
 
 ### **1. Database Schema:**
+
 ```
 database/schema/10-tenant-registration-tables.sql
 ```
+
 - 10 related tables
 - Foreign key constraints
 - Indexes for performance
@@ -192,26 +210,32 @@ database/schema/10-tenant-registration-tables.sql
 - Comments for documentation
 
 ### **2. Database Service:**
+
 ```
 lib/db/services/tenant-registration.service.ts
 ```
+
 - createTenantRegistration() - Main registration function
 - getTenantWithRelations() - Fetch tenant with all data
 - updateTenantVerificationStatus() - Update verification
 
 ### **3. API Endpoint:**
+
 ```
 app/api/platform/tenants/register-complete/route.ts
 ```
+
 - POST endpoint for registration
 - File upload handling
 - Calls database service
 - Returns tenant record with all IDs
 
 ### **4. Database Connection:**
+
 ```
 lib/db/connection.ts
 ```
+
 - PostgreSQL connection pool
 - Transaction support
 - Query execution
@@ -222,6 +246,7 @@ lib/db/connection.ts
 ## **🚀 How It Works**
 
 ### **Step 1: User Submits Registration**
+
 ```
 POST /api/platform/tenants/register-complete
 Content-Type: multipart/form-data
@@ -231,17 +256,20 @@ Content-Type: multipart/form-data
 ```
 
 ### **Step 2: API Processes Request**
+
 1. Extracts form data
 2. Handles file uploads
 3. Prepares data for database service
 4. Calls `createTenantRegistration()`
 
 ### **Step 3: Database Service Executes**
+
 ```typescript
 const tenantRecord = await createTenantRegistration(data);
 ```
 
 **Inside Transaction:**
+
 1. INSERT into tenants
 2. INSERT into tenant_extended_info
 3. INSERT into tenant_contacts (primary)
@@ -259,6 +287,7 @@ const tenantRecord = await createTenantRegistration(data);
 **If all succeed → COMMIT**
 
 ### **Step 4: Response Returned**
+
 ```json
 {
   "success": true,
@@ -280,11 +309,13 @@ const tenantRecord = await createTenantRegistration(data);
 ## **🔍 Data Retrieval**
 
 ### **Get Tenant with All Relations:**
+
 ```typescript
 const tenant = await getTenantWithRelations(tenantId);
 ```
 
 **Returns:**
+
 - Tenant basic info
 - Extended company info
 - All contacts (array)
@@ -300,6 +331,7 @@ const tenant = await getTenantWithRelations(tenantId);
 ## **✅ Verification Workflow**
 
 ### **Update Verification Status:**
+
 ```typescript
 await updateTenantVerificationStatus(
   tenantId,
@@ -309,6 +341,7 @@ await updateTenantVerificationStatus(
 ```
 
 **What happens:**
+
 - Updates `verification_status`
 - Sets `is_verified` flag
 - Sets `verified_at` timestamp
@@ -320,6 +353,7 @@ await updateTenantVerificationStatus(
 ## **📊 Database Indexes**
 
 **Optimized for:**
+
 - Tenant lookups by ID
 - Tenant code searches
 - Email searches
@@ -335,6 +369,7 @@ await updateTenantVerificationStatus(
 ## **🔄 Triggers**
 
 **Auto-update `updated_at`:**
+
 - tenant_extended_info
 - tenant_contacts
 - tenant_billing_info
@@ -366,18 +401,21 @@ await updateTenantVerificationStatus(
 ## **📝 To Complete Setup:**
 
 ### **1. Run Database Schema:**
+
 ```bash
 psql -U postgres -d doganhubstore -f database/schema/09-platform-admin.sql
 psql -U postgres -d doganhubstore -f database/schema/10-tenant-registration-tables.sql
 ```
 
 ### **2. Install Dependencies:**
+
 ```bash
 npm install pg bcrypt
 npm install --save-dev @types/pg @types/bcrypt
 ```
 
 ### **3. Configure Environment:**
+
 ```env
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
@@ -389,6 +427,7 @@ DB_POOL_MAX=20
 ```
 
 ### **4. Test Connection:**
+
 ```typescript
 import { testConnection } from '@/lib/db/connection';
 await testConnection();

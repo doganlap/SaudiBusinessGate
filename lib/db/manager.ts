@@ -1,5 +1,5 @@
 import { Pool, PoolClient } from 'pg';
-import { DatabaseService } from '../services/database.service';
+import { DatabaseService, getPool, closePool } from './connection';
 
 // Database Manager - Central coordinator for all database operations
 export class DatabaseManager {
@@ -19,7 +19,7 @@ export class DatabaseManager {
   // Initialize database connection
   async initialize(): Promise<void> {
     try {
-      this.pool = DatabaseService.getPool();
+      this.pool = getPool();
       console.log('🗄️ Database Manager initialized successfully');
 
       // Test connection
@@ -128,7 +128,7 @@ export class DatabaseManager {
     services: string[];
     uptime: number;
   }> {
-    const pool = DatabaseService.getPool();
+    const pool = getPool();
     const stats = {
       connections: {
         total: pool.totalCount,
@@ -159,7 +159,7 @@ export class DatabaseManager {
     }
 
     // Close database connection
-    await DatabaseService.closePool();
+    await closePool();
     console.log('🗄️ Database Manager shut down complete');
   }
 }

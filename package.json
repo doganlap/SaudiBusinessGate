@@ -1,7 +1,7 @@
 {
-  "name": "saudi-store",
+  "name": "saudi-business-gate-enterprise",
   "version": "2.0.0",
-  "description": "Saudi Store - The 1st Autonomous Store in the World from Saudi Arabia 🇸🇦",
+  "description": "Saudi Business Gate Enterprise - The 1st Autonomous Business Gate in the Region from Saudi Arabia to the World 🇸🇦 - AI-Powered Enterprise Business Management Platform",
   "type": "module",
   "workspaces": [
     "apps",
@@ -57,7 +57,7 @@
     "apps:build": "npm --workspace apps run build",
     "apps:start": "npm --workspace apps run start",
     "db:seed": "node --loader ts-node/esm prisma/seed.ts",
-    "db:seed:finance": "node --loader ts-node/esm prisma/seed-finance.ts",
+    "db:seed:finance": "ts-node --esm prisma/seed-finance.ts",
     "db:seed:complete": "node --loader ts-node/esm prisma/seed-complete.ts",
     "db:seed:modules": "node --loader ts-node/esm prisma/seed-all-modules.ts",
     "db:seed:all": "npm run db:seed:complete && npm run db:seed:modules",
@@ -113,6 +113,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/jspdf": "^1.3.3",
     "@types/node": "^24.10.0",
+    "@types/plotly.js": "^3.0.8",
     "@types/react-dom": "^19.2.3",
     "@types/stripe": "^8.0.416",
     "@types/ws": "^8.18.1",

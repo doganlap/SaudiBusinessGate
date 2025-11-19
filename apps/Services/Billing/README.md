@@ -5,6 +5,7 @@ A comprehensive billing and payment service with Stripe integration, visitor act
 ## Features
 
 ### 🔥 Core Functionality
+
 - **Stripe Integration**: Complete payment processing with Stripe
 - **Subscription Management**: Handle recurring billing and subscription lifecycle
 - **Visitor Activation**: Email-based activation workflow for new users
@@ -13,6 +14,7 @@ A comprehensive billing and payment service with Stripe integration, visitor act
 - **Database Integration**: PostgreSQL with proper schema management
 
 ### 💳 Payment Features
+
 - Subscription checkout sessions
 - Billing portal access
 - Payment method management
@@ -21,12 +23,14 @@ A comprehensive billing and payment service with Stripe integration, visitor act
 - Proration and upgrades/downgrades
 
 ### 👥 Visitor Management
+
 - Email activation tokens
 - Secure JWT-based verification
 - Automated email notifications
 - Activation tracking and analytics
 
 ### 🔧 Technical Features
+
 - TypeScript with strict type checking
 - Express.js REST API
 - Comprehensive error handling
@@ -37,25 +41,31 @@ A comprehensive billing and payment service with Stripe integration, visitor act
 ## API Endpoints
 
 ### Subscription Plans
+
 - `GET /api/billing/plans` - Get available subscription plans
 
 ### Checkout & Payment
+
 - `POST /api/billing/checkout` - Create Stripe checkout session
 - `POST /api/billing/portal` - Create billing portal session
 
 ### Subscription Management
+
 - `GET /api/billing/subscription/:tenantId` - Get subscription status
 - `POST /api/billing/subscription/:subscriptionId/cancel` - Cancel subscription
 - `POST /api/billing/subscription/:subscriptionId/reactivate` - Reactivate subscription
 
 ### Visitor Activation
+
 - `POST /api/billing/activate` - Activate visitor with token
 - `POST /api/billing/send-activation` - Send activation email
 
 ### Dashboard
+
 - `GET /api/billing/dashboard/:tenantId` - Get billing dashboard data
 
 ### Webhooks
+
 - `POST /webhooks/stripe` - Stripe webhook endpoint
 
 ## Environment Variables
@@ -92,18 +102,22 @@ SMTP_PASSWORD=your_app_password
 ## Installation & Setup
 
 ### 1. Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### 2. Environment Configuration
+
 ```bash
 cp .env.example .env
 # Edit .env with your configuration
 ```
 
 ### 3. Database Setup
+
 The service will automatically create the required database tables on startup:
+
 - `billing_customers` - Customer information
 - `billing_subscriptions` - Subscription data
 - `tenants` - Tenant status and metadata
@@ -114,16 +128,19 @@ The service will automatically create the required database tables on startup:
 ### 4. Stripe Configuration
 
 #### Create Stripe Account
+
 1. Go to [Stripe Dashboard](https://dashboard.stripe.com)
 2. Create account or sign in
 3. Start in TEST mode for development
 
 #### Get API Keys
+
 1. Navigate to: Developers > API keys
 2. Copy your Publishable key (`pk_test_...`)
 3. Copy your Secret key (`sk_test_...`)
 
 #### Create Products & Prices
+
 1. Go to: Products in Stripe Dashboard
 2. Create subscription products:
    - Basic Plan ($29/month)
@@ -132,6 +149,7 @@ The service will automatically create the required database tables on startup:
 3. Copy the Price IDs for each plan
 
 #### Setup Webhooks
+
 1. Go to: Developers > Webhooks
 2. Add endpoint: `https://yourdomain.com/webhooks/stripe`
 3. Select events:
@@ -147,22 +165,26 @@ The service will automatically create the required database tables on startup:
 ## Development
 
 ### Start Development Server
+
 ```bash
 npm run dev
 ```
 
 ### Build for Production
+
 ```bash
 npm run build
 npm start
 ```
 
 ### Run Tests
+
 ```bash
 npm test
 ```
 
 ### Docker Development
+
 ```bash
 # Build image
 docker build -t doganhub-billing .
@@ -174,24 +196,29 @@ docker run -p 3001:3001 --env-file .env doganhub-billing
 ## Database Schema
 
 ### billing_customers
+
 - Customer information linked to Stripe
 - Tenant association
 - Email and contact details
 
 ### billing_subscriptions
+
 - Subscription lifecycle tracking
 - Stripe subscription mapping
 - Billing period management
 
 ### tenants
+
 - Tenant status (active/suspended/pending)
 - Subscription tier tracking
 
 ### activation_tokens
+
 - JWT-based activation tokens
 - Expiration and usage tracking
 
 ### visitor_activations
+
 - Activation audit trail
 - Source tracking
 
@@ -234,6 +261,7 @@ The service handles the following Stripe webhook events:
 ## Production Deployment
 
 ### Environment Setup
+
 1. Set `NODE_ENV=production`
 2. Configure production database
 3. Set up SMTP for email delivery
@@ -241,12 +269,14 @@ The service handles the following Stripe webhook events:
 5. Set secure JWT secrets
 
 ### Stripe Live Mode
+
 1. Switch to Live mode in Stripe Dashboard
 2. Update API keys to live keys (`pk_live_...`, `sk_live_...`)
 3. Update webhook endpoint to production URL
 4. Test with small amounts first
 
 ### Monitoring
+
 - Set up log aggregation
 - Configure alerts for failed payments
 - Monitor webhook delivery
@@ -255,6 +285,7 @@ The service handles the following Stripe webhook events:
 ## Integration
 
 ### Frontend Integration
+
 ```javascript
 // Create checkout session
 const response = await fetch('/api/billing/checkout', {
@@ -273,6 +304,7 @@ window.location.href = url;
 ```
 
 ### Visitor Activation
+
 ```javascript
 // Send activation email
 await fetch('/api/billing/send-activation', {
@@ -299,6 +331,7 @@ await fetch('/api/billing/activate', {
 ## Support
 
 For issues and questions:
+
 1. Check the logs for detailed error information
 2. Verify Stripe webhook delivery in Stripe Dashboard
 3. Ensure database connectivity

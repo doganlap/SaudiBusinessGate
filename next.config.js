@@ -140,7 +140,10 @@ const nextConfig = {
   
   // Compiler options
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    // Remove console.log in production but keep error and warn
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
   },
 };
 

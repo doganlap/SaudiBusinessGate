@@ -27,6 +27,7 @@ psql -d your_database -f database/create-procurement-tables.sql
 ```
 
 Or run all at once (if your psql supports \i):
+
 ```bash
 psql -d your_database -f database/create-all-tables.sql
 ```
@@ -47,6 +48,7 @@ npm run db:seed:all
 ### Step 3: Verify Setup
 
 1. Check that tables were created:
+
 ```sql
 SELECT table_name FROM information_schema.tables 
 WHERE table_schema = 'public' 
@@ -54,7 +56,8 @@ AND table_name LIKE '%customers%' OR table_name LIKE '%deals%'
 OR table_name LIKE '%employees%' OR table_name LIKE '%invoices%';
 ```
 
-2. Check that data was seeded:
+1. Check that data was seeded:
+
 ```sql
 SELECT COUNT(*) FROM tenants;
 SELECT COUNT(*) FROM users;
@@ -66,6 +69,7 @@ SELECT COUNT(*) FROM employees;
 ## API Routes Status
 
 ### ✅ Using Real Database
+
 - `/api/dashboard/stats` - Real database queries
 - `/api/analytics/kpis/business` - Real analytics engine
 - `/api/analytics/forecast/sales` - Real AI analytics
@@ -75,6 +79,7 @@ SELECT COUNT(*) FROM employees;
 - `/api/finance/invoices` - Real database (via CompleteFinanceService)
 
 ### 🚧 Still Using Mocks (Need Update)
+
 - `/api/grc/*` - Need to update to use real database
 - `/api/procurement/*` - Need to update to use real database
 - Other module-specific routes
@@ -100,6 +105,7 @@ curl http://localhost:3050/api/hr/employees
 ### Login Credentials
 
 After seeding, use these credentials:
+
 - **Email**: `mohammed.otaibi@riyadh-trade.sa`
 - **Password**: `Password123!`
 
@@ -113,17 +119,20 @@ After seeding, use these credentials:
 ## Troubleshooting
 
 ### Tables Not Found Error
+
 If you see `42P01` error (table does not exist):
+
 - Run the appropriate SQL script from `database/` folder
 - Check that DATABASE_URL is set correctly
 
 ### No Data Returned
+
 - Run seeding scripts: `npm run db:seed:all`
 - Check tenant_id matches in your session
 - Verify database connection
 
 ### Connection Issues
+
 - Check DATABASE_URL environment variable
 - Verify database is running and accessible
 - Check firewall/network settings
-

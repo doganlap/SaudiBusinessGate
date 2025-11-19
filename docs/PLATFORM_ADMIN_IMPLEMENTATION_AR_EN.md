@@ -1,4 +1,5 @@
 # 🔐 Platform Administration - Complete Implementation Guide
+
 # إدارة المنصة - دليل التنفيذ الشامل
 
 ## 📋 Executive Summary | الملخص التنفيذي
@@ -13,7 +14,8 @@ Complete end-to-end implementation guide for the Platform Administration section
 
 ## 🎯 Objectives | الأهداف
 
-### English:
+### English
+
 1. **Multi-Tenant Management** - Complete tenant lifecycle management
 2. **User & Role Management** - RBAC with granular permissions
 3. **Security & Compliance** - Enterprise-grade security controls
@@ -21,7 +23,8 @@ Complete end-to-end implementation guide for the Platform Administration section
 5. **System Configuration** - Platform-wide settings and customization
 6. **White-Label Support** - Tenant-specific branding and customization
 
-### Arabic:
+### Arabic
+
 1. **إدارة متعددة المستأجرين** - إدارة كاملة لدورة حياة المستأجر
 2. **إدارة المستخدمين والأدوار** - RBAC مع صلاحيات دقيقة
 3. **الأمان والامتثال** - ضوابط أمان على مستوى المؤسسات
@@ -352,12 +355,14 @@ CREATE TABLE user_sessions (
 ### 1. Authentication | المصادقة
 
 **English:**
+
 - **Multi-Factor Authentication (MFA)** - TOTP-based 2FA
 - **Password Policy** - Minimum 12 characters, complexity requirements
 - **Session Management** - JWT tokens with refresh mechanism
 - **SSO Integration** - SAML 2.0 and OAuth 2.0 support
 
 **Arabic:**
+
 - **المصادقة متعددة العوامل (MFA)** - 2FA على أساس TOTP
 - **سياسة كلمة المرور** - 12 حرفًا كحد أدنى، متطلبات التعقيد
 - **إدارة الجلسات** - رموز JWT مع آلية التحديث
@@ -379,12 +384,14 @@ CREATE TABLE user_sessions (
 ### 3. Data Isolation | عزل البيانات
 
 **English:**
+
 - **Row-Level Security (RLS)** - PostgreSQL RLS policies
 - **Tenant Isolation** - All queries filtered by tenant_id
 - **Data Encryption** - At-rest and in-transit encryption
 - **Backup Isolation** - Separate backups per tenant
 
 **Arabic:**
+
 - **أمان مستوى الصف (RLS)** - سياسات RLS في PostgreSQL
 - **عزل المستأجر** - جميع الاستعلامات مصفاة حسب tenant_id
 - **تشفير البيانات** - التشفير أثناء الراحة والنقل
@@ -397,6 +404,7 @@ CREATE TABLE user_sessions (
 ### Workflow 1: Tenant Onboarding | تأهيل المستأجر
 
 **English Steps:**
+
 1. **Registration** - Tenant submits registration form
 2. **Verification** - Email verification and document review
 3. **Subscription** - Select plan and payment
@@ -407,6 +415,7 @@ CREATE TABLE user_sessions (
 8. **Activation** - Tenant goes live
 
 **Arabic Steps:**
+
 1. **التسجيل** - يقدم المستأجر نموذج التسجيل
 2. **التحقق** - التحقق من البريد الإلكتروني ومراجعة المستندات
 3. **الاشتراك** - اختيار الخطة والدفع
@@ -419,6 +428,7 @@ CREATE TABLE user_sessions (
 ### Workflow 2: User Management | إدارة المستخدمين
 
 **Create User:**
+
 ```
 1. Tenant Admin creates user
 2. System validates email uniqueness
@@ -430,6 +440,7 @@ CREATE TABLE user_sessions (
 ```
 
 **Deactivate User:**
+
 ```
 1. Admin initiates deactivation
 2. Revoke all active sessions
@@ -442,6 +453,7 @@ CREATE TABLE user_sessions (
 ### Workflow 3: Role & Permission Management | إدارة الأدوار والصلاحيات
 
 **Create Custom Role:**
+
 ```
 1. Define role name and description
 2. Select permissions from catalog
@@ -557,6 +569,7 @@ Body: { filters, format: 'csv' | 'json' }
 ## 🎨 UI Components | مكونات الواجهة
 
 ### 1. Tenant Management Dashboard
+
 ```
 - Tenant List (table with filters)
 - Tenant Card (overview, stats, actions)
@@ -566,6 +579,7 @@ Body: { filters, format: 'csv' | 'json' }
 ```
 
 ### 2. User Management Interface
+
 ```
 - User List (DataGrid with search/filter)
 - User Profile (view/edit)
@@ -575,6 +589,7 @@ Body: { filters, format: 'csv' | 'json' }
 ```
 
 ### 3. Role & Permission Builder
+
 ```
 - Role List
 - Permission Catalog
@@ -584,6 +599,7 @@ Body: { filters, format: 'csv' | 'json' }
 ```
 
 ### 4. Audit Log Viewer
+
 ```
 - Timeline View
 - Filter Panel
@@ -593,6 +609,7 @@ Body: { filters, format: 'csv' | 'json' }
 ```
 
 ### 5. System Settings
+
 ```
 - General Settings
 - Security Settings
@@ -608,6 +625,7 @@ Body: { filters, format: 'csv' | 'json' }
 ### Key Performance Indicators (KPIs)
 
 **English:**
+
 1. **Active Tenants** - Number of active tenants
 2. **Total Users** - Total users across all tenants
 3. **API Usage** - API calls per day/hour
@@ -618,6 +636,7 @@ Body: { filters, format: 'csv' | 'json' }
 8. **Response Time** - Average API response time
 
 **Arabic:**
+
 1. **المستأجرون النشطون** - عدد المستأجرين النشطين
 2. **إجمالي المستخدمين** - إجمالي المستخدمين عبر جميع المستأجرين
 3. **استخدام API** - مكالمات API في اليوم/الساعة
@@ -632,6 +651,7 @@ Body: { filters, format: 'csv' | 'json' }
 ## 🚀 Implementation Steps | خطوات التنفيذ
 
 ### Phase 1: Database Setup (Week 1)
+
 - [ ] Create all database tables
 - [ ] Set up RLS policies
 - [ ] Create indexes and constraints
@@ -639,6 +659,7 @@ Body: { filters, format: 'csv' | 'json' }
 - [ ] Test data isolation
 
 ### Phase 2: Authentication & Authorization (Week 2)
+
 - [ ] Implement JWT authentication
 - [ ] Build MFA system
 - [ ] Create RBAC middleware
@@ -646,6 +667,7 @@ Body: { filters, format: 'csv' | 'json' }
 - [ ] Test security controls
 
 ### Phase 3: API Development (Week 3-4)
+
 - [ ] Tenant management APIs
 - [ ] User management APIs
 - [ ] Role & permission APIs
@@ -653,6 +675,7 @@ Body: { filters, format: 'csv' | 'json' }
 - [ ] System settings APIs
 
 ### Phase 4: UI Development (Week 5-6)
+
 - [ ] Tenant management dashboard
 - [ ] User management interface
 - [ ] Role builder
@@ -660,6 +683,7 @@ Body: { filters, format: 'csv' | 'json' }
 - [ ] System settings panel
 
 ### Phase 5: Testing & QA (Week 7)
+
 - [ ] Unit tests
 - [ ] Integration tests
 - [ ] Security testing
@@ -667,6 +691,7 @@ Body: { filters, format: 'csv' | 'json' }
 - [ ] User acceptance testing
 
 ### Phase 6: Documentation & Training (Week 8)
+
 - [ ] API documentation
 - [ ] User guides
 - [ ] Admin training materials
@@ -674,6 +699,7 @@ Body: { filters, format: 'csv' | 'json' }
 - [ ] FAQ and troubleshooting
 
 ### Phase 7: Deployment & Monitoring (Week 9)
+
 - [ ] Production deployment
 - [ ] Monitoring setup
 - [ ] Backup configuration
@@ -715,6 +741,7 @@ Body: { filters, format: 'csv' | 'json' }
 ## 📝 Notes | ملاحظات
 
 **English:**
+
 - All timestamps in UTC
 - All monetary values in SAR
 - Support for Arabic (RTL) and English (LTR)
@@ -723,6 +750,7 @@ Body: { filters, format: 'csv' | 'json' }
 - Browser support: Chrome, Firefox, Safari, Edge (latest 2 versions)
 
 **Arabic:**
+
 - جميع الطوابع الزمنية بتوقيت UTC
 - جميع القيم النقدية بالريال السعودي
 - دعم العربية (RTL) والإنجليزية (LTR)

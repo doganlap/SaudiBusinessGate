@@ -181,7 +181,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      reports: Array.isArray(reportData) ? reportData : (reportData.reports || [reportData]),
+      reports: Array.isArray(reportData) ? reportData : (((reportData as any).reports) || [reportData]),
       data: reportData, // Also include in data for compatibility
       reportType,
       period: { startDate, endDate, asOfDate },

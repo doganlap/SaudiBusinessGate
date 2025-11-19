@@ -1,11 +1,13 @@
 # API Dashboard - Visual API Connectivity Guide
 
 ## Overview
+
 The **API Dashboard** (`/api-dashboard`) is a comprehensive visual interface that displays API endpoints, their connections to pages, and status information using custom colors and interactive indicators.
 
 ## Features
 
 ### 🎯 Core Functionality
+
 - **Visual API Mapping**: See all API endpoints and their connected pages
 - **Color-Coded Modules**: Each module has distinct colors for easy identification
 - **Status Indicators**: Real-time status with visual dots and badges
@@ -15,6 +17,7 @@ The **API Dashboard** (`/api-dashboard`) is a comprehensive visual interface tha
 ### 🎨 Color Scheme
 
 #### Module Colors
+
 - **Dashboard**: Blue (`bg-blue-100`, `border-blue-300`, `text-blue-800`)
 - **Finance**: Green (`bg-green-100`, `border-green-300`, `text-green-800`)
 - **Sales**: Purple (`bg-purple-100`, `border-purple-300`, `text-purple-800`)
@@ -26,12 +29,14 @@ The **API Dashboard** (`/api-dashboard`) is a comprehensive visual interface tha
 - **Workflows**: Teal (`bg-teal-100`, `border-teal-300`, `text-teal-800`)
 
 #### Status Colors
+
 - **Active**: Green backgrounds with green dots
 - **Inactive**: Gray backgrounds with gray dots
 - **Deprecated**: Red backgrounds with red dots
 - **Testing**: Yellow backgrounds with yellow dots
 
 #### Connection Status
+
 - **Connected**: Green with CheckCircle icon
 - **Partial**: Yellow with AlertTriangle icon
 - **Disconnected**: Red with XCircle icon
@@ -39,6 +44,7 @@ The **API Dashboard** (`/api-dashboard`) is a comprehensive visual interface tha
 ### 📊 Dashboard Views
 
 #### 1. APIs View
+
 - Grid layout of API endpoint cards
 - Shows method, module, status, and connected pages
 - Response time indicators with color coding:
@@ -47,11 +53,13 @@ The **API Dashboard** (`/api-dashboard`) is a comprehensive visual interface tha
   - Red: > 200ms (needs attention)
 
 #### 2. Pages View
+
 - Shows pages and their API connections
 - Lists connected APIs and components used
 - Connection status indicators
 
 #### 3. Connections View
+
 - Matrix view showing module-to-page relationships
 - Grouped by module with color coding
 - Shows API-page connection patterns
@@ -59,18 +67,21 @@ The **API Dashboard** (`/api-dashboard`) is a comprehensive visual interface tha
 ### 🔍 Interactive Features
 
 #### Search & Filtering
+
 - **Search Bar**: Search by API path or description
 - **Module Filter**: Filter by specific modules
 - **Status Filter**: Filter by API status
 - **Real-time Updates**: Refresh button for live data
 
 #### Visual Indicators
+
 - **Status Dots**: Color-coded status indicators
 - **Module Icons**: Unique icons for each module
 - **Method Badges**: Different colors for HTTP methods
 - **Performance Metrics**: Response time with color coding
 
 ### 📈 Statistics Overview
+
 - **Total APIs**: Count of all API endpoints
 - **Active APIs**: Count of currently active endpoints
 - **Connected Pages**: Number of pages with API connections
@@ -79,6 +90,7 @@ The **API Dashboard** (`/api-dashboard`) is a comprehensive visual interface tha
 ### 🛠 Technical Implementation
 
 #### Data Structure
+
 ```typescript
 interface APIEndpoint {
   id: string;
@@ -101,6 +113,7 @@ interface PageConnection {
 ```
 
 #### Color Configuration
+
 The dashboard uses a centralized color scheme object for consistent theming:
 
 ```typescript
@@ -114,38 +127,47 @@ const colorScheme = {
 ### 📋 API Endpoints Tracked
 
 #### Dashboard Module
+
 - `/api/dashboard/stats` - Real-time statistics
 - `/api/dashboard/activity` - Activity feed
 
 #### Finance Module
+
 - `/api/finance/transactions` - Transaction data
 - `/api/finance/accounts` - Account management
 - `/api/finance/stats` - Financial KPIs
 
 #### Sales Module
+
 - `/api/sales/leads` - Lead management
 - `/api/sales/deals` - Deal pipeline
 - `/api/sales/rfqs` - RFQ processing
 
 #### HR Module
+
 - `/api/hr/employees` - Employee data
 - `/api/hr/payroll` - Payroll processing
 
 #### Analytics Module
+
 - `/api/analytics/kpis/business` - Business KPIs
 - `/api/analytics/trend-analysis` - Trend analysis
 
 #### Auth Module
+
 - `/api/auth/me` - User authentication
 
 #### Billing Module
+
 - `/api/billing/plans` - Billing plans
 - `/api/billing/send-activation` - License activation
 
 #### System Module
+
 - `/api/themes/demo-org` - Theme management
 
 #### Workflows Module
+
 - `/api/workflows` - Workflow management
 
 ### 🎯 Usage Instructions
@@ -159,12 +181,15 @@ const colorScheme = {
 ### 🔧 Customization
 
 #### Adding New Modules
+
 1. Add module to `colorScheme.modules` with colors and icon
 2. Update the data fetching to include new module APIs
 3. The dashboard will automatically display the new module
 
 #### Modifying Colors
+
 Update the `colorScheme` object to change colors:
+
 - `bg`: Background color class
 - `border`: Border color class
 - `text`: Text color class
@@ -172,6 +197,7 @@ Update the `colorScheme` object to change colors:
 - `icon`: Icon component
 
 ### 📱 Responsive Design
+
 - Mobile-friendly grid layouts
 - Responsive cards and components
 - Touch-friendly interactive elements

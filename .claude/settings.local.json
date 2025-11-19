@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(npm run start)",
+      "Bash(npm audit:*)",
+      "Bash(node -e:*)",
+      "Bash(timeout /t 3 /nobreak)",
+      "Bash(nul)",
+      "Bash(npx next build:*)",
+      "Bash(curl:*)",
+      "Bash(npx prisma migrate:*)",
+      "Bash(timeout 180 npm run build:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

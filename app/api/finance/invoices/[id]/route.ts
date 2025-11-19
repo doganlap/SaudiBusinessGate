@@ -4,6 +4,7 @@ import { getPool } from '@/lib/db/connection';
 import { AuditLogger } from '@/lib/audit/audit-logger';
 import { RBACService } from '@/lib/auth/rbac-service';
 import { apiLogger } from '@/lib/logger';
+import { CompleteFinanceService } from '@/lib/services/finance-complete.service';
 
 // Database connection
 const pool = getPool();
@@ -31,20 +32,15 @@ export async function GET(
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
-        const tenantId = String(organizationId);
-        const { id, reportId, tenantId: paramTenantId, organizationId: paramOrgId, dealId } = params;
-        
-        
-        // Database query
-        const result = await pool.query(
-            `SELECT * FROM invoices 
-             WHERE organization_id = $1 
-             ORDER BY created_at DESC 
-             LIMIT 100`,
-            [tenantId]
-        );
-        await audit.logDataAccess(userId, organizationId, 'invoice', 0, 'read');
-        return NextResponse.json(result.rows);
+        const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
+        const { id } = params;
+
+        const invoice = await CompleteFinanceService.getInvoiceById(tenantId, String(id));
+        await audit.logDataAccess(userId, organizationId, 'invoice', Number(id) || 0, 'read');
+        if (!invoice) {
+          return NextResponse.json({ success: false, error: 'Invoice not found' }, { status: 404 });
+        }
+        return NextResponse.json({ success: true, data: invoice });
         
     } catch (error) {
         apiLogger.error('/api/finance/invoices/[id] error', { error: error instanceof Error ? error.message : String(error) });
@@ -54,7 +50,6 @@ export async function GET(
         );
     }
 }
-
 
 
 

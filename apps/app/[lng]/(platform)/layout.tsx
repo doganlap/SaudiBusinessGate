@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import { PlatformShell } from '@/components/shell/PlatformShell';
-import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import Providers from '@/apps/app/providers';
 
 export default function PlatformLayout({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider>
+    <Providers>
       <PlatformShell>
         {children}
       </PlatformShell>
-    </ThemeProvider>
+    </Providers>
   );
 }

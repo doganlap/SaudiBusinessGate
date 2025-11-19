@@ -1,6 +1,7 @@
 # 🔄 Routing Systems Comparison
 
 ## Overview
+
 This project has **TWO parallel routing systems** running simultaneously:
 
 1. **React Router** - Client-side routing (`apps/web/src/App.jsx`)
@@ -11,11 +12,13 @@ This project has **TWO parallel routing systems** running simultaneously:
 ## 📊 React Router System
 
 ### Location
+
 - **Main App**: `apps/web/src/App.jsx`
 - **Pages Index**: `apps/web/src/pages/index.js`
 - **Route Config**: `apps/web/src/config/routes.jsx` (alternative, not actively used)
 
 ### Features
+
 ✅ **192+ Routes** defined
 ✅ Client-side navigation
 ✅ React Router DOM v6
@@ -27,6 +30,7 @@ This project has **TWO parallel routing systems** running simultaneously:
 ✅ Advanced dashboard routes
 
 ### Route Categories
+
 - **Public Routes**: `/`, `/login`, `/register`, `/landing`
 - **Partner Routes**: `/partner`, `/partner/app/*`
 - **POC Routes**: `/poc`, `/poc/request`, `/poc/app/*`
@@ -46,6 +50,7 @@ This project has **TWO parallel routing systems** running simultaneously:
   - And many more...
 
 ### Value
+
 - ✅ **Full-featured**: Complete application routing
 - ✅ **Flexible**: Dynamic routes, nested routes, route guards
 - ✅ **Mature**: Well-established React Router patterns
@@ -58,12 +63,14 @@ This project has **TWO parallel routing systems** running simultaneously:
 ## 🚀 Next.js App Router System
 
 ### Location
+
 - **Root Layout**: `app/layout.tsx`
 - **Home Page**: `app/page.tsx`
 - **Platform Routes**: `app/[lng]/(platform)/**/page.tsx`
 - **API Routes**: `app/api/**/route.ts`
 
 ### Features
+
 ✅ **80+ Pages** in `app/[lng]/(platform)/`
 ✅ Server-side rendering (SSR)
 ✅ Static site generation (SSG)
@@ -75,6 +82,7 @@ This project has **TWO parallel routing systems** running simultaneously:
 ✅ Built-in loading states
 
 ### Page Categories
+
 - **Dashboard**: `/dashboard`
 - **Finance**: `/finance`, `/finance/accounts`, `/finance/budgets`, `/finance/cash-flow`, `/finance/reports`, `/finance/transactions`
 - **CRM**: `/crm`, `/crm/activities`, `/crm/contacts`, `/crm/customers`
@@ -91,6 +99,7 @@ This project has **TWO parallel routing systems** running simultaneously:
 - **And more...**
 
 ### Value
+
 - ✅ **SEO Optimized**: Server-side rendering for search engines
 - ✅ **Performance**: Automatic code splitting, optimized bundles
 - ✅ **Metadata**: Built-in SEO metadata support
@@ -124,14 +133,16 @@ This project has **TWO parallel routing systems** running simultaneously:
 
 ## 💡 Which One to Use?
 
-### Use **React Router** (`apps/web/src/App.jsx`) when:
+### Use **React Router** (`apps/web/src/App.jsx`) when
+
 - ✅ Building a traditional SPA (Single Page Application)
 - ✅ Need maximum client-side flexibility
 - ✅ Want full control over routing logic
 - ✅ Building internal/admin dashboards
 - ✅ SEO is not a priority
 
-### Use **Next.js App Router** (`app/` directory) when:
+### Use **Next.js App Router** (`app/` directory) when
+
 - ✅ Need SEO optimization
 - ✅ Want server-side rendering
 - ✅ Building public-facing pages
@@ -164,13 +175,15 @@ This creates potential confusion and maintenance overhead.
 
 ## 📈 Feature Comparison Summary
 
-### React Router Advantages:
+### React Router Advantages
+
 - ✅ More routes (192+ vs 80+)
 - ✅ More granular control
 - ✅ Better for complex nested routes
 - ✅ Easier to understand for React developers
 
-### Next.js App Router Advantages:
+### Next.js App Router Advantages
+
 - ✅ Better SEO
 - ✅ Better performance (SSR/SSG)
 - ✅ Modern architecture
@@ -181,4 +194,3 @@ This creates potential confusion and maintenance overhead.
 ---
 
 **Generated**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-

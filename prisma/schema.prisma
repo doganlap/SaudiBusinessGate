@@ -65,7 +65,7 @@ model SubscriptionPlan {
 // =====================================================
 model Module {
   id                String   @id @default(uuid())
-  name              String   @db.VarChar(100)
+  name              String   @unique @db.VarChar(100)
   slug              String   @unique @db.VarChar(100)
   displayName       Json     // {en: "CRM", ar: "إدارة العملاء"}
   description       Json?
@@ -221,7 +221,7 @@ model Team {
 // =====================================================
 model Role {
   id                String    @id @default(uuid())
-  tenantId          String?
+  tenantId          String?   @map("tenant_id")
   
   // Role Details
   name              String    @db.VarChar(100)
@@ -245,7 +245,7 @@ model Role {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   
-  @@unique([tenantId, slug])
+  @@unique([tenantId, slug], map: "unique_role_slug_per_tenant")
   @@map("roles")
 }
 
@@ -346,32 +346,32 @@ model WhiteLabelConfig {
 // =====================================================
 model ResellerConfig {
   id                        String    @id @default(uuid())
-  resellerTenantId          String    @unique
+  resellerTenantId          String    @unique @map("reseller_tenant_id")
   
   // Reseller Details
-  resellerName              String    @db.VarChar(255)
-  resellerCode              String    @unique @db.VarChar(50)
+  resellerName              String    @map("reseller_name") @db.VarChar(255)
+  resellerCode              String    @unique @map("reseller_code") @db.VarChar(50)
   
   // Commission
-  commissionRate            Decimal   @default(20) @db.Decimal(5, 2)
+  commissionRate            Decimal   @default(20) @map("commission_rate") @db.Decimal(5, 2)
   
   // Limits
-  maxClients                Int?
+  maxClients                Int?      @map("max_clients")
   
   // Permissions
-  canWhiteLabel             Boolean   @default(true)
-  canManageClients          Boolean   @default(true)
+  canWhiteLabel             Boolean   @default(true) @map("can_white_label")
+  canManageClients          Boolean   @default(true) @map("can_manage_clients")
   
   // Tracking
-  totalRevenue              Decimal   @default(0) @db.Decimal(12, 2)
-  totalCommissionEarned     Decimal   @default(0) @db.Decimal(12, 2)
+  totalRevenue              Decimal   @default(0) @map("total_revenue") @db.Decimal(12, 2)
+  totalCommissionEarned     Decimal   @default(0) @map("total_commission_earned") @db.Decimal(12, 2)
   
   // Status
-  isActive                  Boolean   @default(true)
+  isActive                  Boolean   @default(true) @map("is_active")
   
   // Metadata
-  createdAt                 DateTime  @default(now())
-  updatedAt                 DateTime  @updatedAt
+  createdAt                 DateTime  @default(now()) @map("created_at")
+  updatedAt                 DateTime  @updatedAt @map("updated_at")
   
   // Relations
   tenant                    Tenant    @relation(fields: [resellerTenantId], references: [id], onDelete: Cascade)
@@ -481,4 +481,213 @@ model PocRequest {
   @@index([email])
   @@index([status])
   @@map("poc_requests")
+}
+
+// =====================================================
+// AI AGENTS
+// =====================================================
+model AIAgent {
+  id                  Int       @id @default(autoincrement())
+  uuid                String    @unique @default(uuid())
+  tenantId            String    @map("tenant_id") @db.VarChar(255)
+  name                String    @db.VarChar(255)
+  nameAr              String?   @map("name_ar") @db.VarChar(255)
+  agentType           String    @map("agent_type") @db.VarChar(100)
+  status              String    @default("inactive") @db.VarChar(20)
+  description         String?   @db.Text
+  descriptionAr       String?   @map("description_ar") @db.Text
+  capabilities        Json      @default("[]")
+  model               String    @default("gpt-4") @db.VarChar(100)
+  provider            String    @default("OpenAI") @db.VarChar(100)
+  lastActive          DateTime? @map("last_active")
+  tasksCompleted      Int       @default(0) @map("tasks_completed")
+  tasksInProgress     Int       @default(0) @map("tasks_in_progress")
+  successRate         Decimal   @default(0.00) @map("success_rate") @db.Decimal(5, 2)
+  avgResponseTime     Decimal   @default(0.00) @map("avg_response_time") @db.Decimal(8, 2)
+  configuration       Json      @default("{}")
+  metrics             Json      @default("{}")
+  isActive            Boolean   @default(true) @map("is_active")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  @@index([tenantId])
+  @@index([status])
+  @@index([agentType])
+  @@index([isActive])
+  @@map("ai_agents")
+}
+
+// =====================================================
+// THEMES
+// =====================================================
+model Theme {
+  id            Int      @id @default(autoincrement())
+  uuid          String   @unique @default(uuid())
+  tenantId      String   @map("tenant_id") @db.VarChar(255)
+  name          String   @db.VarChar(255)
+  nameAr        String?  @map("name_ar") @db.VarChar(255)
+  description   String?  @db.Text
+  descriptionAr String?  @map("description_ar") @db.Text
+  isDefault     Boolean  @default(false) @map("is_default")
+  isActive      Boolean  @default(true) @map("is_active")
+  colors        Json     @default("{}")
+  typography    Json     @default("{}")
+  spacing       Json     @default("{}")
+  borderRadius  Json     @default("{}") @map("border_radius")
+  shadows       Json     @default("{}")
+  branding      Json     @default("{}")
+  customCss     String?  @map("custom_css") @db.Text
+  version       String   @default("1.0.0") @db.VarChar(20)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId])
+  @@index([isActive])
+  @@index([isDefault])
+  @@map("themes")
+}
+
+// =====================================================
+// WEBHOOK CONFIGURATIONS
+// =====================================================
+model TenantWebhookConfig {
+  id             Int       @id @default(autoincrement())
+  uuid           String    @unique @default(uuid())
+  tenantId       String    @map("tenant_id") @db.VarChar(255)
+  eventType      String    @map("event_type") @db.VarChar(100)
+  webhookUrl     String    @map("webhook_url") @db.VarChar(500)
+  secretKey      String?   @map("secret_key") @db.VarChar(255)
+  httpMethod     String    @default("POST") @map("http_method") @db.VarChar(10)
+  headers        Json      @default("{}")
+  timeoutSeconds Int       @default(30) @map("timeout_seconds")
+  retryAttempts  Int       @default(3) @map("retry_attempts")
+  isActive       Boolean   @default(true) @map("is_active")
+  lastTriggered  DateTime? @map("last_triggered")
+  successCount   Int       @default(0) @map("success_count")
+  failureCount   Int       @default(0) @map("failure_count")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([tenantId])
+  @@index([eventType])
+  @@index([isActive])
+  @@map("tenant_webhook_configs")
+}
+
+// =====================================================
+// NOTIFICATIONS
+// =====================================================
+model Notification {
+  id           Int       @id @default(autoincrement())
+  uuid         String    @unique @default(uuid())
+  tenantId     String?   @map("tenant_id") @db.VarChar(255)
+  userId       String?   @map("user_id") @db.VarChar(255)
+  type         String    @db.VarChar(100)
+  title        String    @db.VarChar(255)
+  message      String    @db.Text
+  messageAr    String?   @map("message_ar") @db.Text
+  severity     String    @default("info") @db.VarChar(20)
+  category     String    @default("general") @db.VarChar(50)
+  data         Json      @default("{}")
+  isRead       Boolean   @default(false) @map("is_read")
+  readAt       DateTime? @map("read_at")
+  expiresAt    DateTime? @map("expires_at")
+  actionUrl    String?   @map("action_url") @db.VarChar(500)
+  actionLabel  String?   @map("action_label") @db.VarChar(100)
+  actionLabelAr String?  @map("action_label_ar") @db.VarChar(100)
+  priority     Int       @default(0)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([type])
+  @@index([severity])
+  @@index([isRead])
+  @@index([createdAt])
+  @@index([expiresAt])
+  @@map("notifications")
+}
+
+// =====================================================
+// WORKFLOW TEMPLATES
+// =====================================================
+model WorkflowTemplate {
+  id               Int                 @id @default(autoincrement())
+  uuid             String              @unique @default(uuid())
+  tenantId         String              @map("tenant_id") @db.VarChar(255)
+  name             String              @db.VarChar(255)
+  nameAr           String?             @map("name_ar") @db.VarChar(255)
+  description      String?             @db.Text
+  descriptionAr    String?             @map("description_ar") @db.Text
+  category         String              @default("general") @db.VarChar(50)
+  version          String              @default("1.0.0") @db.VarChar(20)
+  nodes            Json                @default("[]")
+  edges            Json                @default("[]")
+  variables        Json                @default("{}")
+  settings         Json                @default("{}")
+  isActive         Boolean             @default(true) @map("is_active")
+  isPublished      Boolean             @default(false) @map("is_published")
+  createdBy        String?             @map("created_by") @db.VarChar(255)
+  updatedBy        String?             @map("updated_by") @db.VarChar(255)
+  tags             String[]
+  executionCount   Int                 @default(0) @map("execution_count")
+  successRate      Decimal             @default(0.00) @map("success_rate") @db.Decimal(5, 2)
+  avgExecutionTime Int                 @default(0) @map("avg_execution_time")
+  createdAt        DateTime            @default(now()) @map("created_at")
+  updatedAt        DateTime            @updatedAt @map("updated_at")
+
+  // Relations
+  executions       WorkflowExecution[]
+
+  @@index([tenantId])
+  @@index([category])
+  @@index([isActive])
+  @@index([isPublished])
+  @@index([createdBy])
+  @@map("workflow_templates")
+}
+
+// =====================================================
+// WORKFLOW EXECUTIONS
+// =====================================================
+model WorkflowExecution {
+  id                 Int               @id @default(autoincrement())
+  uuid               String            @unique @default(uuid())
+  workflowTemplateId Int               @map("workflow_template_id")
+  tenantId           String            @map("tenant_id") @db.VarChar(255)
+  executedBy         String?           @map("executed_by") @db.VarChar(255)
+  triggerType        String            @default("manual") @map("trigger_type") @db.VarChar(50)
+  triggerData        Json              @default("{}") @map("trigger_data")
+  status             String            @default("pending") @db.VarChar(20)
+  inputData          Json              @default("{}") @map("input_data")
+  outputData         Json              @default("{}") @map("output_data")
+  executionLog       Json              @default("[]") @map("execution_log")
+  currentStep        String?           @map("current_step") @db.VarChar(255)
+  progressPercentage Int               @default(0) @map("progress_percentage")
+  startedAt          DateTime          @default(now()) @map("started_at")
+  completedAt        DateTime?         @map("completed_at")
+  durationSeconds    Int?              @map("duration_seconds")
+  errorMessage       String?           @map("error_message") @db.Text
+  errorCode          String?           @map("error_code") @db.VarChar(50)
+  retryCount         Int               @default(0) @map("retry_count")
+  maxRetries         Int               @default(3) @map("max_retries")
+  nextRetryAt        DateTime?         @map("next_retry_at")
+  priority           Int               @default(0)
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
+
+  // Relations
+  workflowTemplate   WorkflowTemplate  @relation(fields: [workflowTemplateId], references: [id], onDelete: Cascade)
+
+  @@index([workflowTemplateId])
+  @@index([tenantId])
+  @@index([status])
+  @@index([executedBy])
+  @@index([triggerType])
+  @@index([startedAt])
+  @@index([completedAt])
+  @@index([priority])
+  @@index([nextRetryAt])
+  @@map("workflow_executions")
 }

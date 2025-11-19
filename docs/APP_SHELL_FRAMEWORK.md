@@ -7,6 +7,7 @@ This script validates the UI dependencies and app shell framework implementation
 ## 🚀 Quick Start
 
 ### Run Validation
+
 ```bash
 # Run full UI validation
 node scripts/validate-ui-dependencies.js
@@ -16,6 +17,7 @@ npm run validate:ui
 ```
 
 ### Add to package.json
+
 ```json
 {
   "scripts": {
@@ -28,6 +30,7 @@ npm run validate:ui
 ## 📊 What Gets Validated
 
 ### 1. UI Dependencies
+
 - React & Next.js core dependencies
 - UI component libraries (Radix UI, MUI)
 - Styling libraries (Tailwind CSS, Emotion)
@@ -36,18 +39,21 @@ npm run validate:ui
 - Animation libraries (Framer Motion)
 
 ### 2. Component Structure
+
 - Core UI components (Button, Card, Badge)
 - Layout components (Header, Sidebar, ContentArea)
 - App Shell components (AppShell, StandardLayout)
 - Type definitions and interfaces
 
 ### 3. Layout Framework
+
 - Directory structure validation
 - Component file existence
 - Import/export validation
 - Framework completeness score
 
 ### 4. App Shell Framework
+
 - AppShell component implementation
 - Layout context and hooks
 - Standard layout variations
@@ -56,6 +62,7 @@ npm run validate:ui
 ## 🎯 Framework Components
 
 ### Core Layout Components
+
 ```typescript
 // App Shell
 <AppShell layout="sidebar" showHeader={true} showNavigation={true}>
@@ -84,6 +91,7 @@ npm run validate:ui
 ```
 
 ### Layout Building Blocks
+
 ```typescript
 // Header
 <Header leftSection={...} centerSection={...} rightSection={...} />
@@ -111,6 +119,7 @@ npm run validate:ui
 ## 📈 Validation Scoring
 
 ### Dependency Score (0-100%)
+
 - **90-100%**: Excellent - All dependencies installed and up-to-date
 - **80-89%**: Good - Minor dependency updates available
 - **70-79%**: Fair - Some dependencies missing or outdated
@@ -118,6 +127,7 @@ npm run validate:ui
 - **<60%**: Critical - Major dependency problems
 
 ### Component Score (0-100%)
+
 - **90-100%**: Excellent - All components implemented correctly
 - **80-89%**: Good - Minor component issues
 - **70-79%**: Fair - Some components missing or incomplete
@@ -125,6 +135,7 @@ npm run validate:ui
 - **<60%**: Critical - Major component framework issues
 
 ### Framework Score (0-100%)
+
 - **90-100%**: Excellent - Complete app shell framework
 - **80-89%**: Good - Framework mostly complete
 - **70-79%**: Fair - Framework partially implemented
@@ -134,6 +145,7 @@ npm run validate:ui
 ## 🛠️ Usage Examples
 
 ### Basic Layout
+
 ```tsx
 import { StandardLayout } from '@/components/layout/StandardLayout';
 
@@ -147,6 +159,7 @@ export default function MyPage() {
 ```
 
 ### Custom Layout
+
 ```tsx
 import { AppShell, Header, Sidebar, ContentArea } from '@/components/shell';
 
@@ -208,6 +221,7 @@ components/
 ### Common Issues
 
 1. **Missing Dependencies**
+
    ```bash
    npm install @radix-ui/react-dialog @radix-ui/react-dropdown-menu
    ```
@@ -230,6 +244,7 @@ components/
 ### Validation Output
 
 The validation script generates a comprehensive report including:
+
 - Dependency status and versions
 - Component implementation status
 - Layout structure validation
@@ -239,16 +254,19 @@ The validation script generates a comprehensive report including:
 ## 📈 Performance Considerations
 
 ### Bundle Size
+
 - Use dynamic imports for heavy components
 - Implement code splitting for large layouts
 - Tree-shake unused dependencies
 
 ### Rendering Performance
+
 - Memoize expensive computations
 - Use React.memo for pure components
 - Implement virtual scrolling for long lists
 
 ### Theme Performance
+
 - Use CSS variables for theme switching
 - Implement smooth theme transitions
 - Cache theme preferences locally
@@ -256,6 +274,7 @@ The validation script generates a comprehensive report including:
 ## 🎨 Customization
 
 ### Theme Customization
+
 ```typescript
 // tailwind.config.ts
 export default {
@@ -275,6 +294,7 @@ export default {
 ```
 
 ### Layout Customization
+
 ```typescript
 // Custom layout configuration
 const customLayout: LayoutConfig = {

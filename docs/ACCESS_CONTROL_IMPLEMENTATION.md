@@ -35,11 +35,13 @@ This document describes the professional access control system implementation fo
 ## Access Control Service
 
 ### Location
+
 `lib/services/access-control.service.ts`
 
 ### Key Methods
 
 #### Permission Checking
+
 ```typescript
 // Check if user has a specific permission
 AccessControlService.hasPermission(tenantId, userId, 'users:read')
@@ -55,6 +57,7 @@ AccessControlService.checkResourceAccess(tenantId, userId, 'customers', 'custome
 ```
 
 #### Role Management
+
 ```typescript
 // Get all roles for a user
 AccessControlService.getUserRoles(tenantId, userId)
@@ -67,6 +70,7 @@ AccessControlService.removeRole(tenantId, userId, roleId)
 ```
 
 #### Permission Management
+
 ```typescript
 // Grant direct permission to user
 AccessControlService.grantPermission(tenantId, userId, resourceType, permission, resourceId)
@@ -76,6 +80,7 @@ AccessControlService.revokePermission(tenantId, userId, resourceType, permission
 ```
 
 #### User Permissions
+
 ```typescript
 // Get all permissions for a user (roles + direct)
 AccessControlService.getUserPermissions(tenantId, userId)
@@ -87,11 +92,13 @@ AccessControlService.checkAccess(tenantId, userId, requiredPermission, resourceT
 ## Middleware
 
 ### Location
+
 `lib/middleware/access-control.ts`
 
 ### Usage in Next.js API Routes
 
 #### Require Authentication
+
 ```typescript
 import { requireAuth } from '@/lib/middleware/access-control';
 
@@ -104,6 +111,7 @@ export const GET = requireAuth(async (req) => {
 ```
 
 #### Require Permission
+
 ```typescript
 import { requirePermission } from '@/lib/middleware/access-control';
 
@@ -114,6 +122,7 @@ export const GET = requirePermission('users:read')(async (req) => {
 ```
 
 #### Require Any Permission
+
 ```typescript
 import { requireAnyPermission } from '@/lib/middleware/access-control';
 
@@ -124,6 +133,7 @@ export const POST = requireAnyPermission('users:write', 'users:create')(async (r
 ```
 
 #### Require All Permissions
+
 ```typescript
 import { requireAllPermissions } from '@/lib/middleware/access-control';
 
@@ -134,6 +144,7 @@ export const PUT = requireAllPermissions('users:read', 'users:write')(async (req
 ```
 
 #### Require Resource Access
+
 ```typescript
 import { requireResourceAccess } from '@/lib/middleware/access-control';
 
@@ -150,12 +161,14 @@ export const GET = requireResourceAccess('customers', 'id', 'read')(async (req) 
 When creating users or tenants, roles are automatically assigned:
 
 #### Tenant Creation
+
 ```typescript
 // In app/api/platform/tenants/route.ts
 // Admin user automatically gets 'tenant_admin' role
 ```
 
 #### User Creation
+
 ```typescript
 // In app/api/platform/users/route.ts
 // Users can be assigned roles via:
@@ -167,6 +180,7 @@ When creating users or tenants, roles are automatically assigned:
 ### Example API Routes
 
 #### Protected Route with Permission Check
+
 ```typescript
 // app/api/crm/customers/route.ts
 import { requirePermission } from '@/lib/middleware/access-control';
@@ -194,9 +208,11 @@ export const POST = requirePermission('crm:write')(async (req) => {
 ## Permission Naming Convention
 
 ### Format
+
 `{resource}:{action}` or `{resource}:*` for all actions
 
 ### Examples
+
 - `users:read` - Read users
 - `users:write` - Create/Update users
 - `users:delete` - Delete users
@@ -205,6 +221,7 @@ export const POST = requirePermission('crm:write')(async (req) => {
 - `*` - All permissions (super admin)
 
 ### Standard Resources
+
 - `dashboard` - Dashboard access
 - `users` - User management
 - `crm` - CRM module
@@ -247,7 +264,9 @@ export const POST = requirePermission('crm:write')(async (req) => {
 ## Best Practices
 
 ### 1. Use Middleware for Route Protection
+
 Always use middleware for API route protection instead of manual checks:
+
 ```typescript
 // ✅ Good
 export const GET = requirePermission('users:read')(async (req) => { ... });
@@ -260,10 +279,13 @@ export async function GET(req) {
 ```
 
 ### 2. Check Permissions Early
+
 Fail fast with permission checks at the beginning of handlers.
 
 ### 3. Use Resource-Level Permissions for Sensitive Data
+
 For fine-grained control, use `platform_user_access` table:
+
 ```typescript
 // Grant access to specific customer
 await AccessControlService.grantPermission(
@@ -276,17 +298,21 @@ await AccessControlService.grantPermission(
 ```
 
 ### 4. Cache Permission Checks
+
 The service includes built-in caching for permission checks (5-minute TTL).
 
 ### 5. Log Permission Denials
+
 Always log permission denials for audit purposes.
 
 ### 6. Use Role Hierarchy
+
 Respect role levels when assigning permissions. Higher levels have more access.
 
 ## Testing
 
 ### Test Permission Checks
+
 ```typescript
 // Test user has permission
 const hasPermission = await AccessControlService.hasPermission(
@@ -298,6 +324,7 @@ expect(hasPermission).toBe(true);
 ```
 
 ### Test Role Assignment
+
 ```typescript
 // Assign role and verify
 await AccessControlService.assignRole('tenant-123', 'user-456', roleId);
@@ -342,6 +369,7 @@ expect(roles).toContainEqual(expect.objectContaining({ roleSlug: 'manager' }));
 - `GET /api/platform/access/users/[userId]/permissions` - Get user permissions
 
 ### Usage
+
 ```typescript
 // Get all roles for tenant
 const response = await fetch('/api/platform/access/roles', {
@@ -355,6 +383,7 @@ const response = await fetch('/api/platform/access/roles', {
 ## Migration Notes
 
 The access control system is fully integrated with:
+
 - Platform tenant creation
 - Platform user creation
 - All API routes can use middleware

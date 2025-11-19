@@ -35,7 +35,8 @@ import {
   Key,
   Activity,
   Clock,
-  ArrowUp
+  ArrowUp,
+  Target
 } from 'lucide-react';
 
 interface NavigationItem {
@@ -87,6 +88,45 @@ export function PlatformNavigation() {
     };
     fetchUser();
   }, []);
+
+  // Auto-collapse navigation menus when navigating to different sections
+  useEffect(() => {
+    if (pathname) {
+      const pathSegments = pathname.split('/').filter(Boolean);
+      const currentSection = pathSegments[1]; // e.g., 'finance', 'crm', 'sales', etc.
+      
+      // Define which menus should stay expanded based on current path
+      const relevantMenus: string[] = [];
+      
+      if (currentSection === 'finance') {
+        relevantMenus.push('products');
+      } else if (currentSection === 'sales') {
+        relevantMenus.push('products');
+      } else if (currentSection === 'crm') {
+        relevantMenus.push('products');
+      } else if (currentSection === 'hr') {
+        relevantMenus.push('products');
+      } else if (currentSection === 'procurement') {
+        relevantMenus.push('products');
+      } else if (currentSection === 'licenses') {
+        relevantMenus.push('license-management');
+      } else if (currentSection === 'billing' || currentSection === 'analytics') {
+        relevantMenus.push('services');
+      }
+      
+      // Keep only relevant menus expanded, collapse others
+      setExpandedMenus(prev => {
+        const newExpanded = prev.filter(menuId => relevantMenus.includes(menuId));
+        // Auto-expand the relevant menu if not already expanded
+        relevantMenus.forEach(menuId => {
+          if (!newExpanded.includes(menuId)) {
+            newExpanded.push(menuId);
+          }
+        });
+        return newExpanded;
+      });
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const loadNavigation = async () => {
@@ -145,7 +185,7 @@ export function PlatformNavigation() {
       id: 'dashboard',
       title: 'Dashboard',
       titleAr: 'لوحة التحكم',
-      href: `/${lng}/dashboard`,
+      href: `/${lng}/(platform)/dashboard`,
       icon: <Home className="h-5 w-5" />,
     },
     {
@@ -159,35 +199,35 @@ export function PlatformNavigation() {
           id: 'finance',
           title: 'Finance',
           titleAr: 'المالية',
-          href: `/${lng}/finance`,
+          href: `/${lng}/(platform)/finance`,
           icon: <DollarSign className="h-4 w-4" />,
         },
         {
           id: 'sales',
           title: 'Sales',
           titleAr: 'المبيعات',
-          href: `/${lng}/sales`,
+          href: `/${lng}/(platform)/sales`,
           icon: <TrendingUp className="h-4 w-4" />,
         },
         {
           id: 'crm',
           title: 'CRM',
           titleAr: 'إدارة العملاء',
-          href: `/${lng}/crm`,
+          href: `/${lng}/(platform)/crm`,
           icon: <Users className="h-4 w-4" />,
         },
         {
           id: 'hr',
           title: 'HR',
           titleAr: 'الموارد البشرية',
-          href: `/${lng}/hr`,
+          href: `/${lng}/(platform)/hr`,
           icon: <UserCheck className="h-4 w-4" />,
         },
         {
           id: 'procurement',
           title: 'Procurement',
           titleAr: 'المشتريات',
-          href: `/${lng}/procurement`,
+          href: `/${lng}/(platform)/procurement`,
           icon: <Package className="h-4 w-4" />,
         }
       ]
@@ -203,28 +243,28 @@ export function PlatformNavigation() {
           id: 'licenses-overview',
           title: 'All Licenses',
           titleAr: 'جميع التراخيص',
-          href: `/${lng}/licenses/management`,
+          href: `/${lng}/(platform)/licenses/management`,
           icon: <Key className="h-4 w-4" />,
         },
         {
           id: 'renewals-pipeline',
           title: 'Renewals Pipeline',
           titleAr: 'خط تجديد التراخيص',
-          href: `/${lng}/licenses/renewals`,
+          href: `/${lng}/(platform)/licenses/renewals`,
           icon: <Clock className="h-4 w-4" />,
         },
         {
           id: 'usage-dashboard',
           title: 'Usage Analytics',
           titleAr: 'تحليلات الاستخدام',
-          href: `/${lng}/licenses/usage`,
+          href: `/${lng}/(platform)/licenses/usage`,
           icon: <Activity className="h-4 w-4" />,
         },
         {
           id: 'license-upgrade',
           title: 'Upgrade License',
           titleAr: 'ترقية الترخيص',
-          href: `/${lng}/licenses/upgrade`,
+          href: `/${lng}/(platform)/licenses/upgrade`,
           icon: <ArrowUp className="h-4 w-4" />,
         }
       ]
@@ -240,22 +280,28 @@ export function PlatformNavigation() {
           id: 'billing',
           title: 'Billing',
           titleAr: 'الفوترة',
-          href: `/${lng}/billing`,
+          href: `/${lng}/(platform)/billing`,
           icon: <CreditCard className="h-4 w-4" />,
+          description: 'Subscription management',
+          descriptionAr: 'إدارة الاشتراكات'
         },
         {
           id: 'analytics',
           title: 'Analytics',
           titleAr: 'التحليلات',
-          href: `/${lng}/analytics`,
+          href: `/${lng}/(platform)/analytics`,
           icon: <BarChart3 className="h-4 w-4" />,
+          description: 'Business intelligence',
+          descriptionAr: 'ذكاء الأعمال'
         },
         {
-          id: 'reporting',
-          title: 'Reporting',
-          titleAr: 'التقارير',
-          href: `/${lng}/reporting`,
-          icon: <FileText className="h-4 w-4" />,
+          id: 'motivation',
+          title: 'Motivation & AI',
+          titleAr: 'التحفيز والذكاء الاصطناعي',
+          href: `/${lng}/(platform)/motivation`,
+          icon: <Target className="h-4 w-4" />,
+          description: 'Daily goals and AI agents',
+          descriptionAr: 'الأهداف اليومية والوكلاء الذكيون'
         }
       ]
     }
@@ -266,7 +312,7 @@ export function PlatformNavigation() {
       id: 'dashboard',
       title: 'Dashboard',
       titleAr: 'لوحة التحكم',
-      href: `/${lng}/dashboard`,
+      href: `/${lng}/(platform)/dashboard`,
       icon: <Home className="h-5 w-5" />,
       description: 'Overview and analytics',
       descriptionAr: 'نظرة عامة والتحليلات'
@@ -284,7 +330,7 @@ export function PlatformNavigation() {
           id: 'finance',
           title: 'Finance',
           titleAr: 'المالية',
-          href: `/${lng}/finance`,
+          href: `/${lng}/(platform)/finance`,
           icon: <DollarSign className="h-4 w-4" />,
           description: 'Financial management',
           descriptionAr: 'الإدارة المالية'
@@ -293,7 +339,7 @@ export function PlatformNavigation() {
           id: 'sales',
           title: 'Sales',
           titleAr: 'المبيعات',
-          href: `/${lng}/sales`,
+          href: `/${lng}/(platform)/sales`,
           icon: <TrendingUp className="h-4 w-4" />,
           description: 'Sales pipeline',
           descriptionAr: 'خط أنابيب المبيعات'
@@ -302,7 +348,7 @@ export function PlatformNavigation() {
           id: 'crm',
           title: 'CRM',
           titleAr: 'إدارة العملاء',
-          href: `/${lng}/crm`,
+          href: `/${lng}/(platform)/crm`,
           icon: <Users className="h-4 w-4" />,
           description: 'Customer management',
           descriptionAr: 'إدارة العملاء'
@@ -311,7 +357,7 @@ export function PlatformNavigation() {
           id: 'hr',
           title: 'HR',
           titleAr: 'الموارد البشرية',
-          href: `/${lng}/hr`,
+          href: `/${lng}/(platform)/hr`,
           icon: <UserCheck className="h-4 w-4" />,
           description: 'Human resources',
           descriptionAr: 'الموارد البشرية'
@@ -320,7 +366,7 @@ export function PlatformNavigation() {
           id: 'procurement',
           title: 'Procurement',
           titleAr: 'المشتريات',
-          href: `/${lng}/procurement`,
+          href: `/${lng}/(platform)/procurement`,
           icon: <Package className="h-4 w-4" />,
           description: 'Purchase management',
           descriptionAr: 'إدارة المشتريات'
@@ -341,7 +387,7 @@ export function PlatformNavigation() {
             id: 'licenses-overview',
             title: 'All Licenses',
             titleAr: 'جميع التراخيص',
-            href: `/${lng}/licenses/management`,
+            href: `/${lng}/(platform)/licenses/management`,
             icon: <Key className="h-4 w-4" />,
             description: 'Platform-wide license management',
             descriptionAr: 'إدارة التراخيص على مستوى المنصة'
@@ -350,7 +396,7 @@ export function PlatformNavigation() {
             id: 'renewals-pipeline',
             title: 'Renewals Pipeline',
             titleAr: 'خط تجديد التراخيص',
-            href: `/${lng}/licenses/renewals`,
+            href: `/${lng}/(platform)/licenses/renewals`,
             icon: <Clock className="h-4 w-4" />,
             description: '120-day renewal tracking',
             descriptionAr: 'تتبع التجديد لـ 120 يوم'
@@ -360,7 +406,7 @@ export function PlatformNavigation() {
           id: 'usage-dashboard',
           title: 'Usage Analytics',
           titleAr: 'تحليلات الاستخدام',
-          href: `/${lng}/licenses/usage`,
+          href: `/${lng}/(platform)/licenses/usage`,
           icon: <Activity className="h-4 w-4" />,
           description: 'Monitor feature usage',
           descriptionAr: 'مراقبة استخدام الميزات'
@@ -369,7 +415,7 @@ export function PlatformNavigation() {
           id: 'license-upgrade',
           title: 'Upgrade License',
           titleAr: 'ترقية الترخيص',
-          href: `/${lng}/licenses/upgrade`,
+          href: `/${lng}/(platform)/licenses/upgrade`,
           icon: <ArrowUp className="h-4 w-4" />,
           description: 'Upgrade your plan',
           descriptionAr: 'ترقية خطتك'
@@ -389,7 +435,7 @@ export function PlatformNavigation() {
           id: 'billing',
           title: 'Billing',
           titleAr: 'الفوترة',
-          href: `/${lng}/billing`,
+          href: `/${lng}/(platform)/billing`,
           icon: <CreditCard className="h-4 w-4" />,
           description: 'Subscription management',
           descriptionAr: 'إدارة الاشتراكات'
@@ -398,20 +444,20 @@ export function PlatformNavigation() {
           id: 'analytics',
           title: 'Analytics',
           titleAr: 'التحليلات',
-          href: `/${lng}/analytics`,
+          href: `/${lng}/(platform)/analytics`,
           icon: <BarChart3 className="h-4 w-4" />,
           description: 'Business intelligence',
           descriptionAr: 'ذكاء الأعمال'
         },
         {
-          id: 'reporting',
-          title: 'Reporting',
-          titleAr: 'التقارير',
-          href: `/${lng}/reporting`,
-          icon: <FileText className="h-4 w-4" />,
-          description: 'Reports and insights',
-          descriptionAr: 'التقارير والرؤى'
-        },
+          id: 'motivation',
+          title: 'Motivation & AI',
+          titleAr: 'التحفيز والذكاء الاصطناعي',
+          href: `/${lng}/(platform)/motivation`,
+          icon: <Target className="h-4 w-4" />,
+          description: 'Daily goals and AI agents',
+          descriptionAr: 'الأهداف اليومية والوكلاء الذكيون'
+        }
       ]
     }
   ];
@@ -430,9 +476,7 @@ export function PlatformNavigation() {
       if (item.children) {
         return (
           <div key={item.id}>
-            <button 
-              onClick={() => toggleMenu(item.id)} 
-              className={`w-full flex items-center justify-between text-left px-3 py-2.5 rounded-lg transition-colors duration-200 ${isRTL ? 'pr-2' : 'pl-2'} hover:bg-brand-100 dark:hover:bg-brand-900/50`}>
+            <Link href={item.href} className={`w-full flex items-center justify-between text-left px-3 py-2.5 rounded-lg transition-colors duration-200 ${isRTL ? 'pr-2' : 'pl-2'} hover:bg-brand-100 dark:hover:bg-brand-900/50`}>
               <div className="flex items-center">
                 <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-brand-100 to-brand-200 dark:from-brand-900/50 dark:to-brand-900/80 text-brand-600 dark:text-brand-400 shadow-sm">
                   {item.icon}
@@ -440,6 +484,16 @@ export function PlatformNavigation() {
                 <span className={`font-semibold text-sm text-neutral-800 dark:text-neutral-200 ${isRTL ? 'mr-3' : 'ml-3'}`}>{isRTL ? item.titleAr : item.title}</span>
               </div>
               <ChevronDown className={`h-5 w-5 text-neutral-500 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''} ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            </Link>
+            <button 
+              onClick={() => toggleMenu(item.id)} 
+              className={`w-full flex items-center justify-between text-left px-3 py-2.5 rounded-lg transition-colors duration-200 ${isRTL ? 'pr-2' : 'pl-2'} hover:bg-brand-100 dark:hover:bg-brand-900/50 mt-1`}>
+              <div className="flex items-center">
+                <div className="w-6 h-6 flex items-center justify-center rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400">
+                  <span className="text-xs">+</span>
+                </div>
+                <span className={`font-medium text-xs text-neutral-600 dark:text-neutral-400 ${isRTL ? 'mr-2' : 'ml-2'}`}>{isRTL ? 'توسيع' : 'Expand'}</span>
+              </div>
             </button>
             {isExpanded && (
               <div className={`${isRTL ? 'mr-4 pr-4 border-r-2' : 'ml-4 pl-4 border-l-2'} border-brand-200 dark:border-brand-800 mt-2 space-y-1`}>
@@ -467,12 +521,24 @@ export function PlatformNavigation() {
     <aside className={`bg-white dark:bg-neutral-950/70 backdrop-blur-lg border-neutral-200 dark:border-neutral-800/50 ${isRTL ? 'border-l' : 'border-r'} w-72 flex-col flex transition-all duration-300`}>
       <div className="p-4 border-b border-neutral-200 dark:border-neutral-800/50 flex items-center justify-between">
         <div className="flex items-center">
-          <div className="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl flex items-center justify-center shadow-lg">
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg relative overflow-hidden">
+            {/* Enterprise AI Circuit Pattern */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-xl"></div>
+            <svg className="w-6 h-6 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* AI Brain/Circuit Icon */}
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              {/* Autonomous indicator dots */}
+              <circle cx="12" cy="12" r="1" fill="currentColor" className="animate-pulse"/>
+              <circle cx="8" cy="8" r="0.5" fill="currentColor" opacity="0.6"/>
+              <circle cx="16" cy="8" r="0.5" fill="currentColor" opacity="0.6"/>
+              <circle cx="8" cy="16" r="0.5" fill="currentColor" opacity="0.6"/>
+              <circle cx="16" cy="16" r="0.5" fill="currentColor" opacity="0.6"/>
             </svg>
           </div>
-          <h1 className={`text-xl font-bold text-neutral-900 dark:text-white ${isRTL ? 'mr-3' : 'ml-3'}`}>DoganHub</h1>
+          <h1 className={`text-xl font-bold text-neutral-900 dark:text-white ${isRTL ? 'mr-3' : 'ml-3'}`}>Saudi Business Gate Enterprise</h1>
+          <div className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+            {isRTL ? 'أول بوابة أعمال ذاتية التشغيل في المنطقة' : 'The 1st Autonomous Business Gate in the Region'}
+          </div>
         </div>
       </div>
       <nav className="flex-1 p-4 space-y-2">

@@ -69,148 +69,172 @@
    - Error Handling: Use proper error states instead of fallback
 
 10. **platform\PartnerManagementPage.jsx**
-   - Mock Count: 4
-   - Keywords: mock, MOCK, placeholder, empty data
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
 
-11. **poc\PocRequest.jsx**
-   - Mock Count: 4
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 4
+- Keywords: mock, MOCK, placeholder, empty data
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-12. **evidence\EvidenceUploadPage.jsx**
-   - Mock Count: 3
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **poc\PocRequest.jsx**
 
-13. **grc-modules\AssessmentDetailsCollaborative.jsx**
-   - Mock Count: 3
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 4
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-14. **grc-modules\FrameworksManagementPage.jsx**
-   - Mock Count: 3
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **evidence\EvidenceUploadPage.jsx**
 
-15. **system\SettingsPage.jsx**
-   - Mock Count: 3
-   - Keywords: fallback, Fallback, FALLBACK
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 3
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-16. **partner\PartnerLogin.jsx**
-   - Mock Count: 2
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **grc-modules\AssessmentDetailsCollaborative.jsx**
 
-17. **regulatory\RegulatoryIntelligenceEnhancedPage.jsx**
-   - Mock Count: 2
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 3
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-18. **assessments\AssessmentPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **grc-modules\FrameworksManagementPage.jsx**
 
-19. **documents\DocumentsPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 3
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-20. **gaps\GapAnalysisPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **system\SettingsPage.jsx**
 
-21. **grc-modules\ComplianceTrackingPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 3
+- Keywords: fallback, Fallback, FALLBACK
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-22. **grc-modules\ControlsModuleEnhanced.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **partner\PartnerLogin.jsx**
 
-23. **grc-modules\Evidence.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 2
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-24. **grc-modules\EvidenceManagementPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **regulatory\RegulatoryIntelligenceEnhancedPage.jsx**
 
-25. **regulatory\KSAGRCPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 2
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-26. **regulatory\RegulatorsPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **assessments\AssessmentPage.jsx**
 
-27. **reports\ReportsPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-28. **system\AISchedulerPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **documents\DocumentsPage.jsx**
 
-29. **system\AuditLogsPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-30. **system\DocumentManagementPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **gaps\GapAnalysisPage.jsx**
 
-31. **system\UserManagementPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
-32. **tasks\TaskManagementPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+1. **grc-modules\ComplianceTrackingPage.jsx**
 
-33. **vendors\VendorsPage.jsx**
-   - Mock Count: 1
-   - Keywords: placeholder
-   - Action: Remove mock data, use REST service only
-   - Error Handling: Use proper error states instead of fallback
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **grc-modules\ControlsModuleEnhanced.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **grc-modules\Evidence.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **grc-modules\EvidenceManagementPage.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **regulatory\KSAGRCPage.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **regulatory\RegulatorsPage.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **reports\ReportsPage.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **system\AISchedulerPage.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **system\AuditLogsPage.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **system\DocumentManagementPage.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **system\UserManagementPage.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **tasks\TaskManagementPage.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
+
+1. **vendors\VendorsPage.jsx**
+
+- Mock Count: 1
+- Keywords: placeholder
+- Action: Remove mock data, use REST service only
+- Error Handling: Use proper error states instead of fallback
 
 ### Phase 2: Pages Needing REST Services First
 
@@ -251,52 +275,64 @@
    - Action: Implement REST service first, then remove mock
 
 10. **public\ModernComponentsDemo.jsx**
-   - Mock Count: 3
-   - Action: Implement REST service first, then remove mock
 
-11. **auth\SimpleLoginPage.jsx**
-   - Mock Count: 2
-   - Action: Implement REST service first, then remove mock
+- Mock Count: 3
+- Action: Implement REST service first, then remove mock
 
-12. **public\PathSelection.jsx**
-   - Mock Count: 2
-   - Action: Implement REST service first, then remove mock
+1. **auth\SimpleLoginPage.jsx**
 
-13. **public\POCPage.jsx**
-   - Mock Count: 2
-   - Action: Implement REST service first, then remove mock
+- Mock Count: 2
+- Action: Implement REST service first, then remove mock
 
-14. **public\WelcomePage.jsx**
-   - Mock Count: 2
-   - Action: Implement REST service first, then remove mock
+1. **public\PathSelection.jsx**
 
-15. **tasks\TaskDashboard.jsx**
-   - Mock Count: 2
-   - Action: Implement REST service first, then remove mock
+- Mock Count: 2
+- Action: Implement REST service first, then remove mock
 
-16. **ai-services\SchedulerConsolePage.jsx**
-   - Mock Count: 1
-   - Action: Implement REST service first, then remove mock
+1. **public\POCPage.jsx**
 
-17. **dashboards\DBIDashboardPage.jsx**
-   - Mock Count: 1
-   - Action: Implement REST service first, then remove mock
+- Mock Count: 2
+- Action: Implement REST service first, then remove mock
 
-18. **platform\LicensesManagementPage.jsx**
-   - Mock Count: 1
-   - Action: Implement REST service first, then remove mock
+1. **public\WelcomePage.jsx**
 
-19. **platform\UpgradePage.jsx**
-   - Mock Count: 1
-   - Action: Implement REST service first, then remove mock
+- Mock Count: 2
+- Action: Implement REST service first, then remove mock
 
-20. **public\DemoPage.jsx**
-   - Mock Count: 1
-   - Action: Implement REST service first, then remove mock
+1. **tasks\TaskDashboard.jsx**
 
-21. **system\NotificationManagementPage.jsx**
-   - Mock Count: 1
-   - Action: Implement REST service first, then remove mock
+- Mock Count: 2
+- Action: Implement REST service first, then remove mock
+
+1. **ai-services\SchedulerConsolePage.jsx**
+
+- Mock Count: 1
+- Action: Implement REST service first, then remove mock
+
+1. **dashboards\DBIDashboardPage.jsx**
+
+- Mock Count: 1
+- Action: Implement REST service first, then remove mock
+
+1. **platform\LicensesManagementPage.jsx**
+
+- Mock Count: 1
+- Action: Implement REST service first, then remove mock
+
+1. **platform\UpgradePage.jsx**
+
+- Mock Count: 1
+- Action: Implement REST service first, then remove mock
+
+1. **public\DemoPage.jsx**
+
+- Mock Count: 1
+- Action: Implement REST service first, then remove mock
+
+1. **system\NotificationManagementPage.jsx**
+
+- Mock Count: 1
+- Action: Implement REST service first, then remove mock
 
 ### Phase 3: Remove Fallback Patterns
 
@@ -320,4 +356,3 @@
 
 7. **system\SettingsPage.jsx**
    - Action: Replace fallback mock with proper error handling
-

@@ -15,7 +15,7 @@ const ZATCA_REQUIREMENTS = {
 
 export async function GET(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
+    const tenantId = request.headers.get('x-tenant-id') || 'default-tenant';
     const { searchParams } = new URL(request.url);
     
     const invoiceId = searchParams.get('invoice_id');
@@ -79,6 +79,30 @@ export async function GET(request: NextRequest) {
     if (action === 'generate-qr') {
       try {
         const qrData = await generateZATCAQRCode(tenantId, invoiceId);
+        const invoice = await CompleteFinanceService.getInvoiceById(tenantId, invoiceId);
+        if (invoice) {
+          const inv: any = invoice;
+          const period = `${new Date(inv.invoice_date).getFullYear()}-Q${Math.floor((new Date(inv.invoice_date).getMonth() + 3) / 3)}`;
+          await CompleteFinanceService.createTaxRecord(tenantId, {
+            tax_type: 'vat',
+            tax_code: 'VAT_OUTPUT',
+            tax_rate: inv.vat_percent ?? 15,
+            description: 'ZATCA QR generated',
+            amount: inv.tax_amount ?? 0,
+            base_amount: inv.subtotal ?? 0,
+            transaction_type: 'sale',
+            transaction_id: String(inv.invoice_number || inv.id),
+            transaction_date: inv.invoice_date,
+            tax_period: period,
+            vat_return_period: period,
+            account_id: null as any,
+            saudi_compliance: {
+              qr_data: qrData.qr_data,
+              qr_code_base64: qrData.qr_code_base64,
+              invoice_hash: qrData.qr_data?.invoice_hash
+            }
+          });
+        }
       
       return NextResponse.json({
         success: true,
@@ -100,6 +124,29 @@ export async function GET(request: NextRequest) {
     if (action === 'electronic-report') {
       try {
         const report = await generateElectronicReport(tenantId, invoiceId);
+        const invoice = await CompleteFinanceService.getInvoiceById(tenantId, invoiceId);
+        if (invoice) {
+          const inv: any = invoice;
+          const period = `${new Date(inv.invoice_date).getFullYear()}-Q${Math.floor((new Date(inv.invoice_date).getMonth() + 3) / 3)}`;
+          await CompleteFinanceService.createTaxRecord(tenantId, {
+            tax_type: 'vat',
+            tax_code: 'VAT_OUTPUT',
+            tax_rate: inv.vat_percent ?? 15,
+            description: 'ZATCA electronic report generated',
+            amount: inv.tax_amount ?? 0,
+            base_amount: inv.subtotal ?? 0,
+            transaction_type: 'sale',
+            transaction_id: String(inv.invoice_number || inv.id),
+            transaction_date: inv.invoice_date,
+            tax_period: period,
+            vat_return_period: period,
+            account_id: null as any,
+            saudi_compliance: report?.zatca_metadata ? {
+              electronic_signature: report.zatca_metadata.electronic_signature,
+              invoice_hash: report.zatca_metadata.invoice_hash
+            } : {}
+          });
+        }
       
       return NextResponse.json({
         success: true,

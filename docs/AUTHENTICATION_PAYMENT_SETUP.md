@@ -1,6 +1,7 @@
 # 🔐 Authentication & Payment Setup Guide
 
 ## **المتجر السعودي - Saudi Store Platform**
+
 ### **Microsoft Authentication + Stripe Payment + ZATCA Integration**
 
 ---
@@ -16,17 +17,20 @@ This guide covers the setup of Microsoft Authentication, Stripe Payment, and ZAT
 ## **🔧 المتطلبات - Requirements**
 
 ### **1. Microsoft Azure App Registration**
+
 - Azure Active Directory tenant
 - App registration with redirect URIs
 - Client ID and Client Secret
 - User.Read permissions
 
 ### **2. Stripe Account**
+
 - Stripe account (test/live)
 - API keys (publishable and secret)
 - Webhook endpoint configured
 
 ### **3. ZATCA Registration**
+
 - Saudi VAT registration number
 - Commercial registration number
 - ZATCA portal access (sandbox/production)
@@ -36,6 +40,7 @@ This guide covers the setup of Microsoft Authentication, Stripe Payment, and ZAT
 ## **🚀 الإعداد السريع - Quick Setup**
 
 ### **1. Environment Variables**
+
 ```bash
 # Copy and configure environment variables
 cp .env.example .env
@@ -55,11 +60,13 @@ ZATCA_CR_NUMBER=1234567890
 ```
 
 ### **2. Install Dependencies**
+
 ```bash
 npm install @azure/msal-browser @azure/msal-node stripe
 ```
 
 ### **3. Start Application**
+
 ```bash
 npm run dev
 ```
@@ -76,6 +83,7 @@ npm run dev
    - Click "New registration"
 
 2. **Configure Application:**
+
    ```
    Name: Saudi Store Platform
    Supported account types: Accounts in any organizational directory
@@ -97,6 +105,7 @@ npm run dev
 ### **Step 2: Application Configuration**
 
 Update `.env` file:
+
 ```bash
 NEXT_PUBLIC_MICROSOFT_CLIENT_ID=12345678-1234-1234-1234-123456789012
 NEXT_PUBLIC_MICROSOFT_TENANT_ID=common  # or your specific tenant ID
@@ -117,7 +126,7 @@ MICROSOFT_CLIENT_SECRET=your_client_secret_here
 ### **Step 1: Stripe Account Setup**
 
 1. **Create Stripe Account:**
-   - Sign up at https://stripe.com
+   - Sign up at <https://stripe.com>
    - Complete account verification
    - Enable test mode for development
 
@@ -199,6 +208,7 @@ The platform includes 3 pre-configured plans:
 ### **Step 2: Configuration**
 
 Update `.env` file:
+
 ```bash
 ZATCA_ENVIRONMENT=sandbox  # or production
 ZATCA_VAT_NUMBER=123456789012345  # Your 15-digit VAT number
@@ -355,21 +365,25 @@ curl -X POST http://localhost:3050/api/payment \
 ## **🔒 Security Considerations**
 
 ### **Environment Variables:**
+
 - Never commit `.env` files to version control
 - Use different keys for development/production
 - Rotate secrets regularly
 
 ### **Microsoft Authentication:**
+
 - Use HTTPS in production
 - Validate JWT tokens properly
 - Implement proper session management
 
 ### **Stripe Integration:**
+
 - Verify webhook signatures
 - Use idempotency keys
 - Handle failed payments gracefully
 
 ### **ZATCA Compliance:**
+
 - Validate all invoice data
 - Store invoices securely
 - Implement proper audit trails
@@ -379,16 +393,19 @@ curl -X POST http://localhost:3050/api/payment \
 ## **📊 Monitoring & Analytics**
 
 ### **Authentication Metrics:**
+
 - Login success/failure rates
 - User role distribution
 - Tenant activity
 
 ### **Payment Metrics:**
+
 - Subscription conversion rates
 - Payment success/failure rates
 - Revenue by plan
 
 ### **ZATCA Compliance:**
+
 - Invoice submission rates
 - Approval/rejection rates
 - Compliance percentage
@@ -400,6 +417,7 @@ curl -X POST http://localhost:3050/api/payment \
 ### **Common Issues:**
 
 #### **Microsoft Authentication:**
+
 ```bash
 # Error: Invalid redirect URI
 # Solution: Add correct redirect URI in Azure app registration
@@ -409,6 +427,7 @@ curl -X POST http://localhost:3050/api/payment \
 ```
 
 #### **Stripe Payments:**
+
 ```bash
 # Error: Invalid API key
 # Solution: Check STRIPE_SECRET_KEY in .env
@@ -418,6 +437,7 @@ curl -X POST http://localhost:3050/api/payment \
 ```
 
 #### **ZATCA Integration:**
+
 ```bash
 # Error: Invalid VAT number format
 # Solution: Ensure VAT number is exactly 15 digits
@@ -451,14 +471,16 @@ curl -X POST http://localhost:3050/api/payment \
 ## **📞 Support**
 
 ### **Technical Support:**
-- Email: support@saudistore.com
+
+- Email: <support@saudistore.com>
 - Documentation: Internal wiki
 - Emergency: On-call rotation
 
 ### **Business Support:**
-- Billing issues: billing@saudistore.com
-- Compliance: compliance@saudistore.com
-- Sales: sales@saudistore.com
+
+- Billing issues: <billing@saudistore.com>
+- Compliance: <compliance@saudistore.com>
+- Sales: <sales@saudistore.com>
 
 ---
 

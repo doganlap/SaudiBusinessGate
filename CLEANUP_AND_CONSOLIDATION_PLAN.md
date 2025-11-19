@@ -3,12 +3,14 @@
 ## 📊 Current Status
 
 ### Component Analysis
+
 - **Total Components**: 177 unique + 104 duplicates = 281 total
 - **Duplicates Found**: 104 components
 - **Files to Delete**: 159 duplicate files
 - **Unique Components**: 73
 
 ### App Structure
+
 - **Primary App**: `app/` (Next.js App Router) ✅
 - **Legacy App**: `apps/web/` (React Router) ⚠️
 - **Duplicate App**: `apps/app/` (297 files) ⚠️
@@ -20,15 +22,18 @@
 ### Phase 1: Component Consolidation
 
 #### Step 1: Keep `components/` as Single Source
+
 - ✅ Keep all components in `components/`
 - 🗑️ Delete duplicates from `app/components/`
 - 🗑️ Delete duplicates from `apps/web/src/components/`
 
 #### Step 2: Move Unique Components
+
 - 📦 Move any unique components from `app/components/` to `components/`
 - 📦 Move any unique components from `apps/web/src/components/` to `components/`
 
 #### Step 3: Update All Imports
+
 - Update `app/` imports to use `@/components/*` or `components/*`
 - Update `apps/web/` imports to use `components/*` (if keeping)
 - Verify TypeScript path mappings work
@@ -40,11 +45,13 @@
 #### Decision: Keep or Remove `apps/web/`?
 
 **Option A: Keep for Backward Compatibility**
+
 - Keep `apps/web/` for React Router support
 - Mark as legacy in documentation
 - Update imports to use shared `components/`
 
 **Option B: Remove (Recommended)**
+
 - Archive `apps/web/` to `archive/apps-web/`
 - Update all references
 - Focus on Next.js App Router only
@@ -54,19 +61,22 @@
 #### Decision: Keep or Remove `apps/app/`?
 
 **Status**: This appears to be a duplicate of `app/`
+
 - 🗑️ **Remove** - It's a duplicate with 297 files
 
 ---
 
 ### Phase 3: Directory Cleanup
 
-#### Directories to Archive/Remove:
+#### Directories to Archive/Remove
+
 1. `apps/app/` - Duplicate of `app/` (297 files)
 2. `apps/web/src/components/` - Duplicates (keep only unique)
 3. `app/components/` - Duplicates (keep only unique)
 4. `apps/web/src/config/` - Already consolidated to `config/`
 
-#### Directories to Keep:
+#### Directories to Keep
+
 1. `app/` - Primary Next.js App Router ✅
 2. `components/` - Single source for components ✅
 3. `config/` - Single source for config ✅
@@ -78,6 +88,7 @@
 ## 📋 Action Plan
 
 ### Step 1: Archive Legacy Apps
+
 ```bash
 # Create archive directory
 mkdir -p archive
@@ -90,22 +101,27 @@ mv apps/app archive/apps-app-duplicate
 ```
 
 ### Step 2: Delete Duplicate Components
+
 - Delete all duplicates from `app/components/` (keep only unique)
 - Delete all duplicates from `apps/web/src/components/` (if not archiving)
 
 ### Step 3: Update Imports
+
 - Update all imports in `app/` to use `@/components/*`
 - Remove any references to `apps/web/` or `apps/app/`
 
 ### Step 4: Update TypeScript Config
+
 - Remove paths for `apps/*` if not needed
 - Ensure `@/components/*` points to `components/*`
 
 ### Step 5: Update Package.json
+
 - Remove workspace references to `apps/web` and `apps/app`
 - Update scripts if needed
 
 ### Step 6: Test & Verify
+
 - Run `npm run build`
 - Test all imports resolve
 - Verify no broken references
@@ -115,11 +131,14 @@ mv apps/app archive/apps-app-duplicate
 ## 🗑️ Files to Delete
 
 ### Duplicate Components (159 files)
+
 Based on analysis, delete duplicates from:
+
 - `app/components/` (105 files - keep only unique)
 - `apps/web/src/components/` (75 files - keep only unique)
 
 ### Old Config Files
+
 - `apps/web/src/config/*` (already consolidated to `config/`)
 
 ---
@@ -170,4 +189,3 @@ D:\Projects\SBG\
 **Status**: 📋 Ready to Execute  
 **Estimated Time**: 2-3 hours  
 **Risk Level**: Medium (requires careful import updates)
-

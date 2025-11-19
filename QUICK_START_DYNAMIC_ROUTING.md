@@ -1,4 +1,5 @@
 # ⚡ Quick Start - Dynamic Multi-tenant System
+
 ## Get Saudi Store Running in 10 Minutes
 
 ---
@@ -18,6 +19,7 @@ psql %DATABASE_URL% -f 04_seed_data.sql
 ```
 
 **What this creates:**
+
 - ✅ 10 database tables
 - ✅ 4 subscription plans (Free, Professional, Enterprise, White-label)
 - ✅ 17 modules (CRM, Sales, Finance, HR, AI, etc.)
@@ -160,6 +162,7 @@ export default function MyPage() {
 ## 🎯 What You Get
 
 ### ✅ Complete Multi-tenant System
+
 - Tenant isolation
 - Subscription management
 - Module-based access
@@ -167,6 +170,7 @@ export default function MyPage() {
 - Role-based permissions
 
 ### ✅ Dynamic Features
+
 - Routes generated from permissions
 - Navigation auto-generated
 - Upgrade prompts for locked features
@@ -174,6 +178,7 @@ export default function MyPage() {
 - Reseller program
 
 ### ✅ 17 Modules Ready
+
 ```
 Core:          Dashboard, CRM
 Operations:    Sales, Procurement
@@ -186,6 +191,7 @@ Tools:         Monitoring, Tools
 ```
 
 ### ✅ 4 Subscription Tiers
+
 ```
 Free:         $0    - 3 users, 2 modules
 Professional: $499  - 25 users, 7 modules
@@ -198,21 +204,26 @@ Reseller:     $4,999 - 500 users, all modules + reselling
 ## 🔥 Next Steps
 
 ### Customize Modules
+
 Edit `database/schema/04_seed_data.sql` to add your modules
 
 ### Add New Routes
+
 Edit `lib/routing/DynamicRouter.ts` → `MODULE_ROUTES`
 
 ### Customize Navigation
+
 Edit `lib/routing/NavigationGenerator.ts` → `MODULE_METADATA`
 
 ### Setup White-label
+
 ```sql
 INSERT INTO white_label_configs (tenant_id, company_name, logo_url, primary_color, custom_domain)
 VALUES ('tenant-id', 'My Brand', 'https://...', '#0ea5e9', 'app.mybrand.com');
 ```
 
 ### Enable Reseller
+
 ```sql
 INSERT INTO reseller_configs (reseller_tenant_id, reseller_code, commission_rate)
 VALUES ('tenant-id', 'RESELL2025', 20.00);
@@ -232,6 +243,7 @@ VALUES ('tenant-id', 'RESELL2025', 20.00);
 ## 🐛 Troubleshooting
 
 ### Database Connection Failed
+
 ```bash
 # Check PostgreSQL is running
 psql --version
@@ -242,6 +254,7 @@ psql $DATABASE_URL -c "SELECT 1"
 ```
 
 ### JWT Token Invalid
+
 ```bash
 # Check JWT_SECRET is set
 echo %JWT_SECRET%
@@ -251,6 +264,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
 ### Module Not Showing
+
 ```sql
 -- Check module is enabled
 SELECT tm.*, m.name 

@@ -82,6 +82,7 @@
     ".next/**/*",
     "Archive/**/*",
     "Products/**/*",
-    "PlatformManagmet/**/*"
+    "PlatformManagmet/**/*",
+    "**/*.backup.ts"
   ]
 }

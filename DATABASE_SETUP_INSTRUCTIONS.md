@@ -1,6 +1,7 @@
 # Database Setup Instructions
 
 ## Overview
+
 This guide will help you set up the database and run migrations for the Saudi Store application.
 
 ## Prerequisites
@@ -17,6 +18,7 @@ DATABASE_URL=postgresql://username:password@localhost:5432/saudistore
 ```
 
 For remote databases (like Neon, Supabase, etc.):
+
 ```env
 DATABASE_URL=postgresql://user:pass@host:5432/dbname?sslmode=require
 ```
@@ -26,6 +28,7 @@ DATABASE_URL=postgresql://user:pass@host:5432/dbname?sslmode=require
 ### Option A: Automated Setup (Recommended)
 
 Run the comprehensive setup script that will:
+
 1. Test database connection
 2. Create all required tables (CRM, Procurement, HR, GRC, etc.)
 3. Seed the database with initial data
@@ -36,6 +39,7 @@ npm run db:setup:full
 ```
 
 Or:
+
 ```bash
 npm run db:migrate:sql
 ```
@@ -43,11 +47,13 @@ npm run db:migrate:sql
 ### Option B: Manual Setup
 
 #### 2.1 Run Prisma Migrations (for core tables)
+
 ```bash
 npm run db:migrate
 ```
 
 If Prisma migrate fails due to connection issues, you can use:
+
 ```bash
 npm run db:push
 ```
@@ -67,6 +73,7 @@ psql $DATABASE_URL -f database/create-procurement-tables.sql
 ```
 
 Or run all at once:
+
 ```bash
 psql $DATABASE_URL -f database/create-all-tables.sql
 ```
@@ -78,6 +85,7 @@ npm run db:seed:all
 ```
 
 This will:
+
 - Create subscription plans
 - Create modules
 - Create sample tenants (Saudi companies)
@@ -87,11 +95,13 @@ This will:
 ## Step 3: Verify Setup
 
 ### Check Database Connection
+
 ```bash
 npm run db:test
 ```
 
 ### View Database in Prisma Studio
+
 ```bash
 npm run db:studio
 ```
@@ -101,6 +111,7 @@ This will open a web interface where you can browse and edit your database.
 ### Verify Tables Exist
 
 Connect to your database and run:
+
 ```sql
 SELECT table_name 
 FROM information_schema.tables 
@@ -110,6 +121,7 @@ ORDER BY table_name;
 ```
 
 You should see tables like:
+
 - `customers` (CRM)
 - `vendors`, `inventory_items`, `purchase_orders` (Procurement)
 - `employees` (HR)
@@ -124,6 +136,7 @@ You should see tables like:
 **Error**: `Can't reach database server`
 
 **Solutions**:
+
 1. Check if PostgreSQL is running
 2. Verify `DATABASE_URL` in `.env` file
 3. Check firewall settings
@@ -134,9 +147,11 @@ You should see tables like:
 **Error**: `relation already exists`
 
 **Solutions**:
+
 - This is normal if you're re-running migrations
 - The script will skip existing tables
 - If you need a fresh start, reset the database:
+
   ```bash
   npm run db:reset
   ```
@@ -146,6 +161,7 @@ You should see tables like:
 **Error**: `Foreign key constraint violation`
 
 **Solutions**:
+
 1. Ensure all tables are created first
 2. Run migrations in order
 3. Check if required data exists (e.g., tenants before users)
@@ -155,6 +171,7 @@ You should see tables like:
 After setup is complete:
 
 1. **Start the development server**:
+
    ```bash
    npm run dev
    ```
@@ -177,7 +194,7 @@ After setup is complete:
 4. 🚀 Start developing!
 
 For more information, see:
+
 - `IMPLEMENTATION_COMPLETE.md` - Implementation details
 - `prisma/schema.prisma` - Database schema
 - `prisma/seed-complete.ts` - Seed data structure
-

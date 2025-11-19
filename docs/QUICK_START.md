@@ -194,11 +194,13 @@ setInterval(async () => {
 ## **📈 المراقبة**
 
 ### **Dashboard URL:**
+
 ```
 http://localhost:3050/en/dashboard
 ```
 
 ### **عرض الأحداث:**
+
 ```sql
 SELECT 
     event_type,
@@ -211,6 +213,7 @@ ORDER BY severity DESC, count DESC;
 ```
 
 ### **عرض Workflows:**
+
 ```sql
 SELECT 
     workflow_type,
@@ -243,11 +246,13 @@ ORDER BY priority DESC, count DESC;
 ## **🆘 مشاكل شائعة**
 
 ### **مشكلة: قاعدة البيانات غير موجودة**
+
 ```sql
 CREATE DATABASE saudi_store;
 ```
 
 ### **مشكلة: الجداول غير موجودة**
+
 ```bash
 # تشغيل جميع Schema files بالترتيب
 psql -U postgres -d saudi_store -f database/schema/09-platform-admin.sql
@@ -257,12 +262,14 @@ psql -U postgres -d saudi_store -f database/schema/12-red-flags-triggers.sql
 ```
 
 ### **مشكلة: Port 3050 مستخدم**
+
 ```bash
 # تغيير Port في package.json
 "dev": "next dev -p 3051"
 ```
 
 ### **مشكلة: WebSocket لا يتصل**
+
 ```bash
 # تحقق من تشغيل WebSocket server
 npm run ws
@@ -285,11 +292,13 @@ NEXT_PUBLIC_WS_URL=http://localhost:3051
 **🎉 كل شيء جاهز!**
 
 **ابدأ الآن:**
+
 ```bash
 npm run dev:all
 ```
 
 **افتح المتصفح:**
+
 ```
 http://localhost:3050
 ```

@@ -65,16 +65,20 @@ npm run i18n:watch    # Watch mode for development
 You already have these translations ready:
 
 ### Common
+
 - `common.save`, `common.cancel`, `common.delete`, `common.edit`, `common.add`
 - `common.search`, `common.loading`, `common.close`, `common.submit`
 
 ### Navigation
+
 - `nav.home`, `nav.dashboard`, `nav.billing`, `nav.settings`, `nav.profile`
 
 ### Auth
+
 - `auth.login`, `auth.logout`, `auth.email`, `auth.password`
 
 ### Dashboard
+
 - `dashboard.title`, `dashboard.overview`, `dashboard.analytics`
 
 [See full list in `locales/*/messages.po`]

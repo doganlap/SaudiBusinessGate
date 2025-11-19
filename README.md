@@ -48,6 +48,7 @@ Saudi Store is a comprehensive, next-generation autonomous platform built with N
 ## 🚀 Quick Start
 
 ### Development
+
 ```bash
 # Install dependencies
 npm install
@@ -61,6 +62,7 @@ http://localhost:3050/ar  # Arabic
 ```
 
 ### Production
+
 ```bash
 # Build for production
 npm run build
@@ -124,6 +126,7 @@ DoganHubStore/
 ## 🛠️ Technology Stack
 
 ### Frontend
+
 - **Framework:** Next.js 16.0.1 (App Router, Turbopack)
 - **React:** 19.0.0
 - **UI Library:** Shadcn UI, Radix UI
@@ -132,6 +135,7 @@ DoganHubStore/
 - **i18n:** Custom bilingual system (AR/EN)
 
 ### Backend
+
 - **Runtime:** Node.js 18+
 - **Language:** TypeScript 5+
 - **Database:** PostgreSQL 13+
@@ -140,6 +144,7 @@ DoganHubStore/
 - **APIs:** RESTful, 104 endpoints
 
 ### DevOps
+
 - **Container:** Docker, Docker Compose
 - **CI/CD:** GitHub Actions
 - **Cloud:** Azure Container Apps, Cloudflare Pages
@@ -150,6 +155,7 @@ DoganHubStore/
 ## 🌐 Features & Modules
 
 ### ✅ Core Features
+
 - **Multi-language Support:** Arabic (RTL) & English (LTR)
 - **Multi-tenant Architecture:** Isolated data per organization
 - **Role-based Access Control:** Granular permissions
@@ -160,6 +166,7 @@ DoganHubStore/
 ### 📊 Business Modules
 
 #### 1. GRC (Governance, Risk & Compliance) - 85% Complete
+
 - Framework management
 - Control testing
 - Risk assessment
@@ -167,6 +174,7 @@ DoganHubStore/
 - Audit trails
 
 #### 2. CRM (Customer Relationship Management) - 70% Complete
+
 - Lead management
 - Contact tracking
 - Deal pipeline
@@ -174,6 +182,7 @@ DoganHubStore/
 - Customer portal
 
 #### 3. HR (Human Resources) - 85% Complete (Priority 1)
+
 - Employee management
 - Payroll processing
 - Attendance tracking
@@ -181,6 +190,7 @@ DoganHubStore/
 - Performance reviews
 
 #### 4. Finance - 75% Complete
+
 - Accounting
 - Invoicing
 - Budget management
@@ -188,6 +198,7 @@ DoganHubStore/
 - Transaction tracking
 
 #### 5. Project Management - 70% Complete (Priority 2)
+
 - Project tracking
 - Task management
 - Time sheets
@@ -195,6 +206,7 @@ DoganHubStore/
 - Gantt charts
 
 #### 6. Analytics & Reporting - 80% Complete
+
 - Business intelligence
 - Custom reports
 - Data visualization
@@ -206,11 +218,13 @@ DoganHubStore/
 ## 🔌 API Endpoints
 
 ### Authentication & Security (3 endpoints)
+
 - `POST /api/auth/login` - User login
 - `POST /api/auth/register` - New registration
 - `GET /api/auth/me` - Current user
 
 ### Billing & Subscriptions (8 endpoints)
+
 - `GET /api/billing/plans` - Available plans
 - `POST /api/billing/checkout` - Create checkout
 - `GET /api/billing/subscriptions` - List subscriptions
@@ -218,6 +232,7 @@ DoganHubStore/
 - `POST /api/billing/portal` - Customer portal
 
 ### GRC (15 endpoints)
+
 - `/api/grc/frameworks` - Framework management
 - `/api/grc/controls` - Control testing
 - `/api/grc/alerts` - Risk alerts
@@ -225,6 +240,7 @@ DoganHubStore/
 - `/api/grc/exceptions` - Exception handling
 
 ### CRM (12 endpoints)
+
 - `/api/crm/leads` - Lead management
 - `/api/crm/contacts` - Contact management
 - `/api/crm/deals` - Deal pipeline
@@ -232,12 +248,14 @@ DoganHubStore/
 - `/api/crm/pipeline` - Sales pipeline
 
 ### HR (8 endpoints - Backend Ready)
+
 - `/api/hr/employees` - Employee management
 - `/api/hr/payroll` - Payroll processing
 - `/api/hr/attendance` - Attendance tracking
 - `/api/hr/benefits` - Benefits administration
 
 ### Finance (12 endpoints)
+
 - `/api/finance/accounts` - Chart of accounts
 - `/api/finance/transactions` - Transaction management
 - `/api/finance/invoices` - Invoice generation
@@ -245,6 +263,7 @@ DoganHubStore/
 - `/api/finance/reports` - Financial reports
 
 ### Project Management (8 endpoints - Backend Ready)
+
 - `/api/projects` - Project tracking
 - `/api/projects/tasks` - Task management
 - `/api/projects/timesheets` - Time tracking
@@ -256,12 +275,14 @@ DoganHubStore/
 ## 🗄️ Database Schema
 
 ### Core Tables
+
 - `users` - User accounts
 - `tenants` - Multi-tenant isolation
 - `roles` - RBAC roles
 - `permissions` - Access control
 
 ### Business Tables
+
 - `customers`, `invoices`, `transactions` (Finance)
 - `employees`, `payroll`, `attendance` (HR)
 - `projects`, `tasks`, `timesheets` (PM)
@@ -322,12 +343,14 @@ AZURE_CLIENT_SECRET=your_secret
 ## 🚢 Deployment
 
 ### Local Development
+
 ```bash
 npm run dev
 # Access: http://localhost:3050
 ```
 
 ### Docker Deployment
+
 ```bash
 # Build and start all services
 docker-compose up -d
@@ -342,6 +365,7 @@ docker-compose down
 ```
 
 ### Cloudflare Pages
+
 ```bash
 # Deploy to Cloudflare
 npm run deploy:cloudflare
@@ -351,6 +375,7 @@ npm run deploy:cloudflare
 ```
 
 ### Azure Container Apps
+
 ```bash
 # Deploy to Azure
 npm run deploy:azure
@@ -366,22 +391,26 @@ npm run deploy:azure
 Comprehensive documentation available in `docs/` directory:
 
 ### Setup Guides
+
 - `COMPLETE_SETUP_GUIDE.md` - Full setup instructions
 - `DATABASE_SETUP.md` - Database configuration
 - `DEPLOYMENT_GUIDE.md` - Deployment instructions
 - `I18N_SETUP_COMPLETE.md` - Internationalization guide
 
 ### API Documentation
+
 - `API_COMPREHENSIVE_INVENTORY.md` - Complete API reference
 - `API_DASHBOARD_GUIDE.md` - API connectivity dashboard
 - `API_TRACKING_DASHBOARD.md` - API monitoring
 
 ### Architecture
+
 - `COMPREHENSIVE_PROJECT_REPORT.md` - Full project overview
 - `PLATFORM_ARCHITECTURE_ASSESSMENT.md` - Architecture details
 - `12_layers_overview.md` - System layers
 
 ### Component Catalogs
+
 - `COMPLETE_PAGE_COMPONENT_MAPPING.md` - Page-component mapping
 - `DBI_Component_Catalog.csv` - Component inventory
 - `COMPONENT_IMPLEMENTATION_REPORT.md` - Implementation status
@@ -393,6 +422,7 @@ Comprehensive documentation available in `docs/` directory:
 ## 🧪 Testing
 
 ### Run Tests
+
 ```bash
 # Unit tests
 npm test
@@ -405,6 +435,7 @@ npm run test:coverage
 ```
 
 ### Test Structure
+
 ```
 tests/
 ├── unit/           # Unit tests
@@ -449,15 +480,19 @@ npm run test:coverage    # Coverage report
 ## 🌍 Internationalization
 
 ### Supported Languages
+
 - **Arabic (ar):** Primary language, RTL layout
 - **English (en):** Secondary language, LTR layout
 
 ### URL Structure
+
 - English: `/en/dashboard`, `/en/billing`, etc.
 - Arabic: `/ar/dashboard`, `/ar/billing`, etc.
 
 ### Translation Files
+
 Located in `public/locales/`:
+
 ```
 locales/
 ├── en/
@@ -490,17 +525,20 @@ locales/
 ## 📊 Performance Metrics
 
 ### Development
+
 - **Build Time:** ~2.9s (Turbopack)
 - **Hot Reload:** <100ms
 - **API Response:** <50ms average
 
 ### Production
+
 - **Build Time:** ~3-5 minutes
 - **API Response:** <200ms average
 - **Database Queries:** <50ms (indexed)
 - **Cache Hit Rate:** 85% (Redis)
 
 ### Target Lighthouse Scores
+
 - Performance: 90+
 - Accessibility: 95+
 - Best Practices: 90+
@@ -511,13 +549,15 @@ locales/
 ## 👥 Team & Support
 
 ### Development Team
+
 - **Platform:** DoganHub Development Team
 - **Architecture:** Technical Architecture Team
 - **DevOps:** CI/CD Pipeline Management
 
 ### Contact
-- **Website:** https://dogan-ai.com
-- **Staging:** https://staging.dogan-ai.com
+
+- **Website:** <https://dogan-ai.com>
+- **Staging:** <https://staging.dogan-ai.com>
 - **Documentation:** `/docs` directory
 
 ---
@@ -531,6 +571,7 @@ Proprietary - © 2025 DoganHub. All rights reserved.
 ## 🎯 Roadmap
 
 ### Immediate (Current Sprint)
+
 - [x] Complete project restructuring
 - [x] Fix missing components
 - [x] Deploy development environment
@@ -538,18 +579,21 @@ Proprietary - © 2025 DoganHub. All rights reserved.
 - [ ] Complete PM UI (Priority 2)
 
 ### Short-term (Next 2-3 Weeks)
+
 - [ ] Complete remaining 76 API UIs
 - [ ] Mobile responsive optimization
 - [ ] Performance tuning
 - [ ] Security audit
 
 ### Medium-term (Next Quarter)
+
 - [ ] Mobile app (React Native)
 - [ ] AI/ML integration
 - [ ] Advanced analytics
 - [ ] Multi-region deployment
 
 ### Long-term (2025)
+
 - [ ] Marketplace integration
 - [ ] White-label solution
 - [ ] Enterprise scalability
@@ -570,8 +614,9 @@ Proprietary - © 2025 DoganHub. All rights reserved.
 - **Documentation:** ✅ 150+ docs available
 
 ### Access URLs
-- **Development:** http://localhost:3050/en
-- **Production:** http://localhost:3003/en (Docker)
+
+- **Development:** <http://localhost:3050/en>
+- **Production:** <http://localhost:3003/en> (Docker)
 - **Arabic:** Change `/en` to `/ar` in any URL
 
 ---

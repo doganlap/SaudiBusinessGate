@@ -29,12 +29,14 @@
 ## 🚀 Deploy Now (3 Steps)
 
 ### Step 1: Update Production URL (if needed)
+
 ```bash
 # Replace with your actual production domain
 node scripts/complete-production-setup.js https://your-production-domain.com
 ```
 
 ### Step 2: Build
+
 ```bash
 npm run build
 ```
@@ -42,16 +44,19 @@ npm run build
 ### Step 3: Deploy
 
 **Option A - Docker:**
+
 ```bash
 docker-compose -f deploy/docker-compose.production.yml up -d
 ```
 
 **Option B - Direct:**
+
 ```bash
 npm run start
 ```
 
 **Option C - Platform:**
+
 - Vercel: `vercel --prod`
 - Azure: Deploy via portal
 - AWS: Deploy via console
@@ -108,4 +113,3 @@ npm run start
 ---
 
 **🎉 You're ready to deploy! Run `npm run build` and deploy!**
-

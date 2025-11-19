@@ -7,11 +7,13 @@
 ## **📦 Installation**
 
 ### **1. Install Dependencies**
+
 ```bash
 npm install
 ```
 
 This will install all testing dependencies:
+
 - `jest` - Testing framework
 - `ts-jest` - TypeScript support for Jest
 - `@jest/globals` - Jest global functions
@@ -24,16 +26,19 @@ This will install all testing dependencies:
 ## **🚀 Running Tests**
 
 ### **Run All Tests:**
+
 ```bash
 npm test
 ```
 
 ### **Run with Coverage:**
+
 ```bash
 npm run test:coverage
 ```
 
 ### **Run Specific Test Suite:**
+
 ```bash
 npm run test:auth        # Authentication tests
 npm run test:security    # Security tests
@@ -41,11 +46,13 @@ npm run test:load        # Load tests
 ```
 
 ### **Watch Mode (Auto-rerun on changes):**
+
 ```bash
 npm run test:watch
 ```
 
 ### **Verbose Output:**
+
 ```bash
 npm run test:all
 ```
@@ -55,9 +62,11 @@ npm run test:all
 ## **📁 Test Files Created**
 
 ### **1. Authentication Tests**
+
 **File:** `__tests__/auth.test.ts`
 
 **Tests:**
+
 - ✅ Email/Password login
 - ✅ Invalid credentials rejection
 - ✅ Password hashing (bcrypt)
@@ -70,18 +79,22 @@ npm run test:all
 - ✅ Security headers
 
 ### **2. Test Configuration**
+
 **File:** `jest.config.js`
 
 **Features:**
+
 - TypeScript support
 - Coverage thresholds (70%)
 - Path mappings
 - Test timeout (30s)
 
 ### **3. Test Setup**
+
 **File:** `__tests__/setup.ts`
 
 **Features:**
+
 - Environment variables
 - Global test configuration
 - Console mocking
@@ -91,12 +104,14 @@ npm run test:all
 ## **🎯 Test Coverage Goals**
 
 ### **Minimum Coverage:**
+
 - **Branches:** 70%
 - **Functions:** 70%
 - **Lines:** 70%
 - **Statements:** 70%
 
 ### **Critical Areas (100% Coverage Required):**
+
 - Authentication
 - Authorization
 - Data isolation
@@ -108,6 +123,7 @@ npm run test:all
 ## **📊 Test Results**
 
 ### **Expected Output:**
+
 ```
 PASS  __tests__/auth.test.ts
   Authentication Tests
@@ -147,6 +163,7 @@ Time:        2.5s
 ## **🔧 Configuration**
 
 ### **Environment Variables (.env.test):**
+
 ```env
 NODE_ENV=test
 JWT_SECRET=test-secret-key
@@ -159,6 +176,7 @@ POSTGRES_PASSWORD=your_password
 ```
 
 ### **Jest Configuration:**
+
 ```javascript
 // jest.config.js
 module.exports = {
@@ -191,6 +209,7 @@ module.exports = {
 ## **📝 Writing New Tests**
 
 ### **Test Template:**
+
 ```typescript
 import { describe, test, expect } from '@jest/globals';
 
@@ -209,6 +228,7 @@ describe('Feature Name', () => {
 ```
 
 ### **API Test Template:**
+
 ```typescript
 test('Should call API endpoint', async () => {
   const response = await fetch(`${API_URL}/api/endpoint`, {
@@ -229,21 +249,25 @@ test('Should call API endpoint', async () => {
 ## **🐛 Debugging Tests**
 
 ### **Run Single Test:**
+
 ```bash
 npm test -- --testNamePattern="Should login with valid credentials"
 ```
 
 ### **Run Single File:**
+
 ```bash
 npm test -- __tests__/auth.test.ts
 ```
 
 ### **Debug Mode:**
+
 ```bash
 node --inspect-brk node_modules/.bin/jest --runInBand
 ```
 
 ### **Verbose Output:**
+
 ```bash
 npm test -- --verbose
 ```
@@ -253,6 +277,7 @@ npm test -- --verbose
 ## **📈 Continuous Integration**
 
 ### **GitHub Actions Example:**
+
 ```yaml
 name: Tests
 
@@ -285,6 +310,7 @@ jobs:
 ## **✅ Test Checklist**
 
 ### **Before Committing:**
+
 - [ ] All tests pass
 - [ ] Coverage meets threshold (70%+)
 - [ ] No console errors
@@ -292,6 +318,7 @@ jobs:
 - [ ] Tests run in < 30 seconds
 
 ### **Before Deploying:**
+
 - [ ] All tests pass in CI/CD
 - [ ] Integration tests pass
 - [ ] Load tests pass
@@ -303,6 +330,7 @@ jobs:
 ## **🔒 Security Testing**
 
 ### **Run Security Scans:**
+
 ```bash
 # npm audit
 npm audit --audit-level=moderate
@@ -320,6 +348,7 @@ docker run -t owasp/zap2docker-stable zap-baseline.py \
 ## **⚡ Performance Testing**
 
 ### **Load Testing with Artillery:**
+
 ```bash
 npm install -g artillery
 
@@ -328,6 +357,7 @@ artillery quick --count 100 --num 10 http://localhost:3050/api/auth/login
 ```
 
 ### **Benchmark Tests:**
+
 ```typescript
 test('API should respond within 500ms', async () => {
   const start = Date.now();
@@ -343,11 +373,13 @@ test('API should respond within 500ms', async () => {
 ## **📚 Additional Resources**
 
 ### **Documentation:**
+
 - [Jest Documentation](https://jestjs.io/docs/getting-started)
 - [Testing Library](https://testing-library.com/)
 - [OWASP Testing Guide](https://owasp.org/www-project-web-security-testing-guide/)
 
 ### **Best Practices:**
+
 1. **AAA Pattern:** Arrange, Act, Assert
 2. **One assertion per test** (when possible)
 3. **Descriptive test names**
@@ -360,26 +392,31 @@ test('API should respond within 500ms', async () => {
 ## **🎯 Next Steps**
 
 ### **1. Install Dependencies:**
+
 ```bash
 npm install
 ```
 
 ### **2. Create Test Database:**
+
 ```sql
 CREATE DATABASE doganhubstore_test;
 ```
 
 ### **3. Run Tests:**
+
 ```bash
 npm test
 ```
 
 ### **4. Check Coverage:**
+
 ```bash
 npm run test:coverage
 ```
 
 ### **5. Fix Failing Tests:**
+
 - Review error messages
 - Check test expectations
 - Verify API responses

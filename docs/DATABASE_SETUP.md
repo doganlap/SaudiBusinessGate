@@ -15,6 +15,7 @@ This guide explains how to connect all real services (Database, AI Analytics, Th
 ### Step 1: Configure Environment Variables
 
 1. Copy the example environment file:
+
 ```bash
 cp .env.example .env
 ```
@@ -22,9 +23,11 @@ cp .env.example .env
 ## 📋 License Management Database Setup
 
 ### Overview
+
 This section covers the database setup for the comprehensive license management system.
 
 ### Prerequisites
+
 - PostgreSQL 12+ installed and running
 - Node.js environment with database connection configured
 - Database user with CREATE TABLE permissions
@@ -32,6 +35,7 @@ This section covers the database setup for the comprehensive license management 
 ### Quick Setup
 
 #### 1. Database Connection
+
 Ensure your `.env` file has the following variables:
 
 ```env
@@ -52,12 +56,14 @@ USAGE_TRACKING=true
 #### 2. Run License Management Migrations
 
 ##### Option A: Automated Script
+
 ```bash
 cd database/scripts
 node run-license-migration.js
 ```
 
 ##### Option B: Manual SQL Execution
+
 1. Connect to your PostgreSQL database
 2. Run the migrations in order:
    - `database/migrations/001_license_management_complete.sql`
@@ -66,6 +72,7 @@ node run-license-migration.js
 #### 3. Verification
 
 After running the migrations, you should have these tables:
+
 - `licenses` - License catalog/SKUs
 - `license_features` - Available features
 - `license_feature_map` - Feature-to-license mappings
@@ -79,6 +86,7 @@ After running the migrations, you should have these tables:
 - `dunning_schedules` - Renewal reminder configuration
 
 Plus these views:
+
 - `v_renewals_120d` - 120-day renewal pipeline view
 - `v_license_usage_summary` - Current usage summary
 - `v_usage_trends` - Monthly usage trends
@@ -86,6 +94,7 @@ Plus these views:
 ### Sample Data
 
 The seed script creates:
+
 - 6 license types (Basic, Professional, Enterprise - monthly/annual)
 - 12 feature definitions
 - Feature mappings for each license tier
@@ -99,6 +108,7 @@ The seed script creates:
 ### API Integration
 
 After database setup, the following API endpoints will work:
+
 - `/api/licenses/*` - License management
 - `/api/renewals/*` - Renewal pipeline
 - `/api/usage/*` - Usage analytics
@@ -106,12 +116,14 @@ After database setup, the following API endpoints will work:
 ### Frontend Components
 
 The React components will now connect to real data:
+
 - `LicensesManagementPage` - Platform admin license overview
 - `RenewalsPipelinePage` - 120-day renewal tracking
 - `UsageDashboardPage` - Tenant usage analytics
 - `UpgradePage` - License upgrade flow
 
 ### Testing License Functions
+
 ```sql
 -- Check if a tenant has a specific feature
 SELECT check_feature_availability('tenant-uuid', 'api_access');
@@ -123,7 +135,8 @@ SELECT * FROM v_renewals_120d;
 SELECT * FROM v_license_usage_summary;
 ```
 
-2. Update the database configuration in `.env`:
+1. Update the database configuration in `.env`:
+
 ```env
 # Database Configuration
 POSTGRES_HOST=localhost
@@ -159,6 +172,7 @@ npx ts-node scripts/setup-database.ts
 ```
 
 This will:
+
 - ✅ Create all required tables (financial_accounts, transactions, budgets, cost_centers)
 - ✅ Set up indexes for performance
 - ✅ Create triggers for automatic timestamp updates
@@ -188,11 +202,13 @@ SELECT * FROM transactions;
 **Status**: Connected to real database
 
 **Files**:
+
 - Service: `lib/services/finance.service.ts`
 - API Endpoints: `app/api/finance/*`
 - Database Schema: `database/schema/01-finance-tables.sql`
 
 **Features**:
+
 - Real-time account management
 - Transaction processing with balance updates
 - Financial statistics calculation
@@ -200,6 +216,7 @@ SELECT * FROM transactions;
 - Automatic fallback to sample data if DB unavailable
 
 **Test**:
+
 ```bash
 # Start the app
 npm run dev
@@ -213,16 +230,19 @@ http://localhost:3001/en/test-connections
 **Status**: Connected to Stripe API
 
 **Files**:
+
 - Service: `Services/Billing/src/services/stripe.service.ts`
 - API Endpoints: `app/api/billing/*`
 
 **Configuration Required**:
+
 ```env
 STRIPE_SECRET_KEY=sk_test_your_key_here
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
 ```
 
 **Features**:
+
 - Real Stripe payment processing
 - Subscription management
 - Customer portal access
@@ -233,14 +253,17 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
 **Status**: JWT-based authentication active
 
 **Files**:
+
 - API: `app/api/auth/me/route.ts`
 
 **Configuration Required**:
+
 ```env
 JWT_SECRET=your-super-secret-jwt-key-here
 ```
 
 **Features**:
+
 - JWT token verification
 - Demo mode for development
 - Multi-tenant user management
@@ -250,11 +273,13 @@ JWT_SECRET=your-super-secret-jwt-key-here
 **Status**: Architecture ready, needs connection
 
 **Files**:
+
 - Engine: `Services/AI/apps/services/ai-analytics-engine.ts`
 - Dashboard: `Services/AI/apps/services/real-time-analytics-dashboard.ts`
 - API: `app/api/analytics/kpis/business/route.ts`
 
 **To Connect**:
+
 1. The AI service code is ready in `Services/AI/`
 2. Currently using sample KPI data
 3. To connect real AI engine, update `app/api/analytics/kpis/business/route.ts`
@@ -264,10 +289,12 @@ JWT_SECRET=your-super-secret-jwt-key-here
 **Status**: Service ready, needs database tables
 
 **Files**:
+
 - Service: `Services/WhiteLabel/theme-management-service.ts`
 - API: `app/api/themes/[organizationId]/route.ts`
 
 **To Connect**:
+
 1. Create theme tables in database
 2. Update API to use real service
 3. Configure multi-tenant theme storage
@@ -275,6 +302,7 @@ JWT_SECRET=your-super-secret-jwt-key-here
 ## 📊 Database Schema
 
 ### Financial Accounts Table
+
 ```sql
 CREATE TABLE financial_accounts (
     id UUID PRIMARY KEY,
@@ -293,6 +321,7 @@ CREATE TABLE financial_accounts (
 ```
 
 ### Transactions Table
+
 ```sql
 CREATE TABLE transactions (
     id UUID PRIMARY KEY,
@@ -313,9 +342,11 @@ CREATE TABLE transactions (
 ## 🧪 Testing Connections
 
 ### Test All Connections
+
 Visit: `http://localhost:3001/en/test-connections`
 
 This page will test:
+
 - ✅ Dashboard Stats API
 - ✅ Dashboard Activity API
 - ✅ Authentication API
@@ -352,6 +383,7 @@ curl http://localhost:3001/api/billing/plans
 **Problem**: "Database connection failed"
 
 **Solutions**:
+
 1. Verify PostgreSQL is running: `pg_isready`
 2. Check credentials in `.env`
 3. Ensure database exists: `psql -l`
@@ -362,6 +394,7 @@ curl http://localhost:3001/api/billing/plans
 **Problem**: Empty tables after setup
 
 **Solutions**:
+
 1. Re-run setup script: `npx ts-node scripts/setup-database.ts`
 2. Manually insert data from `database/schema/01-finance-tables.sql`
 3. Check for SQL errors in console output
@@ -371,6 +404,7 @@ curl http://localhost:3001/api/billing/plans
 **Problem**: API shows `"source": "fallback"` instead of `"source": "database"`
 
 **Solutions**:
+
 1. Verify database connection in test page
 2. Check database credentials
 3. Ensure tables exist and have data
@@ -379,19 +413,24 @@ curl http://localhost:3001/api/billing/plans
 ## 📈 Performance Optimization
 
 ### Database Indexes
+
 All critical indexes are created automatically:
+
 - Tenant ID indexes for multi-tenant queries
 - Account type and status indexes
 - Transaction date and status indexes
 - Foreign key indexes for joins
 
 ### Connection Pooling
+
 Configured in `lib/db/connection.ts`:
+
 - Max connections: 20 (configurable via `DB_POOL_MAX`)
 - Idle timeout: 30 seconds
 - Connection timeout: 10 seconds
 
 ### Query Optimization
+
 - Prepared statements used throughout
 - Transaction support for data integrity
 - Automatic query logging in development mode
@@ -399,13 +438,16 @@ Configured in `lib/db/connection.ts`:
 ## 🚀 Production Deployment
 
 ### Database Migration
+
 1. Export schema: `pg_dump -s doganhubstore > schema.sql`
 2. Import to production: `psql -h production-host -d doganhubstore < schema.sql`
 3. Update `.env` with production credentials
 4. Enable SSL: `POSTGRES_SSL=true`
 
 ### Environment Variables
+
 Ensure all required variables are set:
+
 ```env
 POSTGRES_HOST=your-production-host
 POSTGRES_PORT=5432
@@ -417,6 +459,7 @@ DB_POOL_MAX=50
 ```
 
 ### Security Checklist
+
 - ✅ Use strong database passwords
 - ✅ Enable SSL for database connections
 - ✅ Restrict database access by IP
@@ -427,6 +470,7 @@ DB_POOL_MAX=50
 ## 📞 Support
 
 For issues or questions:
+
 1. Check the test connections page: `/en/test-connections`
 2. Review server console logs
 3. Verify environment variables

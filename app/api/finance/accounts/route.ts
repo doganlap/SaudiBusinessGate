@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { FinanceService } from '@/lib/services/finance.service';
-import { query } from '@/lib/db/connection';
+import { query, getPool } from '@/lib/db/connection';
+import { getServerSession } from 'next-auth';
+import { AuditLogger } from '@/lib/audit/audit-logger';
+import { RBACService } from '@/lib/auth/rbac-service';
 
 interface Account {
   id: string;
@@ -109,16 +112,29 @@ const fallbackAccounts: Account[] = [
 
 export async function GET(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('x-tenant-id') || 'default';
-    
-    // Get accounts from database
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.accounts.read', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.accounts.read', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
+
     const financeService = new FinanceService();
     const accounts = await financeService.getAccounts(tenantId);
-    
+
+    await audit.logDataAccess(userId, organizationId, 'account', 0, 'read');
     return NextResponse.json({
       success: true,
       accounts: accounts,
-      data: accounts, // Also include in data for compatibility
+      data: accounts,
       source: 'database',
       total: accounts.length,
       timestamp: new Date().toISOString()
@@ -140,9 +156,22 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.accounts.write', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.accounts.write', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const body = await request.json();
-    const tenantId = request.headers.get('x-tenant-id') || 'default';
-    
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
+
     // Validate required fields
     const requiredFields = ['account_name', 'account_code', 'account_type'];
     for (const field of requiredFields) {
@@ -163,26 +192,22 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Create new account
-    const newAccount: Account = {
-      id: `acc_${Date.now()}`,
+    const financeService = new FinanceService();
+    const created = await financeService.createAccount(tenantId, {
+      tenant_id: tenantId,
       account_name: body.account_name,
       account_code: body.account_code,
       account_type: body.account_type,
       balance: parseFloat(body.balance || '0'),
-      parent_account_id: body.parent_account_id,
+      parent_account_id: body.parent_account_id || null,
       is_active: body.is_active !== false,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      description: body.description
-    };
+      description: body.description || null
+    } as any);
     
-    // In production, save to database and validate account code uniqueness
-    // For demo, just return the created account
-    
+    await audit.logDataChange(userId, organizationId, 'account', (created as any).id, null, created);
     return NextResponse.json({
       success: true,
-      data: newAccount,
+      data: created,
       message: 'Account created successfully'
     }, { status: 201 });
   } catch (error) {
@@ -196,8 +221,21 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
+    const session = await getServerSession();
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const pool = getPool();
+    const audit = new AuditLogger(pool);
+    const rbac = new RBACService(pool);
+    const organizationId = (session.user as any).organizationId || 0;
+    const userId = (session.user as any).id || 0;
+    const allowed = await rbac.checkPermission(userId, 'finance.accounts.write', organizationId);
+    if (!allowed) {
+      await audit.logPermissionCheck(userId, organizationId, 'finance.accounts.write', false);
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const body = await request.json();
-    const tenantId = request.headers.get('x-tenant-id') || 'default';
+    const tenantId = request.headers.get('x-tenant-id') || String(organizationId);
 
     if (!body.id) {
       return NextResponse.json(
@@ -208,8 +246,8 @@ export async function PATCH(request: NextRequest) {
 
     try {
       const updated = await query<FinanceService>(
-        `UPDATE financial_accounts
-         SET account_name = COALESCE($1, account_name),
+        `UPDATE chart_of_accounts
+         SET account_name_en = COALESCE($1, account_name_en),
              account_code = COALESCE($2, account_code),
              account_type = COALESCE($3, account_type),
              balance = COALESCE($4, balance),
@@ -228,6 +266,7 @@ export async function PATCH(request: NextRequest) {
         ]
       );
 
+      await audit.logDataChange(userId, organizationId, 'account', body.id, null, updated.rows[0]);
       return NextResponse.json({ success: true, data: updated.rows[0] });
     } catch (dbErr) {
       const updatedFallback = {
@@ -262,7 +301,7 @@ export async function DELETE(request: NextRequest) {
 
     try {
       await query(
-        `DELETE FROM financial_accounts WHERE id = $1 AND tenant_id = $2`,
+        `DELETE FROM chart_of_accounts WHERE id = $1 AND tenant_id = $2`,
         [body.id, tenantId]
       );
       return NextResponse.json({ success: true, message: 'Account deleted' });

@@ -5,6 +5,7 @@ This comprehensive test suite provides automated testing for the DoganHubStore a
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Python 3.8+
 - Node.js 16+ (for running the application)
 - Docker & Docker Compose (optional, for containerized testing)
@@ -13,6 +14,7 @@ This comprehensive test suite provides automated testing for the DoganHubStore a
 ### Installation
 
 1. **Clone and setup:**
+
 ```bash
 cd tests/selenium
 python -m venv venv
@@ -23,7 +25,8 @@ venv\Scripts\activate.bat  # Windows
 pip install -r requirements.txt
 ```
 
-2. **Run tests:**
+1. **Run tests:**
+
 ```bash
 # Linux/Mac
 ./run_tests.sh
@@ -35,6 +38,7 @@ run_tests.bat
 ## 📊 Test Coverage
 
 ### 🔌 API Tests (`api_tests/`)
+
 - **17 API Endpoints** across all modules
 - **Authentication & Authorization** testing
 - **Error Handling** validation
@@ -42,7 +46,8 @@ run_tests.bat
 - **Data Validation** checks
 - **Rate Limiting** tests
 
-#### Covered APIs:
+#### Covered APIs
+
 - Dashboard: `/api/dashboard/stats`, `/api/dashboard/activity`
 - Finance: `/api/finance/transactions`, `/api/finance/accounts`, `/api/finance/stats`
 - Sales: `/api/sales/leads`, `/api/sales/deals`, `/api/sales/rfqs`
@@ -54,6 +59,7 @@ run_tests.bat
 - Workflows: `/api/workflows`
 
 ### 🖥️ Page Tests (`page_tests/`)
+
 - **83+ Pages** tested across all modules
 - **UI Component** validation
 - **Navigation** testing
@@ -62,7 +68,8 @@ run_tests.bat
 - **Cross-Browser** compatibility
 - **Accessibility** checks
 
-#### Key Pages Tested:
+#### Key Pages Tested
+
 - Authentication: Login, Registration
 - Dashboard: Main Dashboard, API Dashboard
 - Finance: Transactions, Accounts, Dashboard
@@ -73,6 +80,7 @@ run_tests.bat
 - System: Themes, Settings
 
 ### 🔄 End-to-End Tests (`e2e_tests/`)
+
 - **Complete Sales Cycle** testing
 - **Lead Management** workflow
 - **Deal Pipeline** management
@@ -84,6 +92,7 @@ run_tests.bat
 ## 🛠️ Test Configuration
 
 ### Environment Variables
+
 ```bash
 # Test Environment
 TEST_ENV=local|staging|production
@@ -119,6 +128,7 @@ LOG_LEVEL=INFO|DEBUG|WARNING|ERROR
 ```
 
 ### Test Users
+
 ```python
 TEST_USERS = {
     'standard_user': {'email': 'test@doganhubstore.com', 'password': 'TestPassword123!'},
@@ -131,6 +141,7 @@ TEST_USERS = {
 ## 🎯 Running Tests
 
 ### Basic Commands
+
 ```bash
 # Run all tests
 ./run_tests.sh
@@ -159,6 +170,7 @@ TEST_USERS = {
 ```
 
 ### Windows Commands
+
 ```cmd
 REM Run all tests
 run_tests.bat
@@ -183,12 +195,14 @@ run_tests.bat -p -t regression
 ## 📋 Test Structure
 
 ### Resource Files
+
 - **`common.robot`**: Shared keywords and variables
 - **`APILibrary.py`**: Custom API testing library
 - **`DatabaseLibrary.py`**: Database operations library
 - **`test_config.py`**: Configuration management
 
 ### Test Suites
+
 ```
 tests/selenium/
 ├── api_tests/
@@ -212,6 +226,7 @@ tests/selenium/
 ## 🔍 Test Features
 
 ### Advanced Testing Capabilities
+
 - **Cross-Browser Testing**: Chrome, Firefox, Edge support
 - **Responsive Testing**: Mobile, tablet, desktop viewports
 - **Performance Testing**: Page load time monitoring
@@ -222,12 +237,14 @@ tests/selenium/
 - **API Testing**: Request/response validation
 
 ### Test Data Management
+
 - **Mock Data Generation**: Faker library integration
 - **Test Data Cleanup**: Automatic cleanup after tests
 - **Database Backup/Restore**: Test data preservation
 - **Parallel Execution**: Multi-process test running
 
 ### Reporting & Analytics
+
 - **HTML Reports**: Detailed test execution reports
 - **Screenshot Capture**: On failure and on demand
 - **Performance Metrics**: Load time and response time tracking
@@ -237,6 +254,7 @@ tests/selenium/
 ## 🎨 Custom Keywords
 
 ### Browser Management
+
 ```robot
 Open Test Browser    ${url}              # Opens browser with optimal settings
 Close Test Browser                       # Closes browser and cleanup
@@ -244,6 +262,7 @@ Wait For Page Load                       # Waits for complete page load
 ```
 
 ### Authentication
+
 ```robot
 Login As User        ${email}  ${password}    # User login
 Login As Admin                               # Admin login
@@ -251,6 +270,7 @@ Logout User                                  # User logout
 ```
 
 ### API Testing
+
 ```robot
 Create API Session   ${token}                # Creates authenticated API session
 Test API Endpoint    ${method}  ${endpoint}  # Tests API with validation
@@ -258,6 +278,7 @@ Authenticate User    ${email}  ${password}   # API authentication
 ```
 
 ### Form Handling
+
 ```robot
 Fill Form Field      ${locator}  ${value}    # Fills and validates form field
 Submit Form                                  # Submits form with wait
@@ -265,6 +286,7 @@ Test Form Submission ${form_data}            # Complete form testing
 ```
 
 ### Component Testing
+
 ```robot
 Verify Component Loaded    ${selector}       # Verifies component presence
 Test Loading State         ${action}         # Tests loading indicators
@@ -273,6 +295,7 @@ Verify Data Grid                            # Validates data grid functionality
 ```
 
 ### Performance Testing
+
 ```robot
 Measure Page Load Time     ${url}           # Measures and validates load time
 Test Mobile View                            # Tests mobile responsiveness
@@ -283,12 +306,14 @@ Test Desktop View                           # Tests desktop layout
 ## 📊 Reporting
 
 ### Generated Reports
+
 - **`report.html`**: Main HTML test report with custom styling
 - **`log.html`**: Detailed execution log
 - **`output.xml`**: XML output for CI/CD integration
 - **`summary.txt`**: Execution summary
 
 ### Report Features
+
 - **Test Execution Timeline**: Visual execution flow
 - **Pass/Fail Statistics**: Success rate metrics
 - **Performance Metrics**: Load time and response time data
@@ -299,6 +324,7 @@ Test Desktop View                           # Tests desktop layout
 ## 🔧 Configuration Options
 
 ### Browser Options
+
 ```python
 BROWSER_CONFIG = {
     'browser': 'Chrome|Firefox|Edge',
@@ -310,6 +336,7 @@ BROWSER_CONFIG = {
 ```
 
 ### Performance Thresholds
+
 ```python
 PERFORMANCE_THRESHOLDS = {
     'page_load_time': 5.0,
@@ -319,6 +346,7 @@ PERFORMANCE_THRESHOLDS = {
 ```
 
 ### Module Configuration
+
 ```python
 MODULE_CONFIG = {
     'dashboard': {'enabled': True, 'critical_tests': ['Test Main Dashboard']},
@@ -331,6 +359,7 @@ MODULE_CONFIG = {
 ## 🚀 CI/CD Integration
 
 ### GitHub Actions Example
+
 ```yaml
 - name: Run Selenium Tests
   run: |
@@ -345,6 +374,7 @@ MODULE_CONFIG = {
 ```
 
 ### Jenkins Pipeline
+
 ```groovy
 stage('Selenium Tests') {
     steps {
@@ -364,18 +394,21 @@ stage('Selenium Tests') {
 ## 📈 Best Practices
 
 ### Test Organization
+
 - **Tag-based execution**: Use tags for test categorization
 - **Modular design**: Separate concerns in different files
 - **Reusable keywords**: Common functionality in shared resources
 - **Data-driven testing**: Parameterized test cases
 
 ### Performance Optimization
+
 - **Parallel execution**: Use pabot for faster test runs
 - **Smart waits**: Explicit waits over implicit waits
 - **Resource cleanup**: Always clean up test data
 - **Browser optimization**: Headless mode for CI/CD
 
 ### Maintenance
+
 - **Regular updates**: Keep dependencies updated
 - **Test review**: Regular review of test effectiveness
 - **Documentation**: Keep documentation synchronized
@@ -384,6 +417,7 @@ stage('Selenium Tests') {
 ## 🔍 Troubleshooting
 
 ### Common Issues
+
 1. **WebDriver Issues**: Use WebDriver Manager for automatic updates
 2. **Element Not Found**: Improve element locators and waits
 3. **Timeout Errors**: Adjust timeout values in configuration
@@ -391,6 +425,7 @@ stage('Selenium Tests') {
 5. **API Authentication**: Check token generation and headers
 
 ### Debug Mode
+
 ```bash
 # Enable debug logging
 ./run_tests.sh -l DEBUG
@@ -400,6 +435,7 @@ stage('Selenium Tests') {
 ```
 
 ### Viewing Test Results
+
 - Open `reports/report.html` in browser for detailed results
 - Check `reports/log.html` for execution logs
 - Review `reports/summary.txt` for quick overview

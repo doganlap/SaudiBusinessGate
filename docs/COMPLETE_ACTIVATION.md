@@ -1,6 +1,7 @@
 # 🚀 دليل التفعيل الشامل - Complete Activation Guide
 
 ## **المتجر السعودي - Saudi Store**
+
 ### **تفعيل جميع الأنظمة خطوة بخطوة**
 
 ---
@@ -14,6 +15,7 @@
 ## **✅ الخطوة 1: إنشاء قاعدة البيانات**
 
 ### **Windows PowerShell:**
+
 ```powershell
 # الاتصال بـ PostgreSQL
 psql -U postgres
@@ -26,6 +28,7 @@ CREATE DATABASE saudi_store;
 ```
 
 ### **أو مباشرة:**
+
 ```powershell
 psql -U postgres -c "CREATE DATABASE saudi_store;"
 ```
@@ -61,6 +64,7 @@ psql -U postgres -d saudi_store -f database/schema/13-licensing-costs.sql
 ## **✅ الخطوة 3: التحقق من التثبيت**
 
 ### **التحقق من الجداول:**
+
 ```sql
 psql -U postgres -d saudi_store
 
@@ -85,6 +89,7 @@ psql -U postgres -d saudi_store
 ```
 
 ### **عد الجداول:**
+
 ```sql
 SELECT COUNT(*) as table_count 
 FROM information_schema.tables 
@@ -132,6 +137,7 @@ ORDER BY proname;
 ## **✅ الخطوة 6: إدخال بيانات تجريبية**
 
 ### **إنشاء Tenant:**
+
 ```sql
 INSERT INTO tenants (
     tenant_code,
@@ -149,6 +155,7 @@ INSERT INTO tenants (
 ```
 
 ### **إنشاء User:**
+
 ```sql
 INSERT INTO platform_users (
     tenant_id,
@@ -166,6 +173,7 @@ INSERT INTO platform_users (
 ```
 
 ### **إنشاء Owner License:**
+
 ```sql
 INSERT INTO user_licenses (
     user_id,
@@ -190,6 +198,7 @@ INSERT INTO user_licenses (
 ```
 
 ### **إنشاء Owner Permissions:**
+
 ```sql
 INSERT INTO owner_permissions (
     user_id,
@@ -212,6 +221,7 @@ INSERT INTO owner_permissions (
 ## **✅ الخطوة 7: اختبار Red Flags System**
 
 ### **إدخال معاملة كبيرة:**
+
 ```sql
 -- إنشاء حساب مالي أولاً (إذا لم يكن موجوداً)
 INSERT INTO financial_accounts (
@@ -258,6 +268,7 @@ INSERT INTO transactions (
 ```
 
 ### **التحقق من Event:**
+
 ```sql
 SELECT * FROM ai_finance_events 
 WHERE event_type = 'large_transaction' 
@@ -265,11 +276,13 @@ ORDER BY created_at DESC LIMIT 1;
 ```
 
 ### **معالجة الأحداث:**
+
 ```sql
 SELECT * FROM process_pending_events();
 ```
 
 ### **التحقق من Workflow:**
+
 ```sql
 SELECT * FROM ai_finance_workflows 
 ORDER BY created_at DESC LIMIT 1;
@@ -285,6 +298,7 @@ npm install
 ```
 
 **المكتبات المطلوبة:**
+
 - ✅ framer-motion
 - ✅ cmdk
 - ✅ socket.io
@@ -297,6 +311,7 @@ npm install
 ## **✅ الخطوة 9: تكوين البيئة**
 
 ### **إنشاء ملف .env:**
+
 ```env
 # Application
 NEXT_PUBLIC_APP_URL=http://localhost:3050
@@ -323,6 +338,7 @@ WS_PORT=3051
 ## **✅ الخطوة 10: تشغيل المشروع**
 
 ### **تشغيل كل شيء معاً:**
+
 ```bash
 npm run dev:all
 ```
@@ -330,11 +346,13 @@ npm run dev:all
 ### **أو بشكل منفصل:**
 
 **Terminal 1 - Next.js:**
+
 ```bash
 npm run dev
 ```
 
 **Terminal 2 - WebSocket:**
+
 ```bash
 npm run ws
 ```
@@ -348,6 +366,7 @@ http://localhost:3050
 ```
 
 ### **الصفحات المتاحة:**
+
 - `/en/dashboard` - لوحة القيادة
 - `/ar/dashboard` - لوحة القيادة (عربي)
 - `/en/login` - تسجيل الدخول
@@ -362,6 +381,7 @@ http://localhost:3050
 ```
 
 يجب أن يظهر Command Palette مع:
+
 - قائمة التنقل
 - الإجراءات السريعة
 - البحث
@@ -371,6 +391,7 @@ http://localhost:3050
 ## **📊 ملخص ما تم تفعيله**
 
 ### **✅ قاعدة البيانات:**
+
 - ✅ 20+ جدول
 - ✅ 10+ triggers
 - ✅ 15+ functions
@@ -378,6 +399,7 @@ http://localhost:3050
 - ✅ بيانات تجريبية
 
 ### **✅ الأنظمة:**
+
 1. **Platform Admin** - إدارة المنصة
 2. **Tenant Registration** - تسجيل العملاء
 3. **Workflows** - سير العمل
@@ -385,6 +407,7 @@ http://localhost:3050
 5. **Licensing & Costs** - التراخيص والتكاليف
 
 ### **✅ الميزات:**
+
 - ✅ Command Palette (Ctrl/K)
 - ✅ Real-Time Workflow Timeline
 - ✅ WebSocket Integration
@@ -402,6 +425,7 @@ http://localhost:3050
 ## **🔄 إعداد Scheduler (اختياري)**
 
 ### **Windows Task Scheduler:**
+
 ```powershell
 # معالجة الأحداث كل دقيقة
 schtasks /create /tn "ProcessAIEvents" /tr "psql -U postgres -d saudi_store -c \"SELECT process_pending_events()\"" /sc minute /mo 1
@@ -413,6 +437,7 @@ schtasks /create /tn "ArchiveOldEvents" /tr "psql -U postgres -d saudi_store -c 
 ### **Node.js Scheduler (موصى به):**
 
 إضافة في `server/websocket.ts`:
+
 ```typescript
 // معالجة الأحداث كل دقيقة
 setInterval(async () => {
@@ -459,11 +484,13 @@ setInterval(async () => {
 ## **🆘 استكشاف الأخطاء**
 
 ### **مشكلة: قاعدة البيانات غير موجودة**
+
 ```sql
 CREATE DATABASE saudi_store;
 ```
 
 ### **مشكلة: الجداول غير موجودة**
+
 ```bash
 # تشغيل جميع Schema files بالترتيب
 psql -U postgres -d saudi_store -f database/schema/09-platform-admin.sql
@@ -474,6 +501,7 @@ psql -U postgres -d saudi_store -f database/schema/13-licensing-costs.sql
 ```
 
 ### **مشكلة: Triggers لا تعمل**
+
 ```sql
 -- التحقق من Triggers
 SELECT * FROM information_schema.triggers 
@@ -484,6 +512,7 @@ psql -U postgres -d saudi_store -f database/schema/12-red-flags-triggers.sql
 ```
 
 ### **مشكلة: Port مستخدم**
+
 ```bash
 # تغيير Port في package.json
 "dev": "next dev -p 3051"
@@ -506,6 +535,7 @@ psql -U postgres -d saudi_store -f database/schema/12-red-flags-triggers.sql
 **🎉 جميع الأنظمة جاهزة ومفعلة!**
 
 **ابدأ الآن:**
+
 ```bash
 # 1. إنشاء قاعدة البيانات
 psql -U postgres -c "CREATE DATABASE saudi_store;"

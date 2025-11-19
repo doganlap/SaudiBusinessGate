@@ -198,7 +198,7 @@ export class CashFlowService {
       WHERE id = $1 AND tenant_id = $2
     `;
     const result = await query(sql, [id, tenantId]);
-    return result.rowCount > 0;
+    return result.rowCount ? result.rowCount > 0 : false;
   }
 
   /**

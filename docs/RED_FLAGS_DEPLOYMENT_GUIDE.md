@@ -1,6 +1,7 @@
 # 🚨 Red Flags Immediate Action System - دليل النشر والتشغيل
 
 ## **نظام الإجراءات الفورية للأعلام الحمراء**
+
 ### **Comprehensive Incident Response & AI Agents Integration**
 
 ---
@@ -8,6 +9,7 @@
 ## **🎯 نظرة عامة - Overview**
 
 تم تطوير نظام شامل للكشف الفوري عن الأعلام الحمراء المالية والاستجابة التلقائية مع:
+
 - **6 أنواع من Red Flags** مع كشف تلقائي
 - **وضع الحادث الفوري** مع احتواء تلقائي
 - **6 وكلاء ذكية** للاستجابة والإصلاح
@@ -15,6 +17,7 @@
 - **لوحات مراقبة في الوقت الفعلي**
 
 A comprehensive system for immediate detection and response to financial red flags with:
+
 - **6 Red Flag Types** with automatic detection
 - **Immediate Incident Mode** with automatic containment
 - **6 AI Agents** for response and remediation
@@ -26,6 +29,7 @@ A comprehensive system for immediate detection and response to financial red fla
 ## **📁 الملفات المنشأة - Created Files**
 
 ### **🔧 Core System Files:**
+
 ```
 lib/
 ├── red-flags/
@@ -53,6 +57,7 @@ app/api/
 ## **🚀 التثبيت والإعداد - Installation & Setup**
 
 ### **1. تثبيت المكتبات المطلوبة:**
+
 ```bash
 # المكتبات الأساسية
 npm install pg @types/pg
@@ -66,6 +71,7 @@ npm install jsonwebtoken @types/jsonwebtoken
 ```
 
 ### **2. إعداد قاعدة البيانات:**
+
 ```bash
 # تشغيل سكريبت إنشاء الجداول والـ Functions
 psql -U postgres -d your_database -f database/red-flags/detection-rules.sql
@@ -116,6 +122,7 @@ CREATE TABLE IF NOT EXISTS agent_jobs (
 ```
 
 ### **3. تكوين متغيرات البيئة:**
+
 ```bash
 # إضافة إلى .env
 # Red Flags Configuration
@@ -144,6 +151,7 @@ CRITICAL_SMS_NUMBERS=+966501234567,+966507654321
 ## **🔍 أنواع Red Flags المدعومة - Supported Red Flag Types**
 
 ### **1. Accounting Equation Not Balanced (المعادلة المحاسبية غير متوازنة)**
+
 ```sql
 -- الكشف التلقائي
 SELECT journal_id, SUM(debit) - SUM(credit) AS imbalance
@@ -157,12 +165,14 @@ UPDATE tenant_settings SET posting_enabled = false WHERE tenant_id = 'your_tenan
 ```
 
 **الإجراءات التلقائية:**
+
 - ✅ إيقاف ترحيل القيود فوراً
 - ✅ نقل الفروقات إلى حساب Suspense
 - ✅ إشعار فريق المالية
 - ✅ تفعيل وكيل الإصلاح التلقائي
 
 ### **2. Duplicate Transaction (المعاملات المكررة)**
+
 ```sql
 -- الكشف بالتوقيع الرقمي
 WITH signatures AS (
@@ -176,12 +186,14 @@ WITH signatures AS (
 ```
 
 **الإجراءات التلقائية:**
+
 - ✅ تعليم المعاملات المشبوهة
 - ✅ إيقاف التسوية مؤقتاً
 - ✅ مراجعة تلقائية بالوكيل الذكي
 - ✅ عكس المكررات المؤكدة
 
 ### **3. Sanctioned Entity (الجهات المحظورة)**
+
 ```sql
 -- فحص قوائم العقوبات مع Fuzzy Matching
 SELECT c.name, sw.list_name, similarity(c.name, sw.name) as confidence
@@ -190,12 +202,14 @@ WHERE similarity(c.name, sw.name) > 0.7
 ```
 
 **الإجراءات التلقائية:**
+
 - 🚨 تجميد العلاقة فوراً
 - 🚨 منع جميع المدفوعات
 - 🚨 فتح قضية امتثال
 - 🚨 إشعار فوري للامتثال والإدارة
 
 ### **4. Audit Trail Tampered (تلاعب بسجل التدقيق)**
+
 ```sql
 -- كشف الفجوات في التسلسل
 SELECT seq_no, LAG(seq_no) OVER (ORDER BY seq_no) as prev_seq
@@ -204,12 +218,14 @@ WHERE seq_no != COALESCE(LAG(seq_no) OVER (ORDER BY seq_no), seq_no-1) + 1
 ```
 
 **الإجراءات التلقائية:**
+
 - 🔒 إلغاء صلاحيات الكتابة فوراً
 - 📸 التقاط لقطة طب شرعي
 - 🔐 تعليق الحسابات المشبوهة
 - 📋 إشعار فريق الأمان
 
 ### **5. Large Unexplained Transaction (معاملات كبيرة غير مفسرة)**
+
 ```sql
 -- المعاملات الكبيرة بدون مستندات
 SELECT p.id, p.amount, p.txn_date
@@ -219,12 +235,14 @@ WHERE p.amount >= 10000 AND d.id IS NULL
 ```
 
 **الإجراءات التلقائية:**
+
 - ⏸️ وضع المعاملة في الانتظار
 - 📄 طلب المستندات الداعمة
 - ⏰ تحديد مهلة 3 أيام
 - 👥 مراجعة 4-eyes مطلوبة
 
 ### **6. Rapid Succession Transactions (تتابع سريع للمعاملات)**
+
 ```sql
 -- كشف الأنماط المشبوهة
 SELECT account_id, COUNT(*) as txn_count,
@@ -236,6 +254,7 @@ HAVING COUNT(*) >= 5
 ```
 
 **الإجراءات التلقائية:**
+
 - 🚩 تعليم الحساب للمراجعة
 - 📉 تقليل الحدود مؤقتاً
 - 🔍 تفعيل المراقبة المعززة
@@ -246,6 +265,7 @@ HAVING COUNT(*) >= 5
 ## **🤖 الوكلاء الأذكياء - AI Agents**
 
 ### **1. FIN_REPAIR_UNBALANCED (وكيل إصلاح القيود)**
+
 ```typescript
 // تشغيل تلقائي عند كشف عدم التوازن
 const result = await redFlagsAgents.executeAgent({
@@ -267,6 +287,7 @@ const result = await redFlagsAgents.executeAgent({
 ```
 
 ### **2. FIN_DEDUP_REVIEW (وكيل مراجعة المكررات)**
+
 ```typescript
 // مراجعة وحل المعاملات المكررة
 const result = await redFlagsAgents.executeAgent({
@@ -283,6 +304,7 @@ const result = await redFlagsAgents.executeAgent({
 ```
 
 ### **3. COMPLIANCE_CASE_OPEN (وكيل الامتثال)**
+
 ```typescript
 // فتح قضية امتثال للجهات المحظورة
 const result = await redFlagsAgents.executeAgent({
@@ -302,6 +324,7 @@ const result = await redFlagsAgents.executeAgent({
 ```
 
 ### **4. SEC_FORENSIC_SNAPSHOT (وكيل الطب الشرعي)**
+
 ```typescript
 // التقاط لقطة طب شرعي للتحقيق
 const result = await redFlagsAgents.executeAgent({
@@ -322,6 +345,7 @@ const result = await redFlagsAgents.executeAgent({
 ```
 
 ### **5. FIN_SUPPORTING_DOCS_REQUEST (وكيل طلب المستندات)**
+
 ```typescript
 // طلب المستندات الداعمة للمعاملات الكبيرة
 const result = await redFlagsAgents.executeAgent({
@@ -342,6 +366,7 @@ const result = await redFlagsAgents.executeAgent({
 ```
 
 ### **6. AML_ALERT_TRIAGE (وكيل فرز AML)**
+
 ```typescript
 // تحليل وفرز تنبيهات مكافحة غسل الأموال
 const result = await redFlagsAgents.executeAgent({
@@ -369,6 +394,7 @@ const result = await redFlagsAgents.executeAgent({
 ## **📊 لوحات المراقبة - Monitoring Dashboards**
 
 ### **1. Finance Guard Dashboard**
+
 ```typescript
 // الوصول: /api/red-flags/dashboard/finance-guard
 {
@@ -388,6 +414,7 @@ const result = await redFlagsAgents.executeAgent({
 ```
 
 ### **2. AML/Anti-Fraud Monitor**
+
 ```typescript
 // الوصول: /api/red-flags/dashboard/aml-monitor
 {
@@ -406,6 +433,7 @@ const result = await redFlagsAgents.executeAgent({
 ```
 
 ### **3. Audit Integrity Monitor**
+
 ```typescript
 // الوصول: /api/red-flags/dashboard/audit-integrity
 {
@@ -423,6 +451,7 @@ const result = await redFlagsAgents.executeAgent({
 ## **🔔 نظام الإشعارات - Notification System**
 
 ### **Slack Integration:**
+
 ```javascript
 // إعداد Webhook
 const slackAlert = {
@@ -445,6 +474,7 @@ const slackAlert = {
 ```
 
 ### **Email Alerts:**
+
 ```html
 <!-- قالب البريد الإلكتروني -->
 <div style="font-family: Arial, sans-serif; max-width: 600px;">
@@ -474,6 +504,7 @@ const slackAlert = {
 ```
 
 ### **SMS Alerts (Critical Only):**
+
 ```
 🚨 URGENT: Red Flag Alert
 Type: Sanctions Hit
@@ -489,6 +520,7 @@ Review immediately.
 ## **🧪 الاختبار والتحقق - Testing & Validation**
 
 ### **1. اختبار الكشف التلقائي:**
+
 ```bash
 # اختبار القيود غير المتوازنة
 curl -X POST http://localhost:3050/api/red-flags/test \
@@ -510,6 +542,7 @@ curl -X POST http://localhost:3050/api/red-flags/test \
 ```
 
 ### **2. اختبار الوكلاء:**
+
 ```bash
 # تشغيل وكيل الإصلاح
 curl -X POST http://localhost:3050/api/red-flags/incident \
@@ -526,6 +559,7 @@ curl -X POST http://localhost:3050/api/red-flags/incident \
 ```
 
 ### **3. اختبار الإشعارات:**
+
 ```bash
 # اختبار إشعار Slack
 curl -X POST http://localhost:3050/api/red-flags/test-notification \
@@ -563,6 +597,7 @@ AND detected_at >= NOW() - INTERVAL '24 hours';
 ```
 
 ### **Health Checks:**
+
 ```bash
 # فحص صحة النظام
 curl http://localhost:3050/api/red-flags/health
@@ -582,18 +617,21 @@ curl http://localhost:3050/api/red-flags/health
 ## **🔒 الأمان والامتثال - Security & Compliance**
 
 ### **Data Protection:**
+
 - 🔐 تشفير جميع البيانات الحساسة
 - 🔒 Hash cryptographic للأدلة
 - 📋 سجلات تدقيق شاملة
 - ⏰ احتفاظ بالبيانات 7 سنوات
 
 ### **Regulatory Compliance:**
+
 - ✅ إطار الأمن السيبراني SAMA
 - ✅ قانون مكافحة غسل الأموال KSA
 - ✅ نظام حماية البيانات
 - ✅ متطلبات التبليغ التنظيمي
 
 ### **Access Control:**
+
 - 👤 مصادقة متعددة العوامل
 - 🔑 أذونات قائمة على الأدوار
 - 📊 مراقبة الوصول المميز
@@ -604,6 +642,7 @@ curl http://localhost:3050/api/red-flags/health
 ## **🚀 النشر في الإنتاج - Production Deployment**
 
 ### **1. متطلبات البنية التحتية:**
+
 ```yaml
 # docker-compose.yml
 version: '3.8'
@@ -632,6 +671,7 @@ services:
 ```
 
 ### **2. إعداد المراقبة:**
+
 ```yaml
 # monitoring.yml
 version: '3.8'
@@ -652,6 +692,7 @@ services:
 ```
 
 ### **3. النسخ الاحتياطي:**
+
 ```bash
 #!/bin/bash
 # backup-script.sh
@@ -672,6 +713,7 @@ aws s3 cp forensic_backup_*.tar.gz s3://red-flags-forensic/
 ## **📞 الدعم والصيانة - Support & Maintenance**
 
 ### **Log Files:**
+
 ```bash
 # سجلات النظام
 tail -f /app/logs/red-flags.log
@@ -683,6 +725,7 @@ tail -f /var/log/postgresql/postgresql.log
 ```
 
 ### **Common Issues:**
+
 ```bash
 # مشكلة: الوكيل لا يستجيب
 # الحل: إعادة تشغيل خدمة الوكلاء
@@ -698,9 +741,10 @@ EXPLAIN ANALYZE SELECT * FROM red_flags WHERE tenant_id = 'test';
 ```
 
 ### **Emergency Contacts:**
-- **Technical Support:** support@saudistore.com
-- **Security Team:** security@saudistore.com
-- **Compliance Officer:** compliance@saudistore.com
+
+- **Technical Support:** <support@saudistore.com>
+- **Security Team:** <security@saudistore.com>
+- **Compliance Officer:** <compliance@saudistore.com>
 - **24/7 Hotline:** +966-11-REDFLAGS
 
 ---
@@ -708,6 +752,7 @@ EXPLAIN ANALYZE SELECT * FROM red_flags WHERE tenant_id = 'test';
 ## **✅ قائمة التحقق النهائية - Final Checklist**
 
 ### **قبل النشر:**
+
 - [ ] تثبيت جميع المكتبات المطلوبة
 - [ ] إنشاء جداول قاعدة البيانات
 - [ ] تكوين متغيرات البيئة
@@ -718,6 +763,7 @@ EXPLAIN ANALYZE SELECT * FROM red_flags WHERE tenant_id = 'test';
 - [ ] تكوين النسخ الاحتياطي
 
 ### **بعد النشر:**
+
 - [ ] مراقبة الأداء لمدة 24 ساعة
 - [ ] تحقق من سجلات النظام
 - [ ] اختبار سيناريوهات الطوارئ

@@ -11,7 +11,8 @@ This document contains **ALL access details** for the DoganHub platform, includi
 
 ## 🏢 EXECUTIVE ACCOUNTS (C-LEVEL ACCESS)
 
-### CFO@doganhub.com - Chief Financial Officer
+### <CFO@doganhub.com> - Chief Financial Officer
+
 - **Password:** `Executive2024!`
 - **Role:** platform_admin
 - **Department:** Finance
@@ -24,7 +25,8 @@ This document contains **ALL access details** for the DoganHub platform, includi
 - **Status:** 🟢 Active
 - **Created:** November 12, 2025
 
-### CTO@doganhub.com - Chief Technology Officer  
+### <CTO@doganhub.com> - Chief Technology Officer  
+
 - **Password:** `Executive2024!`
 - **Role:** platform_admin
 - **Department:** Technology
@@ -37,7 +39,8 @@ This document contains **ALL access details** for the DoganHub platform, includi
 - **Status:** 🟢 Active
 - **Created:** November 12, 2025
 
-### CEO@doganhub.com - Chief Executive Officer
+### <CEO@doganhub.com> - Chief Executive Officer
+
 - **Password:** `Executive2024!`
 - **Role:** platform_admin
 - **Department:** Executive
@@ -56,6 +59,7 @@ This document contains **ALL access details** for the DoganHub platform, includi
 ## 👤 DEMO USER ACCOUNTS
 
 ### Demo User (Primary Testing Account)
+
 - **Email:** `demo@doganhub.com`
 - **Password:** `Demo123456`
 - **Role:** tenant_admin
@@ -70,6 +74,7 @@ This document contains **ALL access details** for the DoganHub platform, includi
 ## 🏢 TENANT ADMIN ACCOUNTS
 
 ### Acme Corporation
+
 - **Email:** `john@acme.com`
 - **Password:** `TestPass123!` (bcrypt hashed)
 - **Name:** John Smith
@@ -81,6 +86,7 @@ This document contains **ALL access details** for the DoganHub platform, includi
 - **License:** lic-acme-123 (Professional, 50 users, expires Dec 31, 2024)
 
 ### Beta LLC
+
 - **Email:** `sarah@beta.com`
 - **Password:** `TestPass123!` (bcrypt hashed)
 - **Name:** Sarah Johnson
@@ -92,6 +98,7 @@ This document contains **ALL access details** for the DoganHub platform, includi
 - **License:** lic-beta-456 (Enterprise, 200 users, expires Jan 31, 2025)
 
 ### Gamma Industries
+
 - **Email:** `mike@gamma.com`
 - **Password:** `TestPass123!` (bcrypt hashed)
 - **Name:** Mike Wilson
@@ -107,6 +114,7 @@ This document contains **ALL access details** for the DoganHub platform, includi
 ## 🔧 PLATFORM ADMIN ACCOUNTS
 
 ### Primary Platform Admin
+
 - **Email:** `admin@doganhub.com`
 - **Password:** [Contact system administrator]
 - **Role:** platform_admin
@@ -130,21 +138,24 @@ This document contains **ALL access details** for the DoganHub platform, includi
 
 ## 🔐 LOGIN PROCEDURES
 
-### For Executive Access (CEO, CTO, CFO):
+### For Executive Access (CEO, CTO, CFO)
+
 1. Navigate to platform login page: `http://localhost:3050`
 2. Enter executive credentials:
-   - Email: CFO@doganhub.com, CTO@doganhub.com, or CEO@doganhub.com
+   - Email: <CFO@doganhub.com>, <CTO@doganhub.com>, or <CEO@doganhub.com>
    - Password: `Executive2024!`
 3. Access level: Full platform administrative control
 
-### For Demo/Testing:
+### For Demo/Testing
+
 1. Navigate to platform login page: `http://localhost:3050`
 2. Enter demo credentials:
    - Email: `demo@doganhub.com`
    - Password: `Demo123456`
 3. Access level: Tenant admin for demo organization
 
-### For Tenant Administration:
+### For Tenant Administration
+
 1. Navigate to platform login page: `http://localhost:3050`
 2. Enter tenant admin credentials (see tenant admin accounts above)
 3. Access level: Administrative control within specific organization
@@ -153,18 +164,21 @@ This document contains **ALL access details** for the DoganHub platform, includi
 
 ## 🛡️ SECURITY DETAILS
 
-### Password Security:
+### Password Security
+
 - **Executive passwords:** Bcrypt hashed with salt factor 12
 - **Test passwords:** Bcrypt hashed with salt factor 12
 - **Demo passwords:** Standard authentication for demo purposes
 - **All passwords:** Stored securely in database with proper encryption
 
-### Authentication Method:
+### Authentication Method
+
 - **Primary:** JWT-based authentication with 24-hour expiration
 - **Session management:** Secure session handling with automatic renewal
 - **Security headers:** CORS, rate limiting, and security middleware enabled
 
-### Audit Logging:
+### Audit Logging
+
 - **Login attempts:** All login attempts logged with IP addresses
 - **Account creation:** Executive account creation logged in audit trails
 - **Access control:** Role-based permissions enforced at API level
@@ -173,20 +187,23 @@ This document contains **ALL access details** for the DoganHub platform, includi
 
 ## 📊 PLATFORM CONFIGURATION
 
-### Environment:
+### Environment
+
 - **URL:** `http://localhost:3050`
 - **Environment:** Development
 - **Database:** PostgreSQL (doganhubstore)
 - **Authentication:** NextAuth + JWT
 - **License System:** Fully operational with tier enforcement
 
-### License Tiers Available:
+### License Tiers Available
+
 - **Basic:** 10 users, 50GB storage, basic analytics
 - **Professional:** 50 users, 200GB storage, advanced analytics
 - **Enterprise:** 200 users, 1TB storage, full feature set
 - **Platform Admin:** Unlimited access to all features
 
-### Testing Status:
+### Testing Status
+
 - **Jest Tests:** ✅ 17 tests running (4 passed, 5 failed, 8 skipped)
 - **Integration Tests:** ✅ Ready for execution
 - **E2E Tests:** ✅ Playwright configured and ready
@@ -196,7 +213,8 @@ This document contains **ALL access details** for the DoganHub platform, includi
 
 ## 🚀 QUICK ACCESS REFERENCE
 
-### Immediate Access (Copy & Paste Ready):
+### Immediate Access (Copy & Paste Ready)
+
 ```
 EXECUTIVE ACCOUNTS:
 CFO@doganhub.com | Executive2024!
@@ -212,7 +230,8 @@ sarah@beta.com | TestPass123!
 mike@gamma.com | TestPass123!
 ```
 
-### Platform URLs:
+### Platform URLs
+
 ```
 Login Page: http://localhost:3050/login
 Admin Dashboard: http://localhost:3050/admin
@@ -224,22 +243,26 @@ API Base: http://localhost:3050/api
 
 ## 🔄 ACCOUNT MANAGEMENT
 
-### Reset Executive Passwords:
+### Reset Executive Passwords
+
 ```bash
 node __tests__/scripts/create-executive-accounts.cjs reset-passwords
 ```
 
-### Verify Account Status:
+### Verify Account Status
+
 ```bash
 node __tests__/scripts/verify-executive-accounts.cjs
 ```
 
-### Database Inspection:
+### Database Inspection
+
 ```bash
 node __tests__/scripts/inspect-database.cjs
 ```
 
-### Seed Test Data:
+### Seed Test Data
+
 ```bash
 npm run db:test:seed
 ```
@@ -249,7 +272,7 @@ npm run db:test:seed
 ## ✅ VERIFICATION CHECKLIST
 
 - [x] **Executive Accounts Created** - CEO, CTO, CFO with platform_admin access
-- [x] **Demo Account Verified** - demo@doganhub.com accessible for testing
+- [x] **Demo Account Verified** - <demo@doganhub.com> accessible for testing
 - [x] **Tenant Admins Confirmed** - Acme, Beta, Gamma organizations active
 - [x] **Database Integration** - All accounts properly stored and hashed
 - [x] **Authentication Testing** - Login procedures verified functional
@@ -261,17 +284,20 @@ npm run db:test:seed
 
 ## 📞 SUPPORT & TROUBLESHOOTING
 
-### Database Connection Issues:
+### Database Connection Issues
+
 - Verify PostgreSQL service is running
 - Check connection string in .env.local
 - Ensure database 'doganhubstore' exists
 
-### Login Problems:
+### Login Problems
+
 - Verify account exists using verification script
 - Check password case sensitivity
 - Ensure platform is running on port 3050
 
-### Permission Issues:
+### Permission Issues
+
 - Executive accounts have platform_admin role
 - Tenant admins limited to their organization
 - Demo account has tenant_admin for demo org only

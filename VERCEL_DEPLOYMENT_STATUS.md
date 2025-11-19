@@ -7,9 +7,10 @@
 ## ✅ Current Production Deployment
 
 ### Latest Deployment
+
 - **Status:** ● **Ready** ✅
 - **Deployment ID:** `dpl_4AYAcjsLUZY3m1YsctTNLZPhDiEe`
-- **URL:** https://saudi-store-jcngh418o-donganksa.vercel.app
+- **URL:** <https://saudi-store-jcngh418o-donganksa.vercel.app>
 - **Environment:** Production
 - **Created:** Tue Nov 18 2025 23:35:26 GMT+0300
 - **Age:** 2 minutes ago
@@ -22,11 +23,11 @@
 
 The following domains are aliased to this deployment:
 
-1. **https://www.doganhub.com**
-2. **https://saudi-store-iota.vercel.app**
-3. **https://saudi-store-donganksa.vercel.app**
-4. **https://saudi-store-doganlap-donganksa.vercel.app**
-5. **https://doganhub.com**
+1. **<https://www.doganhub.com>**
+2. **<https://saudi-store-iota.vercel.app>**
+3. **<https://saudi-store-donganksa.vercel.app>**
+4. **<https://saudi-store-doganlap-donganksa.vercel.app>**
+5. **<https://doganhub.com>**
 
 ---
 
@@ -57,11 +58,13 @@ The following domains are aliased to this deployment:
 ## 📦 Build Information
 
 ### Build Output
+
 - **Total Output Items:** 2,385+ items
 - **Build Location:** iad1 (Washington, D.C., USA - East)
 - **Serverless Functions:** Multiple Lambda functions deployed
 
 ### Key Routes
+
 - `[lng]/ai-agents` (3.21MB)
 - `[lng]/ai-finance-agents` (3.21MB)
 - `[lng]/analytics/ai-insights` (3.21MB)
@@ -72,6 +75,7 @@ The following domains are aliased to this deployment:
 ## ✅ Deployment Status Summary
 
 ### Current Status
+
 - **Latest Deployment:** ✅ **READY** (2 minutes ago)
 - **Production Environment:** ✅ Active
 - **All Aliases:** ✅ Configured
@@ -79,6 +83,7 @@ The following domains are aliased to this deployment:
 - **Deployment:** ✅ Complete
 
 ### Success Rate
+
 - **Recent Successful Deployments:** 9/15 (60%)
 - **Current Status:** ✅ **READY**
 - **Last 2 hours:** 100% success rate (4/4 deployments)
@@ -88,28 +93,33 @@ The following domains are aliased to this deployment:
 ## 🔍 Quick Links
 
 ### Production URLs
-- **Main URL:** https://saudi-store-jcngh418o-donganksa.vercel.app
-- **Custom Domain:** https://www.doganhub.com
-- **Vercel Domain:** https://saudi-store-iota.vercel.app
+
+- **Main URL:** <https://saudi-store-jcngh418o-donganksa.vercel.app>
+- **Custom Domain:** <https://www.doganhub.com>
+- **Vercel Domain:** <https://saudi-store-iota.vercel.app>
 
 ### Vercel Dashboard
-- **Project:** https://vercel.com/donganksa/saudi-store
-- **Deployment:** https://vercel.com/donganksa/saudi-store/4AYAcjsLUZY3m1YsctTNLZPhDiEe
+
+- **Project:** <https://vercel.com/donganksa/saudi-store>
+- **Deployment:** <https://vercel.com/donganksa/saudi-store/4AYAcjsLUZY3m1YsctTNLZPhDiEe>
 
 ### API Endpoints
-- **Health Check:** https://saudi-store-jcngh418o-donganksa.vercel.app/api/health
-- **Finance Stats:** https://saudi-store-jcngh418o-donganksa.vercel.app/api/finance/stats
+
+- **Health Check:** <https://saudi-store-jcngh418o-donganksa.vercel.app/api/health>
+- **Finance Stats:** <https://saudi-store-jcngh418o-donganksa.vercel.app/api/finance/stats>
 
 ---
 
 ## 📈 Deployment Metrics
 
 ### Performance
+
 - **Average Build Time:** ~2 minutes
 - **Deployment Time:** ~2 minutes
 - **Total Time:** ~4 minutes per deployment
 
 ### Reliability
+
 - **Current Status:** ✅ Stable
 - **Recent Failures:** 6 (older deployments, 6+ hours ago)
 - **Recent Success:** 9 (last 6 hours)
@@ -121,6 +131,7 @@ The following domains are aliased to this deployment:
 The latest deployment is **READY** and **LIVE** in production.
 
 **All systems operational:**
+
 - ✅ Deployment successful
 - ✅ Build completed
 - ✅ All routes accessible

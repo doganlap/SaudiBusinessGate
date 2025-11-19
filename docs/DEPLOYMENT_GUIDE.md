@@ -44,12 +44,14 @@ git push saudistore deploy-to-dogan-ai:main
 ### 2. Cloud Platform Setup (Vercel)
 
 #### A. Install Vercel CLI
+
 ```bash
 npm install -g vercel
 vercel login
 ```
 
 #### B. Link Project
+
 ```bash
 vercel link
 # Select: doganlap/Saudistore
@@ -57,6 +59,7 @@ vercel link
 ```
 
 #### C. Configure Domain
+
 ```bash
 vercel domains add dogan-ai.com
 vercel domains add www.dogan-ai.com
@@ -99,6 +102,7 @@ vercel env add STRIPE_SECRET_KEY production
 ### 4. Database Setup
 
 #### A. Create Production Database
+
 ```sql
 -- Connect to your PostgreSQL instance
 CREATE DATABASE dogan_grc_production;
@@ -107,6 +111,7 @@ GRANT ALL PRIVILEGES ON DATABASE dogan_grc_production TO grc_user;
 ```
 
 #### B. Run Schema Migration
+
 ```bash
 # Upload and run the schema file
 psql -h your-db-host -U grc_user -d dogan_grc_production -f database/schema/20-grc-controls-schema.sql
@@ -125,16 +130,20 @@ git push saudistore main
 ## 🌐 Post-Deployment Configuration
 
 ### 1. DNS Configuration
+
 Point your domain to Vercel:
+
 ```
 A Record: @ → 76.76.19.61
 CNAME: www → cname.vercel-dns.com
 ```
 
 ### 2. SSL Certificate
+
 Vercel automatically provisions SSL certificates for custom domains.
 
 ### 3. Performance Optimization
+
 - Enable Vercel Analytics
 - Configure CDN settings
 - Set up monitoring
@@ -142,16 +151,19 @@ Vercel automatically provisions SSL certificates for custom domains.
 ## 🔍 Verification Steps
 
 ### 1. Health Check
+
 ```bash
 curl https://dogan-ai.com/api/health
 ```
 
 ### 2. GRC Module Access
+
 - Visit: `https://dogan-ai.com/en/grc`
 - Verify: Dashboard loads with KPIs
 - Test: Navigation between modules
 
 ### 3. API Endpoints
+
 ```bash
 # Test controls API
 curl -H "x-tenant-id: default-tenant" https://dogan-ai.com/api/grc/controls
@@ -166,6 +178,7 @@ curl -H "x-tenant-id: default-tenant" https://dogan-ai.com/api/grc/analytics
 ## 📊 Features Available
 
 ### ✅ Complete GRC Platform
+
 - **Control Management**: Full lifecycle management
 - **Framework Compliance**: NCA, SAMA, PDPL support
 - **Testing & Effectiveness**: DE/OE testing workflows
@@ -174,6 +187,7 @@ curl -H "x-tenant-id: default-tenant" https://dogan-ai.com/api/grc/analytics
 - **Reports & Analytics**: Compliance dashboards
 
 ### ✅ Enterprise Features
+
 - **Multi-tenant**: Complete tenant isolation
 - **Bilingual**: Arabic/English support
 - **RBAC**: Role-based access control ready
@@ -184,18 +198,21 @@ curl -H "x-tenant-id: default-tenant" https://dogan-ai.com/api/grc/analytics
 ## 🔧 Maintenance
 
 ### Database Backups
+
 ```bash
 # Daily backup script
 pg_dump -h your-db-host -U grc_user dogan_grc_production > backup_$(date +%Y%m%d).sql
 ```
 
 ### Monitoring
+
 - Set up Vercel Analytics
 - Configure error tracking (Sentry)
 - Monitor API performance
 - Track user engagement
 
 ### Updates
+
 ```bash
 # Deploy updates
 git push saudistore main
@@ -222,20 +239,22 @@ git push saudistore main
    - Review browser console errors
 
 ### Support Contacts
-- Technical: tech@dogan-ai.com
-- Platform: platform@dogan-ai.com
+
+- Technical: <tech@dogan-ai.com>
+- Platform: <platform@dogan-ai.com>
 - Emergency: +966-xxx-xxx-xxxx
 
-## 🎉 Success!
+## 🎉 Success
 
 Your GRC Control Administration Platform is now live at:
-**https://dogan-ai.com**
+**<https://dogan-ai.com>**
 
-### Key URLs:
-- **Dashboard**: https://dogan-ai.com/en/grc
-- **Controls**: https://dogan-ai.com/en/grc/controls  
-- **Frameworks**: https://dogan-ai.com/en/grc/frameworks
-- **Testing**: https://dogan-ai.com/en/grc/testing
-- **Reports**: https://dogan-ai.com/en/grc/reports
+### Key URLs
+
+- **Dashboard**: <https://dogan-ai.com/en/grc>
+- **Controls**: <https://dogan-ai.com/en/grc/controls>  
+- **Frameworks**: <https://dogan-ai.com/en/grc/frameworks>
+- **Testing**: <https://dogan-ai.com/en/grc/testing>
+- **Reports**: <https://dogan-ai.com/en/grc/reports>
 
 The platform includes complete bilingual support, multi-tenant architecture, and enterprise-grade security features ready for production use.

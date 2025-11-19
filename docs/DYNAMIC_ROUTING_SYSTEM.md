@@ -1,4 +1,5 @@
 # 🚀 Saudi Store - Multi-tenant Dynamic Routing System
+
 ## The 1st Autonomous Store in the World - من السعودية إلى العالم 🇸🇦
 
 **Version:** 2.0.0  
@@ -99,6 +100,7 @@ Saudi Store implements a **complete multi-tenant, multi-team, multi-role dynamic
 ### Core Tables (10 tables)
 
 #### 1. **subscription_plans**
+
 ```sql
 - id (UUID, PK)
 - name, slug, display_name (JSONB)
@@ -111,6 +113,7 @@ Saudi Store implements a **complete multi-tenant, multi-team, multi-role dynamic
 ```
 
 #### 2. **modules**
+
 ```sql
 - id (UUID, PK)
 - name, slug, display_name (JSONB)
@@ -122,6 +125,7 @@ Saudi Store implements a **complete multi-tenant, multi-team, multi-role dynamic
 ```
 
 #### 3. **tenants**
+
 ```sql
 - id (UUID, PK)
 - name, slug, domain
@@ -133,6 +137,7 @@ Saudi Store implements a **complete multi-tenant, multi-team, multi-role dynamic
 ```
 
 #### 4. **users**
+
 ```sql
 - id (UUID, PK)
 - tenant_id (FK → tenants)
@@ -144,6 +149,7 @@ Saudi Store implements a **complete multi-tenant, multi-team, multi-role dynamic
 ```
 
 #### 5. **teams**
+
 ```sql
 - id (UUID, PK)
 - tenant_id (FK → tenants)
@@ -155,6 +161,7 @@ Saudi Store implements a **complete multi-tenant, multi-team, multi-role dynamic
 ```
 
 #### 6. **roles**
+
 ```sql
 - id (UUID, PK)
 - tenant_id (FK → tenants, NULL = system-wide)
@@ -167,6 +174,7 @@ Saudi Store implements a **complete multi-tenant, multi-team, multi-role dynamic
 ```
 
 #### 7. **user_teams**
+
 ```sql
 - id (UUID, PK)
 - user_id (FK → users)
@@ -177,6 +185,7 @@ Saudi Store implements a **complete multi-tenant, multi-team, multi-role dynamic
 ```
 
 #### 8. **tenant_modules**
+
 ```sql
 - id (UUID, PK)
 - tenant_id (FK → tenants)
@@ -187,6 +196,7 @@ Saudi Store implements a **complete multi-tenant, multi-team, multi-role dynamic
 ```
 
 #### 9. **white_label_configs**
+
 ```sql
 - id (UUID, PK)
 - tenant_id (FK → tenants)
@@ -198,6 +208,7 @@ Saudi Store implements a **complete multi-tenant, multi-team, multi-role dynamic
 ```
 
 #### 10. **reseller_configs**
+
 ```sql
 - id (UUID, PK)
 - reseller_tenant_id (FK → tenants)
@@ -376,34 +387,42 @@ if (!canAccess.allowed && canAccess.reason?.includes('Upgrade')) {
 ### Available Modules (17 total)
 
 #### Core Modules (included in all plans)
+
 - ✅ **Dashboard** - Overview and metrics
 - ✅ **CRM** - Customer relationship management
 
 #### Operations Modules
+
 - ✅ **Sales** - Sales pipeline and deals
 - ✅ **Procurement** - Purchase orders _(Professional+)_
 
 #### Finance & HR
+
 - ✅ **Finance** - Accounting and invoices _(Professional+)_
 - ✅ **HR** - Employee management
 - ✅ **Billing** - Subscription billing
 
 #### Governance
+
 - ✅ **GRC** - Governance, Risk & Compliance _(Enterprise+)_
 
 #### Analytics
+
 - ✅ **Analytics** - Business intelligence
 - ✅ **Reports** - Custom reporting
 
 #### AI & Automation
+
 - ✅ **AI Agents** - Intelligent automation _(Professional+)_
 - ✅ **Workflows** - Process automation _(Professional+)_
 
 #### Integration
+
 - ✅ **Integrations** - Third-party apps _(Professional+)_
 - ✅ **API Dashboard** - API management _(Professional+)_
 
 #### Tools
+
 - ✅ **Monitoring** - System monitoring _(Enterprise+)_
 - ✅ **Tools** - Utilities
 
@@ -702,20 +721,26 @@ vercel --prod
 ## 🎯 Recommended Use Cases
 
 ### Startup / Small Business
+
 **Plan:** Professional ($499/month)
+
 - 25 users, 5 teams
 - 7 core modules (CRM, Sales, Finance, HR, Analytics, AI, Workflows)
 - Perfect for growing teams
 
 ### Enterprise
+
 **Plan:** Enterprise ($1,999/month)
+
 - 100 users, 20 teams
 - All 12 modules
 - White-label option
 - SSO and dedicated support
 
 ### SaaS Reseller
+
 **Plan:** White-label Reseller ($4,999/month)
+
 - Sell to 500+ clients
 - Full white-label branding
 - 20% commission on all subscriptions

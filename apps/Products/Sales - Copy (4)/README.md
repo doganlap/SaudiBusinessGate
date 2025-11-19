@@ -3,6 +3,7 @@
 > ضع هذا المجلد كبذرة أي مشروع جديد. يحتوي **Advanced Binding Instructions (ABI)** + جداول سياسات + قوالب CI/CD + قوائم تحقق + بنية مجلدات قياسية.
 
 ## Quickstart
+
 1. انسخ المجلد وأعد تسميته لاسم المشروع.
 2. شغّل `scripts/init.sh "MyProject"` لتحديث الأسماء وتهيئة Git وCODEOWNERS.
 3. افتح `ABI/00-ABI-Master.md` — هذه هي القواعد الملزِمة (Non‑Negotiables) لكل فريق.
@@ -10,6 +11,7 @@
 5. اربط CI على GitHub — ملفات الـ workflows جاهزة في `.github/workflows`.
 
 ## المحتويات
+
 - **ABI/**: التعليمات الملزِمة + سياسات التغيير + الجداول.
 - **contracts/**: OpenAPI + JSON Schemas للأحداث.
 - **docs/**: ADR/Runbooks/Checklists.

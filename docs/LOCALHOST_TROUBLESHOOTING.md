@@ -1,7 +1,9 @@
 # 🔧 Localhost Connection Troubleshooting Guide
+
 # دليل استكشاف أخطاء الاتصال المحلي
 
 ## **المتجر السعودي - DoganHubStore**
+
 ### **Complete ERR_CONNECTION_REFUSED Fix Guide**
 
 ---
@@ -23,6 +25,7 @@ localhost refused to connect
 ## **🔍 التشخيص السريع - Quick Diagnosis**
 
 ### **تشغيل سكريبت التشخيص:**
+
 ```powershell
 # في PowerShell (كمدير)
 cd d:\Projects\DoganHubStore
@@ -30,6 +33,7 @@ cd d:\Projects\DoganHubStore
 ```
 
 ### **فحص يدوي سريع:**
+
 ```powershell
 # 1. فحص المنافذ المستمعة
 Get-NetTCPConnection -State Listen | Where-Object { $_.LocalPort -in 3050,3000 } | Format-Table -Auto
@@ -46,6 +50,7 @@ Get-Process | Where-Object { $_.ProcessName -like "*node*" -or $_.ProcessName -l
 ## **🛠️ الحلول المرتبة حسب الأولوية - Solutions by Priority**
 
 ### **🥇 الحل الأول: تشغيل الخادم**
+
 ```bash
 # الانتقال للمشروع
 cd d:\Projects\DoganHubStore
@@ -61,12 +66,14 @@ npx next dev -H 0.0.0.0 -p 3050
 ```
 
 **النتيجة المتوقعة:**
+
 ```
 ✓ Ready on http://localhost:3050
 ✓ Compiled successfully
 ```
 
 ### **🥈 الحل الثاني: إصلاح المنافذ المحجوزة**
+
 ```powershell
 # قتل العمليات على المنافذ المستهدفة
 $ports = @(3050, 3000)
@@ -83,6 +90,7 @@ npm run dev
 ```
 
 ### **🥉 الحل الثالث: إعدادات الشبكة**
+
 ```powershell
 # إعداد جدار الحماية
 netsh advfirewall firewall add rule name="DoganHubStore-Dev" dir=in action=allow protocol=TCP localport="3050,3000"
@@ -99,6 +107,7 @@ $env:NO_PROXY = "localhost,127.0.0.1,::1"
 ## **🔧 الحل الشامل التلقائي - Automated Complete Fix**
 
 ### **تشغيل سكريبت الإصلاح الشامل:**
+
 ```powershell
 # في PowerShell (كمدير)
 cd d:\Projects\DoganHubStore
@@ -106,6 +115,7 @@ cd d:\Projects\DoganHubStore
 ```
 
 **ما يقوم به السكريبت:**
+
 1. ✅ فحص المنافذ المستمعة
 2. 🔪 قتل العمليات المتضاربة
 3. 🔥 إعداد جدار الحماية
@@ -121,6 +131,7 @@ cd d:\Projects\DoganHubStore
 ## **🎯 اختبار محدد لـ DoganHubStore**
 
 ### **1. فحص بنية المشروع:**
+
 ```powershell
 # التأكد من وجود الملفات المطلوبة
 Test-Path "d:\Projects\DoganHubStore\package.json"
@@ -130,6 +141,7 @@ Test-Path "d:\Projects\DoganHubStore\node_modules"
 ```
 
 ### **2. فحص إعدادات Next.js:**
+
 ```json
 // في package.json
 {
@@ -141,6 +153,7 @@ Test-Path "d:\Projects\DoganHubStore\node_modules"
 ```
 
 ### **3. اختبار خادم بديل:**
+
 ```javascript
 // إنشاء خادم اختبار مؤقت
 // temp-server.js
@@ -170,6 +183,7 @@ node temp-server.js
 ## **🌐 اختبار URLs مختلفة**
 
 ### **الترتيب المفضل للاختبار:**
+
 ```
 1. http://127.0.0.1:3050/     (IPv4 صريح)
 2. http://localhost:3050/     (hostname)
@@ -179,6 +193,7 @@ node temp-server.js
 ```
 
 ### **اختبار من سطر الأوامر:**
+
 ```powershell
 # PowerShell
 Invoke-WebRequest -Uri "http://127.0.0.1:3050/" -TimeoutSec 5
@@ -195,6 +210,7 @@ start http://127.0.0.1:3050/
 ## **🔍 تشخيص متقدم**
 
 ### **1. فحص DNS وملف hosts:**
+
 ```powershell
 # فحص ملف hosts
 Get-Content C:\Windows\System32\drivers\etc\hosts | Select-String "localhost"
@@ -208,6 +224,7 @@ nslookup localhost
 ```
 
 ### **2. فحص IPv6 vs IPv4:**
+
 ```powershell
 # فحص تفضيل IPv6
 netsh interface ipv6 show prefixpolicies
@@ -217,6 +234,7 @@ netsh interface ipv6 set global randomizeidentifiers=disabled
 ```
 
 ### **3. فحص البروكسي:**
+
 ```powershell
 # فحص إعدادات البروكسي
 netsh winhttp show proxy
@@ -232,6 +250,7 @@ netsh winhttp reset proxy
 ### **إذا فشل كل شيء:**
 
 #### **1. استخدام منفذ مختلف:**
+
 ```bash
 # جرب منافذ مختلفة
 npx next dev -p 3001
@@ -240,6 +259,7 @@ npx next dev -p 4000
 ```
 
 #### **2. استخدام IP مختلف:**
+
 ```bash
 # ربط بجميع الواجهات
 npx next dev -H 0.0.0.0 -p 3050
@@ -249,6 +269,7 @@ npx next dev -H 127.0.0.1 -p 3050
 ```
 
 #### **3. تشغيل كخادم إنتاج:**
+
 ```bash
 # بناء المشروع
 npm run build
@@ -258,6 +279,7 @@ npm run start
 ```
 
 #### **4. استخدام خادم HTTP بسيط:**
+
 ```bash
 # إذا كان لديك Python
 python -m http.server 3050
@@ -274,6 +296,7 @@ npx http-server -p 3050
 ## **📊 مراقبة الأداء**
 
 ### **فحص استخدام الموارد:**
+
 ```powershell
 # فحص استخدام المنافذ
 netstat -an | findstr :3050
@@ -290,6 +313,7 @@ Get-Process node* | Select-Object Name, CPU, WorkingSet
 ## **🔒 أمان الشبكة**
 
 ### **فحص جدار الحماية:**
+
 ```powershell
 # فحص قواعد جدار الحماية
 Get-NetFirewallRule | Where-Object { $_.DisplayName -like "*3050*" }
@@ -299,6 +323,7 @@ New-NetFirewallRule -DisplayName "DoganHubStore-Dev" -Direction Inbound -Protoco
 ```
 
 ### **فحص مكافح الفيروسات:**
+
 ```
 تأكد من أن مكافح الفيروسات لا يحجب:
 - node.exe
@@ -312,6 +337,7 @@ New-NetFirewallRule -DisplayName "DoganHubStore-Dev" -Direction Inbound -Protoco
 ## **📱 اختبار من أجهزة أخرى**
 
 ### **الوصول من الشبكة المحلية:**
+
 ```bash
 # الحصول على IP المحلي
 ipconfig | findstr IPv4
@@ -328,6 +354,7 @@ http://192.168.1.100:3050/
 ## **🛠️ أدوات التشخيص المفيدة**
 
 ### **أدوات Windows:**
+
 ```powershell
 # Resource Monitor
 resmon.exe
@@ -340,6 +367,7 @@ netstat -an
 ```
 
 ### **أدوات المتصفح:**
+
 ```
 F12 Developer Tools:
 - Network tab
@@ -352,6 +380,7 @@ F12 Developer Tools:
 ## **📞 الحصول على المساعدة**
 
 ### **معلومات مطلوبة للدعم:**
+
 ```powershell
 # تشغيل هذا الأمر وإرسال النتيجة
 Write-Host "=== DoganHubStore Diagnostic Info ==="
@@ -371,6 +400,7 @@ Write-Host "=== End Diagnostic Info ==="
 ## **✅ قائمة التحقق النهائية**
 
 ### **قبل طلب المساعدة:**
+
 - [ ] تشغيل `.\scripts\quick-diagnose.ps1`
 - [ ] تشغيل `.\scripts\fix-localhost.ps1`
 - [ ] تجربة `npm run dev`
@@ -382,6 +412,7 @@ Write-Host "=== End Diagnostic Info ==="
 - [ ] فحص مكافح الفيروسات
 
 ### **إذا نجح الاتصال:**
+
 - [ ] حفظ الأوامر التي نجحت
 - [ ] إنشاء اختصار للتشغيل السريع
 - [ ] توثيق أي تغييرات خاصة
@@ -392,6 +423,7 @@ Write-Host "=== End Diagnostic Info ==="
 **دليل شامل لحل جميع مشاكل الاتصال المحلي**
 
 **🔧 للمساعدة السريعة:**
+
 ```powershell
 cd d:\Projects\DoganHubStore
 .\scripts\fix-localhost.ps1

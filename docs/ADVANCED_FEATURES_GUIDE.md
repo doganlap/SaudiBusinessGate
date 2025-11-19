@@ -22,6 +22,7 @@
 ```
 
 ### **تثبيت المكتبات:**
+
 ```bash
 npm install framer-motion cmdk socket.io
 ```
@@ -33,6 +34,7 @@ npm install framer-motion cmdk socket.io
 ### **الملف:** `components/CommandPalette.tsx`
 
 ### **الميزات:**
+
 ✅ اختصار لوحة مفاتيح (Ctrl/Cmd + K)  
 ✅ بحث سريع في جميع الصفحات  
 ✅ RBAC - إخفاء العناصر حسب الدور  
@@ -41,6 +43,7 @@ npm install framer-motion cmdk socket.io
 ✅ إجراءات سريعة (Theme, Language, Logout)  
 
 ### **الاستخدام:**
+
 ```tsx
 import CommandPalette from '@/components/CommandPalette';
 
@@ -53,12 +56,14 @@ import CommandPalette from '@/components/CommandPalette';
 ```
 
 ### **RBAC - الأدوار:**
+
 - **user:** Dashboard, Sales
 - **manager:** + Finance, Reports, Analytics
 - **admin:** + Users, Billing, Security
 - **super_admin:** + Tenants, All Settings
 
 ### **الاختصارات:**
+
 - `Ctrl/Cmd + K` - فتح Command Palette
 - `↑↓` - التنقل
 - `Enter` - اختيار
@@ -71,6 +76,7 @@ import CommandPalette from '@/components/CommandPalette';
 ### **الملف:** `components/RealTimeWorkflowTimeline.tsx`
 
 ### **الميزات:**
+
 ✅ اتصال WebSocket للتحديثات الفورية  
 ✅ عرض حالة سير العمل (Queued, Running, Completed, Failed)  
 ✅ تتبع الخطوات بالوقت الفعلي  
@@ -79,6 +85,7 @@ import CommandPalette from '@/components/CommandPalette';
 ✅ دعم ثنائي اللغة  
 
 ### **الاستخدام:**
+
 ```tsx
 import RealTimeWorkflowTimeline from '@/components/RealTimeWorkflowTimeline';
 
@@ -90,6 +97,7 @@ import RealTimeWorkflowTimeline from '@/components/RealTimeWorkflowTimeline';
 ```
 
 ### **WebSocket Events:**
+
 ```typescript
 // Server → Client
 socket.emit('workflow:update', workflowInstance);
@@ -102,6 +110,7 @@ socket.on('disconnect', () => console.log('Disconnected'));
 ```
 
 ### **API Endpoint:**
+
 ```typescript
 // GET /api/workflows/instances?tenantId=xxx&workflowId=yyy
 {
@@ -132,6 +141,7 @@ socket.on('disconnect', () => console.log('Disconnected'));
 ## **3. 🎨 Royal Enterprise Theme**
 
 ### **الألوان الرئيسية:**
+
 ```css
 /* Saudi Store Theme - Emerald/Green */
 --primary: from-emerald-400/70 via-green-400/70 to-teal-400/70;
@@ -149,6 +159,7 @@ socket.on('disconnect', () => console.log('Disconnected'));
 ```
 
 ### **تطبيق الثيم:**
+
 ```tsx
 // في التصميم
 className="rounded-2xl border border-white/15 bg-white/10 
@@ -161,6 +172,7 @@ className="rounded-2xl border border-white/15 bg-white/10
 ## **4. 🔐 RBAC - Role-Based Access Control**
 
 ### **الأدوار المتاحة:**
+
 ```typescript
 type UserRole = 
   | 'viewer'        // عرض فقط
@@ -172,6 +184,7 @@ type UserRole =
 ```
 
 ### **الصلاحيات:**
+
 ```typescript
 const permissions = {
   viewer: ['dashboard:read'],
@@ -184,6 +197,7 @@ const permissions = {
 ```
 
 ### **إخفاء العناصر حسب الدور:**
+
 ```tsx
 // في Navigation
 const navItems = [
@@ -258,6 +272,7 @@ httpServer.listen(3051, () => {
 ```
 
 ### **تشغيل السيرفر:**
+
 ```bash
 # في package.json
 "scripts": {
@@ -336,6 +351,7 @@ CREATE TRIGGER workflow_steps_updated_at
 ## **7. 🎯 API Endpoints للـ Workflows**
 
 ### **GET /api/workflows/instances**
+
 ```typescript
 // app/api/workflows/instances/route.ts
 export async function GET(req: Request) {
@@ -373,6 +389,7 @@ export async function GET(req: Request) {
 ```
 
 ### **POST /api/workflows/instances**
+
 ```typescript
 export async function POST(req: Request) {
   const { tenantId, workflowName, workflowNameAr, steps } = await req.json();
@@ -418,6 +435,7 @@ export async function POST(req: Request) {
 ## **8. 📝 Tooltips**
 
 ### **استخدام Tooltips:**
+
 ```tsx
 import { Tooltip } from '@/components/ui/Tooltip';
 
@@ -431,6 +449,7 @@ import { Tooltip } from '@/components/ui/Tooltip';
 ## **9. ✅ قائمة التحقق - Checklist**
 
 ### **المكتبات:**
+
 - ✅ Tailwind CSS (مثبت)
 - ✅ Framer Motion (مضاف)
 - ✅ Lucide React (مثبت)
@@ -438,12 +457,14 @@ import { Tooltip } from '@/components/ui/Tooltip';
 - ✅ Socket.IO (مضاف)
 
 ### **المكونات:**
+
 - ✅ Command Palette
 - ✅ Real-Time Workflow Timeline
 - ✅ RBAC Integration
 - ✅ Glassmorphic Theme
 
 ### **الميزات:**
+
 - ✅ اختصارات لوحة المفاتيح
 - ✅ WebSocket للتحديثات الفورية
 - ✅ إخفاء العناصر حسب الدور
@@ -455,11 +476,13 @@ import { Tooltip } from '@/components/ui/Tooltip';
 ## **10. 🚀 التشغيل**
 
 ### **تثبيت المكتبات:**
+
 ```bash
 npm install
 ```
 
 ### **تشغيل التطوير:**
+
 ```bash
 # Next.js
 npm run dev
@@ -472,6 +495,7 @@ npm run dev:all
 ```
 
 ### **متغيرات البيئة:**
+
 ```env
 NEXT_PUBLIC_APP_URL=http://localhost:3050
 NEXT_PUBLIC_WS_URL=http://localhost:3051

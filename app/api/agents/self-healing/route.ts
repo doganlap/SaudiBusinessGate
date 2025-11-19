@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+export const runtime = 'nodejs';
 import SelfHealingAgent from '@/lib/agents/self-healing-agent';
 
 let healingAgent: SelfHealingAgent | null = null;

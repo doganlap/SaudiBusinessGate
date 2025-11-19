@@ -19,6 +19,7 @@ All backend APIs and frontend pages are now integrated through a unified API cli
 **Location**: `lib/api-client.ts`
 
 ### Features
+
 - ✅ Single axios instance with interceptors
 - ✅ Automatic tenant ID injection
 - ✅ Error handling (401, 403, 404, 500)
@@ -52,7 +53,9 @@ const contact = await api.crm.contacts.create(data);
 ## 📋 Module Integration Map
 
 ### Finance Module
+
 **APIs**: `/api/finance/*`
+
 - ✅ Accounts: `api.finance.accounts.*`
 - ✅ Transactions: `api.finance.transactions.*`
 - ✅ Invoices: `api.finance.invoices.*`
@@ -62,7 +65,8 @@ const contact = await api.crm.contacts.create(data);
 - ✅ Stats: `api.finance.stats()`
 - ✅ Reports: `api.finance.reports()`
 
-**Pages**: 
+**Pages**:
+
 - `/finance` - Finance dashboard
 - `/finance/accounts` - Chart of accounts
 - `/finance/transactions` - Transactions
@@ -80,7 +84,9 @@ const contact = await api.crm.contacts.create(data);
 ---
 
 ### Sales Module
+
 **APIs**: `/api/sales/*`
+
 - ✅ Leads: `api.sales.leads.*`
 - ✅ Deals: `api.sales.deals.*`
 - ✅ Pipeline: `api.sales.pipeline()`
@@ -88,6 +94,7 @@ const contact = await api.crm.contacts.create(data);
 - ✅ Orders: `api.sales.orders.*`
 
 **Pages**:
+
 - `/sales` - Sales dashboard
 - `/sales/pipeline` - Sales pipeline
 - `/sales/leads` - Leads
@@ -101,12 +108,15 @@ const contact = await api.crm.contacts.create(data);
 ---
 
 ### HR Module
+
 **APIs**: `/api/hr/*`
+
 - ✅ Employees: `api.hr.employees.*`
 - ✅ Payroll: `api.hr.payroll.*`
 - ✅ Attendance: `api.hr.attendance.*`
 
 **Pages**:
+
 - `/hr` - HR dashboard
 - `/hr/employees` - Employees
 - `/hr/payroll` - Payroll
@@ -115,12 +125,15 @@ const contact = await api.crm.contacts.create(data);
 ---
 
 ### Procurement Module
+
 **APIs**: `/api/procurement/*`
+
 - ✅ Orders: `api.procurement.orders.*`
 - ✅ Vendors: `api.procurement.vendors.*`
 - ✅ Inventory: `api.procurement.inventory.*`
 
 **Pages**:
+
 - `/procurement` - Procurement dashboard
 - `/procurement/orders` - Purchase orders
 - `/procurement/vendors` - Vendors
@@ -129,7 +142,9 @@ const contact = await api.crm.contacts.create(data);
 ---
 
 ### CRM Module
+
 **APIs**: `/api/crm/*`
+
 - ✅ Customers: `api.crm.customers.*`
 - ✅ Contacts: `api.crm.contacts.*`
 - ✅ Deals: `api.crm.deals.*`
@@ -137,6 +152,7 @@ const contact = await api.crm.contacts.create(data);
 - ✅ Activities: `api.crm.activities.*`
 
 **Pages**:
+
 - `/crm` - CRM dashboard
 - `/crm/customers` - Customers
 - `/crm/contacts` - Contacts
@@ -146,12 +162,15 @@ const contact = await api.crm.contacts.create(data);
 ---
 
 ### GRC Module
+
 **APIs**: `/api/grc/*`
+
 - ✅ Frameworks: `api.grc.frameworks.*`
 - ✅ Controls: `api.grc.controls.*`
 - ✅ Analytics: `api.grc.analytics()`
 
 **Pages**:
+
 - `/grc` - GRC dashboard
 - `/grc/frameworks` - Frameworks
 - `/grc/controls` - Controls
@@ -161,25 +180,31 @@ const contact = await api.crm.contacts.create(data);
 ---
 
 ### Dashboard
+
 **APIs**: `/api/dashboard/*`
+
 - ✅ Stats: `api.dashboard.stats()`
 - ✅ Activity: `api.dashboard.activity()`
 - ✅ Widgets: `api.dashboard.widgets()`
 
 **Pages**:
+
 - `/dashboard` - Main dashboard
 - `/[lng]/(platform)/dashboard` - Platform dashboard
 
 ---
 
 ### Workflows
+
 **APIs**: `/api/workflows/*`
+
 - ✅ List: `api.workflows.list()`
 - ✅ Get: `api.workflows.get(id)`
 - ✅ Create: `api.workflows.create(data)`
 - ✅ Execute: `api.workflows.execute(id, data)`
 
 **Pages**:
+
 - `/workflows` - Workflows list
 - `/workflows/create` - Create workflow
 - `/workflows/[id]` - Workflow details
@@ -188,12 +213,15 @@ const contact = await api.crm.contacts.create(data);
 ---
 
 ### Analytics
+
 **APIs**: `/api/analytics/*`
+
 - ✅ Financial: `api.analytics.financial(params)`
 - ✅ Customer: `api.analytics.customer(params)`
 - ✅ AI Insights: `api.analytics.aiInsights()`
 
 **Pages**:
+
 - `/analytics/financial-analytics` - Financial analytics
 - `/analytics/customer-analytics` - Customer analytics
 - `/analytics/ai-insights` - AI insights
@@ -201,12 +229,15 @@ const contact = await api.crm.contacts.create(data);
 ---
 
 ### Billing
+
 **APIs**: `/api/billing/*`
+
 - ✅ Plans: `api.billing.plans()`
 - ✅ Checkout: `api.billing.checkout(data)`
 - ✅ Portal: `api.billing.portal()`
 
 **Pages**:
+
 - `/billing` - Billing dashboard
 - `/billing/checkout` - Checkout
 - `/billing/portal` - Customer portal
@@ -215,13 +246,16 @@ const contact = await api.crm.contacts.create(data);
 ---
 
 ### Authentication
+
 **APIs**: `/api/auth/*`
+
 - ✅ Login: `api.auth.login(data)`
 - ✅ Register: `api.auth.register(data)`
 - ✅ Me: `api.auth.me()`
 - ✅ Logout: `api.auth.logout()`
 
 **Pages**:
+
 - `/login` - Login page
 - `/register` - Registration page
 - `/auth/signin` - Sign in
@@ -317,4 +351,3 @@ export default function FinanceTransactionsPage() {
 **Status**: ✅ **INTEGRATION READY**  
 **API Client**: `lib/api-client.ts`  
 **Documentation**: Complete
-

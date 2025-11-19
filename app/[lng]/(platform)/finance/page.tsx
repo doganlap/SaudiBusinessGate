@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { t } from '@/lib/i18n';
 import { 
   Calculator, 
   CreditCard, 
@@ -18,100 +19,95 @@ import {
   ChevronRight
 } from 'lucide-react';
 
-const financeModules = [
+// Finance modules with i18n keys matching the documented routes in docs/PAGES.md
+const getFinanceModules = (lng: string) => [
   {
-    name: 'Dashboard',
+    key: 'dashboard',
+    name: t('finance.dashboard', lng as any),
     href: '/dashboard',
     icon: BarChart3,
-    description: 'Financial overview and key metrics',
+    description: t('finance.dashboardDesc', lng as any),
     color: 'bg-blue-50 border-blue-200 text-blue-700',
     bgColor: 'bg-blue-500'
   },
   {
-    name: 'Accounts',
+    key: 'accounts',
+    name: t('finance.accounts', lng as any),
     href: '/accounts',
     icon: Building2,
-    description: 'Chart of accounts management',
+    description: t('finance.accountsDesc', lng as any),
     color: 'bg-green-50 border-green-200 text-green-700',
     bgColor: 'bg-green-500'
   },
   {
-    name: 'Accounts Payable',
-    href: '/accounts-payable',
-    icon: CreditCard,
-    description: 'Manage vendor payments and bills',
-    color: 'bg-red-50 border-red-200 text-red-700',
-    bgColor: 'bg-red-500'
-  },
-  {
-    name: 'Accounts Receivable',
-    href: '/accounts-receivable',
-    icon: Receipt,
-    description: 'Manage customer invoices and payments',
-    color: 'bg-purple-50 border-purple-200 text-purple-700',
-    bgColor: 'bg-purple-500'
-  },
-  {
-    name: 'Budgets',
+    key: 'budgets',
+    name: t('finance.budgets', lng as any),
     href: '/budgets',
     icon: PiggyBank,
-    description: 'Budget planning and expense tracking',
+    description: t('finance.budgetsDesc', lng as any),
     color: 'bg-yellow-50 border-yellow-200 text-yellow-700',
     bgColor: 'bg-yellow-500'
   },
   {
-    name: 'Transactions',
+    key: 'transactions',
+    name: t('finance.transactions', lng as any),
     href: '/transactions',
     icon: ArrowRightLeft,
-    description: 'Transaction history and management',
+    description: t('finance.transactionsDesc', lng as any),
     color: 'bg-indigo-50 border-indigo-200 text-indigo-700',
     bgColor: 'bg-indigo-500'
   },
   {
-    name: 'Reports',
+    key: 'reports',
+    name: t('finance.reports', lng as any),
     href: '/reports',
     icon: FileText,
-    description: 'Financial reports and analytics',
+    description: t('finance.reportsDesc', lng as any),
     color: 'bg-gray-50 border-gray-200 text-gray-700',
     bgColor: 'bg-gray-500'
   },
   {
-    name: 'Cost Centers',
-    href: '/cost-centers',
-    icon: Calculator,
-    description: 'Cost center management and allocation',
-    color: 'bg-teal-50 border-teal-200 text-teal-700',
-    bgColor: 'bg-teal-500'
-  },
-  {
-    name: 'Analytics',
+    key: 'analytics',
+    name: t('finance.analytics', lng as any),
     href: '/analytics',
     icon: TrendingUp,
-    description: 'Financial analytics and insights',
+    description: t('finance.analyticsDesc', lng as any),
     color: 'bg-orange-50 border-orange-200 text-orange-700',
     bgColor: 'bg-orange-500'
   },
   {
-    name: 'Cash Flow',
+    key: 'banking',
+    name: t('finance.banking', lng as any),
+    href: '/banking',
+    icon: CreditCard,
+    description: t('finance.bankingDesc', lng as any),
+    color: 'bg-red-50 border-red-200 text-red-700',
+    bgColor: 'bg-red-500'
+  },
+  {
+    key: 'cashFlow',
+    name: t('finance.cashFlow', lng as any),
     href: '/cash-flow',
     icon: DollarSign,
-    description: 'Cash flow statement and analysis',
+    description: t('finance.cashFlowDesc', lng as any),
     color: 'bg-cyan-50 border-cyan-200 text-cyan-700',
     bgColor: 'bg-cyan-500'
   },
   {
-    name: 'Acceptance',
-    href: '/acceptance',
-    icon: CheckCircle,
-    description: 'Transaction approval and acceptance',
-    color: 'bg-emerald-50 border-emerald-200 text-emerald-700',
-    bgColor: 'bg-emerald-500'
+    key: 'costCenters',
+    name: t('finance.costCenters', lng as any),
+    href: '/cost-centers',
+    icon: Calculator,
+    description: t('finance.costCentersDesc', lng as any),
+    color: 'bg-teal-50 border-teal-200 text-teal-700',
+    bgColor: 'bg-teal-500'
   }
 ];
 
 export default function FinancePage() {
   const params = useParams();
   const lng = params.lng as string;
+  const financeModules = getFinanceModules(lng);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -120,9 +116,9 @@ export default function FinancePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Finance Management</h1>
+              <h1 className="text-3xl font-bold text-gray-900">{t('finance.title', lng as any)}</h1>
               <p className="mt-1 text-sm text-gray-500">
-                Comprehensive financial management system for enterprise operations
+                {t('finance.description', lng as any)}
               </p>
             </div>
             <div className="flex items-center gap-4">

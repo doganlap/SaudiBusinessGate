@@ -19,7 +19,7 @@ const SAUDI_TAX_CODES = {
 
 export async function GET(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
+    const tenantId = request.headers.get('x-tenant-id') || 'default-tenant';
     const { searchParams } = new URL(request.url);
     
     const filters = {
@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
+    const tenantId = request.headers.get('x-tenant-id') || 'default-tenant';
     const body = await request.json();
     
     // Validate required fields
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
 // Saudi VAT Return Calculation
 export async function PUT(request: NextRequest) {
   try {
-    const tenantId = request.headers.get('tenant-id') || 'default-tenant';
+    const tenantId = request.headers.get('x-tenant-id') || 'default-tenant';
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action');
     

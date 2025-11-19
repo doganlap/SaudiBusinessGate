@@ -3,15 +3,18 @@
 ## Files Responsible for Showing Pages in Navigator
 
 ### 1. **Navigation Configuration** (Data Source)
+
 **File**: `apps/web/src/components/layout/MultiTenantNavigation.jsx`
 
 **Purpose**: Defines all navigation items and menu structure
+
 - Exports `getNavigationForRole()` function
 - Provides role-based navigation (platform_admin, tenant_admin, team_member)
 - Defines paths, icons, categories for all menu items
 - **65+ navigation items** defined
 
 **Key Function**:
+
 ```javascript
 export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
   // Returns navigation items based on user role
@@ -21,15 +24,18 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
 ---
 
 ### 2. **Sidebar Component** (UI Renderer)
+
 **File**: `apps/web/src/components/layout/Sidebar.jsx`
 
 **Purpose**: Renders the sidebar UI and displays navigation items
+
 - Imports `getNavigationForRole` from MultiTenantNavigation
 - Renders navigation items in collapsible groups
 - Handles favorites, recent items, keyboard navigation
 - **✅ NOW FULLY INTEGRATED** - All features use `getNavigationForRole()`
 
 **Integration Status**:
+
 - ✅ Main Navigation: Uses `getNavigationForRole()` (line 1297)
 - ✅ Favorites Section: Uses `getNavigationForRole()` (line 1237) - **FIXED**
 - ✅ Recent Items: Uses `getNavigationForRole()` (line 1275) - **FIXED**
@@ -39,12 +45,14 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
 
 ## ✅ Integration Status: **FULLY INTEGRATED**
 
-### What Was Fixed:
+### What Was Fixed
+
 1. ✅ Favorites section now uses `getNavigationForRole()` instead of hardcoded array
 2. ✅ Recent items now uses `getNavigationForRole()` instead of hardcoded array
 3. ✅ Keyboard navigation now uses `getNavigationForRole()` instead of hardcoded array
 
-### Current State:
+### Current State
+
 - **Single Source of Truth**: All navigation now comes from `MultiTenantNavigation.jsx`
 - **Role-Based**: Navigation adapts to user role automatically
 - **Consistent**: All features (main nav, favorites, recent, keyboard) use same data source
@@ -55,7 +63,9 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
 ## 📊 Navigation Paths
 
 ### Path Format
+
 All navigation paths use `/app/*` format matching React Router routes:
+
 - `/app/dashboard`
 - `/app/frameworks`
 - `/app/assessments`
@@ -68,6 +78,7 @@ All navigation paths use `/app/*` format matching React Router routes:
 - And 50+ more...
 
 ### Route Matching
+
 - ✅ Navigation paths match React Router routes in `App.jsx`
 - ✅ Middleware redirects configured for migrated routes
 - ✅ All paths use consistent `/app/*` format
@@ -77,9 +88,11 @@ All navigation paths use `/app/*` format matching React Router routes:
 ## 🎯 How to Add/Remove Pages from Navigator
 
 ### Step 1: Edit Navigation Configuration
+
 **File**: `apps/web/src/components/layout/MultiTenantNavigation.jsx`
 
 ### Step 2: Add Item to Appropriate Role Array
+
 ```javascript
 // For platform_admin (lines 39-123)
 platform_admin: [
@@ -98,11 +111,15 @@ platform_admin: [
 ```
 
 ### Step 3: Verify Route Exists
+
 **File**: `apps/web/src/App.jsx`
+
 - Ensure route exists: `<Route path="/app/new-feature" element={<Component />} />`
 
 ### Step 4: Verify Page Exists
+
 **File**: `apps/web/src/pages/index.js`
+
 - Ensure page is exported: `export { default as NewFeaturePage } from './path/NewFeaturePage.jsx'`
 
 ---
@@ -131,4 +148,3 @@ platform_admin: [
 
 **Status**: ✅ **FULLY INTEGRATED AND CORRECTED**
 **Last Updated**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-

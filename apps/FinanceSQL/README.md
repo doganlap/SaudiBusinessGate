@@ -7,9 +7,11 @@ This directory contains the complete SQL schema for the **Finance Autonomous Mod
 ## 📁 Files in This Directory
 
 ### 1. **01-finance-enhanced.sql**
+
 Complete finance database schema with double-entry bookkeeping system.
 
 **Tables:**
+
 - `financial_accounts` - Chart of accounts with hierarchy
 - `journal_entries` - Double-entry journal entries
 - `journal_entry_lines` - Individual debit/credit lines
@@ -20,6 +22,7 @@ Complete finance database schema with double-entry bookkeeping system.
 - `financial_reports` - Report generation
 
 **Features:**
+
 - Multi-tenant support
 - Double-entry bookkeeping validation
 - Automatic balance calculations
@@ -27,9 +30,11 @@ Complete finance database schema with double-entry bookkeeping system.
 - Sample data included
 
 ### 2. **07-ai-finance-agents.sql**
+
 Core AI Finance Agent system with autonomous workflow management.
 
 **Tables:**
+
 - `ai_finance_agents` - 8 AI agent definitions (CFO, Controller, Accountants, Specialists)
 - `ai_finance_workflows` - Autonomous workflow definitions
 - `ai_workflow_executions` - Workflow execution tracking
@@ -40,6 +45,7 @@ Core AI Finance Agent system with autonomous workflow management.
 - `ai_finance_rules` - Business rules and policies
 
 **The 8 AI Finance Agents:**
+
 1. **CFO Agent** (المدير المالي التنفيذي) - Authority Level 10/10
 2. **Controller Agent** (المراقب المالي) - Authority Level 8/10
 3. **Senior Accountant Agent** (محاسب أول) - Authority Level 6/10
@@ -50,9 +56,11 @@ Core AI Finance Agent system with autonomous workflow management.
 8. **Bookkeeper Agent** (محاسب مبتدئ) - Authority Level 3/10
 
 ### 3. **08-ai-agent-configurations.sql**
+
 Advanced configuration tables for AI agent system.
 
 **Tables:**
+
 - `ai_agent_layers` - Layer architecture (Perception, Brain, Action, Foundation)
 - `ai_agent_capabilities` - Agent capability definitions
 - `ai_agent_roles` - Role hierarchy and permissions
@@ -63,6 +71,7 @@ Advanced configuration tables for AI agent system.
 - `ai_agent_integrations` - External system integrations
 
 **Configuration Layers:**
+
 1. **Perception Layer** - Data capture and interpretation
 2. **Brain Layer** - LLM processing and reasoning
 3. **Action Layer** - Decision execution
@@ -71,16 +80,19 @@ Advanced configuration tables for AI agent system.
 ## 🚀 Installation Instructions
 
 ### Prerequisites
+
 - PostgreSQL 12 or higher
 - Database user with CREATE TABLE privileges
 - Multi-tenant database setup
 
 ### Step 1: Create Database
+
 ```sql
 CREATE DATABASE doganhub_finance;
 ```
 
 ### Step 2: Execute Schema Files in Order
+
 ```bash
 # Connect to database
 psql -U postgres -d doganhub_finance
@@ -92,6 +104,7 @@ psql -U postgres -d doganhub_finance
 ```
 
 ### Step 3: Verify Installation
+
 ```sql
 -- Check tables created
 SELECT table_name 
@@ -112,30 +125,35 @@ FROM ai_finance_workflows;
 ## 🎯 Key Features
 
 ### 1. **Autonomous Finance Operations**
+
 - Complete end-to-end automation
 - No human intervention required
 - Event-driven workflow execution
 - Automatic escalation when needed
 
 ### 2. **AI-Powered Decision Making**
+
 - LLM-based reasoning (GPT-4)
 - Chain-of-thought processing
 - Confidence scoring
 - Learning from experience
 
 ### 3. **Multi-Tenant Architecture**
+
 - Complete tenant isolation
 - Separate AI agents per tenant
 - Tenant-specific configurations
 - Scalable design
 
 ### 4. **Arabic-First Design**
+
 - All agent titles in Arabic and English
 - RTL support throughout
 - Cultural adaptation
 - Saudi business practices
 
 ### 5. **Complete Audit Trail**
+
 - Every action logged
 - Agent decision tracking
 - Compliance monitoring
@@ -144,6 +162,7 @@ FROM ai_finance_workflows;
 ## 📊 Sample Autonomous Workflows
 
 ### 1. Auto Invoice Processing
+
 ```
 Trigger: Invoice received
 Steps:
@@ -155,6 +174,7 @@ Steps:
 ```
 
 ### 2. Auto Payment Collection
+
 ```
 Trigger: Payment overdue > 30 days
 Steps:
@@ -165,6 +185,7 @@ Steps:
 ```
 
 ### 3. Auto Month-End Close
+
 ```
 Trigger: Last day of month
 Steps:
@@ -178,6 +199,7 @@ Steps:
 ## 🔧 Configuration
 
 ### Environment Variables
+
 ```env
 # Database Connection
 POSTGRES_HOST=localhost
@@ -193,7 +215,9 @@ LLM_TEMPERATURE=0.7
 ```
 
 ### Agent Configuration
+
 Each agent can be configured with:
+
 - Decision authority levels
 - Approval thresholds
 - LLM model and parameters
@@ -204,6 +228,7 @@ Each agent can be configured with:
 ## 📈 Performance Metrics
 
 The system tracks:
+
 - **Tasks completed** per agent
 - **Success rates** (94.5% - 98.8%)
 - **Average processing time** (5-45 seconds)
@@ -214,6 +239,7 @@ The system tracks:
 ## 🔒 Security & Compliance
 
 ### Security Features
+
 - Multi-tenant data isolation
 - Encrypted API keys
 - Audit trail for all actions
@@ -221,6 +247,7 @@ The system tracks:
 - Approval workflows for high-value transactions
 
 ### Compliance
+
 - SOX compliance ready
 - IFRS/GAAP support
 - GDPR data protection
@@ -230,13 +257,16 @@ The system tracks:
 ## 🛠️ Maintenance
 
 ### Regular Tasks
+
 1. **Monitor agent performance**
+
    ```sql
    SELECT * FROM ai_finance_agents 
    WHERE success_rate < 90.00;
    ```
 
 2. **Review failed workflows**
+
    ```sql
    SELECT * FROM ai_workflow_executions 
    WHERE status = 'failed' 
@@ -244,12 +274,14 @@ The system tracks:
    ```
 
 3. **Check system health**
+
    ```sql
    SELECT integration_code, health_status, last_health_check
    FROM ai_agent_integrations;
    ```
 
 ### Backup Recommendations
+
 - Daily backups of all tables
 - Transaction log backups every hour
 - Keep 30 days of backups
@@ -258,12 +290,14 @@ The system tracks:
 ## 📚 Additional Resources
 
 ### Related Files
+
 - `/lib/services/ai-finance-agents.service.ts` - Agent service layer
 - `/lib/services/ai-agent-config.service.ts` - Configuration service
 - `/app/api/ai/finance-agents/route.ts` - API endpoints
 - `/lib/config/ai-agent-constants.ts` - Configuration constants
 
 ### Documentation
+
 - See main project README for system overview
 - Check API documentation for endpoint details
 - Review service layer code for implementation examples
@@ -271,6 +305,7 @@ The system tracks:
 ## 🤝 Support
 
 For issues or questions:
+
 1. Check the main project documentation
 2. Review the SQL schema comments
 3. Test with sample data provided

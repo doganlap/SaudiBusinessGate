@@ -6,6 +6,13 @@ export type Language = typeof languages[number];
 
 export const defaultLanguage: Language = 'ar'; // Arabic as default
 
+/**
+ * Get language direction (RTL for Arabic, LTR for English)
+ */
+export function getLanguageDirection(language: Language): 'rtl' | 'ltr' {
+  return language === 'ar' ? 'rtl' : 'ltr';
+}
+
 // Translation dictionaries
 const translations = {
   en: {
@@ -65,6 +72,16 @@ const translations = {
     'finance.tax': 'Tax Management',
     'finance.cashFlow': 'Cash Flow',
     'finance.costCenters': 'Cost Centers',
+    'finance.dashboard': 'Dashboard',
+    'finance.dashboardDesc': 'Financial overview and key metrics',
+    'finance.accountsDesc': 'Chart of accounts management',
+    'finance.transactionsDesc': 'Transaction history and management',
+    'finance.budgetsDesc': 'Budget planning and expense tracking',
+    'finance.reportsDesc': 'Financial reports and analytics',
+    'finance.analyticsDesc': 'Financial analytics and insights',
+    'finance.bankingDesc': 'Banking operations and reconciliation',
+    'finance.cashFlowDesc': 'Cash flow statement and analysis',
+    'finance.costCentersDesc': 'Cost center management and allocation',
     
     // Sales
     'sales.title': 'Sales',
@@ -147,6 +164,16 @@ const translations = {
     'finance.tax': 'إدارة الضرائب',
     'finance.cashFlow': 'التدفق النقدي',
     'finance.costCenters': 'مراكز التكلفة',
+    'finance.dashboard': 'لوحة التحكم',
+    'finance.dashboardDesc': 'نظرة عامة مالية ومؤشرات الأداء الرئيسية',
+    'finance.accountsDesc': 'إدارة دليل الحسابات',
+    'finance.transactionsDesc': 'تاريخ المعاملات وإدارتها',
+    'finance.budgetsDesc': 'تخطيط الميزانية وتتبع المصروفات',
+    'finance.reportsDesc': 'التقارير المالية والتحليلات',
+    'finance.analyticsDesc': 'التحليلات المالية والرؤى',
+    'finance.bankingDesc': 'العمليات المصرفية والمطابقة',
+    'finance.cashFlowDesc': 'بيان التدفق النقدي والتحليل',
+    'finance.costCentersDesc': 'إدارة مراكز التكلفة والتخصيص',
     
     // Sales
     'sales.title': 'المبيعات',

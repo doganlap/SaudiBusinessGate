@@ -196,7 +196,24 @@ export class CompleteFinanceService {
     offset?: number;
   }): Promise<FinancialAccount[]> {
     let sql = `
-      SELECT * FROM financial_accounts 
+      SELECT 
+        id,
+        tenant_id,
+        account_code,
+        account_name_en AS account_name,
+        account_type,
+        parent_account_id,
+        balance,
+        is_active,
+        description,
+        created_at,
+        updated_at,
+        NULL::text AS account_subtype,
+        0::numeric AS opening_balance,
+        false AS is_system_account,
+        NULL::text AS tax_code,
+        NULL::uuid AS created_by
+      FROM chart_of_accounts 
       WHERE tenant_id = $1
     `;
     const params: any[] = [tenantId];
@@ -239,17 +256,20 @@ export class CompleteFinanceService {
 
   static async createAccount(tenantId: string, accountData: Omit<FinancialAccount, 'id' | 'tenant_id' | 'created_at' | 'updated_at'>): Promise<FinancialAccount> {
     const result = await query<FinancialAccount>(
-      `INSERT INTO financial_accounts (
-        tenant_id, account_code, account_name, account_type, account_subtype,
-        parent_account_id, balance, opening_balance, is_active, is_system_account,
-        description, tax_code, created_by
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
-      RETURNING *`,
+      `INSERT INTO chart_of_accounts (
+        tenant_id, account_code, account_name_en, account_type,
+        parent_account_id, balance, is_active, description
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING 
+        id, tenant_id, account_code, account_name_en AS account_name, account_type,
+        parent_account_id, balance, is_active, description,
+        CURRENT_TIMESTAMP AS created_at, CURRENT_TIMESTAMP AS updated_at,
+        NULL::text AS account_subtype, 0::numeric AS opening_balance, false AS is_system_account,
+        NULL::text AS tax_code, NULL::uuid AS created_by`,
       [
         tenantId, accountData.account_code, accountData.account_name, accountData.account_type,
-        accountData.account_subtype, accountData.parent_account_id, accountData.balance,
-        accountData.opening_balance, accountData.is_active, accountData.is_system_account,
-        accountData.description, accountData.tax_code, accountData.created_by
+        accountData.parent_account_id, accountData.balance,
+        accountData.is_active, accountData.description
       ]
     );
     return result.rows[0];
@@ -280,7 +300,7 @@ export class CompleteFinanceService {
         ) as lines
       FROM journal_entries je
       LEFT JOIN journal_entry_lines jel ON je.id = jel.journal_entry_id
-      LEFT JOIN financial_accounts fa ON jel.account_id = fa.id
+      LEFT JOIN chart_of_accounts fa ON jel.account_id = fa.id
       WHERE je.tenant_id = $1
     `;
     const params: any[] = [tenantId];
@@ -402,7 +422,7 @@ export class CompleteFinanceService {
       const lines = await client.query(
         `SELECT jel.*, fa.account_type 
          FROM journal_entry_lines jel
-         JOIN financial_accounts fa ON jel.account_id = fa.id
+         JOIN chart_of_accounts fa ON jel.account_id = fa.id
          WHERE jel.journal_entry_id = $1`,
         [entryId]
       );
@@ -416,7 +436,7 @@ export class CompleteFinanceService {
         const actualChange = balanceChange * multiplier;
 
         await client.query(
-          `UPDATE financial_accounts 
+          `UPDATE chart_of_accounts 
            SET balance = balance + $3
            WHERE id = $1 AND tenant_id = $2`,
           [line.account_id, tenantId, actualChange]
@@ -545,16 +565,17 @@ export class CompleteFinanceService {
 
       const invoice = invoiceResult.rows[0];
 
-      // Create invoice lines
       for (let i = 0; i < invoiceData.lines.length; i++) {
         const line = invoiceData.lines[i];
+        const lineTotal = (line.quantity || 0) * (line.unit_price || 0);
+        const vatPercent = line.tax_rate || 0;
         await client.query(
-          `INSERT INTO invoice_lines (
-            tenant_id, invoice_id, line_number, description, quantity,
-            unit_price, tax_rate, account_id
+          `INSERT INTO invoice_items (
+            invoice_id, item_description, quantity, unit_price,
+            discount_percent, vat_percent, line_total, account_code
           ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [tenantId, invoice.id, i + 1, line.description, line.quantity,
-           line.unit_price, line.tax_rate || 0, line.account_id]
+          [invoice.id, line.description, line.quantity, line.unit_price,
+           0, vatPercent, lineTotal, null]
         );
       }
 
@@ -581,7 +602,7 @@ export class CompleteFinanceService {
           WHEN fa.account_type IN ('asset', 'expense') AND fa.balance < 0 THEN ABS(fa.balance)
           ELSE 0
         END as credit_balance
-      FROM financial_accounts fa
+      FROM chart_of_accounts fa
       WHERE fa.tenant_id = $1 AND fa.is_active = true
       ORDER BY fa.account_code`,
       [tenantId]
@@ -594,7 +615,7 @@ export class CompleteFinanceService {
     const result = await query(
       `SELECT 
         fa.account_type,
-        fa.account_name,
+        fa.account_name_en AS account_name,
         fa.account_code,
         COALESCE(SUM(
           CASE 
@@ -602,7 +623,7 @@ export class CompleteFinanceService {
             ELSE -jel.debit_amount
           END
         ), 0) as amount
-      FROM financial_accounts fa
+      FROM chart_of_accounts fa
       LEFT JOIN journal_entry_lines jel ON fa.id = jel.account_id
       LEFT JOIN journal_entries je ON jel.journal_entry_id = je.id
       WHERE fa.tenant_id = $1 
@@ -610,7 +631,7 @@ export class CompleteFinanceService {
         AND fa.is_active = true
         AND (je.entry_date BETWEEN $2 AND $3 OR je.entry_date IS NULL)
         AND (je.status = 'posted' OR je.status IS NULL)
-      GROUP BY fa.account_type, fa.account_name, fa.account_code
+      GROUP BY fa.account_type, fa.account_name_en, fa.account_code
       ORDER BY fa.account_type, fa.account_code`,
       [tenantId, startDate, endDate]
     );
@@ -636,11 +657,11 @@ export class CompleteFinanceService {
     const result = await query(
       `SELECT 
         fa.account_type,
-        fa.account_subtype,
-        fa.account_name,
+        NULL::text AS account_subtype,
+        fa.account_name_en AS account_name,
         fa.account_code,
         fa.balance
-      FROM financial_accounts fa
+      FROM chart_of_accounts fa
       WHERE fa.tenant_id = $1 
         AND fa.account_type IN ('asset', 'liability', 'equity')
         AND fa.is_active = true
@@ -686,7 +707,7 @@ export class CompleteFinanceService {
           ELSE 'Other'
         END as vat_category
       FROM tax_records tr
-      LEFT JOIN financial_accounts fa ON tr.account_id = fa.id
+      LEFT JOIN chart_of_accounts fa ON tr.account_id = fa.id
       WHERE tr.tenant_id = $1
     `;
     const params: any[] = [tenantId];

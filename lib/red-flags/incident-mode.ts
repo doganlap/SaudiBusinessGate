@@ -1,5 +1,7 @@
 // Red Flags Incident Mode - نظام الاحتواء الفوري
-import { DatabaseService } from '@/lib/services/database.service';
+import { query, transaction } from '@/lib/db/connection';
+import { PoolClient } from 'pg';
+import crypto from 'crypto';
 
 export interface IncidentContext {
   tenantId: string;
@@ -21,60 +23,51 @@ export interface IncidentResponse {
 }
 
 class IncidentModeService {
-  private db: DatabaseService;
-
-  constructor() {
-    this.db = new DatabaseService();
-  }
-
   // 0) تفعيل وضع الحادث الفوري
   async activateIncidentMode(context: IncidentContext): Promise<IncidentResponse> {
     const incidentId = `INC-${Date.now()}-${context.flagType}`;
-    
+
     try {
       // بدء المعاملة
-      await this.db.beginTransaction();
+      return await transaction(async (client: PoolClient) => {
 
-      // 1. إيقاف العمليات عالية الخطورة
-      await this.freezeHighRiskOperations(context);
+        // 1. إيقاف العمليات عالية الخطورة
+        await this.freezeHighRiskOperations(client, context);
 
-      // 2. التقاط لقطة الأدلة
-      const evidenceSnapshot = await this.captureEvidenceSnapshot(context);
+        // 2. التقاط لقطة الأدلة
+        const evidenceSnapshot = await this.captureEvidenceSnapshot(client, context);
 
-      // 3. الإشعارات الفورية
-      const notifications = await this.sendImmediateNotifications(context, incidentId);
+        // 3. الإشعارات الفورية
+        const notifications = await this.sendImmediateNotifications(context, incidentId);
 
-      // 4. تسجيل الحادث
-      await this.logIncident(incidentId, context, evidenceSnapshot);
+        // 4. تسجيل الحادث
+        await this.logIncident(client, incidentId, context, evidenceSnapshot);
 
-      // 5. تفعيل الوكلاء المناسبين
-      await this.triggerAgents(context, incidentId);
+        // 5. تفعيل الوكلاء المناسبين
+        await this.triggerAgents(client, context, incidentId);
 
-      await this.db.commitTransaction();
-
-      return {
-        incidentId,
-        containmentActions: await this.getContainmentActions(context),
-        notificationsSent: notifications,
-        evidenceSnapshot,
-        nextSteps: await this.getNextSteps(context)
-      };
-
+        return {
+          incidentId,
+          containmentActions: await this.getContainmentActions(context),
+          notificationsSent: notifications,
+          evidenceSnapshot,
+          nextSteps: await this.getNextSteps(context)
+        };
+      });
     } catch (error) {
-      await this.db.rollbackTransaction();
       console.error('❌ Incident Mode Activation Failed:', error);
       throw error;
     }
   }
 
   // إيقاف العمليات عالية الخطورة
-  private async freezeHighRiskOperations(context: IncidentContext): Promise<void> {
+  private async freezeHighRiskOperations(client: PoolClient, context: IncidentContext): Promise<void> {
     const { tenantId, flagType, entityId } = context;
 
     switch (flagType) {
       case 'accounting_unbalanced':
         // إيقاف ترحيل القيود للدفعة المتأثرة
-        await this.db.query(`
+        await client.query(`
           UPDATE tenant_settings 
           SET posting_enabled = false, 
               freeze_reason = 'Unbalanced GL detected',
@@ -85,8 +78,8 @@ class IncidentModeService {
 
       case 'duplicate_transaction':
         // تعليم الحركة كمشبوهة
-        await this.db.query(`
-          UPDATE payments 
+        await client.query(`
+          UPDATE payments
           SET status = 'duplicate_suspect',
               flagged_at = NOW(),
               flag_reason = 'Duplicate transaction detected'
@@ -96,8 +89,8 @@ class IncidentModeService {
 
       case 'sanctioned_entity':
         // تجميد العلاقة والأرصدة
-        await this.db.query(`
-          UPDATE counterparties 
+        await client.query(`
+          UPDATE counterparties
           SET status = 'frozen',
               freeze_reason = 'Sanctions screening hit',
               frozen_at = NOW()
@@ -107,8 +100,8 @@ class IncidentModeService {
 
       case 'audit_tampered':
         // قفل صلاحيات الكتابة
-        await this.db.query(`
-          UPDATE user_permissions 
+        await client.query(`
+          UPDATE user_permissions
           SET write_access = false,
               suspended_reason = 'Audit trail tampering detected',
               suspended_at = NOW()
@@ -118,8 +111,8 @@ class IncidentModeService {
 
       case 'large_unexplained':
         // وضع الحركة في الانتظار
-        await this.db.query(`
-          UPDATE payments 
+        await client.query(`
+          UPDATE payments
           SET status = 'on_hold',
               hold_reason = 'Large transaction requires documentation',
               held_at = NOW()
@@ -129,8 +122,8 @@ class IncidentModeService {
 
       case 'rapid_succession':
         // تعليم الحساب للمراجعة اليدوية
-        await this.db.query(`
-          UPDATE accounts 
+        await client.query(`
+          UPDATE accounts
           SET manual_review_required = true,
               review_reason = 'Rapid transaction succession detected',
               flagged_at = NOW()
@@ -141,10 +134,10 @@ class IncidentModeService {
   }
 
   // التقاط لقطة الأدلة (WORM)
-  private async captureEvidenceSnapshot(context: IncidentContext): Promise<string> {
+  private async captureEvidenceSnapshot(client: PoolClient, context: IncidentContext): Promise<string> {
     const snapshotId = `SNAP-${Date.now()}`;
     const timestamp = new Date().toISOString();
-    
+
     // التقاط البيانات ذات الصلة
     const evidenceData = {
       context,
@@ -158,7 +151,7 @@ class IncidentModeService {
     const evidenceHash = this.calculateHash(JSON.stringify(evidenceData));
 
     // حفظ في مخزن WORM
-    await this.db.query(`
+    await client.query(`
       INSERT INTO evidence_snapshots (
         snapshot_id, incident_type, tenant_id, entity_id,
         evidence_data, evidence_hash, created_at, is_immutable
@@ -198,8 +191,8 @@ class IncidentModeService {
   }
 
   // تسجيل الحادث
-  private async logIncident(incidentId: string, context: IncidentContext, evidenceSnapshot: string): Promise<void> {
-    await this.db.query(`
+  private async logIncident(client: PoolClient, incidentId: string, context: IncidentContext, evidenceSnapshot: string): Promise<void> {
+    await client.query(`
       INSERT INTO security_incidents (
         incident_id, tenant_id, flag_type, severity, entity_id, entity_type,
         detected_at, evidence_snapshot_id, status, created_at
@@ -211,7 +204,7 @@ class IncidentModeService {
   }
 
   // تفعيل الوكلاء المناسبين
-  private async triggerAgents(context: IncidentContext, incidentId: string): Promise<void> {
+  private async triggerAgents(client: PoolClient, context: IncidentContext, incidentId: string): Promise<void> {
     const agentMappings = {
       'accounting_unbalanced': 'FIN_REPAIR_UNBALANCED',
       'duplicate_transaction': 'FIN_DEDUP_REVIEW',
@@ -222,11 +215,11 @@ class IncidentModeService {
     };
 
     const jobType = agentMappings[context.flagType as keyof typeof agentMappings];
-    
+
     if (jobType) {
-      await this.db.query(`
+      await client.query(`
         INSERT INTO agent_jobs (
-          job_id, job_type, tenant_id, incident_id, priority, 
+          job_id, job_type, tenant_id, incident_id, priority,
           input_data, status, created_at
         ) VALUES ($1, $2, $3, $4, $5, $6, 'queued', NOW())
       `, [
@@ -316,63 +309,80 @@ class IncidentModeService {
   // مساعدات خاصة
   private async captureRelevantData(context: IncidentContext): Promise<any> {
     // التقاط البيانات ذات الصلة حسب نوع العلم
-    switch (context.flagType) {
-      case 'accounting_unbalanced':
-        const res1 = await this.db.query(`
-          SELECT * FROM gl_entries 
-          WHERE tenant_id = $1 AND journal_id = $2
-        `, [context.tenantId, context.entityId]);
-        return (res1.rows ?? res1);
-      
-      case 'duplicate_transaction':
-        const res2 = await this.db.query(`
-          SELECT * FROM payments 
-          WHERE tenant_id = $1 AND (id = $2 OR reference = (
-            SELECT reference FROM payments WHERE id = $2
-          ))
-        `, [context.tenantId, context.entityId]);
-        return (res2.rows ?? res2);
-      
-      default:
-        return { message: 'Generic data capture for ' + context.flagType };
+    try {
+      switch (context.flagType) {
+        case 'accounting_unbalanced':
+          const res1 = await query(`
+            SELECT * FROM gl_entries
+            WHERE tenant_id = $1 AND journal_id = $2
+          `, [context.tenantId, context.entityId]);
+          return (res1.rows ?? res1);
+
+        case 'duplicate_transaction':
+          const res2 = await query(`
+            SELECT * FROM payments
+            WHERE tenant_id = $1 AND (id = $2 OR reference = (
+              SELECT reference FROM payments WHERE id = $2
+            ))
+          `, [context.tenantId, context.entityId]);
+          return (res2.rows ?? res2);
+
+        default:
+          return { message: 'Generic data capture for ' + context.flagType };
+      }
+    } catch (error) {
+      return { error: 'Failed to capture relevant data', message: String(error) };
     }
   }
 
   private async captureSystemLogs(context: IncidentContext): Promise<any> {
-    return await this.db.query(`
-      SELECT * FROM audit_logs 
-      WHERE tenant_id = $1 AND entity_id = $2 
-      AND created_at >= $3
-      ORDER BY created_at DESC LIMIT 100
-    `, [context.tenantId, context.entityId, new Date(Date.now() - 24*60*60*1000)]);
+    try {
+      const res = await query(`
+        SELECT * FROM audit_logs
+        WHERE tenant_id = $1 AND entity_id = $2
+        AND created_at >= $3
+        ORDER BY created_at DESC LIMIT 100
+      `, [context.tenantId, context.entityId, new Date(Date.now() - 24*60*60*1000)]);
+      return res.rows ?? res;
+    } catch (error) {
+      return { error: 'Failed to capture system logs', message: String(error) };
+    }
   }
 
   private async captureUserActions(context: IncidentContext): Promise<any> {
-    return await this.db.query(`
-      SELECT * FROM user_activities 
-      WHERE tenant_id = $1 AND entity_id = $2
-      AND created_at >= $3
-      ORDER BY created_at DESC LIMIT 50
-    `, [context.tenantId, context.entityId, new Date(Date.now() - 24*60*60*1000)]);
+    try {
+      const res = await query(`
+        SELECT * FROM user_activities
+        WHERE tenant_id = $1 AND entity_id = $2
+        AND created_at >= $3
+        ORDER BY created_at DESC LIMIT 50
+      `, [context.tenantId, context.entityId, new Date(Date.now() - 24*60*60*1000)]);
+      return res.rows ?? res;
+    } catch (error) {
+      return { error: 'Failed to capture user actions', message: String(error) };
+    }
   }
 
   private calculateHash(data: string): string {
-    const crypto = require('crypto');
     return crypto.createHash('sha256').update(data).digest('hex');
   }
 
   private async getNotificationRecipients(context: IncidentContext): Promise<any> {
-    const res = await this.db.query(`
-      SELECT notification_type, recipient_list 
-      FROM incident_notification_rules 
-      WHERE tenant_id = $1 AND flag_type = $2 AND severity = $3
-    `, [context.tenantId, context.flagType, context.severity]);
+    try {
+      const res = await query(`
+        SELECT notification_type, recipient_list
+        FROM incident_notification_rules
+        WHERE tenant_id = $1 AND flag_type = $2 AND severity = $3
+      `, [context.tenantId, context.flagType, context.severity]);
 
-    return {
-      slack: (res.rows ?? res).find((r: any) => r.notification_type === 'slack')?.recipient_list || [],
-      email: (res.rows ?? res).find((r: any) => r.notification_type === 'email')?.recipient_list || [],
-      sms: (res.rows ?? res).find((r: any) => r.notification_type === 'sms')?.recipient_list || []
-    };
+      return {
+        slack: (res.rows ?? res).find((r: any) => r.notification_type === 'slack')?.recipient_list || [],
+        email: (res.rows ?? res).find((r: any) => r.notification_type === 'email')?.recipient_list || [],
+        sms: (res.rows ?? res).find((r: any) => r.notification_type === 'sms')?.recipient_list || []
+      };
+    } catch (error) {
+      return { slack: [], email: [], sms: [] };
+    }
   }
 
   private async sendSlackAlert(context: IncidentContext, incidentId: string, recipients: string[]): Promise<void> {

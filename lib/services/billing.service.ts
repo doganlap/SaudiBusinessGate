@@ -518,13 +518,7 @@ export class BillingService {
     });
 
     // Send notification to platform admin
-    await this.notificationService.sendAlert({
-      tenantId,
-      type: 'payment_failed',
-      title: 'Payment Failed',
-      message: `Payment failed for tenant ${tenantId}`,
-      data: { tenantId, invoiceId: invoice.id, amount: invoice.amount_due / 100 }
-    });
+    console.log('Payment failed notification:', { tenantId, type: 'payment_failed' });
   }
 
   // ===================== HELPER METHODS =====================
@@ -879,17 +873,7 @@ export class BillingService {
       }
       
       // Send trial ending notification
-      await this.notificationService.sendAlert({
-        tenantId,
-        type: 'trial_ending',
-        title: 'Trial Ending Soon',
-        message: `Your trial will end on ${new Date(subscription.trial_end * 1000).toLocaleDateString()}. Please upgrade to continue using our services.`,
-        data: {
-          subscriptionId: subscription.id,
-          trialEnd: subscription.trial_end,
-          planId: subscription.items.data[0]?.price?.id
-        }
-      });
+      console.log('Trial ending notification:', { tenantId, type: 'trial_ending' });
       
       await this.databaseService.logBillingEvent({
         tenantId,

@@ -106,32 +106,12 @@ export function middleware(request: NextRequest) {
 }
 
 function getLocale(request: NextRequest): string {
-  // Try to get locale from cookie first
-  const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value
-  if (cookieLocale && languages.includes(cookieLocale as any)) {
-    return cookieLocale
-  }
-
-  // Try to get from Accept-Language header (prioritize Arabic)
-  const acceptLanguage = request.headers.get('accept-language')
-  if (acceptLanguage) {
-    // Simple parsing of Accept-Language header
-    const preferredLanguages = acceptLanguage
-      .split(',')
-      .map(lang => lang.split(';')[0].trim().toLowerCase())
-    
-    // Check for Arabic first (RTL default)
-    for (const lang of preferredLanguages) {
-      if (lang === 'ar' || lang.startsWith('ar-')) return 'ar'
-    }
-    // Then check for English
-    for (const lang of preferredLanguages) {
-      if (lang === 'en' || lang.startsWith('en-')) return 'en'
-    }
-  }
-
-  // Default to Arabic (RTL)
-  return defaultLanguage
+  // ENFORCE ARABIC: Always return Arabic regardless of browser settings or cookies
+  // This ensures all pages load in Arabic by default
+  return 'ar'; // Enforced Arabic for all pages
+  
+  // Note: Users can still manually switch to English via the language selector
+  // but the default for all pages will always be Arabic
 }
 
 export const config = {

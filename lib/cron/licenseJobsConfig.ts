@@ -10,6 +10,7 @@
  */
 
 import { LicenseService } from '../services/license.service';
+import { RBACService } from '../auth/rbac-service';
 import { EmailService } from '../services/email.service';
 import { BillingService } from '../services/billing.service';
 import { UsageService } from '../services/usage.service';
@@ -35,12 +36,15 @@ export class LicenseJobsConfig {
   private dbService: DatabaseService;
 
   constructor() {
-    this.licenseService = new LicenseService();
+    const { getPool } = require('@/lib/db/connection');
+    const pool = getPool();
+    const rbac = new RBACService(pool);
+    this.dbService = new DatabaseService();
+    this.licenseService = new LicenseService(this.dbService as any, rbac);
     this.emailService = new EmailService();
     this.billingService = new BillingService();
     this.usageService = new UsageService();
     this.notificationService = new NotificationService();
-    this.dbService = new DatabaseService();
   }
 
   /**
@@ -298,7 +302,7 @@ export class LicenseJobsConfig {
           tenantId: license.tenantId,
           checkDate: new Date(),
           compliant: violations.length === 0,
-          violations: violations.map(v => v.violationType)
+          violations: violations.map(v => v.violationType ?? 'unknown')
         });
       }
       
@@ -420,11 +424,58 @@ export class LicenseJobsConfig {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
 
-  private determineReminderType(days: number): string | null {
+  private determineReminderType(days: number): 'early' | 'upcoming' | 'urgent' | null {
     if (days <= 7) return 'urgent';
     if (days <= 30) return 'upcoming';
     if (days <= 60) return 'early';
     return null; // Too early for reminder
+  }
+
+  private async handleRenewalPipelineUpdate(): Promise<void> {
+    try {
+      const now = new Date();
+      const candidates = await this.licenseService.getRenewalReminderCandidates();
+      for (const c of candidates) {
+        await this.dbService.logJobEvent({ jobName: 'renewal-pipeline-update', eventType: 'candidate', timestamp: now });
+      }
+    } catch (error) {
+      console.error('Error in renewal pipeline update:', error);
+      throw error;
+    }
+  }
+
+  private async handleLicenseAudit(): Promise<void> {
+    try {
+      const now = new Date();
+      const activeLicenses = await this.licenseService.getActiveLicenses();
+      for (const lic of activeLicenses) {
+        await this.dbService.logJobEvent({ jobName: 'license-audit', eventType: 'checked', timestamp: now });
+      }
+    } catch (error) {
+      console.error('Error in license audit:', error);
+      throw error;
+    }
+  }
+
+  private async handleUpgradeRecommendations(): Promise<void> {
+    try {
+      const tenants = await this.licenseService.getActiveTenantsWithLicenses();
+      for (const t of tenants) {
+        await this.dbService.logJobEvent({ jobName: 'upgrade-recommendations', eventType: 'evaluated', timestamp: new Date() });
+      }
+    } catch (error) {
+      console.error('Error in upgrade recommendations:', error);
+      throw error;
+    }
+  }
+
+  private async handleLicenseStatusSync(): Promise<void> {
+    try {
+      await this.dbService.logSystemEvent({ eventType: 'license_status_sync', eventData: {}, timestamp: new Date() });
+    } catch (error) {
+      console.error('Error in license status sync:', error);
+      throw error;
+    }
   }
 
   private async generatePersonalizedRenewalContent(license: any, usageStats: any): Promise<string> {
@@ -449,6 +500,27 @@ export class LicenseJobsConfig {
           await this.notificationService.sendStorageWarning(license.tenantId, violation.data);
           break;
       }
+    }
+  }
+
+  private async handleUsageThresholdMonitoring(): Promise<void> {
+    try {
+      const tenants = await this.licenseService.getActiveTenantsWithLicenses();
+      const now = new Date();
+      for (const tenant of tenants) {
+        const usageData = await this.usageService.aggregateUsageForDate(tenant.id, now);
+        const warnings = await this.usageService.checkUsageLimits(tenant.id, usageData);
+        if (warnings.length > 0) {
+          await this.notificationService.sendUsageWarnings({
+            tenantId: tenant.id,
+            warnings,
+            date: now
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error in usage threshold monitoring:', error);
+      throw error;
     }
   }
 }

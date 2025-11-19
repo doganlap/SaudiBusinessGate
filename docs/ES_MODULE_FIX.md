@@ -1,12 +1,14 @@
 # 🔧 ES Module Build Error Fix
 
 ## **المشكلة - Problem**
+
 ```
 Error: Failed to load external module postcss.config.js: 
 ReferenceError: module is not defined in ES module scope
 ```
 
 ## **السبب - Cause**
+
 عندما تم إضافة `"type": "module"` في `package.json` لإصلاح WebSocket Server، أصبحت جميع ملفات `.js` تُعامل كـ ES modules بدلاً من CommonJS.
 
 When `"type": "module"` was added to `package.json` to fix WebSocket Server, all `.js` files are now treated as ES modules instead of CommonJS.
@@ -14,6 +16,7 @@ When `"type": "module"` was added to `package.json` to fix WebSocket Server, all
 ## **✅ الحلول المطبقة - Applied Fixes**
 
 ### **1. PostCSS Configuration**
+
 ```javascript
 // Before (CommonJS)
 module.exports = {
@@ -33,6 +36,7 @@ export default {
 ```
 
 ### **2. Next.js Configuration**
+
 ```javascript
 // Before (CommonJS)
 module.exports = nextConfig;
@@ -42,6 +46,7 @@ export default nextConfig;
 ```
 
 ### **3. Jest Configuration**
+
 ```javascript
 // Before (CommonJS)
 module.exports = {
@@ -77,16 +82,19 @@ npm run dev
 ## **🔍 التحقق من الإصلاح - Verify Fix**
 
 ### **1. Build Test:**
+
 ```bash
 npm run build
 ```
 
 ### **2. Development Test:**
+
 ```bash
 npm run dev
 ```
 
 ### **3. Expected Result:**
+
 - ✅ No PostCSS configuration errors
 - ✅ Tailwind CSS loads correctly
 - ✅ Next.js builds successfully
@@ -98,6 +106,7 @@ npm run dev
 ### **إذا استمرت المشكلة - If Issues Persist:**
 
 #### **Option 1: Rename to .cjs**
+
 ```bash
 mv postcss.config.js postcss.config.cjs
 mv next.config.js next.config.cjs
@@ -105,12 +114,14 @@ mv jest.config.js jest.config.cjs
 ```
 
 #### **Option 2: Remove type: module**
+
 ```json
 // In package.json - remove this line:
 "type": "module"
 ```
 
 #### **Option 3: Use .mjs extension**
+
 ```bash
 mv postcss.config.js postcss.config.mjs
 mv next.config.js next.config.mjs
@@ -119,12 +130,14 @@ mv next.config.js next.config.mjs
 ## **🎯 الحل المفضل - Recommended Solution**
 
 الحل الحالي (تحويل إلى ES modules) هو الأفضل لأنه:
+
 - يحافظ على WebSocket Server يعمل
 - يجعل جميع الملفات متسقة
 - يدعم Next.js 16 بشكل أفضل
 - يحضر للمستقبل (ES modules هو المعيار)
 
 The current solution (converting to ES modules) is preferred because it:
+
 - Keeps WebSocket Server working
 - Makes all files consistent
 - Better supports Next.js 16
@@ -133,6 +146,7 @@ The current solution (converting to ES modules) is preferred because it:
 ## **✅ النتيجة المتوقعة - Expected Result**
 
 بعد تطبيق هذه الإصلاحات:
+
 - ✅ Build يعمل بدون أخطاء
 - ✅ PostCSS يحمل بشكل صحيح
 - ✅ Tailwind CSS يعمل
@@ -142,6 +156,7 @@ The current solution (converting to ES modules) is preferred because it:
 - ✅ ZATCA Integration يعمل
 
 After applying these fixes:
+
 - ✅ Build works without errors
 - ✅ PostCSS loads correctly
 - ✅ Tailwind CSS works

@@ -79,14 +79,14 @@ export async function generatePDFFromData(
     // Add headers
     const colWidth = (210 - 2 * margin) / headers.length;
     doc.setFontSize(10);
-    doc.setFont(undefined, 'bold');
+    doc.setFont('helvetica', 'bold');
     
     headers.forEach((header, index) => {
       doc.text(header, margin + index * colWidth, yPosition);
     });
     
     yPosition += 7;
-    doc.setFont(undefined, 'normal');
+    doc.setFont('helvetica', 'normal');
 
     // Add data rows
     data.forEach((row) => {
@@ -115,3 +115,8 @@ export async function generatePDFFromData(
     throw new Error('Failed to generate PDF. Please ensure jspdf is installed.');
   }
 }
+
+/**
+ * Alias for generatePDFFromData for backward compatibility
+ */
+export const generateTablePDF = generatePDFFromData;

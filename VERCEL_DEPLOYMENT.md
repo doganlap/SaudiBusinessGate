@@ -1,16 +1,18 @@
 # Vercel Deployment Guide
 
 ## Prerequisites
+
 1. ✅ Prisma schema created (`prisma/schema.prisma`)
 2. ✅ Prisma Client generated
 3. ✅ Database pushed to Prisma Cloud
-4. ✅ Prisma Studio running locally (http://localhost:5555)
+4. ✅ Prisma Studio running locally (<http://localhost:5555>)
 
 ## Vercel Environment Variables
 
 Add these to your Vercel project settings:
 
 ### Database Configuration
+
 ```bash
 DATABASE_URL="postgres://5c14248d5aebd915b6084d0636fc4c85595664c415106e699d547c9ea7791153:sk_6UR_JLitplkcRsbjYJjDx@db.prisma.io:5432/postgres?sslmode=require"
 
@@ -20,6 +22,7 @@ PRISMA_DATABASE_URL="prisma+postgres://accelerate.prisma-data.net/?api_key=eyJhb
 ```
 
 ### Additional Variables (copy from .env.local)
+
 ```bash
 NEXT_PUBLIC_APP_URL=https://yourdomain.com
 NEXTAUTH_URL=https://yourdomain.com
@@ -31,6 +34,7 @@ STRIPE_SECRET_KEY=your-stripe-secret
 ## Deployment Steps
 
 ### Option 1: Vercel CLI
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -43,6 +47,7 @@ vercel --prod
 ```
 
 ### Option 2: GitHub Integration
+
 1. Push code to GitHub
 2. Connect repository to Vercel
 3. Add environment variables in Vercel dashboard
@@ -51,12 +56,14 @@ vercel --prod
 ## Prisma Studio Access
 
 ### Local Development
+
 ```bash
 npx prisma studio
 # Opens at http://localhost:5555
 ```
 
 ### Production Database
+
 ```bash
 # View production data locally
 npx prisma studio
@@ -64,6 +71,7 @@ npx prisma studio
 ```
 
 ## Post-Deployment Checklist
+
 - [ ] Verify DATABASE_URL in Vercel environment
 - [ ] Test database connection
 - [ ] Run Prisma migrations if needed
@@ -71,6 +79,7 @@ npx prisma studio
 - [ ] Check application logs
 
 ## Database Schema Overview
+
 - **14 Models**: Tenants, Users, Teams, Roles, Modules, Subscriptions
 - **Multi-tenant Architecture**: Full isolation per tenant
 - **White-label Support**: Custom branding per tenant
@@ -79,6 +88,7 @@ npx prisma studio
 - **17 Modules**: CRM, HR, Finance, Analytics, etc.
 
 ## Useful Commands
+
 ```bash
 # Generate Prisma Client
 npx prisma generate
@@ -99,16 +109,19 @@ npx prisma format
 ## Troubleshooting
 
 ### Build fails on Vercel
+
 - Ensure `postinstall` script runs `prisma generate`
 - Check DATABASE_URL is set in Vercel
 - Verify Prisma version matches locally
 
 ### Database connection errors
+
 - Confirm SSL mode is enabled (`sslmode=require`)
 - Check Prisma Cloud credentials
 - Verify network access to db.prisma.io
 
 ### Prisma Studio won't open
+
 - Ensure .env file exists with DATABASE_URL
 - Check port 5555 is available
 - Try `npx prisma studio --port 5556`

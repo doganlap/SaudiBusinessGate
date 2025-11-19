@@ -5,6 +5,7 @@
 ---
 
 ## 0) Executive Summary | الملخص التنفيذي
+
 - هدف العملية: إدارة دورة حياة الضوابط من **التعريف → الاعتماد → التنفيذ → التشغيل → الاختبار → المراقبة المستمرة (CCM) → المعالجة/الاستثناءات → إعادة الاعتماد/النسخ → الإيقاف**.
 - النتائج: امتثال قابل للقياس، أدلة قابلة للتدقيق، خفض المخاطر والتكلفة، جاهزية دائمة للتدقيق.
 - الذكاء: توصيات ذكية (خرائط الضوابط للإطارات، نوع الدليل المناسب، مواعيد التشغيل) + مراقبة مستمرة عبر موصلات تقنية.
@@ -12,6 +13,7 @@
 ---
 
 ## 1) Actors & RACI | الأدوار والمسؤوليات
+
 | Role | مسؤوليات رئيسية | R/A/C/I |
 |---|---|---|---|
 | Control Owner (مالك الضبط) | تعريف/تنفيذ الضبط، تقديم الأدلة، التصديق | R |
@@ -28,9 +30,11 @@
 ---
 
 ## 2) Master Data | البيانات الأساسية
+
 **Core Entities:** `controls`, `framework_control_map`, `control_implementations`, `control_tests`, `control_evidence`, `documents`, `risks`, `risk_assessments`, `exceptions`, `change_requests`.
 
 **Control Record — Key Fields | سجل الضبط — الحقول الأساسية**
+
 - Code/Title/Objective (EN/AR)
 - Domain/Process Area (ITGC, App, Cyber, Privacy …)
 - Type & Nature: Preventive/Detective; Manual/Automated; Frequency (Daily/Weekly/Quarterly/On‑event)
@@ -44,8 +48,10 @@
 ## 3) Lifecycle Stages | مراحل دورة الحياة
 
 ### 3.1 Define & Map | التعريف والمواءمة
+
 **Inputs:** متطلبات إطار تنظيمي/مخاطر/عقد.
 **Steps:**
+
 1) Create Control (metadata + objective + assertions)
 2) Map to Framework(s)/Section(s) (NCA/SAMA/PDPL/ISO …)
 3) Draft Evidence Criteria + Test Strategy (Design vs Operating)
@@ -55,7 +61,9 @@
 **AI Assist:** اقتراح المابّينج والأدلة ونص السرد (narrative) من مستندات سابقة (RAG)
 
 ### 3.2 Implement | التنفيذ
+
 **Steps:**
+
 1) Create Implementation Plan (tasks, SOP links, configs)
 2) Schedule Activities (AI Scheduler based on frequency)
 3) Connect CCM signals (optional) / define data sources
@@ -63,43 +71,51 @@
 **Gate:** Compliance approves readiness
 
 ### 3.3 Operate | التشغيل
+
 - Owner executes activity per schedule
 - Capture Evidence (files/exports/screens, API logs)
 - Attestation: checkbox + comment + timestamp
 - Auto‑validation (hash, virus scan, metadata completeness)
 
 ### 3.4 Test | الاختبار
+
 - **Design Effectiveness (DE):** مرة عند الإطلاق/التغيير الجوهري
 - **Operating Effectiveness (OE):** دوري (ربع سنوي/نصف سنوي)
 - Sampling methods: random/systematic/judgmental; sample size rules
 - Results: pass/partial/fail + finding(s)
 
 ### 3.5 Monitor (CCM) | المراقبة المستمرة
+
 - Live connectors (SIEM, IAM, Config mgmt, Ticketing)
 - Rules/Thresholds → Alerts → Tasks
 - Drift detection + anomaly scoring
 
 ### 3.6 Issues/Exceptions | القضايا/الاستثناءات
+
 - Findings → Root cause → Remediation plan → Due dates/owners
 - Exceptions: temporary acceptance with **compensating controls**
 - Risk acceptance workflow (expires, renew, close)
 
 ### 3.7 Change & Recertify | التغيير وإعادة الاعتماد
+
 - Change request (scope/fields/impact)
 - Impact analysis (frameworks, assessments, reports)
 - Approval chain → version bump
 - Annual recertification window (bulk attestation)
 
 ### 3.8 Retire | الإيقاف
+
 - De‑map from frameworks, final archive, retention timers
 
 ---
 
 ## 4) State Machines | حالات الضبط وأحداث الانتقال
+
 ```
 Control: draft → design_review → ready → operating → changed → retired
 Events: submit_for_review, approve_design, reject_design, start_ops, fail_test, raise_exception, approve_change, retire
 ```
+
 ```
 Implementation: planned → ready → active → suspended → retired
 Test: planned → in_progress → passed/partial/failed → closed
@@ -109,6 +125,7 @@ Exception: proposed → approved → active → expired/closed
 ---
 
 ## 5) UI Blueprint | مخطط الواجهة
+
 - **Control Card:** header (code/title/status), tabs: Overview | Framework Map | Implementation | Evidence | Tests | CCM | Issues | Changes | History
 - **Design Review Drawer:** diff viewer, required fields checklist, approver comments, SoD indicator
 - **Evidence Panel:** drag‑drop, templated folders, auto‑checks (hash/size/type), evidence acceptance checklist
@@ -118,7 +135,9 @@ Exception: proposed → approved → active → expired/closed
 ---
 
 ## 6) Dynamic Workflows | سير عمل ديناميكي
+
 **WF‑C1 New Control**
+
 1) Draft → (AI suggests mappings/evidence) → Submit
 2) Design Review (Compliance) → Approve/Reject
 3) Implementation Plan (tasks auto‑generated)
@@ -126,21 +145,27 @@ Exception: proposed → approved → active → expired/closed
 5) Notify Owners + Create calendar holds
 
 **WF‑C2 Evidence & Attestation**
+
 - On schedule event → task → owner uploads → attests → auto‑validation → reviewer accepts
 
 **WF‑C3 Testing**
+
 - Plan test (DE/OE) → sample selection → perform → record results → findings
 
 **WF‑C4 Exception Management**
+
 - Create exception → risk acceptance gate → compensating control → expiry/renewal → closure
 
 **WF‑C5 Change Control**
+
 - Change request → impact matrix → approvals → rollout → versioning
 
 ---
 
 ## 7) Scoring & KPIs | الدرجات والمؤشرات
+
 **Control Effectiveness Score (CES)**
+
 - Inputs: Implementation Status, Latest Test Result, Evidence Freshness, CCM Health
 - Formula (example):
   - status_weight = {effective:1, in_progress:0.6, pending:0.2}
@@ -150,6 +175,7 @@ Exception: proposed → approved → active → expired/closed
   - **CES = 100 × status_weight × (0.5*test_factor + 0.3*evidence_recency + 0.2*ccm_factor)**
 
 **Dashboard KPIs**
+
 - % Controls effective (by framework/domain)
 - Test coverage (last quarter)
 - Overdue attestations / exceptions
@@ -160,7 +186,9 @@ SLAs: Attestation ≤5d from schedule; Test close ≤10d; Exception expiry notif
 ---
 
 ## 8) Data Model | نمذجة البيانات
+
 **Tables (key columns)**
+
 - `controls(id, tenant_id, code, title, domain, type, frequency, criticality, objective, assertions, owner_id, backup_owner_id, created_at, updated_at)`
 - `framework_control_map(framework_id, section_id, control_id, tenant_id)`
 - `control_implementations(id, tenant_id, control_id, owner_id, status, due_date, notes, created_at, updated_at)`
@@ -176,6 +204,7 @@ SLAs: Attestation ≤5d from schedule; Test close ≤10d; Exception expiry notif
 ---
 
 ## 9) APIs | الواجهات
+
 - `POST /api/controls` create
 - `PUT /api/controls/{id}` update (SoD checks)
 - `POST /api/controls/{id}/submit-review`
@@ -192,7 +221,9 @@ Pagination, filtering by framework/domain/status; all with `tenant_id` and RBAC 
 ---
 
 ## 10) Automations | الأتمتة
+
 **Triggers → Actions**
+
 - `schedule.occurrence` → create task → notify owner → SLA timer
 - `evidence.uploaded` → checksum + AV scan → completeness check → mark ready
 - `test.failed` → open remediation task (link to risk) → escalate
@@ -200,14 +231,17 @@ Pagination, filtering by framework/domain/status; all with `tenant_id` and RBAC 
 - `connector.down` → CCM status = critical → alert
 
 **AI Scheduler**
+
 - Generate schedule from frequency; avoid holidays; auto‑balance owner load.
 
 **RAG Assist**
+
 - Generate control narrative, test steps, evidence checklist from prior controls/regulatory text.
 
 ---
 
 ## 11) Security & Audit | الأمان والتدقيق
+
 - Multi‑tenant isolation (RLS on tenant_id)
 - RBAC (roles/permissions) + MFA
 - Audit trail: every transition/action with diff snapshots
@@ -216,17 +250,21 @@ Pagination, filtering by framework/domain/status; all with `tenant_id` and RBAC 
 ---
 
 ## 12) Multitenant Patterns | أنماط تعدد المستأجرين
+
 - **Global Library** of standard controls → per‑tenant **Overrides** (diff tracked)
 - Inheritance rules: if global updated, prompt tenants to review/apply
 
 ---
 
 ## 13) UI Checklists | قوائم تحقق الواجهة
+
 **Create Control Form**
+
 - Required: code, title, objective, domain, type, frequency, owner, criticality
 - Optional: risk links, assertions, evidence templates, CCM connector
 
 **Evidence Acceptance** (example)
+
 | Rule | Description |
 |---|---|
 | Authenticity | checksum/hard‑timestamped export |
@@ -235,11 +273,13 @@ Pagination, filtering by framework/domain/status; all with `tenant_id` and RBAC 
 | Readability | Arabic/English where applicable |
 
 **Test Template (OE)**
+
 - Objective → Procedure → Population → Sample → Result → Attachments → Sign‑off
 
 ---
 
 ## 14) Views & Metrics | العروض والمؤشرات
+
 - `v_control_status`: control + latest implementation status + CES
 - `v_control_test_coverage`: last 90d tests per domain
 - `v_compliance_score_by_framework`: % effective controls
@@ -248,6 +288,7 @@ Pagination, filtering by framework/domain/status; all with `tenant_id` and RBAC 
 ---
 
 ## 15) Adoption Plan | خطة التبنّي
+
 1) Import baseline library (CSV/JSON)
 2) Map to frameworks (bulk)
 3) Assign owners & frequencies
@@ -260,7 +301,7 @@ Go‑Live Readiness: RBAC tested, backup/retention configured, reporting validat
 ---
 
 ## 16) Appendix | ملاحق
+
 - Coding & Naming: `CTRL-NCA-AC-001`, domains short codes
 - SoD Matrix per role
 - SLA table per transition
-

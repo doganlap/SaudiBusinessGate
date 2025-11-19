@@ -10,7 +10,8 @@ export async function GET() {
           id: 'dashboard',
           module: 'Dashboard',
           label: 'Dashboard',
-          path: '/dashboard',
+          titleAr: 'لوحة التحكم',
+          path: '/(platform)/dashboard',
           icon: '📊',
           badge: 0,
           available: true,
@@ -20,118 +21,133 @@ export async function GET() {
           id: 'finance',
           module: 'Finance',
           label: 'Finance',
-          path: '/finance',
+          titleAr: 'المالية',
+          path: '/(platform)/finance',
           icon: '💰',
-          badge: 12, // Updated badge count for finance module
+          badge: 12,
           available: true,
           children: [
             {
-              id: 'finance-dashboard',
+              id: 'dashboard',
               module: 'Finance',
-              label: 'Finance Dashboard',
-              path: '/finance/dashboard',
-              icon: '📈',
+              label: 'Dashboard',
+              titleAr: 'لوحة التحكم',
+              path: '/(platform)/finance/dashboard',
+              icon: '📊',
               available: true,
-              description: 'Comprehensive financial overview with charts and KPIs'
+              description: 'Financial overview and KPIs'
             },
             {
               id: 'accounts',
               module: 'Finance',
-              label: 'Chart of Accounts',
-              path: '/finance/accounts',
+              label: 'Accounts',
+              titleAr: 'الحسابات',
+              path: '/(platform)/finance/accounts',
               icon: '📚',
               available: true,
-              description: 'Manage financial accounts and account structures'
+              description: 'Chart of accounts management'
             },
             {
               id: 'transactions',
               module: 'Finance',
               label: 'Transactions',
-              path: '/finance/transactions',
+              titleAr: 'المعاملات',
+              path: '/(platform)/finance/transactions',
               icon: '🧾',
               available: true,
-              description: 'View and manage financial transactions'
+              description: 'Financial transactions'
             },
             {
-              id: 'journal-entries',
+              id: 'journal',
               module: 'Finance',
-              label: 'Journal Entries',
-              path: '/finance/journal',
+              label: 'Journal',
+              titleAr: 'اليومية',
+              path: '/(platform)/finance/journal',
               icon: '📖',
               available: true,
-              description: 'Double-entry bookkeeping and journal management'
+              description: 'Journal entries'
             },
             {
               id: 'invoices',
               module: 'Finance',
               label: 'Invoices',
-              path: '/finance/invoices',
+              titleAr: 'الفواتير',
+              path: '/(platform)/finance/invoices',
               icon: '📄',
               available: true,
-              description: 'Create and manage customer invoices'
+              description: 'Customer invoices'
             },
             {
               id: 'bills',
               module: 'Finance',
-              label: 'Bills & Payments',
-              path: '/finance/bills',
+              label: 'Bills',
+              titleAr: 'الفواتير',
+              path: '/(platform)/finance/bills',
               icon: '💳',
               available: true,
-              description: 'Manage vendor bills and payments'
+              description: 'Vendor bills and payments'
             },
             {
               id: 'budgets',
               module: 'Finance',
               label: 'Budgets',
-              path: '/finance/budgets',
+              titleAr: 'الميزانيات',
+              path: '/(platform)/finance/budgets',
               icon: '🎯',
               available: true,
-              description: 'Financial planning and budget management'
+              description: 'Budget planning'
+            }
+          ]
+        },
+        {
+          id: 'sales',
+          module: 'Sales',
+          label: 'Sales',
+          titleAr: 'المبيعات',
+          path: '/(platform)/sales',
+          icon: '📈',
+          badge: 3,
+          available: true,
+          children: [
+            {
+              id: 'quotes',
+              module: 'Sales',
+              label: 'Quotes',
+              titleAr: 'عروض الأسعار',
+              path: '/(platform)/sales/quotes',
+              icon: '📝',
+              available: true,
+              description: 'Manage sales quotes and proposals'
             },
             {
-              id: 'reports',
-              module: 'Finance',
-              label: 'Financial Reports',
-              path: '/finance/reports',
+              id: 'leads',
+              module: 'Sales',
+              label: 'Leads',
+              titleAr: 'العملاء المحتملين',
+              path: '/(platform)/sales/leads',
+              icon: '🎯',
+              available: true,
+              description: 'Track and manage sales leads'
+            },
+            {
+              id: 'deals',
+              module: 'Sales',
+              label: 'Deals',
+              titleAr: 'الصفقات',
+              path: '/(platform)/sales/deals',
+              icon: '🤝',
+              available: true,
+              description: 'Monitor deal progress and conversion'
+            },
+            {
+              id: 'pipeline',
+              module: 'Sales',
+              label: 'Pipeline',
+              titleAr: 'خط الأنابيب',
+              path: '/(platform)/sales/pipeline',
               icon: '📊',
               available: true,
-              description: 'Generate financial statements and reports'
-            },
-            {
-              id: 'cost-centers',
-              module: 'Finance',
-              label: 'Cost Centers',
-              path: '/finance/cost-centers',
-              icon: '🏢',
-              available: true,
-              description: 'Track expenses by department and cost centers'
-            },
-            {
-              id: 'banking',
-              module: 'Finance',
-              label: 'Banking',
-              path: '/finance/banking',
-              icon: '🏦',
-              available: true,
-              description: 'Bank account reconciliation and management'
-            },
-            {
-              id: 'tax',
-              module: 'Finance',
-              label: 'Tax Management',
-              path: '/finance/tax',
-              icon: '🧮',
-              available: true,
-              description: 'Tax calculations and compliance'
-            },
-            {
-              id: 'analytics',
-              module: 'Finance',
-              label: 'Financial Analytics',
-              path: '/finance/analytics',
-              icon: '🔍',
-              available: true,
-              description: 'Advanced financial analysis and insights'
+              description: 'Sales pipeline overview'
             }
           ]
         },
@@ -139,7 +155,8 @@ export async function GET() {
           id: 'crm',
           module: 'CRM',
           label: 'CRM',
-          path: '/crm',
+          titleAr: 'إدارة العملاء',
+          path: '/(platform)/crm',
           icon: '👥',
           badge: 1,
           available: true,
@@ -149,19 +166,32 @@ export async function GET() {
           id: 'hr',
           module: 'HR',
           label: 'HR',
-          path: '/hr',
+          titleAr: 'الموارد البشرية',
+          path: '/(platform)/hr',
           icon: '👤',
           badge: 0,
           available: true,
           children: []
         },
         {
-          id: 'analytics',
-          module: 'Analytics',
-          label: 'Analytics',
-          path: '/analytics',
-          icon: '📈',
-          badge: 5,
+          id: 'procurement',
+          module: 'Procurement',
+          label: 'Procurement',
+          titleAr: 'المشتريات',
+          path: '/(platform)/procurement',
+          icon: '🛒',
+          badge: 0,
+          available: true,
+          children: []
+        },
+        {
+          id: 'motivation',
+          module: 'Motivation',
+          label: 'Motivation & AI',
+          titleAr: 'التحفيز والذكاء الاصطناعي',
+          path: '/(platform)/motivation',
+          icon: '🎯',
+          badge: 'New',
           available: true,
           children: []
         }
@@ -169,7 +199,11 @@ export async function GET() {
       stats: {
         totalAPIs: 25, // Updated total APIs
         availableAPIs: 22, // Updated available APIs
-        modules: 5
+        modules: 7, // Dashboard, Finance, Sales, CRM, HR, Procurement, Analytics, Motivation
+        appName: 'Saudi Business Gate Enterprise',
+        appNameAr: 'بوابة الأعمال السعودية المؤسسية',
+        tagline: 'The 1st Autonomous Business Gate in the Region',
+        taglineAr: 'أول بوابة أعمال ذاتية التشغيل في المنطقة'
       },
       timestamp: new Date().toISOString()
     };

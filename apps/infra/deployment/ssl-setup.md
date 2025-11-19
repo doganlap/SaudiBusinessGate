@@ -1,14 +1,17 @@
 # SSL/TLS Configuration Guide
+
 ## Production-Grade Security Setup
 
 ### Phase 2.1: Let's Encrypt Configuration
 
 #### Prerequisites
+
 - Domain name pointed to your server
 - DNS A records configured
 - Port 80/443 accessible
 
 #### SSL Certificate Generation
+
 ```bash
 # Install Certbot
 sudo apt-get update
@@ -23,6 +26,7 @@ sudo crontab -e
 ```
 
 #### Docker SSL Integration
+
 ```yaml
 # Add to docker-compose.production.yml
 version: '3.8'
@@ -40,6 +44,7 @@ services:
 ```
 
 #### Nginx SSL Configuration
+
 ```nginx
 server {
     listen 80;
@@ -82,6 +87,7 @@ server {
 ```
 
 ### Security Score Impact
+
 - SSL Grade: A+
 - Security Headers: Implemented
 - HTTPS Redirect: Enforced

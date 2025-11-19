@@ -127,3 +127,4 @@ apps/*/dist/
 apps/*/build/
 apps/*/.next/cache/
 .vercel
+nul

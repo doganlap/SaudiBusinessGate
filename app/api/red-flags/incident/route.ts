@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { query } from '@/lib/db/connection';
 import { incidentMode, IncidentContext } from '@/lib/red-flags/incident-mode';
 import { redFlagsAgents } from '@/lib/agents/red-flags-agents';
 
@@ -82,44 +83,30 @@ async function executeAgent(data: any) {
 
 // الحصول على حالة الحادث
 async function getIncidentStatus(data: any) {
-  // هذا مثال - في التطبيق الحقيقي سيتم الاستعلام من قاعدة البيانات
-  const mockStatus = {
-    incidentId: data.incidentId,
-    status: 'active',
-    flagType: 'accounting_unbalanced',
-    severity: 'high',
-    detectedAt: new Date().toISOString(),
-    containmentActions: [
-      'GL posting disabled',
-      'Imbalances moved to Suspense',
-      'Finance team notified'
-    ],
-    agentJobs: [
-      {
-        jobId: 'JOB-123',
-        jobType: 'FIN_REPAIR_UNBALANCED',
-        status: 'completed',
-        result: 'Successfully repaired unbalanced entries'
-      }
-    ],
-    timeline: [
-      {
-        timestamp: new Date().toISOString(),
-        action: 'Incident detected',
-        actor: 'SYSTEM'
-      },
-      {
-        timestamp: new Date().toISOString(),
-        action: 'Containment activated',
-        actor: 'INCIDENT_MODE'
-      }
-    ]
+  const id = data.incidentId;
+  if (!id) {
+    return NextResponse.json({ error: 'Incident ID is required' }, { status: 400 });
+  }
+  const res = await query(
+    `SELECT id, title, description, status, severity, organization_id, created_at, updated_at
+     FROM incidents WHERE id = $1`,
+    [id]
+  );
+  if (res.rows.length === 0) {
+    return NextResponse.json({ error: 'Incident not found' }, { status: 404 });
+  }
+  const row = res.rows[0];
+  const status = {
+    incidentId: String(row.id),
+    status: row.status,
+    flagType: row.title,
+    severity: row.severity,
+    detectedAt: (row.created_at || new Date()).toISOString(),
+    containmentActions: [],
+    agentJobs: [],
+    timeline: []
   };
-
-  return NextResponse.json({
-    success: true,
-    data: mockStatus
-  });
+  return NextResponse.json({ success: true, data: status });
 }
 
 // حل الحادث
@@ -181,104 +168,54 @@ export async function GET(request: NextRequest) {
 
 // الحصول على الحوادث النشطة
 async function getActiveIncidents(tenantId: string) {
-  // مثال على البيانات - في التطبيق الحقيقي من قاعدة البيانات
-  const mockIncidents = [
-    {
-      incidentId: 'INC-001',
-      flagType: 'accounting_unbalanced',
-      severity: 'high',
-      entityId: 'J-2024-001',
-      detectedAt: new Date().toISOString(),
-      status: 'active',
-      assignedAgent: 'FIN_REPAIR_UNBALANCED'
-    },
-    {
-      incidentId: 'INC-002',
-      flagType: 'duplicate_transaction',
-      severity: 'medium',
-      entityId: 'PAY-2024-456',
-      detectedAt: new Date().toISOString(),
-      status: 'investigating',
-      assignedAgent: 'FIN_DEDUP_REVIEW'
-    }
-  ];
-
-  return NextResponse.json({
-    success: true,
-    data: mockIncidents,
-    count: mockIncidents.length
-  });
+  const orgId = parseInt(tenantId, 10);
+  if (isNaN(orgId)) {
+    return NextResponse.json({ error: 'Invalid tenant/organization ID' }, { status: 400 });
+  }
+  const res = await query(
+    `SELECT id, title, severity, status, created_at
+     FROM incidents
+     WHERE organization_id = $1 AND status IN ('active','investigating')
+     ORDER BY created_at DESC
+     LIMIT 100`,
+    [orgId]
+  );
+  const rows = res.rows || [];
+  const incidents = rows.map((r: any) => ({
+    incidentId: String(r.id),
+    flagType: r.title,
+    severity: r.severity,
+    entityId: null,
+    detectedAt: (r.created_at || new Date()).toISOString(),
+    status: r.status,
+    assignedAgent: null
+  }));
+  return NextResponse.json({ success: true, data: incidents, count: incidents.length });
 }
 
 // ملخص الأعلام الحمراء
 async function getRedFlagsSummary(tenantId: string) {
-  const mockSummary = {
-    total: 15,
-    byType: {
-      accounting_unbalanced: { count: 3, severity: 'high' },
-      duplicate_transaction: { count: 5, severity: 'medium' },
-      sanctioned_entity: { count: 1, severity: 'critical' },
-      audit_tampered: { count: 0, severity: 'critical' },
-      large_unexplained: { count: 4, severity: 'high' },
-      rapid_succession: { count: 2, severity: 'medium' }
-    },
-    bySeverity: {
-      critical: 1,
-      high: 7,
-      medium: 7,
-      low: 0
-    },
-    trends: {
-      last24Hours: 8,
-      last7Days: 15,
-      last30Days: 45
-    }
-  };
-
-  return NextResponse.json({
-    success: true,
-    data: mockSummary
-  });
+  const orgId = parseInt(tenantId, 10);
+  if (isNaN(orgId)) {
+    return NextResponse.json({ error: 'Invalid tenant/organization ID' }, { status: 400 });
+  }
+  const res = await query(
+    `SELECT severity, COUNT(*) as count
+     FROM incidents
+     WHERE organization_id = $1
+     GROUP BY severity`,
+    [orgId]
+  );
+  const bySeverity: any = {};
+  let total = 0;
+  for (const row of res.rows) {
+    bySeverity[row.severity || 'unknown'] = Number(row.count) || 0;
+    total += Number(row.count) || 0;
+  }
+  return NextResponse.json({ success: true, data: { total, bySeverity, byType: {}, trends: {} } });
 }
 
 // حالة مهام الوكلاء
 async function getAgentJobsStatus(tenantId: string) {
-  const mockJobs = [
-    {
-      jobId: 'JOB-001',
-      jobType: 'FIN_REPAIR_UNBALANCED',
-      status: 'completed',
-      priority: 'high',
-      createdAt: new Date().toISOString(),
-      completedAt: new Date().toISOString(),
-      result: 'Successfully repaired 3 unbalanced entries'
-    },
-    {
-      jobId: 'JOB-002',
-      jobType: 'FIN_DEDUP_REVIEW',
-      status: 'running',
-      priority: 'medium',
-      createdAt: new Date().toISOString(),
-      progress: 75
-    },
-    {
-      jobId: 'JOB-003',
-      jobType: 'COMPLIANCE_CASE_OPEN',
-      status: 'queued',
-      priority: 'critical',
-      createdAt: new Date().toISOString()
-    }
-  ];
-
-  return NextResponse.json({
-    success: true,
-    data: mockJobs,
-    summary: {
-      total: mockJobs.length,
-      completed: mockJobs.filter(j => j.status === 'completed').length,
-      running: mockJobs.filter(j => j.status === 'running').length,
-      queued: mockJobs.filter(j => j.status === 'queued').length,
-      failed: mockJobs.filter(j => j.status === 'failed').length
-    }
-  });
+  return NextResponse.json({ success: true, data: [], summary: { total: 0, completed: 0, running: 0, queued: 0, failed: 0 } });
 }

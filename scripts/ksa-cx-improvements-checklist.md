@@ -3,24 +3,28 @@
 ## 🎯 Immediate Actions (This Week)
 
 ### 1. Payment Methods
+
 - [ ] Research Mada integration options
 - [ ] Contact payment gateway providers (PayTabs, HyperPay)
 - [ ] Plan STC Pay integration
 - [ ] Evaluate Tamara/Tabby BNPL APIs
 
 ### 2. Communication
+
 - [ ] Setup WhatsApp Business account
 - [ ] Integrate SMS service (Unifonic/Mobily)
 - [ ] Add Arabic chatbot
 - [ ] Configure Arabic email templates
 
 ### 3. Content
+
 - [ ] Review all Arabic translations
 - [ ] Update business terminology
 - [ ] Add Saudi-specific help content
 - [ ] Create Arabic FAQ section
 
 ### 4. Mobile
+
 - [ ] Run mobile performance audit
 - [ ] Optimize images for mobile
 - [ ] Test on Saudi mobile networks
@@ -116,4 +120,3 @@
 ---
 
 **Start with:** Payment methods, WhatsApp, SMS, and Arabic content review
-

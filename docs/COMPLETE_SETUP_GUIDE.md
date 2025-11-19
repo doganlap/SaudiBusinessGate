@@ -1,6 +1,7 @@
 # 🚀 دليل الإعداد الشامل - Complete Setup Guide
 
 ## **المتجر السعودي - Saudi Store**
+
 ### **منصة إدارة الأعمال المتكاملة - Complete Business Management Platform**
 
 ---
@@ -20,6 +21,7 @@
 ## **1. المكتبات المطلوبة**
 
 ### **✅ المكتبات الأساسية:**
+
 ```json
 {
   "next": "^16.0.1",
@@ -43,21 +45,25 @@
 ## **2. تثبيت المشروع**
 
 ### **الخطوة 1: استنساخ المشروع**
+
 ```bash
 cd d:\Projects\DoganHubStore
 ```
 
 ### **الخطوة 2: تثبيت المكتبات**
+
 ```bash
 npm install
 ```
 
 ### **الخطوة 3: إنشاء ملف البيئة**
+
 ```bash
 cp .env.example .env
 ```
 
 ### **الخطوة 4: تحديث متغيرات البيئة**
+
 ```env
 # Application
 NEXT_PUBLIC_APP_URL=http://localhost:3050
@@ -94,11 +100,13 @@ WS_PORT=3051
 ## **3. إعداد قاعدة البيانات**
 
 ### **الخطوة 1: إنشاء قاعدة البيانات**
+
 ```sql
 CREATE DATABASE saudi_store;
 ```
 
 ### **الخطوة 2: تشغيل Schema Files**
+
 ```bash
 # تشغيل جميع ملفات SQL بالترتيب
 psql -U postgres -d saudi_store -f database/schema/09-platform-admin.sql
@@ -109,6 +117,7 @@ psql -U postgres -d saudi_store -f database/schema/02-sales-tables.sql
 ```
 
 ### **الخطوة 3: التحقق من الجداول**
+
 ```sql
 -- عرض جميع الجداول
 \dt
@@ -131,24 +140,28 @@ psql -U postgres -d saudi_store -f database/schema/02-sales-tables.sql
 ## **4. تشغيل المشروع**
 
 ### **الطريقة 1: تشغيل Next.js فقط**
+
 ```bash
 npm run dev
 # يعمل على http://localhost:3050
 ```
 
 ### **الطريقة 2: تشغيل WebSocket فقط**
+
 ```bash
 npm run ws
 # يعمل على http://localhost:3051
 ```
 
 ### **الطريقة 3: تشغيل كل شيء معاً (موصى به)**
+
 ```bash
 npm run dev:all
 # يشغل Next.js + WebSocket معاً
 ```
 
 ### **التحقق من التشغيل:**
+
 ```bash
 # افتح المتصفح
 http://localhost:3050
@@ -167,6 +180,7 @@ http://localhost:3050/en/register/complete
 ### **5.1 Command Palette (Ctrl/⌘K)**
 
 **الاستخدام:**
+
 ```tsx
 import CommandPalette from '@/components/CommandPalette';
 
@@ -179,6 +193,7 @@ import CommandPalette from '@/components/CommandPalette';
 ```
 
 **الاختصارات:**
+
 - `Ctrl/Cmd + K` - فتح
 - `↑↓` - التنقل
 - `Enter` - اختيار
@@ -189,6 +204,7 @@ import CommandPalette from '@/components/CommandPalette';
 ### **5.2 Real-Time Workflow Timeline**
 
 **الاستخدام:**
+
 ```tsx
 import RealTimeWorkflowTimeline from '@/components/RealTimeWorkflowTimeline';
 
@@ -200,6 +216,7 @@ import RealTimeWorkflowTimeline from '@/components/RealTimeWorkflowTimeline';
 ```
 
 **WebSocket Events:**
+
 ```typescript
 // الاتصال
 socket.on('connect', () => console.log('Connected'));
@@ -219,6 +236,7 @@ socket.on('workflow:step:update', ({ workflowId, step }) => {
 ### **5.3 RBAC - التحكم بالوصول**
 
 **الأدوار:**
+
 ```typescript
 const roles = {
   viewer: ['dashboard:read'],
@@ -230,6 +248,7 @@ const roles = {
 ```
 
 **إخفاء العناصر:**
+
 ```tsx
 {userRole === 'admin' || userRole === 'super_admin' ? (
   <AdminPanel />
@@ -241,11 +260,13 @@ const roles = {
 ## **6. الاختبارات**
 
 ### **تشغيل جميع الاختبارات:**
+
 ```bash
 npm test
 ```
 
 ### **اختبارات محددة:**
+
 ```bash
 npm run test:auth        # اختبارات المصادقة
 npm run test:security    # اختبارات الأمان
@@ -253,6 +274,7 @@ npm run test:load        # اختبارات الحمل
 ```
 
 ### **مع التغطية:**
+
 ```bash
 npm run test:coverage
 ```
@@ -262,16 +284,19 @@ npm run test:coverage
 ## **7. النشر**
 
 ### **7.1 Build للإنتاج**
+
 ```bash
 npm run build
 ```
 
 ### **7.2 تشغيل الإنتاج**
+
 ```bash
 npm start
 ```
 
 ### **7.3 متغيرات البيئة للإنتاج**
+
 ```env
 NODE_ENV=production
 NEXT_PUBLIC_APP_URL=https://saudistore.com
@@ -314,18 +339,21 @@ DoganHubStore/
 ## **✅ قائمة التحقق النهائية**
 
 ### **التثبيت:**
+
 - ✅ Node.js 18+ مثبت
 - ✅ PostgreSQL 14+ مثبت
 - ✅ npm install تم تشغيله
 - ✅ .env تم إنشاؤه وتحديثه
 
 ### **قاعدة البيانات:**
+
 - ✅ قاعدة البيانات تم إنشاؤها
 - ✅ جميع Schema files تم تشغيلها
 - ✅ الجداول موجودة
 - ✅ البيانات التجريبية موجودة
 
 ### **التشغيل:**
+
 - ✅ Next.js يعمل على 3050
 - ✅ WebSocket يعمل على 3051
 - ✅ الصفحات تفتح بدون أخطاء
@@ -333,6 +361,7 @@ DoganHubStore/
 - ✅ Real-Time Timeline يعمل
 
 ### **الميزات:**
+
 - ✅ تسجيل الدخول يعمل
 - ✅ التسجيل يعمل
 - ✅ RBAC مطبق
@@ -344,6 +373,7 @@ DoganHubStore/
 ## **🆘 استكشاف الأخطاء**
 
 ### **مشكلة: لا يمكن الاتصال بقاعدة البيانات**
+
 ```bash
 # تحقق من PostgreSQL
 sudo systemctl status postgresql
@@ -356,6 +386,7 @@ cat .env | grep POSTGRES
 ```
 
 ### **مشكلة: WebSocket لا يتصل**
+
 ```bash
 # تحقق من تشغيل السيرفر
 npm run ws
@@ -368,6 +399,7 @@ netstat -an | grep 3051
 ```
 
 ### **مشكلة: Command Palette لا يفتح**
+
 ```bash
 # تحقق من تثبيت cmdk
 npm list cmdk
@@ -402,11 +434,13 @@ npm install cmdk
 ✅ جاهزة للإنتاج  
 
 **ابدأ الآن:**
+
 ```bash
 npm run dev:all
 ```
 
 **افتح المتصفح:**
+
 ```
 http://localhost:3050
 ```

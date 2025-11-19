@@ -1,6 +1,7 @@
 # Quick Database Setup Guide
 
 ## Current Issue
+
 The database connection in your `.env` file is pointing to a remote Neon database that is not accessible.
 
 ## Quick Solution: Use Local PostgreSQL
@@ -8,16 +9,19 @@ The database connection in your `.env` file is pointing to a remote Neon databas
 ### Step 1: Install PostgreSQL (if not installed)
 
 **Windows:**
-- Download from: https://www.postgresql.org/download/windows/
+
+- Download from: <https://www.postgresql.org/download/windows/>
 - Or use Chocolatey: `choco install postgresql`
 
 **Mac:**
+
 ```bash
 brew install postgresql
 brew services start postgresql
 ```
 
 **Linux:**
+
 ```bash
 sudo apt-get install postgresql postgresql-contrib
 sudo systemctl start postgresql
@@ -53,6 +57,7 @@ npm run db:configure
 ```
 
 Or manually:
+
 ```bash
 npm run db:setup:full
 ```
@@ -83,10 +88,13 @@ If you want to use a remote database (Neon, Supabase, etc.):
 1. Create a new database on your provider
 2. Get the connection string
 3. Update `.env`:
+
    ```env
    DATABASE_URL=postgresql://user:password@host:5432/dbname?sslmode=require
    ```
+
 4. Run setup:
+
    ```bash
    npm run db:configure
    ```
@@ -106,15 +114,17 @@ npm run db:studio
 ## Troubleshooting
 
 ### "password authentication failed"
+
 - Check your PostgreSQL password
 - Update `.env` with correct credentials
 
 ### "Can't reach database server"
+
 - Ensure PostgreSQL is running
 - Check firewall settings
 - Verify host and port in `.env`
 
 ### "relation already exists"
+
 - This is normal if re-running migrations
 - Tables will be skipped if they exist
-

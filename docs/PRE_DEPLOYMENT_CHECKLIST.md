@@ -22,15 +22,17 @@
 ## ✅ Environment Variables (Azure Portal)
 
 ### Required Variables
+
 - [ ] `POSTGRES_HOST` - Azure PostgreSQL server hostname
 - [ ] `POSTGRES_DB` - Database name
 - [ ] `POSTGRES_USER` - Database username
 - [ ] `POSTGRES_PASSWORD` - Database password (use Key Vault)
 - [ ] `JWT_SECRET` - Secure random string (min 32 chars)
 - [ ] `NEXTAUTH_SECRET` - Secure random string (min 32 chars)
-- [ ] `NEXTAUTH_URL` - Production URL (https://dogan-ai.com)
+- [ ] `NEXTAUTH_URL` - Production URL (<https://dogan-ai.com>)
 
 ### Optional but Recommended
+
 - [ ] `REDIS_URL` - Redis cache connection string
 - [ ] `SENTRY_DSN` - Error tracking (Sentry)
 - [ ] `STRIPE_SECRET_KEY` - Payment integration
@@ -41,11 +43,13 @@
 ## ✅ Azure Resources
 
 ### Azure Container Registry (ACR)
+
 - [ ] ACR created: `doganhubregistry.azurecr.io`
 - [ ] Admin user enabled
 - [ ] Logged in: `az acr login --name doganhubregistry`
 
 ### Azure Web App / Container App
+
 - [ ] Resource Group: `doganhub-store-rg`
 - [ ] Web App created: `doganhub-store-app`
 - [ ] Container settings configured
@@ -54,6 +58,7 @@
 - [ ] Managed Identity enabled (for Key Vault access)
 
 ### Azure PostgreSQL Database
+
 - [ ] Server created with SSL enforcement
 - [ ] Database created: `dogan_grc_production`
 - [ ] Firewall rules configured (allow Azure services)
@@ -61,6 +66,7 @@
 - [ ] Migrations applied
 
 ### Azure Key Vault (Recommended)
+
 - [ ] Key Vault created
 - [ ] Secrets stored (JWT_SECRET, DB passwords, etc.)
 - [ ] Web App granted access via Managed Identity
@@ -100,17 +106,20 @@
 ## 🚀 Deployment Steps
 
 1. **Build & Test Locally**
+
    ```powershell
    npm run build
    .\docker-build-test.ps1
    ```
 
 2. **Deploy to Azure**
+
    ```powershell
    .\deploy-to-azure.ps1
    ```
 
 3. **Verify Deployment**
+
    ```powershell
    # Check logs
    az webapp log tail --name doganhub-store-app --resource-group doganhub-store-rg
@@ -138,6 +147,7 @@
 ## 🔄 Rollback Plan
 
 If deployment fails:
+
 ```powershell
 # Revert to previous image
 az webapp config container set \
@@ -156,7 +166,7 @@ az webapp config container set \
 
 ## 🆘 Support Contacts
 
-- Azure Support: https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade
+- Azure Support: <https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade>
 - Application Logs: Azure Portal → App Service → Log Stream
 - Database: Azure Portal → PostgreSQL → Monitoring
 

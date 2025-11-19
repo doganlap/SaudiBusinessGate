@@ -3,11 +3,13 @@
 ## 🚀 Quick Start
 
 ### Import Theme Hook
+
 ```typescript
 import { useTheme } from '@/lib/theme/ThemeContext';
 ```
 
 ### Basic Usage
+
 ```typescript
 const { theme, mode, isDark, toggleMode } = useTheme();
 ```
@@ -15,6 +17,7 @@ const { theme, mode, isDark, toggleMode } = useTheme();
 ## 📋 Available Hooks
 
 ### `useTheme()`
+
 ```typescript
 const {
   theme,           // Current theme config
@@ -29,6 +32,7 @@ const {
 ```
 
 ### `useGlassmorphism(intensity?)`
+
 ```typescript
 const glass = useGlassmorphism('medium');
 // Returns: { className, style, intensity }
@@ -41,6 +45,7 @@ const glass = useGlassmorphism('medium');
 ## 🎨 Theme Colors
 
 ### Accessing Colors
+
 ```typescript
 const { theme } = useTheme();
 
@@ -66,6 +71,7 @@ theme.colors.text.secondary // Dynamic
 ## 🔲 Glassmorphism
 
 ### Tailwind Classes
+
 ```typescript
 // Medium intensity (default)
 className="backdrop-blur-xl border rounded-xl"
@@ -77,6 +83,7 @@ className="backdrop-blur-xl border border-white/20
 ```
 
 ### CSS-in-JS
+
 ```typescript
 import { generateGlassmorphismStyles } from '@/lib/theme/theme-config';
 
@@ -87,6 +94,7 @@ const styles = generateGlassmorphismStyles('medium', theme);
 ## 🎛️ Theme Control
 
 ### Switch Modes
+
 ```typescript
 const { setMode, toggleMode } = useTheme();
 
@@ -100,6 +108,7 @@ toggleMode();  // Switch between light/dark
 ```
 
 ### Change Glass Intensity
+
 ```typescript
 const { setGlassIntensity } = useTheme();
 
@@ -111,6 +120,7 @@ setGlassIntensity('strong');   // Maximum glass
 ## 🧩 Component Examples
 
 ### Glass Card
+
 ```typescript
 import { useGlassmorphism } from '@/lib/theme/ThemeContext';
 
@@ -126,6 +136,7 @@ export function GlassCard({ children }) {
 ```
 
 ### Theme-Aware Button
+
 ```typescript
 import { useTheme } from '@/lib/theme/ThemeContext';
 
@@ -146,6 +157,7 @@ export function ThemedButton() {
 ```
 
 ### Theme Toggle Button
+
 ```typescript
 import { useTheme } from '@/lib/theme/ThemeContext';
 import { SunMedium, MoonStar } from 'lucide-react';
@@ -164,6 +176,7 @@ export function ThemeToggle() {
 ## 📐 Spacing & Borders
 
 ### Spacing
+
 ```typescript
 theme.spacing.xs  // 0.25rem
 theme.spacing.sm  // 0.5rem
@@ -173,6 +186,7 @@ theme.spacing.xl  // 2rem
 ```
 
 ### Border Radius
+
 ```typescript
 theme.borderRadius.sm    // 0.375rem
 theme.borderRadius.md    // 0.5rem
@@ -182,6 +196,7 @@ theme.borderRadius.full  // 9999px
 ```
 
 ### Transitions
+
 ```typescript
 theme.transitions.fast    // 150ms
 theme.transitions.normal  // 200ms (default)
@@ -193,6 +208,7 @@ theme.transitions.slow    // 300ms
 ### Light Mode
 
 **Subtle**
+
 ```css
 background: rgba(255, 255, 255, 0.7)
 blur: 12px
@@ -201,6 +217,7 @@ shadow: 0 4px 16px rgba(0, 0, 0, 0.08)
 ```
 
 **Medium** (Default)
+
 ```css
 background: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1))
 blur: 24px
@@ -209,6 +226,7 @@ shadow: 0 8px 32px rgba(0, 0, 0, 0.12)
 ```
 
 **Strong**
+
 ```css
 background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))
 blur: 40px
@@ -219,6 +237,7 @@ shadow: 0 12px 48px rgba(0, 0, 0, 0.15)
 ### Dark Mode
 
 **Subtle**
+
 ```css
 background: rgba(23, 23, 23, 0.6)
 blur: 12px
@@ -227,6 +246,7 @@ shadow: 0 4px 16px rgba(0, 0, 0, 0.4)
 ```
 
 **Medium** (Default)
+
 ```css
 background: linear-gradient(rgba(38, 38, 38, 0.5), rgba(23, 23, 23, 0.4))
 blur: 24px
@@ -235,6 +255,7 @@ shadow: 0 8px 32px rgba(0, 0, 0, 0.5)
 ```
 
 **Strong**
+
 ```css
 background: linear-gradient(rgba(55, 65, 81, 0.5), rgba(31, 41, 55, 0.3))
 blur: 40px
@@ -258,6 +279,7 @@ The theme system injects these CSS variables:
 ```
 
 ### Using CSS Variables
+
 ```css
 .my-component {
   background: var(--color-background);
@@ -269,6 +291,7 @@ The theme system injects these CSS variables:
 ## 💾 Persistence
 
 Theme preferences are automatically saved to localStorage:
+
 - `theme-mode`: 'light' | 'dark' | 'auto'
 - `glass-intensity`: 'subtle' | 'medium' | 'strong'
 
@@ -277,6 +300,7 @@ No manual storage management needed!
 ## 🎯 Common Patterns
 
 ### Glass Container
+
 ```tsx
 <div className="backdrop-blur-xl border border-white/20
   bg-white/15 dark:bg-neutral-900/50 rounded-2xl
@@ -286,6 +310,7 @@ No manual storage management needed!
 ```
 
 ### Hover Effect
+
 ```tsx
 <div className="hover:bg-white/20 dark:hover:bg-white/10
   transition-all duration-200">
@@ -294,6 +319,7 @@ No manual storage management needed!
 ```
 
 ### Active State
+
 ```tsx
 <div className={`
   ${isActive

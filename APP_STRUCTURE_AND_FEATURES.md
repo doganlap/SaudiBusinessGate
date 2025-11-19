@@ -99,6 +99,7 @@ D:\Projects\SBG\
 ## 🎯 Core Features & Modules
 
 ### 1. 📊 Dashboard & Analytics
+
 **Path**: `app/[lng]/(platform)/dashboard/`
 
 - **Enhanced Dashboard**: Advanced analytics with KPIs, heatmaps, trends
@@ -112,9 +113,11 @@ D:\Projects\SBG\
 ---
 
 ### 2. 💰 Finance Module
+
 **Path**: `app/[lng]/(platform)/finance/`
 
 **Pages**:
+
 - `/finance` - Finance dashboard
 - `/finance/accounts` - Chart of accounts
 - `/finance/transactions` - Transaction management
@@ -130,6 +133,7 @@ D:\Projects\SBG\
 - `/finance/reports` - Financial reports
 
 **API Routes**: `app/api/finance/`
+
 - `/api/finance/accounts` - Account management
 - `/api/finance/transactions` - Transaction CRUD
 - `/api/finance/journal-entries` - Journal entries
@@ -141,6 +145,7 @@ D:\Projects\SBG\
 **Components**: `components/finance/`
 
 **Features**:
+
 - ✅ ZATCA Compliance (Saudi Arabia e-invoicing)
 - ✅ Multi-currency support (SAR default)
 - ✅ Real-time financial analytics
@@ -150,9 +155,11 @@ D:\Projects\SBG\
 ---
 
 ### 3. 📈 Sales Module
+
 **Path**: `app/[lng]/(platform)/sales/`
 
 **Pages**:
+
 - `/sales` - Sales dashboard
 - `/sales/pipeline` - Sales pipeline
 - `/sales/deals` - Deal management
@@ -164,6 +171,7 @@ D:\Projects\SBG\
 - `/sales/rfqs` - RFQ management
 
 **Features**:
+
 - Sales pipeline visualization
 - Lead scoring and qualification
 - Quote generation and tracking
@@ -173,15 +181,18 @@ D:\Projects\SBG\
 ---
 
 ### 4. 👥 HR Module
+
 **Path**: `app/[lng]/(platform)/hr/`
 
 **Pages**:
+
 - `/hr` - HR dashboard
 - `/hr/employees` - Employee management
 - `/hr/payroll` - Payroll processing
 - `/hr/attendance` - Attendance tracking
 
 **Features**:
+
 - Employee database
 - Payroll processing
 - Attendance tracking
@@ -191,15 +202,18 @@ D:\Projects\SBG\
 ---
 
 ### 5. 🛒 Procurement Module
+
 **Path**: `app/[lng]/(platform)/procurement/`
 
 **Pages**:
+
 - `/procurement` - Procurement dashboard
 - `/procurement/orders` - Purchase orders
 - `/procurement/vendors` - Vendor management
 - `/procurement/inventory` - Inventory management
 
 **Features**:
+
 - Purchase order management
 - Vendor onboarding and management
 - Inventory tracking
@@ -208,9 +222,11 @@ D:\Projects\SBG\
 ---
 
 ### 6. 🤝 CRM Module
+
 **Path**: `app/[lng]/(platform)/crm/`
 
 **Pages**:
+
 - `/crm` - CRM dashboard
 - `/crm/customers` - Customer management
 - `/crm/contacts` - Contact management
@@ -218,6 +234,7 @@ D:\Projects\SBG\
 - `/crm/activities` - Activity tracking
 
 **Features**:
+
 - Customer relationship management
 - Contact database
 - Deal pipeline
@@ -227,9 +244,11 @@ D:\Projects\SBG\
 ---
 
 ### 7. 🛡️ GRC Module (Governance, Risk & Compliance)
+
 **Path**: `app/[lng]/(platform)/grc/`
 
 **Pages**:
+
 - `/grc` - GRC dashboard
 - `/grc/frameworks` - Framework management
 - `/grc/controls` - Control management
@@ -237,6 +256,7 @@ D:\Projects\SBG\
 - `/grc/reports` - GRC reports
 
 **Features**:
+
 - Framework mapping (ISO 27001, NIST, SOC 2, GDPR, SAMA)
 - Risk assessment and management
 - Control testing and validation
@@ -247,14 +267,17 @@ D:\Projects\SBG\
 ---
 
 ### 8. 📋 Project Management
+
 **Path**: `app/[lng]/(platform)/pm/`
 
 **Pages**:
+
 - `/pm/projects` - Project management
 - `/pm/tasks` - Task management
 - `/pm/timesheets` - Timesheet tracking
 
 **Features**:
+
 - Project planning and tracking
 - Task assignment and tracking
 - Time tracking
@@ -263,20 +286,24 @@ D:\Projects\SBG\
 ---
 
 ### 9. 🤖 AI & Automation
+
 **Path**: `app/[lng]/(platform)/ai-agents/`
 
 **Pages**:
+
 - `/ai-agents` - AI agents dashboard
 - `/analytics/ai-insights` - AI insights
 - `/ai-finance-agents` - Finance AI agents
 - `/vectorize` - Vectorization service
 
 **API Routes**: `app/api/ai/`
+
 - `/api/ai/generate` - AI text generation
 - `/api/ai/config` - AI configuration
 - `/api/ai/rag` - RAG service
 
 **Features**:
+
 - AI-powered insights
 - Automated workflows
 - Natural language processing
@@ -286,19 +313,23 @@ D:\Projects\SBG\
 ---
 
 ### 10. 🔄 Workflows
+
 **Path**: `app/[lng]/(platform)/workflows/`
 
 **Pages**:
+
 - `/workflows` - Workflow management
 - `/workflows/designer` - Workflow designer
 - `/workflows/[id]` - Workflow details
 - `/workflows/create` - Create workflow
 
 **API Routes**: `app/api/workflows/`
+
 - `/api/workflows` - Workflow CRUD
 - `/api/workflows/[id]/execute` - Execute workflow
 
 **Features**:
+
 - Visual workflow designer
 - Automated approval processes
 - Workflow execution engine
@@ -307,9 +338,11 @@ D:\Projects\SBG\
 ---
 
 ### 11. 💳 Billing & Licensing
+
 **Path**: `app/[lng]/(platform)/billing/` & `/licensing/`
 
 **Pages**:
+
 - `/billing` - Billing dashboard
 - `/licensing` - License management
 - `/licenses/management` - License management
@@ -318,6 +351,7 @@ D:\Projects\SBG\
 - `/licenses/upgrade` - Upgrade management
 
 **Features**:
+
 - Subscription management
 - License tracking
 - Usage analytics
@@ -327,14 +361,17 @@ D:\Projects\SBG\
 ---
 
 ### 12. 📊 Analytics
+
 **Path**: `app/[lng]/(platform)/analytics/`
 
 **Pages**:
+
 - `/analytics/financial-analytics` - Financial analytics
 - `/analytics/customer-analytics` - Customer analytics
 - `/analytics/ai-insights` - AI-powered insights
 
 **Features**:
+
 - Advanced analytics dashboards
 - Real-time data visualization
 - Predictive analytics
@@ -343,19 +380,23 @@ D:\Projects\SBG\
 ---
 
 ### 13. 🔐 Authentication & Authorization
+
 **Path**: `app/[lng]/auth/` & `app/[lng]/login/`
 
 **Pages**:
+
 - `/login` - Login page
 - `/register` - Registration page
 - `/auth/signin` - Sign in
 
 **API Routes**: `app/api/auth/`
+
 - `/api/auth/signin` - Sign in
 - `/api/auth/signout` - Sign out
 - `/api/auth/session` - Session management
 
 **Features**:
+
 - Multi-factor authentication
 - Role-based access control (RBAC)
 - Session management
@@ -365,14 +406,17 @@ D:\Projects\SBG\
 ---
 
 ### 14. ⚙️ System Management
+
 **Path**: `app/[lng]/(platform)/platform/`
 
 **Pages**:
+
 - `/platform/api-status` - API status monitoring
 - `/audit-logs` - Audit logs
 - `/red-flags` - Red flags management
 
 **Features**:
+
 - System health monitoring
 - API status tracking
 - Audit logging
@@ -384,17 +428,21 @@ D:\Projects\SBG\
 ## 🔗 Updated Paths After Consolidation
 
 ### Configuration Paths
+
 **Before**: `apps/web/src/config/*`  
 **After**: `config/*`
 
 **Updated Files** (18 files):
+
 - All imports now use: `require('../../../../config/loader.js')` or relative paths to `config/`
 
 ### Navigation Paths
+
 **Before**: Multiple `MultiTenantNavigation.jsx` files  
 **After**: `components/layout/MultiTenantNavigation.jsx`
 
 **Updated Files**:
+
 - `apps/web/src/components/layout/Sidebar.jsx`
 - `app/components/layout/Sidebar.jsx`
 - `apps/web/src/components/layout/EnhancedAppShell.jsx`
@@ -405,14 +453,17 @@ D:\Projects\SBG\
 - `app/components/Navigation/ModernSlideNavigator.jsx`
 
 **Import Pattern**:
+
 ```javascript
 import { getNavigationForRole, RoleActivationPanel } from '../../../../components/layout/MultiTenantNavigation';
 ```
 
 ### Component Paths
+
 **Location**: `components/` (shared location)
 
 **TypeScript Path Mapping**:
+
 ```json
 "@/components/*": [
   "./components/*",
@@ -421,6 +472,7 @@ import { getNavigationForRole, RoleActivationPanel } from '../../../../component
 ```
 
 **Usage**:
+
 ```typescript
 import { Component } from '@/components/...';
 ```
@@ -430,11 +482,13 @@ import { Component } from '@/components/...';
 ## 📊 Application Statistics
 
 ### Pages
+
 - **Total Pages**: 161 pages
 - **Internationalized**: All pages support Arabic (RTL) and English (LTR)
 - **API Routes**: 140 API endpoints
 
 ### Modules
+
 - **Finance**: 13 pages + 7 API routes
 - **Sales**: 9 pages
 - **HR**: 4 pages
@@ -449,11 +503,13 @@ import { Component } from '@/components/...';
 - **System Management**: 3 pages
 
 ### Configuration
+
 - **Config Files**: 12 files in `config/`
 - **Consolidated**: 9 files moved from `apps/web/src/config/`
 - **Updated Imports**: 18 files
 
 ### Components
+
 - **Shared Components**: `components/` (single source)
 - **Layout Components**: `components/layout/`
 - **UI Components**: `components/ui/`
@@ -464,12 +520,14 @@ import { Component } from '@/components/...';
 ## 🌐 Internationalization (i18n)
 
 **Supported Languages**:
+
 - Arabic (ar) - RTL
 - English (en) - LTR
 
 **Routing Pattern**: `/[lng]/(platform)/...`
 
 **Examples**:
+
 - `/ar/finance` - Finance in Arabic
 - `/en/finance` - Finance in English
 - `/ar/dashboard` - Dashboard in Arabic
@@ -480,6 +538,7 @@ import { Component } from '@/components/...';
 ## 🔧 Technology Stack
 
 ### Frontend
+
 - **Framework**: Next.js 16 (App Router)
 - **UI Library**: React 18
 - **Styling**: Tailwind CSS
@@ -489,6 +548,7 @@ import { Component } from '@/components/...';
 - **Routing**: Next.js App Router (file-based)
 
 ### Backend
+
 - **API**: Next.js API Routes
 - **Database**: PostgreSQL (via Prisma)
 - **ORM**: Prisma
@@ -496,6 +556,7 @@ import { Component } from '@/components/...';
 - **Authentication**: NextAuth.js
 
 ### Development
+
 - **Language**: TypeScript + JavaScript
 - **Package Manager**: npm
 - **Build Tool**: Next.js
@@ -506,12 +567,14 @@ import { Component } from '@/components/...';
 ## 🚀 Key Features
 
 ### ✅ Multi-Tenancy
+
 - Platform admin, tenant admin, and team member roles
 - Tenant isolation
 - Role-based navigation
 - Tenant-specific data
 
 ### ✅ Saudi Arabia Compliance
+
 - ZATCA e-invoicing compliance
 - SAR currency default
 - Arabic (RTL) support
@@ -519,12 +582,14 @@ import { Component } from '@/components/...';
 - Phone code (+966)
 
 ### ✅ Zero Mock Data
+
 - All pages use real API services
 - No fallback mock data
 - Graceful error handling
 - Empty states instead of mocks
 
 ### ✅ Production Ready
+
 - Pre-production testing
 - Error handling
 - Logging and monitoring
@@ -536,6 +601,7 @@ import { Component } from '@/components/...';
 ## 📝 File Organization
 
 ### App Router Structure
+
 ```
 app/
 ├── [lng]/                    # Language parameter
@@ -549,6 +615,7 @@ app/
 ```
 
 ### Component Organization
+
 ```
 components/
 ├── layout/                  # Layout components
@@ -558,6 +625,7 @@ components/
 ```
 
 ### Config Organization
+
 ```
 config/
 ├── api.config.ts           # API configuration
@@ -571,12 +639,14 @@ config/
 ## 🔄 Migration Status
 
 ### ✅ Completed
+
 - Config consolidation to `config/`
 - Navigation consolidation to `components/layout/MultiTenantNavigation.jsx`
 - Component organization in `components/`
 - Import path updates (18 files)
 
 ### ⚠️ Legacy Support
+
 - `apps/web/` (React Router) - Kept for backward compatibility
 - `apps/web/src/pages/index.js` - React Router page exports
 
@@ -594,4 +664,3 @@ config/
 **Last Updated**: 2024  
 **Version**: 2.0.0  
 **Status**: ✅ Production Ready
-

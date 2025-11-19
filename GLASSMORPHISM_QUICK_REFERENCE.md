@@ -26,6 +26,7 @@ import {
 ## Components
 
 ### GlassBackground
+
 ```typescript
 <GlassBackground dir="rtl" className="optional-class">
   {children}
@@ -33,6 +34,7 @@ import {
 ```
 
 ### GlassContainer
+
 ```typescript
 <GlassContainer padding="sm|md|lg">
   {children}
@@ -40,6 +42,7 @@ import {
 ```
 
 ### GlassInput
+
 ```typescript
 <GlassInput
   type="text"
@@ -51,6 +54,7 @@ import {
 ```
 
 ### GlassButton
+
 ```typescript
 <GlassButton variant="primary|secondary|success">
   Button Text
@@ -60,6 +64,7 @@ import {
 ## Examples
 
 ### Simple Form
+
 ```typescript
 <GlassBackground>
   <GlassContainer>
@@ -70,6 +75,7 @@ import {
 ```
 
 ### With Arabic/RTL
+
 ```typescript
 <GlassBackground dir="rtl">
   <GlassInput 
@@ -82,10 +88,11 @@ import {
 ```
 
 ## Text Colors
+
 - `text-white` - Main text
 - `text-white/90` - Secondary text
 - `text-white/80` - Tertiary text
 
 ## See Full Guide
-📖 `GLASSMORPHISM_USAGE_GUIDE.md` for complete documentation
 
+📖 `GLASSMORPHISM_USAGE_GUIDE.md` for complete documentation

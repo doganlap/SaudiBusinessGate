@@ -31,6 +31,7 @@ All errors have been cleared and the application is prepared for running.
 ### Step 1: Restart the Dev Server
 
 If the server is currently running:
+
 1. Stop it (Ctrl+C in the terminal)
 2. Restart: `npm run dev`
 
@@ -39,30 +40,37 @@ If the server is currently running:
 Once the server starts, test these endpoints:
 
 **Simple Health Check (No dependencies):**
+
 ```
 http://localhost:3050/api/health/simple
 ```
+
 Expected: `{"status":"ok","timestamp":"...","service":"SBG Platform"}`
 
 **Full Health Check:**
+
 ```
 http://localhost:3050/api/health
 ```
 
 **Main Application:**
+
 ```
 http://localhost:3050
 ```
+
 This will auto-redirect to `http://localhost:3050/ar` (Arabic RTL)
 
 ### Step 3: Test API Endpoints
 
 Run the test script:
+
 ```bash
 node scripts/test-api-endpoints.js
 ```
 
 Or test manually:
+
 - CRM: `http://localhost:3050/api/crm/customers`
 - Procurement: `http://localhost:3050/api/procurement/vendors`
 - HR: `http://localhost:3050/api/hr/employees`
@@ -93,4 +101,3 @@ If you still see errors after restarting:
 - i18n: ✅ Arabic RTL default
 
 **The application is ready to use!** 🎉
-

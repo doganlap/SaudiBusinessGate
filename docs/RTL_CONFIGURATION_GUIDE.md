@@ -1,6 +1,7 @@
 # 🌐 دليل تكوين RTL - RTL Configuration Guide
 
 ## **المتجر السعودي - Saudi Store Platform**
+
 ### **تكوين RTL افتراضي مع دعم LTR اختياري**
 
 ---
@@ -8,9 +9,11 @@
 ## **📋 نظرة عامة - Overview**
 
 ### **العربية (الافتراضي)**
+
 تم تكوين المنصة لتعمل بـ RTL (من اليمين إلى اليسار) كإعداد افتراضي مع دعم كامل للغة العربية، والإنجليزية كخيار ثانوي.
 
 ### **English (Optional)**
+
 The platform is configured to work with RTL (Right-to-Left) as default with full Arabic support, and English as a secondary option.
 
 ---
@@ -18,6 +21,7 @@ The platform is configured to work with RTL (Right-to-Left) as default with full
 ## **🎯 التكوين الحالي - Current Configuration**
 
 ### **1. ✅ CSS Global Configuration**
+
 ```css
 /* RTL Default Configuration */
 html {
@@ -37,11 +41,14 @@ body {
 ```
 
 ### **2. ✅ Language Routing**
+
 - **الافتراضي:** `/ar/` - العربية
 - **اختياري:** `/en/` - الإنجليزية
 
 ### **3. ✅ Component Support**
+
 جميع المكونات تدعم RTL/LTR:
+
 - RedFlagsCard
 - LicenseCard  
 - AIAgentCard
@@ -55,6 +62,7 @@ body {
 ### **للمطورين - For Developers:**
 
 #### **1. تغيير الاتجاه في Component:**
+
 ```tsx
 const locale = 'ar'; // أو 'en'
 const isRTL = locale === 'ar';
@@ -65,6 +73,7 @@ const isRTL = locale === 'ar';
 ```
 
 #### **2. استخدام CSS Classes:**
+
 ```css
 .rtl-default {
   direction: rtl;
@@ -78,6 +87,7 @@ const isRTL = locale === 'ar';
 ```
 
 #### **3. Form Handling:**
+
 ```tsx
 <form className={locale === 'ar' ? 'form-rtl' : 'form-ltr'}>
   <input type="text" />
@@ -89,6 +99,7 @@ const isRTL = locale === 'ar';
 ## **🎨 Tailwind CSS RTL Support**
 
 ### **استخدام RTL Classes:**
+
 ```tsx
 // RTL Padding
 <div className="pr-4 pl-0 rtl:pr-0 rtl:pl-4">
@@ -101,6 +112,7 @@ const isRTL = locale === 'ar';
 ```
 
 ### **Responsive RTL:**
+
 ```tsx
 <div className="
   flex flex-row-reverse rtl:flex-row-reverse ltr:flex-row
@@ -113,6 +125,7 @@ const isRTL = locale === 'ar';
 ## **📱 Navigation RTL**
 
 ### **Sidebar Configuration:**
+
 ```tsx
 const SidebarComponent = ({ locale }) => (
   <div className={`
@@ -131,16 +144,19 @@ const SidebarComponent = ({ locale }) => (
 ## **🔤 Typography & Fonts**
 
 ### **Arabic Fonts (Primary):**
+
 - Noto Sans Arabic
 - Cairo
 - Tajawal
 
 ### **English Fonts (Secondary):**
+
 - Inter
 - Roboto
 - System UI
 
 ### **Font Loading:**
+
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap');
@@ -151,6 +167,7 @@ const SidebarComponent = ({ locale }) => (
 ## **🌍 Language Switching**
 
 ### **Language Toggle Component:**
+
 ```tsx
 const LanguageToggle = () => {
   const [locale, setLocale] = useState('ar');
@@ -177,6 +194,7 @@ const LanguageToggle = () => {
 ## **📊 Data Display RTL**
 
 ### **Numbers & Dates:**
+
 ```tsx
 // Arabic Numerals
 <span className="arabic-numerals">
@@ -190,6 +208,7 @@ const LanguageToggle = () => {
 ```
 
 ### **Currency:**
+
 ```tsx
 const formatCurrency = (amount, locale) => {
   return new Intl.NumberFormat(
@@ -204,11 +223,13 @@ const formatCurrency = (amount, locale) => {
 ## **🎯 Best Practices**
 
 ### **1. ✅ Always Default to Arabic:**
+
 ```tsx
 const locale = params?.lng || 'ar'; // Arabic as default
 ```
 
 ### **2. ✅ Use Semantic Classes:**
+
 ```css
 .content-start { /* بداية المحتوى */
   text-align: right;
@@ -220,6 +241,7 @@ const locale = params?.lng || 'ar'; // Arabic as default
 ```
 
 ### **3. ✅ Icon Direction:**
+
 ```tsx
 <ChevronRight className={`
   h-4 w-4 transition-transform
@@ -228,6 +250,7 @@ const locale = params?.lng || 'ar'; // Arabic as default
 ```
 
 ### **4. ✅ Layout Mirroring:**
+
 ```tsx
 <div className={`
   flex items-center gap-3
@@ -240,12 +263,14 @@ const locale = params?.lng || 'ar'; // Arabic as default
 ## **🔧 Testing RTL**
 
 ### **Manual Testing:**
+
 1. افتح `/ar/red-flags` - يجب أن يظهر RTL
 2. افتح `/en/red-flags` - يجب أن يظهر LTR  
 3. اختبر التبديل بين اللغات
 4. تأكد من اتجاه النصوص والأيقونات
 
 ### **Automated Testing:**
+
 ```javascript
 // Jest Test
 test('RTL direction is applied correctly', () => {
@@ -259,12 +284,14 @@ test('RTL direction is applied correctly', () => {
 ## **📈 Performance Considerations**
 
 ### **Font Loading Optimization:**
+
 ```css
 /* Preload Arabic fonts */
 <link rel="preload" href="/fonts/NotoSansArabic.woff2" as="font" type="font/woff2" crossorigin>
 ```
 
 ### **CSS Optimization:**
+
 ```css
 /* Use CSS logical properties */
 .element {
@@ -278,6 +305,7 @@ test('RTL direction is applied correctly', () => {
 ## **🎉 الخلاصة - Summary**
 
 ### **✅ تم التكوين:**
+
 - RTL افتراضي للعربية
 - LTR اختياري للإنجليزية  
 - دعم كامل للخطوط العربية
@@ -286,6 +314,7 @@ test('RTL direction is applied correctly', () => {
 - اختبار شامل
 
 ### **🚀 الاستخدام:**
+
 ```bash
 # تشغيل التطبيق
 npm run dev

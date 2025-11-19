@@ -7,9 +7,11 @@
 ## **✅ CHANGES APPLIED**
 
 ### **1. New Shell Component Created**
+
 **File:** `app/[lng]/layout-shell.tsx`
 
 **Features:**
+
 - ✅ Glassmorphic design with backdrop blur
 - ✅ Left navigation sidebar (collapsible)
 - ✅ Right agent workflow dock
@@ -26,6 +28,7 @@
 **New Name:** Saudi Store / المتجر السعودي
 
 **Brand Colors:**
+
 - Primary: Emerald/Green gradient (Saudi theme)
 - Accent: Teal/Cyan
 - Background: Glassmorphic with blur
@@ -37,6 +40,7 @@
 ## **🎨 DESIGN FEATURES**
 
 ### **Header:**
+
 - Glassmorphic with backdrop blur
 - Animated orb background
 - Search bar (Ctrl/⌘K)
@@ -46,6 +50,7 @@
 - Status chips (System, Database, Platform)
 
 ### **Left Navigation:**
+
 - Collapsible sidebar (300px → 84px)
 - Grouped navigation items
 - Active link highlighting (emerald ring)
@@ -54,6 +59,7 @@
 - RTL-aware positioning
 
 ### **Right Agent Dock:**
+
 - 6 AI agents with glassmorphic cards
 - Agent status indicators
 - Toast notifications
@@ -61,6 +67,7 @@
 - Gradient backgrounds per agent
 
 ### **Main Content:**
+
 - Hero banner with CTAs
 - Metric cards (glassmorphic)
 - Responsive grid layout
@@ -71,20 +78,24 @@
 ## **📱 NAVIGATION STRUCTURE**
 
 ### **Dashboard:**
+
 - Home
 - Register Customer
 - Login
 
 ### **Finance:**
+
 - Transactions
 - Accounts
 - Reports
 
 ### **Sales:**
+
 - Leads
 - Deals
 
 ### **Admin:**
+
 - Users
 - Tenants
 - Settings
@@ -106,12 +117,14 @@
 ## **🌍 BILINGUAL SUPPORT**
 
 ### **Arabic (AR):**
+
 - RTL layout
 - Arabic labels
 - Right-to-left navigation
 - Arabic typography
 
 ### **English (EN):**
+
 - LTR layout
 - English labels
 - Left-to-right navigation
@@ -122,6 +135,7 @@
 ## **📦 USAGE**
 
 ### **Import the Shell:**
+
 ```tsx
 import SaudiStoreShell from '@/app/[lng]/layout-shell';
 
@@ -135,6 +149,7 @@ export default function Page() {
 ```
 
 ### **With Custom Content:**
+
 ```tsx
 <SaudiStoreShell locale="en">
   <div>
@@ -149,12 +164,14 @@ export default function Page() {
 ## **🎯 NEXT STEPS**
 
 ### **1. Update Existing Pages:**
+
 ```bash
 # Wrap existing pages with SaudiStoreShell
 # Example: app/[lng]/dashboard/page.tsx
 ```
 
 ### **2. Configure Agent Endpoints:**
+
 ```typescript
 // Create API routes for agents
 // app/api/agents/compliance/gap-scan/route.ts
@@ -163,11 +180,13 @@ export default function Page() {
 ```
 
 ### **3. Add Framer Motion:**
+
 ```bash
 npm install framer-motion
 ```
 
 ### **4. Update Environment Variables:**
+
 ```env
 NEXT_PUBLIC_PLATFORM_NAME="Saudi Store"
 NEXT_PUBLIC_PLATFORM_NAME_AR="المتجر السعودي"
@@ -178,7 +197,9 @@ NEXT_PUBLIC_PLATFORM_NAME_AR="المتجر السعودي"
 ## **🔧 CUSTOMIZATION**
 
 ### **Colors:**
+
 Edit gradient colors in the component:
+
 ```tsx
 // Primary brand gradient
 from-emerald-400/70 via-green-400/70 to-teal-400/70
@@ -188,7 +209,9 @@ ring-emerald-300/40
 ```
 
 ### **Navigation Items:**
+
 Edit the `groups` array in `LeftNav` component:
+
 ```tsx
 const groups = useMemo(()=>[
   { key:"dashboard", titleAr:"...", titleEn:"...", items:[...] },
@@ -197,7 +220,9 @@ const groups = useMemo(()=>[
 ```
 
 ### **Agents:**
+
 Edit the `agents` array in `RightAgentDock`:
+
 ```tsx
 const agents = useMemo(()=>[
   { k:"gap", labelAr:"...", labelEn:"...", icon: ShieldCheck, ... },

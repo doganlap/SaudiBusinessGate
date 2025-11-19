@@ -39,6 +39,7 @@ To revolutionize global retail and enterprise services by creating the world's f
 ### Core AI Services
 
 #### 1. **AI Sales Agent** 🤝
+
 - Understands customer needs in Arabic & English
 - Recommends right services automatically
 - Answers pricing questions instantly
@@ -47,6 +48,7 @@ To revolutionize global retail and enterprise services by creating the world's f
 - Negotiates within preset parameters
 
 #### 2. **AI Onboarding Assistant** 📋
+
 - Guides through registration process
 - Asks intelligent contextual questions
 - Validates documents automatically
@@ -55,6 +57,7 @@ To revolutionize global retail and enterprise services by creating the world's f
 - 24/7 availability in multiple languages
 
 #### 3. **AI Customer Support** 💬
+
 - Instant response to inquiries
 - Context-aware conversations
 - Escalates complex issues to humans
@@ -63,6 +66,7 @@ To revolutionize global retail and enterprise services by creating the world's f
 - Proactive issue detection
 
 #### 4. **AI Operations Manager** ⚙️
+
 - Monitors system health 24/7
 - Predicts maintenance needs
 - Optimizes resource allocation
@@ -75,6 +79,7 @@ To revolutionize global retail and enterprise services by creating the world's f
 ## 🏗️ Technology Stack
 
 ### Frontend Layer
+
 ```
 Next.js 16 + React 19
 ├── App Router (Latest)
@@ -85,6 +90,7 @@ Next.js 16 + React 19
 ```
 
 ### AI Layer
+
 ```
 Ollama LLM Integration
 ├── Qwen 2.5 (72B parameters)
@@ -95,6 +101,7 @@ Ollama LLM Integration
 ```
 
 ### Backend Layer
+
 ```
 Node.js 18+ Runtime
 ├── PostgreSQL 13+ Database
@@ -105,6 +112,7 @@ Node.js 18+ Runtime
 ```
 
 ### DevOps Layer
+
 ```
 Cloud-Native Deployment
 ├── Docker Containers
@@ -147,24 +155,28 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 ## 🎯 Target Markets
 
 ### Phase 1: Saudi Arabia 🇸🇦
+
 - Government entities
 - Large enterprises
 - SMEs and startups
 - Educational institutions
 
 ### Phase 2: GCC Region 🌍
+
 - United Arab Emirates
 - Kuwait, Qatar, Bahrain
 - Oman
 - Regional organizations
 
 ### Phase 3: MENA Region 🗺️
+
 - Egypt, Jordan, Lebanon
 - Morocco, Tunisia, Algeria
 - Iraq, Palestine
 - All Arabic-speaking nations
 
 ### Phase 4: Global Expansion 🌎
+
 - Europe and Americas
 - Asia-Pacific
 - Africa
@@ -175,6 +187,7 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 ## 💡 Innovation Pillars
 
 ### 1. **Autonomous Operations**
+
 - 90% self-operating platform
 - Minimal human intervention
 - AI-driven decision making
@@ -182,6 +195,7 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 - Self-healing systems
 
 ### 2. **Cultural Intelligence**
+
 - Arabic-first design
 - Islamic calendar integration
 - Prayer times consideration
@@ -189,6 +203,7 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 - Saudi cultural values
 
 ### 3. **Enterprise Grade**
+
 - 99.99% uptime SLA
 - Enterprise security
 - Compliance ready (SAMA, CITC)
@@ -196,6 +211,7 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 - 24/7 AI support
 
 ### 4. **Green Technology**
+
 - Carbon-neutral operations
 - Efficient resource usage
 - Sustainable practices
@@ -207,6 +223,7 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 ## 📊 Success Metrics
 
 ### Year 1 Goals
+
 - ✅ 1,000+ Saudi customers
 - ✅ 90% customer satisfaction
 - ✅ 99.9% platform uptime
@@ -214,6 +231,7 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 - ✅ Regional market presence
 
 ### Year 3 Goals
+
 - 🎯 10,000+ regional customers
 - 🎯 95% autonomous operations
 - 🎯 GCC market leadership
@@ -221,6 +239,7 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 - 🎯 International expansion
 
 ### Year 5 Goals
+
 - 🌟 100,000+ global customers
 - 🌟 Global market recognition
 - 🌟 $500M revenue milestone
@@ -256,18 +275,21 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 ## 🤝 Strategic Partnerships
 
 ### Technology Partners
+
 - **Ollama** - AI/LLM infrastructure
 - **Vercel** - Edge deployment
 - **Microsoft Azure** - Cloud services
 - **Cloudflare** - Global CDN
 
 ### Business Partners
+
 - Saudi government entities
 - SAMA (Saudi Central Bank)
 - CITC (Telecom Authority)
 - Local accelerators
 
 ### Academic Partners
+
 - King Saud University
 - KAUST
 - Tech training institutes
@@ -278,6 +300,7 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 ## 🔐 Security & Compliance
 
 ### Security Standards
+
 - ISO 27001 certified
 - SOC 2 Type II compliant
 - GDPR ready
@@ -285,6 +308,7 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 - Zero-trust architecture
 
 ### Compliance
+
 - SAMA regulations
 - CITC requirements
 - Saudi labor law
@@ -307,11 +331,12 @@ Saudi Store embodies the Kingdom's Vision 2030 by:
 
 **Headquarters:** Riyadh, Saudi Arabia 🇸🇦
 **Website:** saudistore.sa
-**Email:** info@saudistore.sa
-**Support:** support@saudistore.sa
+**Email:** <info@saudistore.sa>
+**Support:** <support@saudistore.sa>
 **Phone:** +966 920000000
 
 ### Leadership Team
+
 - **CEO:** Leading Saudi Vision 2030 initiatives
 - **CTO:** AI and technology innovation
 - **COO:** Autonomous operations

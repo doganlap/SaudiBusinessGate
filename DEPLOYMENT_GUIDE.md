@@ -3,6 +3,7 @@
 ## ✅ Step 1: Database Deployment (COMPLETE)
 
 ### Prisma Cloud Database
+
 - **Status**: ✅ Connected and synced
 - **Host**: db.prisma.io:5432
 - **Schema**: 14 models pushed successfully
@@ -15,13 +16,16 @@
 ## 🔄 Step 2: Backend Deployment (IN PROGRESS)
 
 ### Build Process
+
 Currently building Next.js production bundle with:
+
 - Prisma Client generation
 - Webpack optimization
 - TypeScript compilation
 - API routes compilation
 
 ### Backend Components
+
 - **API Routes**: `/app/api/**/*.ts`
 - **Server Components**: Next.js 16 App Router
 - **Database Layer**: Prisma ORM
@@ -31,6 +35,7 @@ Currently building Next.js production bundle with:
 ## 📋 Step 3: Frontend Deployment (PENDING)
 
 ### Frontend Stack
+
 - **Framework**: Next.js 16.0.1
 - **UI**: React with Tailwind CSS
 - **Components**: Shadcn/ui
@@ -40,6 +45,7 @@ Currently building Next.js production bundle with:
 ## 🚀 Deployment Options
 
 ### Option A: Vercel (Recommended)
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -52,6 +58,7 @@ vercel --prod
 ```
 
 ### Option B: Docker Deployment
+
 ```bash
 # Build Docker image
 docker build -t saudi-store:latest .
@@ -61,6 +68,7 @@ docker run -p 3050:3050 --env-file .env saudi-store:latest
 ```
 
 ### Option C: Manual Node Deployment
+
 ```bash
 # Build
 npm run build
@@ -72,6 +80,7 @@ npm start
 ## 🔐 Environment Variables Required
 
 ### Vercel Dashboard Settings
+
 Add these in Vercel Project Settings → Environment Variables:
 
 ```bash
@@ -103,6 +112,7 @@ SMTP_PASSWORD="your-password"
 ## 📊 Deployment Checklist
 
 ### Database Layer ✅
+
 - [x] Prisma schema created
 - [x] Database credentials configured
 - [x] Schema pushed to Prisma Cloud
@@ -110,6 +120,7 @@ SMTP_PASSWORD="your-password"
 - [x] Database connection verified
 
 ### Backend Layer 🔄
+
 - [x] Prisma generate in build script
 - [x] API routes structured
 - [ ] Build completion
@@ -117,6 +128,7 @@ SMTP_PASSWORD="your-password"
 - [ ] Backend testing
 
 ### Frontend Layer ⏳
+
 - [x] Next.js configuration
 - [x] Vercel.json configured
 - [ ] Build completion
@@ -127,16 +139,19 @@ SMTP_PASSWORD="your-password"
 ## 🧪 Post-Deployment Testing
 
 ### 1. Health Check
+
 ```bash
 curl https://yourdomain.com/api/health
 ```
 
 ### 2. Database Connection
+
 ```bash
 curl https://yourdomain.com/api/health/db
 ```
 
 ### 3. Authentication
+
 ```bash
 # Test login endpoint
 curl -X POST https://yourdomain.com/api/auth/login \
@@ -145,20 +160,23 @@ curl -X POST https://yourdomain.com/api/auth/login \
 ```
 
 ### 4. Frontend Routes
-- Homepage: https://yourdomain.com
-- English: https://yourdomain.com/en
-- Arabic: https://yourdomain.com/ar
-- Admin: https://yourdomain.com/admin
+
+- Homepage: <https://yourdomain.com>
+- English: <https://yourdomain.com/en>
+- Arabic: <https://yourdomain.com/ar>
+- Admin: <https://yourdomain.com/admin>
 
 ## 🔍 Monitoring
 
 ### Vercel Analytics
+
 - Real-time monitoring
 - Error tracking
 - Performance metrics
 - Function logs
 
 ### Prisma Accelerate
+
 - Query performance
 - Cache hit rates
 - Connection pooling stats
@@ -166,6 +184,7 @@ curl -X POST https://yourdomain.com/api/auth/login \
 ## 🐛 Troubleshooting
 
 ### Build Fails
+
 ```bash
 # Clear cache
 rm -rf .next node_modules
@@ -174,6 +193,7 @@ npm run build
 ```
 
 ### Database Connection Errors
+
 ```bash
 # Verify DATABASE_URL
 npx prisma db push
@@ -183,6 +203,7 @@ npx prisma studio
 ```
 
 ### Deployment Fails on Vercel
+
 1. Check build logs in Vercel dashboard
 2. Verify all environment variables are set
 3. Ensure `postinstall` script runs
@@ -191,16 +212,19 @@ npx prisma studio
 ## 📈 Performance Optimization
 
 ### Database
+
 - ✅ Prisma Accelerate enabled (global caching)
 - ✅ Connection pooling configured
 - ✅ Query optimization with indexes
 
 ### Backend
+
 - API route caching
 - Server-side rendering
 - Incremental Static Regeneration
 
 ### Frontend
+
 - Image optimization (Next.js Image)
 - Code splitting
 - Static asset CDN

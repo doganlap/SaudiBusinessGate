@@ -1,15 +1,18 @@
 # 🔧 Fix Prisma Binary Download Error for Vercel
 
 ## ⚠️ Problem
+
 Prisma's binary server is returning 500 errors during Vercel build.
 
 ## ✅ Solutions Applied
 
 ### 1. Updated package.json
+
 - Modified `postinstall` to handle errors gracefully
 - Updated `build` script with retry logic
 
 ### 2. Updated vercel.json
+
 - Added `PRISMA_SKIP_POSTINSTALL_GENERATE=1` to skip postinstall generation
 - Added `PRISMA_ENGINES_MIRROR` for alternative binary source
 - Kept `PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1`
@@ -17,6 +20,7 @@ Prisma's binary server is returning 500 errors during Vercel build.
 ## 🚀 Deploy Now
 
 ### Option 1: Retry Deployment
+
 ```bash
 cd d:\Projects\SBG
 vercel --prod
@@ -25,6 +29,7 @@ vercel --prod
 The build script now has retry logic and will handle Prisma errors better.
 
 ### Option 2: Add Environment Variable in Vercel Dashboard
+
 If it still fails, add this in Vercel Dashboard → Settings → Environment Variables:
 
 ```bash
@@ -35,6 +40,7 @@ PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
 Then redeploy.
 
 ### Option 3: Use GitHub Deployment
+
 1. Push code to GitHub
 2. Vercel will auto-deploy
 3. Sometimes more reliable than CLI
@@ -48,6 +54,7 @@ Then redeploy.
 ## ✅ Next Steps
 
 1. **Try deploying again:**
+
    ```bash
    vercel --prod
    ```
@@ -59,4 +66,3 @@ Then redeploy.
 ---
 
 **Status:** ✅ **Fixed - Ready to Deploy**
-

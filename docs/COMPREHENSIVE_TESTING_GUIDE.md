@@ -7,18 +7,22 @@ This guide provides comprehensive testing procedures for the RTL (Right-to-Left)
 ## 🚀 Quick Start Testing
 
 ### 1. **Access the Test Page**
+
 Navigate to the comprehensive UI testing page:
-- **Arabic (RTL)**: http://localhost:3050/ar/test-ui
-- **English (LTR)**: http://localhost:3050/en/test-ui
+
+- **Arabic (RTL)**: <http://localhost:3050/ar/test-ui>
+- **English (LTR)**: <http://localhost:3050/en/test-ui>
 
 ### 2. **Browser Preview**
-Use the browser preview available at: **http://127.0.0.1:61226**
+
+Use the browser preview available at: **<http://127.0.0.1:61226>**
 
 ## 🎯 Testing Checklist
 
 ### ✅ **RTL/LTR Language Support**
 
 #### **Language Switching**
+
 - [ ] Language toggle button works in navigation
 - [ ] URL changes correctly (/ar/... ↔ /en/...)
 - [ ] Page content updates without reload
@@ -26,6 +30,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] Text alignment updates properly
 
 #### **Arabic (RTL) Testing**
+
 - [ ] Text flows from right to left
 - [ ] Navigation sidebar appears on the right
 - [ ] Icons and buttons align correctly
@@ -35,6 +40,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] Breadcrumbs flow right to left
 
 #### **English (LTR) Testing**
+
 - [ ] Text flows from left to right
 - [ ] Navigation sidebar appears on the left
 - [ ] All elements mirror correctly from RTL
@@ -44,6 +50,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 ### ✅ **Typography & Fonts**
 
 #### **Arabic Font Rendering**
+
 - [ ] Noto Sans Arabic loads correctly
 - [ ] Arabic text displays properly
 - [ ] Font weights (300-700) work
@@ -51,6 +58,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] Mixed Arabic/English text flows properly
 
 #### **English Font Rendering**
+
 - [ ] Inter font loads correctly
 - [ ] Latin characters display properly
 - [ ] Font weights work across all variants
@@ -59,6 +67,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 ### ✅ **Enterprise Design System**
 
 #### **Color Palette**
+
 - [ ] Brand colors (50-950) display correctly
 - [ ] Accent colors (gold theme) work
 - [ ] Success colors render properly
@@ -68,6 +77,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] Neutral colors work in light/dark modes
 
 #### **Component Styling**
+
 - [ ] Enterprise cards have proper shadows
 - [ ] Buttons show hover/focus states
 - [ ] Input fields have proper styling
@@ -78,6 +88,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 ### ✅ **Dark Mode Implementation**
 
 #### **Theme Switching**
+
 - [ ] Dark mode toggle works
 - [ ] Theme persists in localStorage
 - [ ] CSS variables update correctly
@@ -85,6 +96,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] Contrast ratios remain accessible
 
 #### **Dark Theme Components**
+
 - [ ] Background colors invert properly
 - [ ] Text remains readable
 - [ ] Borders and shadows adjust
@@ -94,6 +106,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 ### ✅ **UI Components Testing**
 
 #### **Button Component**
+
 - [ ] All 8 variants render correctly
 - [ ] Loading states work
 - [ ] Icon positioning (left/right) works
@@ -103,6 +116,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] RTL icon positioning correct
 
 #### **Input Component**
+
 - [ ] All variants (default, filled, outlined) work
 - [ ] Error states display correctly
 - [ ] Helper text shows properly
@@ -111,6 +125,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] Validation messages work
 
 #### **Select Component**
+
 - [ ] Dropdown opens correctly
 - [ ] Options display properly
 - [ ] Multi-select works
@@ -119,6 +134,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] RTL positioning correct
 
 #### **Modal Component**
+
 - [ ] Opens and closes properly
 - [ ] Backdrop blur works
 - [ ] Escape key closes modal
@@ -129,6 +145,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 ### ✅ **Navigation Testing**
 
 #### **Sidebar Navigation**
+
 - [ ] Collapses/expands properly
 - [ ] Menu items highlight correctly
 - [ ] Submenu expansion works
@@ -137,6 +154,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] Search functionality works
 
 #### **Mobile Navigation**
+
 - [ ] Hamburger menu works
 - [ ] Overlay appears correctly
 - [ ] Touch interactions work
@@ -146,6 +164,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 ### ✅ **Responsive Design**
 
 #### **Breakpoint Testing**
+
 - [ ] Mobile (0-640px): Layout adapts
 - [ ] Tablet (641-768px): Components scale
 - [ ] Desktop (769-1024px): Full layout
@@ -153,6 +172,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] XL (1281px+): Maximum width
 
 #### **Component Responsiveness**
+
 - [ ] Cards stack properly on mobile
 - [ ] Navigation becomes mobile-friendly
 - [ ] Text scales appropriately
@@ -162,6 +182,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 ### ✅ **Accessibility Testing**
 
 #### **Keyboard Navigation**
+
 - [ ] Tab order is logical
 - [ ] Focus indicators visible
 - [ ] Enter/Space activate buttons
@@ -169,6 +190,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] Arrow keys work in menus
 
 #### **Screen Reader Support**
+
 - [ ] Proper ARIA labels present
 - [ ] Headings structured correctly
 - [ ] Form labels associated
@@ -176,6 +198,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] Status changes announced
 
 #### **Visual Accessibility**
+
 - [ ] Contrast ratios meet WCAG AA
 - [ ] Focus indicators visible
 - [ ] Text remains readable at 200% zoom
@@ -185,6 +208,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 ### ✅ **Performance Testing**
 
 #### **Loading Performance**
+
 - [ ] Fonts load without FOUT/FOIT
 - [ ] CSS loads efficiently
 - [ ] JavaScript bundles optimized
@@ -192,6 +216,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 - [ ] Critical path optimized
 
 #### **Runtime Performance**
+
 - [ ] Smooth animations (60fps)
 - [ ] No layout thrashing
 - [ ] Memory usage reasonable
@@ -201,6 +226,7 @@ Use the browser preview available at: **http://127.0.0.1:61226**
 ## 🔧 Testing Tools & Commands
 
 ### **Development Server**
+
 ```bash
 # Start development server
 npm run dev
@@ -210,6 +236,7 @@ npm run dev
 ```
 
 ### **Browser Testing**
+
 ```bash
 # Test different browsers
 - Chrome/Edge: Full support
@@ -219,6 +246,7 @@ npm run dev
 ```
 
 ### **Accessibility Testing**
+
 ```bash
 # Use browser dev tools
 - Chrome DevTools: Lighthouse accessibility audit
@@ -228,6 +256,7 @@ npm run dev
 ```
 
 ### **Performance Testing**
+
 ```bash
 # Browser performance tools
 - Chrome DevTools: Performance tab
@@ -241,41 +270,51 @@ npm run dev
 ### **RTL Layout Issues**
 
 #### **Problem**: Icons not mirroring correctly
+
 **Solution**: Use `rtl:scale-x-[-1]` or `rtl:rotate-180` classes
 
 #### **Problem**: Margins/padding not switching
+
 **Solution**: Use logical properties or RTL-specific classes
 
 #### **Problem**: Text alignment issues
+
 **Solution**: Use `text-right` for RTL, `text-left` for LTR
 
 ### **Font Loading Issues**
 
 #### **Problem**: Arabic fonts not loading
+
 **Solution**: Check font preload in layout.tsx and network tab
 
 #### **Problem**: Font flash (FOUT)
+
 **Solution**: Ensure `display: swap` is set in font configuration
 
 ### **Dark Mode Issues**
 
 #### **Problem**: Colors not switching
+
 **Solution**: Check CSS variables in globals.css dark theme section
 
 #### **Problem**: Theme not persisting
+
 **Solution**: Verify localStorage implementation in theme toggle
 
 ### **Component Issues**
 
 #### **Problem**: Modal not closing
+
 **Solution**: Check event listeners and click outside detection
 
 #### **Problem**: Select dropdown positioning
+
 **Solution**: Verify z-index and positioning in RTL context
 
 ## 📊 Testing Metrics
 
 ### **Performance Targets**
+
 - **First Contentful Paint**: < 1.5s
 - **Largest Contentful Paint**: < 2.5s
 - **Cumulative Layout Shift**: < 0.1
@@ -283,12 +322,14 @@ npm run dev
 - **Time to Interactive**: < 3.5s
 
 ### **Accessibility Targets**
+
 - **WCAG Level**: AA compliance
 - **Color Contrast**: 4.5:1 (normal text), 3:1 (large text)
 - **Keyboard Navigation**: 100% functional
 - **Screen Reader**: Full compatibility
 
 ### **Browser Support**
+
 - **Chrome**: 90+ ✅
 - **Firefox**: 88+ ✅
 - **Safari**: 14+ ✅
@@ -299,6 +340,7 @@ npm run dev
 ## 🎨 Visual Testing Checklist
 
 ### **Component Visual States**
+
 - [ ] Default state renders correctly
 - [ ] Hover states work properly
 - [ ] Focus states are visible
@@ -308,6 +350,7 @@ npm run dev
 - [ ] Error states are prominent
 
 ### **Layout Consistency**
+
 - [ ] Spacing is consistent across components
 - [ ] Alignment follows design system
 - [ ] Typography hierarchy is clear
@@ -316,6 +359,7 @@ npm run dev
 - [ ] Border radius is consistent
 
 ### **Animation Quality**
+
 - [ ] Transitions are smooth (60fps)
 - [ ] Duration feels natural
 - [ ] Easing curves are appropriate
@@ -325,6 +369,7 @@ npm run dev
 ## 🚦 Test Results Documentation
 
 ### **Test Execution Template**
+
 ```markdown
 ## Test Session: [Date]
 **Tester**: [Name]
@@ -351,6 +396,7 @@ npm run dev
 ## 📱 Mobile Testing
 
 ### **iOS Testing**
+
 - [ ] Safari mobile rendering
 - [ ] Touch interactions work
 - [ ] Viewport scaling correct
@@ -358,6 +404,7 @@ npm run dev
 - [ ] Performance on older devices
 
 ### **Android Testing**
+
 - [ ] Chrome mobile rendering
 - [ ] Touch targets adequate (44px min)
 - [ ] Back button behavior
@@ -367,6 +414,7 @@ npm run dev
 ## 🔄 Continuous Testing
 
 ### **Automated Testing Setup**
+
 ```bash
 # Future implementation suggestions
 - Jest unit tests for components
@@ -377,6 +425,7 @@ npm run dev
 ```
 
 ### **Manual Testing Schedule**
+
 - **Daily**: Component functionality
 - **Weekly**: Cross-browser testing
 - **Monthly**: Full accessibility audit
@@ -385,6 +434,7 @@ npm run dev
 ## 📋 Test Report Template
 
 ### **Executive Summary**
+
 - **Overall Status**: ✅ Pass / ❌ Fail
 - **Critical Issues**: [Count]
 - **Minor Issues**: [Count]
@@ -392,6 +442,7 @@ npm run dev
 - **Accessibility Score**: [0-100]
 
 ### **Detailed Results**
+
 - **RTL Implementation**: [Status + Notes]
 - **Enterprise UI**: [Status + Notes]
 - **Dark Mode**: [Status + Notes]
@@ -400,6 +451,7 @@ npm run dev
 - **Accessibility**: [Status + Notes]
 
 ### **Recommendations**
+
 1. [Priority 1 items]
 2. [Priority 2 items]
 3. [Future enhancements]

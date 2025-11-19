@@ -202,11 +202,13 @@
 ## 🎯 **KEY DOCUMENT CATEGORIES**
 
 ### **1. Architecture & Best Practices (ABI)**
+
 - 9 comprehensive architecture documents
 - 2 supporting CSV tables
 - Covers: branching, code quality, API contracts, security, operations, UI/UX, multi-tenancy
 
 ### **2. Documentation**
+
 - README files
 - Code of conduct
 - Contributing guidelines
@@ -215,24 +217,29 @@
 - Checklists (PR)
 
 ### **3. Application Code**
+
 - BFF (Backend for Frontend)
 - Example FastAPI service
 - Web application
 
 ### **4. Contracts & Schemas**
+
 - OpenAPI specifications
 - Event schemas
 
 ### **5. Infrastructure**
+
 - Docker Compose configuration
 - CI/CD workflows
 
 ### **6. Templates**
+
 - Bug reports
 - Feature requests
 - Pull requests
 
 ### **7. Data Files**
+
 - GRC execution tasks
 - Assignee mappings
 - Task import configurations
@@ -316,23 +323,28 @@ D:\Projects\Assessmant-GRC\
 ## 🔍 **QUICK REFERENCE**
 
 ### **Start Here:**
+
 1. `README.md` - Project overview
 2. `ABI/00-ABI-Master.md` - Architecture master document
 3. `CONTRIBUTING.md` - How to contribute
 
 ### **Architecture:**
+
 - All files in `ABI/` directory
 
 ### **Development:**
+
 - `apps/` - Application code
 - `contracts/` - API contracts
 - `scripts/` - Utility scripts
 
 ### **Operations:**
+
 - `docs/runbooks/` - Operational procedures
 - `infra/docker/` - Infrastructure config
 
 ### **Process:**
+
 - `templates/` - Issue and PR templates
 - `docs/checklists/` - Process checklists
 
@@ -341,4 +353,3 @@ D:\Projects\Assessmant-GRC\
 **Last Updated:** $(date)  
 **Total Files:** 43  
 **Total Directories:** 12
-

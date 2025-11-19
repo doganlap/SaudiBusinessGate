@@ -66,7 +66,16 @@ export function PlatformNavigation() {
   const [items, setItems] = useState<NavigationItem[]>([]);
   const [navLoading, setNavLoading] = useState(true);
   const [navError, setNavError] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
+
+  // Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -476,24 +485,16 @@ export function PlatformNavigation() {
       if (item.children) {
         return (
           <div key={item.id}>
-            <Link href={item.href} className={`w-full flex items-center justify-between text-left px-3 py-2.5 rounded-lg transition-colors duration-200 ${isRTL ? 'pr-2' : 'pl-2'} hover:bg-brand-100 dark:hover:bg-brand-900/50`}>
+            <button 
+              onClick={() => toggleMenu(item.id)} 
+              className={`w-full flex items-center justify-between text-left px-3 py-2.5 rounded-lg transition-colors duration-200 ${isRTL ? 'pr-2' : 'pl-2'} hover:bg-brand-100 dark:hover:bg-brand-900/50`}>
               <div className="flex items-center">
                 <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-brand-100 to-brand-200 dark:from-brand-900/50 dark:to-brand-900/80 text-brand-600 dark:text-brand-400 shadow-sm">
                   {item.icon}
                 </div>
                 <span className={`font-semibold text-sm text-neutral-800 dark:text-neutral-200 ${isRTL ? 'mr-3' : 'ml-3'}`}>{isRTL ? item.titleAr : item.title}</span>
               </div>
-              <ChevronDown className={`h-5 w-5 text-neutral-500 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''} ${isRTL ? 'ml-2' : 'mr-2'}`} />
-            </Link>
-            <button 
-              onClick={() => toggleMenu(item.id)} 
-              className={`w-full flex items-center justify-between text-left px-3 py-2.5 rounded-lg transition-colors duration-200 ${isRTL ? 'pr-2' : 'pl-2'} hover:bg-brand-100 dark:hover:bg-brand-900/50 mt-1`}>
-              <div className="flex items-center">
-                <div className="w-6 h-6 flex items-center justify-center rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400">
-                  <span className="text-xs">+</span>
-                </div>
-                <span className={`font-medium text-xs text-neutral-600 dark:text-neutral-400 ${isRTL ? 'mr-2' : 'ml-2'}`}>{isRTL ? 'توسيع' : 'Expand'}</span>
-              </div>
+              <ChevronDown className={`h-4 w-4 text-neutral-500 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''} ${isRTL ? 'ml-2' : 'mr-2'}`} />
             </button>
             {isExpanded && (
               <div className={`${isRTL ? 'mr-4 pr-4 border-r-2' : 'ml-4 pl-4 border-l-2'} border-brand-200 dark:border-brand-800 mt-2 space-y-1`}>
@@ -517,27 +518,80 @@ export function PlatformNavigation() {
     });
   };
 
+  const formatTime = () => {
+    return currentTime.toLocaleTimeString(lng === 'ar' ? 'ar-SA' : 'en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
+  };
+
+  const formatDate = () => {
+    return currentTime.toLocaleDateString(lng === 'ar' ? 'ar-SA' : 'en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
   return (
     <aside className={`bg-white dark:bg-neutral-950/70 backdrop-blur-lg border-neutral-200 dark:border-neutral-800/50 ${isRTL ? 'border-l' : 'border-r'} w-72 flex-col flex transition-all duration-300`}>
-      <div className="p-4 border-b border-neutral-200 dark:border-neutral-800/50 flex items-center justify-between">
-        <div className="flex items-center">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg relative overflow-hidden">
-            {/* Enterprise AI Circuit Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-xl"></div>
-            <svg className="w-6 h-6 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {/* AI Brain/Circuit Icon */}
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              {/* Autonomous indicator dots */}
-              <circle cx="12" cy="12" r="1" fill="currentColor" className="animate-pulse"/>
-              <circle cx="8" cy="8" r="0.5" fill="currentColor" opacity="0.6"/>
-              <circle cx="16" cy="8" r="0.5" fill="currentColor" opacity="0.6"/>
-              <circle cx="8" cy="16" r="0.5" fill="currentColor" opacity="0.6"/>
-              <circle cx="16" cy="16" r="0.5" fill="currentColor" opacity="0.6"/>
-            </svg>
+      {/* Enterprise Header */}
+      <div className="p-4 border-b border-neutral-200 dark:border-neutral-800/50">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg relative overflow-hidden">
+              {/* Enterprise AI Circuit Pattern */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-xl"></div>
+              <svg className="w-6 h-6 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                <circle cx="12" cy="12" r="1" fill="currentColor" className="animate-pulse"/>
+                <circle cx="8" cy="8" r="0.5" fill="currentColor" opacity="0.6"/>
+                <circle cx="16" cy="8" r="0.5" fill="currentColor" opacity="0.6"/>
+                <circle cx="8" cy="16" r="0.5" fill="currentColor" opacity="0.6"/>
+                <circle cx="16" cy="16" r="0.5" fill="currentColor" opacity="0.6"/>
+              </svg>
+            </div>
+            <div className={`${isRTL ? 'mr-3' : 'ml-3'}`}>
+              <h1 className="text-sm font-bold text-neutral-900 dark:text-white leading-tight">
+                {isRTL ? 'بوابة الأعمال السعودية' : 'Saudi Business Gate'}
+              </h1>
+              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 font-medium">
+                {isRTL ? 'المؤسسية' : 'Enterprise'}
+              </p>
+            </div>
           </div>
-          <h1 className={`text-xl font-bold text-neutral-900 dark:text-white ${isRTL ? 'mr-3' : 'ml-3'}`}>Saudi Business Gate Enterprise</h1>
-          <div className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-            {isRTL ? 'أول بوابة أعمال ذاتية التشغيل في المنطقة' : 'The 1st Autonomous Business Gate in the Region'}
+        </div>
+        
+        {/* Time and Theme Controls */}
+        <div className="flex items-center justify-between bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-900/20 dark:to-purple-900/20 rounded-lg px-3 py-2">
+          <div className="flex items-center">
+            <Clock className="h-4 w-4 text-brand-600 dark:text-brand-400 mr-2" />
+            <div>
+              <div className="text-xs font-semibold text-neutral-900 dark:text-white">{formatTime()}</div>
+              <div className="text-[10px] text-neutral-500 dark:text-neutral-400">{formatDate()}</div>
+            </div>
+          </div>
+          <div className="flex items-center space-x-1">
+            <button 
+              onClick={() => setTheme('light')} 
+              className={`p-1.5 rounded-md transition-all ${theme === 'light' ? 'bg-white dark:bg-neutral-700 shadow-sm' : 'hover:bg-white/50'}`}
+              title={isRTL ? 'فاتح' : 'Light'}>
+              <Sun className="h-3.5 w-3.5 text-neutral-600 dark:text-neutral-300" />
+            </button>
+            <button 
+              onClick={() => setTheme('dark')} 
+              className={`p-1.5 rounded-md transition-all ${theme === 'dark' ? 'bg-neutral-700 shadow-sm' : 'hover:bg-white/50'}`}
+              title={isRTL ? 'داكن' : 'Dark'}>
+              <Moon className="h-3.5 w-3.5 text-neutral-600 dark:text-neutral-300" />
+            </button>
+            <button 
+              onClick={() => setTheme('system')} 
+              className={`p-1.5 rounded-md transition-all ${theme === 'system' ? 'bg-white dark:bg-neutral-700 shadow-sm' : 'hover:bg-white/50'}`}
+              title={isRTL ? 'تلقائي' : 'System'}>
+              <Laptop className="h-3.5 w-3.5 text-neutral-600 dark:text-neutral-300" />
+            </button>
           </div>
         </div>
       </div>
@@ -566,17 +620,15 @@ export function PlatformNavigation() {
         )}
         {!userLoading && !userError && !navLoading && renderNavItems(items.length ? items : navigationItems)}
       </nav>
+      {/* Footer with tagline */}
       <div className="p-4 border-t border-neutral-200 dark:border-neutral-800/50">
-        <div className="flex items-center justify-around bg-neutral-100 dark:bg-neutral-900 rounded-lg p-1">
-          <button onClick={() => setTheme('light')} className={`p-2 rounded-md ${theme === 'light' ? 'bg-white dark:bg-neutral-700' : ''}`}>
-            <Sun className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
-          </button>
-          <button onClick={() => setTheme('dark')} className={`p-2 rounded-md ${theme === 'dark' ? 'bg-white dark:bg-neutral-700' : ''}`}>
-            <Moon className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
-          </button>
-          <button onClick={() => setTheme('system')} className={`p-2 rounded-md ${theme === 'system' ? 'bg-white dark:bg-neutral-700' : ''}`}>
-            <Laptop className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
-          </button>
+        <div className="text-center">
+          <p className="text-[10px] text-neutral-500 dark:text-neutral-400 font-medium">
+            {isRTL ? 'أول بوابة أعمال ذاتية التشغيل في المنطقة' : 'The 1st Autonomous Business Gate'}
+          </p>
+          <p className="text-[9px] text-neutral-400 dark:text-neutral-500 mt-0.5">
+            {isRTL ? 'من السعودية إلى العالم' : 'From Saudi Arabia to the World'}
+          </p>
         </div>
       </div>
     </aside>

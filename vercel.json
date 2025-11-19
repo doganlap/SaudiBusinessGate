@@ -2,5 +2,15 @@
   "version": 2,
   "github": {
     "enabled": true
-  }
+  },
+  "rewrites": [
+    { "source": "/health/ready", "destination": "/api/health/ready" },
+    { "source": "/health/live", "destination": "/api/health/live" },
+    { "source": "/ar/terms-of-service", "destination": "/ar/terms" },
+    { "source": "/ar/privacy-policy", "destination": "/ar/privacy" },
+    { "source": "/ar/legal/terms", "destination": "/ar/terms" },
+    { "source": "/ar/legal/privacy", "destination": "/ar/privacy" },
+    { "source": "/terms", "destination": "/ar/terms" },
+    { "source": "/privacy", "destination": "/ar/privacy" }
+  ]
 }

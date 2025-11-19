@@ -32,7 +32,7 @@ interface EmailTemplate {
 }
 
 class EmailService {
-  private transporter: nodemailer.Transporter | null = null;
+  private transporter: any = null;
   private useSendGrid: boolean = false;
 
   constructor() {

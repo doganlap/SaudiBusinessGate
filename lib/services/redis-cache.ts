@@ -45,10 +45,8 @@ class CacheService {
         this.useRedis = true;
         console.log('✅ Cache Service: Using Upstash Redis');
       } else if (process.env.REDIS_URL) {
-        const { Redis } = await import('@upstash/redis');
-        this.redis = Redis.fromEnv();
-        this.useRedis = true;
-        console.log('✅ Cache Service: Using Redis');
+        console.warn('⚠️ Cache Service: REDIS_URL detected but Upstash client not configured. Using in-memory cache.');
+        this.startCleanup();
       } else {
         console.warn('⚠️ Cache Service: Using in-memory cache (not recommended for production)');
         this.startCleanup();

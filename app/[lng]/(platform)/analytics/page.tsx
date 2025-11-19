@@ -25,6 +25,14 @@ const Plot = dynamic(() => import('react-plotly.js'), {
   )
 });
 
+const PlotWrapper = (props: { data: any[]; layout?: any; config?: any }) => {
+  return (
+    <div style={{ width: '100%', height: '100%' }}>
+      <Plot data={props.data} layout={props.layout} config={props.config} style={{ width: '100%', height: '100%' }} />
+    </div>
+  );
+};
+
 interface RFPLifecycleStage {
   id: string;
   name: string;
@@ -36,6 +44,18 @@ interface RFPLifecycleStage {
   color: string;
   status: 'active' | 'completed' | 'pending' | 'lost';
 }
+
+type KpiCard = {
+  title: string;
+  titleAr: string;
+  value: string;
+  change: string;
+  trend: 'up' | 'down';
+  icon: React.ReactNode;
+  color: string;
+  bgColor: string;
+  description: string;
+};
 
 interface PivotTableData {
   [key: string]: any;
@@ -68,14 +88,15 @@ export default function AnalyticsPage() {
   const [globalSearch, setGlobalSearch] = useState('');
   const [selectedColumns, setSelectedColumns] = useState(['region', 'product', 'revenue', 'quantity', 'count']);
   const [sortColumn, setSortColumn] = useState('revenue');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
-  const kpiCards = [
+  const kpiCards: KpiCard[] = [
     {
       title: lng === 'ar' ? 'إجمالي الإيرادات' : 'Total Revenue',
       titleAr: 'إجمالي الإيرادات',
       value: '2,850,000 ر.س',
       change: '+24.7%',
-      trend: 'up' as const,
+      trend: 'up',
       icon: <DollarSign className="h-6 w-6" />,
       color: 'text-green-600',
       bgColor: 'bg-green-100',
@@ -86,7 +107,7 @@ export default function AnalyticsPage() {
       titleAr: 'المستخدمون النشطون',
       value: '12,450',
       change: '+18.2%',
-      trend: 'up' as const,
+      trend: 'up',
       icon: <Users className="h-6 w-6" />,
       color: 'text-blue-600',
       bgColor: 'bg-blue-100',
@@ -97,7 +118,7 @@ export default function AnalyticsPage() {
       titleAr: 'معدل التحويل',
       value: '32.5%',
       change: '+5.1%',
-      trend: 'up' as const,
+      trend: 'up',
       icon: <Target className="h-6 w-6" />,
       color: 'text-purple-600',
       bgColor: 'bg-purple-100',
@@ -108,7 +129,7 @@ export default function AnalyticsPage() {
       titleAr: 'قيمة العميل مدى الحياة',
       value: '45,250 ر.س',
       change: '+12.8%',
-      trend: 'up' as const,
+      trend: 'up',
       icon: <Award className="h-6 w-6" />,
       color: 'text-orange-600',
       bgColor: 'bg-orange-100',
@@ -119,7 +140,7 @@ export default function AnalyticsPage() {
       titleAr: 'العائد على الاستثمار',
       value: '185.3%',
       change: '+22.4%',
-      trend: 'up' as const,
+      trend: 'up',
       icon: <TrendingUp className="h-6 w-6" />,
       color: 'text-cyan-600',
       bgColor: 'bg-cyan-100',
@@ -136,6 +157,15 @@ export default function AnalyticsPage() {
       bgColor: 'bg-indigo-100',
       description: lng === 'ar' ? 'دقة نماذج الذكاء الاصطناعي' : 'AI model accuracy rate'
     }
+  ];
+
+  const rfpStages: RFPLifecycleStage[] = [
+    { id: 'rfp1', name: 'Leads', nameAr: 'فرص', description: 'New leads', descriptionAr: 'فرص جديدة', count: 45, value: 120000, color: '#3B82F6', status: 'active' },
+    { id: 'rfp2', name: 'Qualified', nameAr: 'مؤهل', description: 'Qualified leads', descriptionAr: 'فرص مؤهلة', count: 32, value: 98000, color: '#10B981', status: 'active' },
+    { id: 'rfp3', name: 'Proposal', nameAr: 'عرض', description: 'Proposal sent', descriptionAr: 'تم إرسال العرض', count: 24, value: 82000, color: '#F59E0B', status: 'active' },
+    { id: 'rfp4', name: 'Negotiation', nameAr: 'تفاوض', description: 'Negotiation phase', descriptionAr: 'مرحلة التفاوض', count: 15, value: 60000, color: '#8B5CF6', status: 'active' },
+    { id: 'rfp5', name: 'Won', nameAr: 'فوز', description: 'Deals won', descriptionAr: 'صفقات فائزة', count: 9, value: 54000, color: '#22C55E', status: 'completed' },
+    { id: 'rfp6', name: 'Lost', nameAr: 'خسارة', description: 'Deals lost', descriptionAr: 'صفقات خاسرة', count: 5, value: 15000, color: '#EF4444', status: 'lost' },
   ];
 
   // Enhanced Animated Plotly Charts - 4 Advanced Charts

@@ -58,12 +58,35 @@ const routeRedirects: Record<string, string> = {
   '/app/logs': '/audit-logs',
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
-  
-  // Skip middleware for API routes, static files, and Next.js internals
+
+  if (pathname.startsWith('/api/')) {
+    const publicPaths = [
+      '/api/health/ready',
+      '/api/health/live',
+      '/api/public',
+      '/api/dashboard/kpis',
+      '/api/auth/login',
+      '/api/auth/register',
+      '/api/terms',
+      '/api/privacy',
+      '/api/support',
+      '/api/navigation/dynamic',
+      '/api/services/health',
+      '/api/services/status',
+    ]
+    if (publicPaths.some((p) => pathname.startsWith(p))) {
+      return NextResponse.next()
+    }
+    const token = request.cookies.get('session')?.value
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    return NextResponse.next()
+  }
+
   if (
-    pathname.startsWith('/api/') ||
     pathname.startsWith('/_next/') ||
     pathname.startsWith('/favicon.ico') ||
     pathname.startsWith('/apple-touch-icon.png') ||
@@ -116,8 +139,8 @@ function getLocale(request: NextRequest): string {
 }
 
 export const config = {
-  // Matcher ignoring `/_next/` and `/api/`
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|apple-touch-icon.png).*)',
+    '/api/:path*',
+    '/((?!_next/static|_next/image|favicon.ico|apple-touch-icon.png).*)',
   ],
 }

@@ -38,16 +38,18 @@ export function deleteUser(id: string) {
 }
 
 export function ensureSeed() {
-  if (store.users.size === 0) {
-  upsertUser({
-    id: 'user123',
-    email: 'user123@example.com',
-    username: 'user123',
-    first_name: 'Name',
-    last_name: 'Original',
-    phone: '0500000001',
-    role: 'user',
-  })
+  if (!store.users.has('user123')) {
+    upsertUser({
+      id: 'user123',
+      email: 'user123@example.com',
+      username: 'user123',
+      first_name: 'Name',
+      last_name: 'Original',
+      phone: '0500000001',
+      role: 'user',
+    })
+  }
+  if (!store.users.has('user456')) {
     upsertUser({
       id: 'user456',
       email: 'search@example.com',
@@ -58,4 +60,26 @@ export function ensureSeed() {
       role: 'user',
     })
   }
+}
+
+export function resetSeed() {
+  store.users.clear()
+  upsertUser({
+    id: 'user123',
+    email: 'user123@example.com',
+    username: 'user123',
+    first_name: 'Name',
+    last_name: 'Original',
+    phone: '0500000001',
+    role: 'user',
+  })
+  upsertUser({
+    id: 'user456',
+    email: 'search@example.com',
+    username: 'search_user',
+    first_name: 'Search',
+    last_name: 'Target',
+    phone: '0500000002',
+    role: 'user',
+  })
 }

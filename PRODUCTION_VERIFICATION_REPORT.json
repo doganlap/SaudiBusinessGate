@@ -213,7 +213,7 @@
       "status": "ok",
       "message": "Connected successfully",
       "details": {
-        "timestamp": "2025-11-18T14:11:06.324Z",
+        "timestamp": "2025-11-19T11:57:27.371Z",
         "version": "PostgreSQL 17.2"
       }
     }
@@ -225,5 +225,7 @@
       "message": "Connection failed: Reached the max retries per request limit (which is 20). Refer to \"maxRetriesPerRequest\" option for details."
     }
   ],
-  "errors": []
+  "errors": [
+    "Missing configuration files: deploy/docker-compose.production.yml"
+  ]
 }

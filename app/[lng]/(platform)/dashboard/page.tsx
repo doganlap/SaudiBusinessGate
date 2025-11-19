@@ -169,24 +169,24 @@ export default function DashboardPage() {
     },
     {
       id: 'billing',
-      title: 'Billing',
-      description: 'Subscription and payment management',
+      title: lng === 'ar' ? 'الفواتير' : 'Billing',
+      description: lng === 'ar' ? 'إدارة الاشتراكات والمدفوعات' : 'Subscription and payment management',
       icon: <CreditCard className="h-6 w-6" />,
       href: `/${lng}/billing`,
       color: 'bg-pink-500'
     },
     {
       id: 'analytics',
-      title: 'Analytics',
-      description: 'AI-powered business insights and KPIs',
+      title: lng === 'ar' ? 'التحليلات' : 'Analytics',
+      description: lng === 'ar' ? 'رؤى الأعمال ومؤشرات الأداء' : 'AI-powered business insights and KPIs',
       icon: <BarChart3 className="h-6 w-6" />,
       href: `/${lng}/analytics`,
       color: 'bg-teal-500'
     },
     {
       id: 'platform',
-      title: 'Platform',
-      description: 'Users, tenants, and settings',
+      title: lng === 'ar' ? 'المنصة' : 'Platform',
+      description: lng === 'ar' ? 'إدارة المستخدمين والإعدادات' : 'Users, tenants, and settings',
       icon: <Settings className="h-6 w-6" />,
       href: `/${lng}/platform/users`,
       color: 'bg-gray-500'
@@ -234,7 +234,7 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading dashboard...</p>
+          <p className="text-gray-600">{lng === 'ar' ? 'جاري تحميل لوحة التحكم...' : 'Loading dashboard...'}</p>
         </div>
       </div>
     );
@@ -248,10 +248,10 @@ export default function DashboardPage() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                {`Welcome ${user?.name || 'User'}`}
+                {lng === 'ar' ? `مرحباً ${user?.name || 'المستخدم'}` : `Welcome ${user?.name || 'User'}`}
               </h1>
               <p className="mt-1 text-sm text-gray-500">
-                Here is your dashboard overview
+                {lng === 'ar' ? 'نظرة عامة على لوحة التحكم' : 'Here is your dashboard overview'}
               </p>
             </div>
             <div className="flex items-center gap-4">

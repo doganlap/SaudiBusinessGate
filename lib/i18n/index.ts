@@ -39,10 +39,15 @@ const translations = {
     'dashboard.welcome': 'Welcome back',
     'dashboard.overview': 'Overview',
     'dashboard.quickActions': 'Quick Actions',
+    'dashboard.quickActionsSubtitle': 'Access key features',
     'dashboard.recentActivity': 'Recent Activity',
     'dashboard.statistics': 'Statistics',
     'dashboard.analytics': 'Analytics',
     'dashboard.processes': 'Processes',
+    'totalRevenue': 'Total Revenue',
+    'totalUsers': 'Total Users',
+    'activeSubscriptions': 'Active Subscriptions',
+    'monthlyGrowth': 'Monthly Growth',
     
     // Finance
     'finance.title': 'Finance',
@@ -115,10 +120,15 @@ const translations = {
     'dashboard.welcome': 'مرحباً بعودتك',
     'dashboard.overview': 'نظرة عامة',
     'dashboard.quickActions': 'إجراءات سريعة',
+    'dashboard.quickActionsSubtitle': 'الوصول إلى الميزات الرئيسية',
     'dashboard.recentActivity': 'النشاط الأخير',
     'dashboard.statistics': 'الإحصائيات',
     'dashboard.analytics': 'التحليلات',
     'dashboard.processes': 'العمليات',
+    'totalRevenue': 'إجمالي الإيرادات',
+    'totalUsers': 'إجمالي المستخدمين',
+    'activeSubscriptions': 'الاشتراكات النشطة',
+    'monthlyGrowth': 'النمو الشهري',
     
     // Finance
     'finance.title': 'المالية',

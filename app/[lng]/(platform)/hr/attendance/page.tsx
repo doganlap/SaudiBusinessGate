@@ -1,11 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
   Clock, Calendar, Users, CheckCircle, 
-  XCircle, AlertTriangle, Coffee, MapPin
+  XCircle, AlertTriangle, Coffee, MapPin, Plus
 } from 'lucide-react';
 import { DataGrid } from '@/components/enterprise/DataGrid';
 import { EnterpriseToolbar } from '@/components/enterprise/EnterpriseToolbar';
@@ -26,6 +29,10 @@ interface AttendanceRecord {
 }
 
 export default function AttendancePage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = params?.lng || 'en';
+  
   const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,41 +44,43 @@ export default function AttendancePage() {
 
   const fetchAttendanceRecords = async () => {
     try {
+      setLoading(true);
       const response = await fetch('/api/hr/attendance', {
-        headers: { 'tenant-id': 'default-tenant' }
+        headers: {
+          'Content-Type': 'application/json',
+          'x-tenant-id': 'default-tenant',
+        },
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      setAttendanceRecords(data.attendance || []);
-    } catch (error) {
+      
+      if (data.success && data.attendance) {
+        // Map API response to component state
+        const mappedRecords = data.attendance.map((record: any) => ({
+          id: record.id || record.attendance_id || '',
+          employeeId: record.employee_id || record.employee_code || '',
+          employeeName: record.employee_name || `${record.first_name || ''} ${record.last_name || ''}`.trim() || 'Unknown',
+          department: record.department || '',
+          date: record.date || record.attendance_date || new Date().toISOString().split('T')[0],
+          checkIn: record.check_in || record.checkin_time || '',
+          checkOut: record.check_out || record.checkout_time || '',
+          hoursWorked: record.hours_worked || record.total_hours || 0,
+          status: record.status || 'present',
+          location: record.location || record.work_location || '',
+          notes: record.notes || record.comments || '',
+        }));
+        setAttendanceRecords(mappedRecords);
+      } else {
+        throw new Error(data.error || 'Failed to fetch attendance records');
+      }
+    } catch (error: any) {
       console.error('Error fetching attendance records:', error);
-      // Mock data
-      setAttendanceRecords([
-        {
-          id: '1', employeeId: 'EMP001', employeeName: 'Sarah Johnson', department: 'Sales',
-          date: '2024-01-15', checkIn: '09:00', checkOut: '17:30', hoursWorked: 8.5,
-          status: 'present', location: 'Office', notes: 'On time'
-        },
-        {
-          id: '2', employeeId: 'EMP002', employeeName: 'Mike Chen', department: 'Engineering',
-          date: '2024-01-15', checkIn: '09:15', checkOut: '18:00', hoursWorked: 8.75,
-          status: 'late', location: 'Office', notes: 'Traffic delay'
-        },
-        {
-          id: '3', employeeId: 'EMP003', employeeName: 'Alex Rodriguez', department: 'Marketing',
-          date: '2024-01-15', checkIn: '09:00', checkOut: '17:00', hoursWorked: 8,
-          status: 'remote', location: 'Home', notes: 'Working from home'
-        },
-        {
-          id: '4', employeeId: 'EMP004', employeeName: 'Lisa Anderson', department: 'HR',
-          date: '2024-01-15', checkIn: '09:30', checkOut: '13:30', hoursWorked: 4,
-          status: 'half-day', location: 'Office', notes: 'Medical appointment'
-        },
-        {
-          id: '5', employeeId: 'EMP005', employeeName: 'David Wilson', department: 'Finance',
-          date: '2024-01-15', checkIn: '', checkOut: '', hoursWorked: 0,
-          status: 'absent', location: '', notes: 'Sick leave'
-        }
-      ]);
+      // Keep empty array on error instead of mock data
+      setAttendanceRecords([]);
     } finally {
       setLoading(false);
     }
@@ -210,6 +219,15 @@ export default function AttendancePage() {
     { value: 'remote', label: 'Remote' }
   ];
 
+  const toolbarActions = [
+    {
+      label: 'Log Attendance',
+      icon: Plus,
+      onClick: () => router.push(`/${locale}/hr/attendance/log`),
+      variant: 'primary' as const
+    }
+  ];
+
   // Calculate summary stats
   const totalEmployees = attendanceRecords.length;
   const presentCount = attendanceRecords.filter(r => r.status === 'present' || r.status === 'late' || r.status === 'remote').length;
@@ -300,7 +318,7 @@ export default function AttendancePage() {
             searchValue={searchTerm}
             onSearchChange={setSearchTerm}
             searchPlaceholder="Search employees..."
-            actions={[]}
+            actions={toolbarActions}
             filterValue={filterStatus}
             onFilterChange={setFilterStatus}
             filterOptions={filterOptions}

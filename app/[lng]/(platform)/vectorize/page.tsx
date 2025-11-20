@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Database, Search, Plus, RefreshCw } from 'lucide-react';
+import { Database, Search, Plus, RefreshCw, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import VectorizeManager from '@/components/VectorizeManager';
 
@@ -328,8 +328,9 @@ export default function VectorizePage({ params }: { params: Promise<{ lng: strin
                 {t.subtitle}
               </p>
               {error && (
-                <div className="mt-2 text-sm text-amber-600 dark:text-amber-400">
-                  {locale === 'ar' ? '⚠️ عرض البيانات التجريبية' : '⚠️ Showing demo data'}
+                <div className="mt-2 flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400">
+                  <AlertCircle className="h-4 w-4" />
+                  <span>{locale === 'ar' ? 'عرض البيانات التجريبية' : 'Showing demo data'}</span>
                 </div>
               )}
             </div>

@@ -17,7 +17,12 @@ import {
   Users,
   DollarSign,
   Activity,
-  Phone
+  Phone,
+  Crown,
+  TrendingDown,
+  Brain,
+  Rocket,
+  Sparkles
 } from 'lucide-react';
 
 interface DailyQuota {
@@ -46,7 +51,7 @@ interface AdvancedAgent {
   performance: number;
   lastAction: string;
   lastActionAr: string;
-  avatar: string;
+  avatar: React.ReactNode;
 }
 
 export default function MotivationDashboard() {
@@ -105,8 +110,8 @@ export default function MotivationDashboard() {
       target: 50,
       current: 37,
       unit: 'calls',
-      motivationalMessage: "You're on fire! Only 13 more calls to crush your daily goal! 🔥",
-      motivationalMessageAr: "أنت في أحسن حال! 13 مكالمة فقط لتحقيق هدفك اليومي! 🔥",
+      motivationalMessage: "You're on fire! Only 13 more calls to crush your daily goal!",
+      motivationalMessageAr: "أنت في أحسن حال! 13 مكالمة فقط لتحقيق هدفك اليومي!",
       icon: <Phone className="h-5 w-5" />,
       color: 'bg-blue-500',
       streak: 5
@@ -119,8 +124,8 @@ export default function MotivationDashboard() {
       target: 20,
       current: 18,
       unit: 'contacts',
-      motivationalMessage: "Almost there! 2 more contacts and you're a champion! 👑",
-      motivationalMessageAr: "تقريباً هناك! اتصالان آخران وأنت بطل! 👑",
+      motivationalMessage: "Almost there! 2 more contacts and you're a champion!",
+      motivationalMessageAr: "تقريباً هناك! اتصالان آخران وأنت بطل!",
       icon: <Users className="h-5 w-5" />,
       color: 'bg-green-500',
       streak: 8
@@ -133,8 +138,8 @@ export default function MotivationDashboard() {
       target: 15000,
       current: 12750,
       unit: 'SAR',
-      motivationalMessage: "Outstanding progress! Just 2,250 SAR to reach your target! 💰",
-      motivationalMessageAr: "تقدم رائع! 2,250 ريال فقط لتحقيق هدفك! 💰",
+      motivationalMessage: "Outstanding progress! Just 2,250 SAR to reach your target!",
+      motivationalMessageAr: "تقدم رائع! 2,250 ريال فقط لتحقيق هدفك!",
       icon: <DollarSign className="h-5 w-5" />,
       color: 'bg-yellow-500',
       streak: 3
@@ -147,8 +152,8 @@ export default function MotivationDashboard() {
       target: 5,
       current: 3,
       unit: 'reviews',
-      motivationalMessage: "Great work! Complete 2 more reviews to finish strong! 📈",
-      motivationalMessageAr: "عمل رائع! أكمل مراجعتين أخريين لتنتهي بقوة! 📈",
+      motivationalMessage: "Great work! Complete 2 more reviews to finish strong!",
+      motivationalMessageAr: "عمل رائع! أكمل مراجعتين أخريين لتنتهي بقوة!",
       icon: <Star className="h-5 w-5" />,
       color: 'bg-purple-500',
       streak: 12
@@ -177,7 +182,7 @@ export default function MotivationDashboard() {
       performance: 94.2,
       lastAction: 'Predicted 15 high-value leads with 87% accuracy',
       lastActionAr: 'تنبأ بـ 15 عميل محتمل ذو قيمة عالية بدقة 87%',
-      avatar: '🎯'
+      avatar: <Target className="h-6 w-6" />
     },
     {
       id: 'automated-workflow',
@@ -200,7 +205,7 @@ export default function MotivationDashboard() {
       performance: 98.1,
       lastAction: 'Processed 45 invoices and sent 23 notifications',
       lastActionAr: 'معالجة 45 فاتورة وإرسال 23 إشعار',
-      avatar: '⚡'
+      avatar: <Zap className="h-6 w-6" />
     },
     {
       id: 'intelligent-crm',
@@ -223,7 +228,7 @@ export default function MotivationDashboard() {
       performance: 89.7,
       lastAction: 'Analyzed 120 customer interactions, improved response time by 34%',
       lastActionAr: 'حلل 120 تفاعل عميل، حسّن وقت الاستجابة بنسبة 34%',
-      avatar: '🧠'
+      avatar: <Brain className="h-6 w-6" />
     },
     {
       id: 'adaptive-analytics',
@@ -246,7 +251,7 @@ export default function MotivationDashboard() {
       performance: 91.5,
       lastAction: 'Generated 8 custom reports and optimized 3 dashboards',
       lastActionAr: 'أنشأ 8 تقارير مخصصة وحسن 3 لوحات تحكم',
-      avatar: '📊'
+      avatar: <BarChart3 className="h-6 w-6" />
     }
   ];
 
@@ -254,12 +259,12 @@ export default function MotivationDashboard() {
     return Math.min((current / target) * 100, 100);
   };
 
-  const getMotivationalEmoji = (percentage: number, streak: number) => {
-    if (percentage >= 100) return '🎉';
-    if (percentage >= 80) return '🔥';
-    if (streak >= 7) return '🌟';
-    if (streak >= 3) return '💪';
-    return '🚀';
+  const getMotivationalIcon = (percentage: number, streak: number) => {
+    if (percentage >= 100) return <Trophy className="h-5 w-5" />;
+    if (percentage >= 80) return <Flame className="h-5 w-5" />;
+    if (streak >= 7) return <Star className="h-5 w-5" />;
+    if (streak >= 3) return <Award className="h-5 w-5" />;
+    return <Rocket className="h-5 w-5" />;
   };
 
   const getAgentStatusColor = (status: string) => {
@@ -273,11 +278,11 @@ export default function MotivationDashboard() {
 
   const getAgentTypeIcon = (type: string) => {
     switch (type) {
-      case 'predictive': return '🔮';
-      case 'automated': return '🤖';
-      case 'intelligent': return '🧠';
-      case 'adaptive': return '🎯';
-      default: return '🤖';
+      case 'predictive': return <Target className="h-5 w-5" />;
+      case 'automated': return <Zap className="h-5 w-5" />;
+      case 'intelligent': return <Brain className="h-5 w-5" />;
+      case 'adaptive': return <BarChart3 className="h-5 w-5" />;
+      default: return <Zap className="h-5 w-5" />;
     }
   };
 
@@ -307,7 +312,7 @@ export default function MotivationDashboard() {
               </p>
               {/* Pioneering Badge */}
               <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg">
-                <span className="mr-2">🚀</span>
+                <Rocket className="h-4 w-4 mr-2" />
                 {lng === 'ar' ? 'المنصة الرائدة في المنطقة' : 'Pioneering Platform in the Region'}
               </div>
             </div>
@@ -333,7 +338,7 @@ export default function MotivationDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {quotas.map((quota) => {
               const percentage = getProgressPercentage(quota.current, quota.target);
-              const emoji = getMotivationalEmoji(percentage, quota.streak);
+              const icon = getMotivationalIcon(percentage, quota.streak);
 
               return (
                 <div key={quota.id} className="bg-white rounded-lg shadow p-6">
@@ -368,9 +373,9 @@ export default function MotivationDashboard() {
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
-                    <div className="flex justify-between text-sm text-gray-600 mt-1">
+                    <div className="flex justify-between items-center text-sm text-gray-600 mt-1">
                       <span>{percentage.toFixed(1)}%</span>
-                      <span>{emoji}</span>
+                      <span className="flex items-center">{icon}</span>
                     </div>
                   </div>
 
@@ -400,7 +405,7 @@ export default function MotivationDashboard() {
               <div key={agent.id} className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center">
-                    <div className="text-3xl mr-3 rtl:mr-0 rtl:ml-3">
+                    <div className="mr-3 rtl:mr-0 rtl:ml-3 flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-purple-100 to-pink-100">
                       {agent.avatar}
                     </div>
                     <div>

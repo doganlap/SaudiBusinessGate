@@ -37,71 +37,68 @@ export default function HRPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDepartment, setFilterDepartment] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [kpis, setKPIs] = useState<any[]>([]);
 
   useEffect(() => {
     fetchEmployees();
+    
+    // Fetch KPIs for HR module
+    const fetchKPIs = async () => {
+      try {
+        const response = await fetch('/api/kpis?module=hr');
+        const data = await response.json();
+        if (data.success && data.kpis) {
+          setKPIs(data.kpis);
+        }
+      } catch (err) {
+        console.error('Failed to fetch KPIs:', err);
+      }
+    };
+    fetchKPIs();
+    
+    // Refresh KPIs every 30 seconds
+    const interval = setInterval(fetchKPIs, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const fetchEmployees = async () => {
     try {
       setLoading(true);
-      // Mock data for demo
-      setEmployees([
-        {
-          id: '1',
-          name: 'Sarah Johnson',
-          email: 'sarah.johnson@company.com',
-          phone: '+1-555-0123',
-          position: 'Sales Manager',
-          department: 'Sales',
-          salary: 85000,
-          status: 'active',
-          hireDate: '2023-01-15',
-          manager: 'John Smith',
-          location: 'New York, NY'
+      const response = await fetch('/api/hr/employees', {
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          id: '2',
-          name: 'Mike Wilson',
-          email: 'mike.wilson@company.com',
-          phone: '+1-555-0456',
-          position: 'Software Engineer',
-          department: 'Engineering',
-          salary: 95000,
-          status: 'active',
-          hireDate: '2023-03-20',
-          manager: 'Lisa Chen',
-          location: 'San Francisco, CA'
-        },
-        {
-          id: '3',
-          name: 'Emily Davis',
-          email: 'emily.davis@company.com',
-          phone: '+1-555-0789',
-          position: 'Marketing Specialist',
-          department: 'Marketing',
-          salary: 65000,
-          status: 'on_leave',
-          hireDate: '2023-06-10',
-          manager: 'Robert Brown',
-          location: 'Austin, TX'
-        },
-        {
-          id: '4',
-          name: 'David Kim',
-          email: 'david.kim@company.com',
-          phone: '+1-555-0321',
-          position: 'HR Coordinator',
-          department: 'Human Resources',
-          salary: 55000,
-          status: 'active',
-          hireDate: '2023-08-05',
-          manager: 'Jennifer Lee',
-          location: 'Chicago, IL'
-        }
-      ]);
-    } catch (err) {
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.success && data.employees) {
+        // Map API response to component state
+        const mappedEmployees = data.employees.map((emp: any) => ({
+          id: emp.id || emp.employee_id || '',
+          name: `${emp.first_name || ''} ${emp.last_name || ''}`.trim() || emp.name || 'Unknown',
+          email: emp.email || '',
+          phone: emp.phone || emp.phone_number || '',
+          position: emp.position || emp.job_title || '',
+          department: emp.department || '',
+          salary: emp.salary || emp.monthly_salary || 0,
+          status: emp.status || 'active',
+          hireDate: emp.hire_date || emp.start_date || emp.created_at || new Date().toISOString(),
+          manager: emp.manager || emp.reports_to || '',
+          location: emp.work_location || emp.location || '',
+        }));
+        setEmployees(mappedEmployees);
+      } else {
+        throw new Error(data.error || 'Failed to fetch employees');
+      }
+    } catch (err: any) {
       console.error('Failed to fetch employees:', err);
+      // Keep empty array on error instead of mock data
+      setEmployees([]);
     } finally {
       setLoading(false);
     }
@@ -166,10 +163,13 @@ export default function HRPage() {
                 Manage employees, payroll, and HR processes
               </p>
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+            <a 
+              href="/hr/employees/create"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+            >
               <Plus className="h-4 w-4" />
               Add Employee
-            </button>
+            </a>
           </div>
         </div>
       </div>

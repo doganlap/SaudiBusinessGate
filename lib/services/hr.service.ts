@@ -301,7 +301,7 @@ export class HRService {
   private calculateEmployeeSummary(employees: Employee[]): EmployeeSummary {
     const activeEmployees = employees.filter((e) => e.status === 'active');
     const onLeave = employees.filter(
-      (e) => e.status === 'on_leave' || e.status === 'on-leave'
+      (e) => e.status === 'on_leave'
     );
     const totalSalary = employees.reduce((sum, e) => sum + (e.salary || 0), 0);
     const avgSalary =
@@ -1092,6 +1092,177 @@ export class HRService {
         );
       }
       throw error;
+    }
+  }
+
+  // ADVANCED ANALYTICS METHODS
+
+  async getHRAnalytics(
+    tenantId: string,
+    filters?: {
+      dateFrom?: string;
+      dateTo?: string;
+    }
+  ): Promise<any> {
+    try {
+      let whereClause = 'WHERE e.tenant_id = $1';
+      let attendanceWhereClause = 'WHERE a.tenant_id = $1';
+      let payrollWhereClause = 'WHERE p.tenant_id = $1';
+      const params: any[] = [tenantId];
+      let paramIndex = 2;
+
+      if (filters?.dateFrom) {
+        attendanceWhereClause += ` AND a.attendance_date >= $${paramIndex}`;
+        payrollWhereClause += ` AND p.pay_period_start >= $${paramIndex}`;
+        params.push(filters.dateFrom);
+        paramIndex++;
+      }
+
+      if (filters?.dateTo) {
+        attendanceWhereClause += ` AND a.attendance_date <= $${paramIndex}`;
+        payrollWhereClause += ` AND p.pay_period_end <= $${paramIndex}`;
+        params.push(filters.dateTo);
+        paramIndex++;
+      }
+
+      // Employee distribution by department
+      const departmentDistribution = await query(
+        `SELECT 
+          COALESCE(e.department, 'Unassigned') as department,
+          COUNT(*) as employee_count,
+          AVG(e.salary) as avg_salary,
+          SUM(e.salary) as total_salary
+        FROM employees e
+        ${whereClause}
+          AND e.status = 'active'
+        GROUP BY e.department
+        ORDER BY employee_count DESC`,
+        [tenantId]
+      );
+
+      // Monthly attendance trend
+      const monthlyAttendanceTrend = await query(
+        `SELECT 
+          TO_CHAR(a.attendance_date, 'YYYY-MM') as month,
+          COUNT(DISTINCT a.employee_id) as employees_count,
+          COUNT(CASE WHEN a.status = 'present' THEN 1 END) as present_count,
+          COUNT(CASE WHEN a.status = 'absent' THEN 1 END) as absent_count,
+          COUNT(CASE WHEN a.status = 'late' THEN 1 END) as late_count,
+          AVG(a.total_hours) as avg_hours
+        FROM attendance a
+        ${attendanceWhereClause}
+        GROUP BY TO_CHAR(a.attendance_date, 'YYYY-MM')
+        ORDER BY month DESC
+        LIMIT 12`,
+        params
+      );
+
+      // Attendance status distribution
+      const attendanceStatusDistribution = await query(
+        `SELECT 
+          a.status,
+          COUNT(*) as count,
+          AVG(a.total_hours) as avg_hours,
+          COUNT(DISTINCT a.employee_id) as employees_count
+        FROM attendance a
+        ${attendanceWhereClause}
+        GROUP BY a.status
+        ORDER BY count DESC`,
+        params
+      );
+
+      // Department attendance rates
+      const departmentAttendance = await query(
+        `SELECT 
+          COALESCE(e.department, 'Unassigned') as department,
+          COUNT(DISTINCT a.employee_id) as employees_count,
+          COUNT(CASE WHEN a.status = 'present' THEN 1 END) as present_count,
+          COUNT(CASE WHEN a.status = 'absent' THEN 1 END) as absent_count,
+          AVG(a.total_hours) as avg_hours,
+          CASE 
+            WHEN COUNT(*) > 0 THEN 
+              (COUNT(CASE WHEN a.status = 'present' THEN 1 END)::float / COUNT(*)::float * 100)
+            ELSE 0
+          END as attendance_rate
+        FROM attendance a
+        LEFT JOIN employees e ON a.employee_id = e.id
+        ${attendanceWhereClause}
+        GROUP BY e.department
+        ORDER BY attendance_rate DESC`,
+        params
+      );
+
+      // Monthly payroll trend
+      const monthlyPayrollTrend = await query(
+        `SELECT 
+          TO_CHAR(p.pay_period_start, 'YYYY-MM') as month,
+          COUNT(DISTINCT p.employee_id) as employees_count,
+          SUM(p.gross_salary) as total_gross,
+          SUM(p.net_salary) as total_net,
+          AVG(p.net_salary) as avg_net_salary,
+          SUM(p.overtime_pay) as total_overtime,
+          SUM(p.bonuses) as total_bonuses,
+          SUM(p.deductions) as total_deductions
+        FROM payroll p
+        ${payrollWhereClause}
+        GROUP BY TO_CHAR(p.pay_period_start, 'YYYY-MM')
+        ORDER BY month DESC
+        LIMIT 12`,
+        params
+      );
+
+      // Employee status distribution
+      const employeeStatusDistribution = await query(
+        `SELECT 
+          e.status,
+          COUNT(*) as count,
+          AVG(e.salary) as avg_salary,
+          SUM(e.salary) as total_salary
+        FROM employees e
+        ${whereClause}
+        GROUP BY e.status
+        ORDER BY count DESC`,
+        [tenantId]
+      );
+
+      // Top departments by payroll cost
+      const topDepartmentsByPayroll = await query(
+        `SELECT 
+          COALESCE(e.department, 'Unassigned') as department,
+          COUNT(DISTINCT p.employee_id) as employees_count,
+          SUM(p.gross_salary) as total_gross,
+          SUM(p.net_salary) as total_net,
+          AVG(p.net_salary) as avg_net_salary
+        FROM payroll p
+        LEFT JOIN employees e ON p.employee_id = e.id
+        ${payrollWhereClause}
+        GROUP BY e.department
+        ORDER BY total_net DESC
+        LIMIT 10`,
+        params
+      );
+
+      return {
+        departmentDistribution: departmentDistribution.rows,
+        monthlyAttendanceTrend: monthlyAttendanceTrend.rows,
+        attendanceStatusDistribution: attendanceStatusDistribution.rows,
+        departmentAttendance: departmentAttendance.rows,
+        monthlyPayrollTrend: monthlyPayrollTrend.rows,
+        employeeStatusDistribution: employeeStatusDistribution.rows,
+        topDepartmentsByPayroll: topDepartmentsByPayroll.rows,
+      };
+    } catch (error) {
+      console.warn('Database not available for HR analytics, using mock data:', error);
+      // Return mock analytics data
+      return {
+        departmentDistribution: [],
+        monthlyAttendanceTrend: [],
+        attendanceStatusDistribution: [],
+        departmentAttendance: [],
+        monthlyPayrollTrend: [],
+        employeeStatusDistribution: [],
+        topDepartmentsByPayroll: [],
+      };
     }
   }
 }

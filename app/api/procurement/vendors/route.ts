@@ -1,222 +1,184 @@
+/**
+ * Vendors API
+ * Enhanced with caching, rate limiting, and request queuing
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
-import { query } from '@/lib/db/connection';
 import { getServerSession } from 'next-auth/next';
+import { procurementService } from '@/lib/services/procurement.service';
+import { multiLayerCache, CACHE_TTL, CACHE_PREFIXES } from '@/lib/services/multi-layer-cache.service';
+import { requestQueue } from '@/lib/services/request-queue.service';
+import { withRateLimit, rateLimiter, getIdentifier } from '@/lib/middleware/rate-limit';
 
-interface Vendor {
-  id: string;
-  name: string;
-  contactPerson: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-  country: string;
-  category: string;
-  status: 'active' | 'inactive' | 'pending' | 'blacklisted';
-  rating: number;
-  totalOrders: number;
-  totalValue: number;
-  lastOrder: string;
-  paymentTerms: string;
-  deliveryTime: string;
-  notes: string;
-}
+/**
+ * GET /api/procurement/vendors
+ * Get all vendors with optional filtering
+ * Enhanced with caching and rate limiting
+ */
+export const GET = withRateLimit(async (request: NextRequest) => {
+  return requestQueue.processRequest(
+    request,
+    async (req) => {
+      try {
+        // Authentication
+        const session = await getServerSession();
+        if (!session?.user) {
+          return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
 
-export async function GET(request: NextRequest) {
-  try {
-    const session = await getServerSession();
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+        // Get tenant ID
+        const tenantId =
+          req.headers.get('x-tenant-id') ||
+          (session.user as any).tenantId ||
+          'default-tenant';
 
-    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'default-tenant';
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');
-    
-    try {
-      let whereClause = 'WHERE tenant_id = $1';
-      const params: any[] = [tenantId];
-      let paramIndex = 2;
+        // Parse query parameters
+        const { searchParams } = new URL(req.url);
+        const status = searchParams.get('status');
+        const category = searchParams.get('category');
+        const vendorType = searchParams.get('vendorType');
+        const search = searchParams.get('search');
+        const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined;
+        const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : undefined;
 
-    if (status && status !== 'all') {
-        whereClause += ` AND status = $${paramIndex++}`;
-        params.push(status);
-      }
+        // Build cache key
+        const cacheKey = `${CACHE_PREFIXES.PROCUREMENT || 'proc:'}vendors:${tenantId}:${status || 'all'}:${category || 'all'}:${vendorType || 'all'}`;
 
-      const result = await query(`
-        SELECT 
-          id, vendor_code, vendor_name, vendor_name_ar, vendor_type,
-          contact_person, email, phone, address, city, country,
-          tax_id, commercial_registration, payment_terms, status, rating,
-          created_at
-        FROM vendors
-        ${whereClause}
-        ORDER BY created_at DESC
-      `, params);
-
-      // Get order statistics for each vendor
-      const vendors: Vendor[] = await Promise.all(result.rows.map(async (row: any) => {
-        const orderStats = await query(`
-          SELECT 
-            COUNT(*) as total_orders,
-            COALESCE(SUM(total_amount), 0) as total_value,
-            MAX(order_date) as last_order_date
-          FROM purchase_orders
-          WHERE vendor_id = $1 AND tenant_id = $2
-        `, [row.id, tenantId]);
-
-        const stats = orderStats.rows[0] || { total_orders: 0, total_value: 0, last_order_date: null };
-
-        return {
-          id: row.id.toString(),
-          name: row.vendor_name_ar || row.vendor_name,
-          contactPerson: row.contact_person || '',
-          email: row.email || '',
-          phone: row.phone || '',
-          address: row.address || '',
-          city: row.city || '',
-          country: row.country || 'SA',
-          category: row.vendor_type || '',
-          status: (row.status || 'pending') as 'active' | 'inactive' | 'pending' | 'blacklisted',
-          rating: row.rating || 0,
-          totalOrders: parseInt(stats.total_orders || '0'),
-          totalValue: Number(stats.total_value || 0),
-          lastOrder: stats.last_order_date ? new Date(stats.last_order_date).toISOString().split('T')[0] : '',
-          paymentTerms: row.payment_terms || '',
-          deliveryTime: '',
-          notes: ''
-        };
-      }));
-
-      const activeVendors = vendors.filter(v => v.status === 'active');
-      const totalValue = vendors.reduce((sum, v) => sum + v.totalValue, 0);
-      const avgRating = vendors.filter(v => v.rating > 0).length > 0
-        ? vendors.filter(v => v.rating > 0).reduce((sum, v) => sum + v.rating, 0) / vendors.filter(v => v.rating > 0).length
-        : 0;
-    
-    return NextResponse.json({
-      success: true,
-        vendors,
-      summary: {
-          totalVendors: vendors.length,
-          activeVendors: activeVendors.length,
-        totalValue,
-        avgRating: Math.round(avgRating * 10) / 10
-        },
-        source: 'database'
-      });
-    } catch (error: any) {
-      if (error.code === '42P01') {
-        return NextResponse.json({
-          success: true,
-          vendors: [],
-          summary: {
-            totalVendors: 0,
-            activeVendors: 0,
-            totalValue: 0,
-            avgRating: 0
+        // Get or fetch with caching
+        const { vendors, summary } = await multiLayerCache.getOrFetch(
+          cacheKey,
+          async () => {
+            return await procurementService.getVendors(tenantId, {
+              status: status || undefined,
+              category: category || undefined,
+              vendorType: vendorType || undefined,
+              search: search || undefined,
+              limit,
+              offset,
+            });
           },
-          source: 'empty'
+          {
+            ttl: CACHE_TTL.MEDIUM,
+            module: 'procurement',
+            staleWhileRevalidate: true,
+          }
+        );
+
+        // Return HTTP response with cache headers
+        const response = NextResponse.json({
+          success: true,
+          vendors,
+          total: vendors.length,
+          summary,
+          source: 'database',
         });
+
+        // Add cache headers
+        multiLayerCache.addCacheHeaders(response, {
+          maxAge: 300, // 5 minutes
+          staleWhileRevalidate: 60,
+        });
+
+        return response;
+      } catch (error: any) {
+        console.error('Error fetching vendors:', error);
+        return NextResponse.json(
+          { success: false, error: error.message || 'Failed to fetch vendors' },
+          { status: 500 }
+        );
       }
-      throw error;
-    }
-  } catch (error) {
-    console.error('Error fetching vendors:', error);
+    },
+    { windowMs: 60000, maxRequests: 100 }
+  );
+}, { windowMs: 60000, maxRequests: 100 });
+
+/**
+ * POST /api/procurement/vendors
+ * Create new vendor
+ * Enhanced with cache invalidation and rate limiting
+ */
+export async function POST(request: NextRequest) {
+  // Manual rate limiting for POST requests
+  const identifier = getIdentifier(request);
+  const result = await rateLimiter.checkLimit(identifier, { windowMs: 60000, maxRequests: 50 });
+
+  if (!result.allowed) {
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch vendors' },
-      { status: 500 }
+      {
+        error: 'Too many requests. Please try again later.',
+        retryAfter: Math.ceil((result.resetTime - Date.now()) / 1000),
+      },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': result.total.toString(),
+          'X-RateLimit-Remaining': result.remaining.toString(),
+          'X-RateLimit-Reset': result.resetTime.toString(),
+          'Retry-After': Math.ceil((result.resetTime - Date.now()) / 1000).toString(),
+        },
+      }
     );
   }
-}
 
-export async function POST(request: NextRequest) {
   try {
+    // Authentication
     const session = await getServerSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'default-tenant';
+    // Get tenant ID
+    const tenantId =
+      request.headers.get('x-tenant-id') ||
+      (session.user as any).tenantId ||
+      'default-tenant';
+
+    // Parse and validate request body
     const body = await request.json();
-    
-    const {
-      vendor_name, vendor_name_ar, vendor_type, contact_person,
-      email, phone, address, city, country = 'SA',
-      tax_id, commercial_registration, payment_terms, status = 'pending'
-    } = body;
 
-    if (!vendor_name || !email) {
-      return NextResponse.json(
-        { success: false, error: 'vendor_name and email are required' },
-        { status: 400 }
-      );
-    }
+    // Create vendor using service
+    const vendor = await procurementService.createVendor(tenantId, {
+      name: body.name || body.vendor_name,
+      nameAr: body.nameAr || body.vendor_name_ar,
+      contactPerson: body.contactPerson || body.contact_person,
+      email: body.email,
+      phone: body.phone,
+      address: body.address,
+      city: body.city,
+      country: body.country,
+      category: body.category,
+      vendorType: body.vendorType || body.vendor_type,
+      status: body.status || 'pending',
+      rating: body.rating || 0,
+      paymentTerms: body.paymentTerms || body.payment_terms,
+      notes: body.notes,
+      taxId: body.taxId || body.tax_id,
+      commercialRegistration: body.commercialRegistration || body.commercial_registration,
+    });
 
-    // Generate vendor code
-    const countResult = await query('SELECT COUNT(*) as count FROM vendors WHERE tenant_id = $1', [tenantId]);
-    const count = parseInt(countResult.rows[0]?.count || '0');
-    const vendorCode = `VEND-${String(count + 1).padStart(3, '0')}`;
+    // Invalidate relevant caches
+    await multiLayerCache.invalidatePattern(`${CACHE_PREFIXES.PROCUREMENT || 'proc:'}vendors:*`);
+    await multiLayerCache.invalidatePattern(`${CACHE_PREFIXES.PROCUREMENT || 'proc:'}kpis:*`);
 
-    try {
-      const result = await query(`
-        INSERT INTO vendors (
-          tenant_id, vendor_code, vendor_name, vendor_name_ar, vendor_type,
-          contact_person, email, phone, address, city, country,
-          tax_id, commercial_registration, payment_terms, status, created_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, NOW())
-        RETURNING id, vendor_code, vendor_name, vendor_name_ar, vendor_type,
-          contact_person, email, phone, address, city, country, status, rating
-      `, [
-        tenantId, vendorCode, vendor_name, vendor_name_ar || vendor_name, vendor_type || '',
-        contact_person || '', email, phone || '', address || '', city || '', country,
-        tax_id || '', commercial_registration || '', payment_terms || '', status
-      ]);
-    
-    const newVendor: Vendor = {
-        id: result.rows[0].id.toString(),
-        name: result.rows[0].vendor_name_ar || result.rows[0].vendor_name,
-        contactPerson: result.rows[0].contact_person || '',
-        email: result.rows[0].email,
-        phone: result.rows[0].phone || '',
-        address: result.rows[0].address || '',
-        city: result.rows[0].city || '',
-        country: result.rows[0].country || 'SA',
-        category: result.rows[0].vendor_type || '',
-        status: (result.rows[0].status || 'pending') as 'active' | 'inactive' | 'pending' | 'blacklisted',
-        rating: result.rows[0].rating || 0,
-      totalOrders: 0,
-      totalValue: 0,
-        lastOrder: '',
-        paymentTerms: payment_terms || '',
-        deliveryTime: '',
-        notes: ''
-    };
-    
-    return NextResponse.json({
-      success: true,
-      vendor: newVendor,
-      message: 'Vendor created successfully'
-      }, { status: 201 });
-    } catch (error: any) {
-      if (error.code === '42P01') {
-        return NextResponse.json(
-          { success: false, error: 'Vendors table not found. Please run database migrations.' },
-          { status: 503 }
-        );
-      }
-      if (error.code === '23505') {
-        return NextResponse.json(
-          { success: false, error: 'Vendor with this code already exists' },
-          { status: 409 }
-        );
-      }
-      throw error;
-    }
-  } catch (error) {
+    const response = NextResponse.json(
+      {
+        success: true,
+        vendor,
+        message: 'Vendor created successfully',
+      },
+      { status: 201 }
+    );
+
+    // Add rate limit headers
+    response.headers.set('X-RateLimit-Limit', result.total.toString());
+    response.headers.set('X-RateLimit-Remaining', result.remaining.toString());
+    response.headers.set('X-RateLimit-Reset', result.resetTime.toString());
+
+    return response;
+  } catch (error: any) {
     console.error('Error creating vendor:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to create vendor' },
+      { success: false, error: error.message || 'Failed to create vendor' },
       { status: 500 }
     );
   }

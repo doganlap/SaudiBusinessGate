@@ -1,218 +1,189 @@
+/**
+ * Purchase Orders API
+ * Enhanced with caching, rate limiting, and request queuing
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
-import { query } from '@/lib/db/connection';
 import { getServerSession } from 'next-auth/next';
+import { procurementService } from '@/lib/services/procurement.service';
+import { multiLayerCache, CACHE_TTL, CACHE_PREFIXES } from '@/lib/services/multi-layer-cache.service';
+import { requestQueue } from '@/lib/services/request-queue.service';
+import { withRateLimit, rateLimiter, getIdentifier } from '@/lib/middleware/rate-limit';
 
-interface PurchaseOrder {
-  id: string;
-  orderNumber: string;
-  vendor: string;
-  description: string;
-  totalAmount: number;
-  status: 'draft' | 'pending' | 'approved' | 'ordered' | 'received' | 'cancelled';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  requestedBy: string;
-  approvedBy?: string;
-  orderDate: string;
-  expectedDelivery: string;
-  category: string;
-  items: number;
-  tenantId: string;
-}
+/**
+ * GET /api/procurement/orders
+ * Get all purchase orders with optional filtering
+ * Enhanced with caching and rate limiting
+ */
+export const GET = withRateLimit(async (request: NextRequest) => {
+  return requestQueue.processRequest(
+    request,
+    async (req) => {
+      try {
+        // Authentication
+        const session = await getServerSession();
+        if (!session?.user) {
+          return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
 
-export async function GET(request: NextRequest) {
-  try {
-    const session = await getServerSession();
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+        // Get tenant ID
+        const tenantId =
+          req.headers.get('x-tenant-id') ||
+          (session.user as any).tenantId ||
+          'default-tenant';
 
-    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'default-tenant';
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');
+        // Parse query parameters
+        const { searchParams } = new URL(req.url);
+        const status = searchParams.get('status');
+        const vendorId = searchParams.get('vendorId');
+        const category = searchParams.get('category');
+        const priority = searchParams.get('priority');
+        const requestedBy = searchParams.get('requestedBy');
+        const dateFrom = searchParams.get('dateFrom');
+        const dateTo = searchParams.get('dateTo');
+        const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined;
+        const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : undefined;
 
-    try {
-      let whereClause = 'WHERE tenant_id = $1';
-      const params: any[] = [tenantId];
-      let paramIndex = 2;
+        // Build cache key
+        const cacheKey = `${CACHE_PREFIXES.PROCUREMENT || 'proc:'}orders:${tenantId}:${status || 'all'}:${vendorId || 'all'}:${category || 'all'}`;
 
-      if (status) {
-        whereClause += ` AND status = $${paramIndex++}`;
-        params.push(status);
-      }
-
-      const result = await query(`
-        SELECT 
-          po.id, po.po_number, po.vendor_id, po.vendor_name, po.order_date,
-          po.expected_delivery_date, po.delivery_date, po.status, po.total_amount,
-          po.created_by, po.approved_by, po.approved_at, po.created_at,
-          COUNT(poi.id) as item_count
-        FROM purchase_orders po
-        LEFT JOIN purchase_order_items poi ON po.id = poi.purchase_order_id
-        ${whereClause}
-        GROUP BY po.id
-        ORDER BY po.order_date DESC
-      `, params);
-
-      const orders: PurchaseOrder[] = result.rows.map((row: any) => ({
-        id: row.id.toString(),
-        orderNumber: row.po_number,
-        vendor: row.vendor_name || '',
-        description: '',
-        totalAmount: Number(row.total_amount || 0),
-        status: (row.status || 'draft') as 'draft' | 'pending' | 'approved' | 'ordered' | 'received' | 'cancelled',
-        priority: 'medium',
-        requestedBy: row.created_by || '',
-        approvedBy: row.approved_by || undefined,
-        orderDate: row.order_date ? new Date(row.order_date).toISOString().split('T')[0] : '',
-        expectedDelivery: row.expected_delivery_date ? new Date(row.expected_delivery_date).toISOString().split('T')[0] : '',
-        category: '',
-        items: parseInt(row.item_count || '0'),
-        tenantId: tenantId
-      }));
-
-      const pendingApproval = orders.filter(o => o.status === 'pending').length;
-      const completed = orders.filter(o => o.status === 'received').length;
-      const totalValue = orders.reduce((sum, o) => sum + o.totalAmount, 0);
-    
-    return NextResponse.json({
-      success: true,
-        orders,
-        total: orders.length,
-        summary: {
-          totalOrders: orders.length,
-          pendingApproval,
-          completed,
-          totalValue
-        },
-        source: 'database'
-      });
-    } catch (error: any) {
-      if (error.code === '42P01') {
-        return NextResponse.json({
-          success: true,
-          orders: [],
-          total: 0,
-      summary: {
-            totalOrders: 0,
-            pendingApproval: 0,
-            completed: 0,
-            totalValue: 0
+        // Get or fetch with caching
+        const { orders, summary } = await multiLayerCache.getOrFetch(
+          cacheKey,
+          async () => {
+            return await procurementService.getPurchaseOrders(tenantId, {
+              status: status || undefined,
+              vendorId: vendorId || undefined,
+              category: category || undefined,
+              priority: priority || undefined,
+              requestedBy: requestedBy || undefined,
+              dateFrom: dateFrom || undefined,
+              dateTo: dateTo || undefined,
+              limit,
+              offset,
+            });
           },
-          source: 'empty'
+          {
+            ttl: CACHE_TTL.MEDIUM,
+            module: 'procurement',
+            staleWhileRevalidate: true,
+          }
+        );
+
+        // Return HTTP response with cache headers
+        const response = NextResponse.json({
+          success: true,
+          orders,
+          total: orders.length,
+          summary,
+          source: 'database',
         });
-      }
-      throw error;
-    }
-  } catch (error) {
-    console.error('Error fetching orders:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch orders' },
-      { status: 500 }
-    );
-  }
-}
 
-export async function POST(request: NextRequest) {
-  try {
-    const session = await getServerSession();
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+        // Add cache headers
+        multiLayerCache.addCacheHeaders(response, {
+          maxAge: 300, // 5 minutes
+          staleWhileRevalidate: 60,
+        });
 
-    const tenantId = request.headers.get('x-tenant-id') || (session.user as any).tenantId || 'default-tenant';
-    const body = await request.json();
-    
-    const {
-      vendor_id, vendor_name, order_date, expected_delivery_date,
-      items, subtotal, vat_amount, discount_amount, shipping_cost, total_amount
-    } = body;
-
-    if (!vendor_id && !vendor_name) {
-      return NextResponse.json(
-        { success: false, error: 'vendor_id or vendor_name is required' },
-        { status: 400 }
-      );
-    }
-
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return NextResponse.json(
-        { success: false, error: 'items array is required' },
-        { status: 400 }
-      );
-    }
-
-    // Generate PO number
-    const countResult = await query('SELECT COUNT(*) as count FROM purchase_orders WHERE tenant_id = $1', [tenantId]);
-    const count = parseInt(countResult.rows[0]?.count || '0');
-    const poNumber = `PO-${new Date().getFullYear()}-${String(count + 1).padStart(3, '0')}`;
-
-    try {
-      // Create purchase order
-      const poResult = await query(`
-        INSERT INTO purchase_orders (
-          tenant_id, po_number, vendor_id, vendor_name, order_date,
-          expected_delivery_date, status, subtotal, vat_amount, discount_amount,
-          shipping_cost, total_amount, currency, created_by, created_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW())
-        RETURNING id, po_number, vendor_name, order_date, status, total_amount
-      `, [
-        tenantId, poNumber, vendor_id || null, vendor_name || '', order_date || new Date(),
-        expected_delivery_date || null, 'draft', subtotal || 0, vat_amount || 0,
-        discount_amount || 0, shipping_cost || 0, total_amount || 0, 'SAR',
-        (session.user as any).email || 'system'
-      ]);
-
-      const poId = poResult.rows[0].id;
-
-      // Insert order items
-      for (const item of items) {
-        await query(`
-          INSERT INTO purchase_order_items (
-            purchase_order_id, inventory_item_id, item_description, item_code,
-            quantity, unit_price, discount_percent, vat_percent, line_total, created_at
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())
-        `, [
-          poId, item.inventory_item_id || null, item.description || '',
-          item.item_code || '', item.quantity || 0, item.unit_price || 0,
-          item.discount_percent || 0, item.vat_percent || 15,
-          item.line_total || (item.quantity * item.unit_price)
-        ]);
-      }
-    
-    const newOrder: PurchaseOrder = {
-        id: poId.toString(),
-        orderNumber: poResult.rows[0].po_number,
-        vendor: poResult.rows[0].vendor_name,
-        description: '',
-        totalAmount: Number(poResult.rows[0].total_amount),
-      status: 'draft',
-        priority: 'medium',
-        requestedBy: (session.user as any).email || 'system',
-        orderDate: poResult.rows[0].order_date ? new Date(poResult.rows[0].order_date).toISOString().split('T')[0] : '',
-        expectedDelivery: expected_delivery_date || '',
-        category: '',
-        items: items.length,
-        tenantId: tenantId
-      };
-    
-    return NextResponse.json({
-      success: true,
-      order: newOrder,
-      message: 'Purchase order created successfully'
-      }, { status: 201 });
-    } catch (error: any) {
-      if (error.code === '42P01') {
+        return response;
+      } catch (error: any) {
+        console.error('Error fetching purchase orders:', error);
         return NextResponse.json(
-          { success: false, error: 'Purchase orders table not found. Please run database migrations.' },
-          { status: 503 }
+          { success: false, error: error.message || 'Failed to fetch purchase orders' },
+          { status: 500 }
         );
       }
-      throw error;
-    }
-  } catch (error) {
-    console.error('Error creating order:', error);
+    },
+    { windowMs: 60000, maxRequests: 100 }
+  );
+}, { windowMs: 60000, maxRequests: 100 });
+
+/**
+ * POST /api/procurement/orders
+ * Create new purchase order
+ * Enhanced with cache invalidation and rate limiting
+ */
+export async function POST(request: NextRequest) {
+  // Manual rate limiting for POST requests
+  const identifier = getIdentifier(request);
+  const result = await rateLimiter.checkLimit(identifier, { windowMs: 60000, maxRequests: 50 });
+
+  if (!result.allowed) {
     return NextResponse.json(
-      { success: false, error: 'Failed to create order' },
+      {
+        error: 'Too many requests. Please try again later.',
+        retryAfter: Math.ceil((result.resetTime - Date.now()) / 1000),
+      },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': result.total.toString(),
+          'X-RateLimit-Remaining': result.remaining.toString(),
+          'X-RateLimit-Reset': result.resetTime.toString(),
+          'Retry-After': Math.ceil((result.resetTime - Date.now()) / 1000).toString(),
+        },
+      }
+    );
+  }
+
+  try {
+    // Authentication
+    const session = await getServerSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Get tenant ID
+    const tenantId =
+      request.headers.get('x-tenant-id') ||
+      (session.user as any).tenantId ||
+      'default-tenant';
+
+    // Parse and validate request body
+    const body = await request.json();
+
+    // Create purchase order using service
+    const order = await procurementService.createPurchaseOrder(tenantId, {
+      vendorId: body.vendor_id || body.vendorId,
+      vendorName: body.vendor_name || body.vendorName,
+      description: body.description,
+      totalAmount: body.total_amount || body.totalAmount,
+      status: body.status || 'draft',
+      priority: body.priority || 'medium',
+      requestedBy: body.requested_by || body.requestedBy || (session.user as any).email || 'system',
+      approvedBy: body.approved_by || body.approvedBy,
+      orderDate: body.order_date || body.orderDate,
+      expectedDelivery: body.expected_delivery_date || body.expectedDelivery,
+      category: body.category,
+      currency: body.currency || 'SAR',
+      paymentTerms: body.payment_terms || body.paymentTerms,
+      notes: body.notes,
+      items: body.items || [],
+    });
+
+    // Invalidate relevant caches
+    await multiLayerCache.invalidatePattern(`${CACHE_PREFIXES.PROCUREMENT || 'proc:'}orders:*`);
+    await multiLayerCache.invalidatePattern(`${CACHE_PREFIXES.PROCUREMENT || 'proc:'}kpis:*`);
+
+    const response = NextResponse.json(
+      {
+        success: true,
+        order,
+        message: 'Purchase order created successfully',
+      },
+      { status: 201 }
+    );
+
+    // Add rate limit headers
+    response.headers.set('X-RateLimit-Limit', result.total.toString());
+    response.headers.set('X-RateLimit-Remaining', result.remaining.toString());
+    response.headers.set('X-RateLimit-Reset', result.resetTime.toString());
+
+    return response;
+  } catch (error: any) {
+    console.error('Error creating purchase order:', error);
+    return NextResponse.json(
+      { success: false, error: error.message || 'Failed to create purchase order' },
       { status: 500 }
     );
   }

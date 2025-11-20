@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
 import { 
   BarChart3, 
@@ -15,7 +16,9 @@ import {
   Activity,
   Package,
   UserCheck,
-  CreditCard
+  CreditCard,
+  Star,
+  Rocket
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
@@ -45,6 +48,7 @@ interface QuickAction {
 
 export default function DashboardPage() {
   const params = useParams();
+  const router = useRouter();
   const lng = params.lng as string;
   const { t } = useTranslation(lng, 'dashboard', {});
   
@@ -132,7 +136,7 @@ export default function DashboardPage() {
       title: lng === 'ar' ? 'المالية' : 'Finance',
       description: lng === 'ar' ? 'إدارة الحسابات والمعاملات والتقارير' : 'Manage accounts, transactions, and reports',
       icon: <DollarSign className="h-6 w-6" />,
-      href: `/${lng}/(platform)/finance`,
+      href: `/${lng}/finance`,
       color: 'bg-green-500'
     },
     {
@@ -140,7 +144,7 @@ export default function DashboardPage() {
       title: lng === 'ar' ? 'المبيعات' : 'Sales',
       description: lng === 'ar' ? 'تتبع العملاء المحتملين والصفقات' : 'Track leads, deals, and pipeline',
       icon: <TrendingUp className="h-6 w-6" />,
-      href: `/${lng}/(platform)/sales`,
+      href: `/${lng}/sales`,
       color: 'bg-blue-500'
     },
     {
@@ -148,7 +152,7 @@ export default function DashboardPage() {
       title: lng === 'ar' ? 'إدارة العملاء' : 'CRM',
       description: lng === 'ar' ? 'إدارة علاقات العملاء' : 'Customer relationship management',
       icon: <Users className="h-6 w-6" />,
-      href: `/${lng}/(platform)/crm`,
+      href: `/${lng}/crm`,
       color: 'bg-purple-500'
     },
     {
@@ -156,7 +160,7 @@ export default function DashboardPage() {
       title: lng === 'ar' ? 'الموارد البشرية' : 'HR',
       description: lng === 'ar' ? 'إدارة الموظفين والرواتب' : 'Human resources and payroll',
       icon: <UserCheck className="h-6 w-6" />,
-      href: `/${lng}/(platform)/hr`,
+      href: `/${lng}/hr`,
       color: 'bg-orange-500'
     },
     {
@@ -164,7 +168,7 @@ export default function DashboardPage() {
       title: lng === 'ar' ? 'المشتريات' : 'Procurement',
       description: lng === 'ar' ? 'أوامر الشراء والمخزون' : 'Purchase orders and inventory',
       icon: <Package className="h-6 w-6" />,
-      href: `/${lng}/(platform)/procurement`,
+      href: `/${lng}/procurement`,
       color: 'bg-indigo-500'
     },
     {
@@ -172,23 +176,23 @@ export default function DashboardPage() {
       title: lng === 'ar' ? 'وكلاء الذكاء الاصطناعي' : 'AI Agents',
       description: lng === 'ar' ? 'إدارة وكلاء الذكاء الاصطناعي' : 'Manage AI agents and automation',
       icon: <Activity className="h-6 w-6" />,
-      href: `/${lng}/(platform)/ai-agents`,
+      href: `/${lng}/ai-agents`,
       color: 'bg-cyan-500'
     },
     {
-      id: 'billing',
-      title: lng === 'ar' ? 'الفواتير' : 'Billing',
-      description: lng === 'ar' ? 'إدارة الاشتراكات والمدفوعات' : 'Subscription and payment management',
-      icon: <CreditCard className="h-6 w-6" />,
-      href: `/${lng}/(platform)/billing`,
-      color: 'bg-pink-500'
+      id: 'motivation',
+      title: lng === 'ar' ? 'التحفيز والذكاء' : 'Motivation & AI',
+      description: lng === 'ar' ? 'وكلاء الذكاء الاصطناعي والتحفيز' : 'AI agents and motivation',
+      icon: <Rocket className="h-6 w-6" />,
+      href: `/${lng}/motivation`,
+      color: 'bg-gradient-to-r from-purple-500 to-pink-500'
     },
     {
       id: 'analytics',
       title: lng === 'ar' ? 'التحليلات' : 'Analytics',
       description: lng === 'ar' ? 'رؤى الأعمال ومؤشرات الأداء' : 'AI-powered business insights and KPIs',
       icon: <BarChart3 className="h-6 w-6" />,
-      href: `/${lng}/(platform)/analytics`,
+      href: `/${lng}/analytics`,
       color: 'bg-teal-500'
     }
   ];
@@ -255,7 +259,7 @@ export default function DashboardPage() {
               </p>
               {/* Pioneering Badge */}
               <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg">
-                <span className="mr-2">⭐</span>
+                <Star className="h-4 w-4 mr-2" />
                 {lng === 'ar' ? 'المنصة الرائدة في المنطقة' : 'Pioneering Platform in the Region'}
               </div>
             </div>
@@ -354,20 +358,20 @@ export default function DashboardPage() {
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {quickActions.map((action) => (
-                    <a
+                    <Link
                       key={action.id}
                       href={action.href}
-                      className="group p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-md transition-all duration-200"
+                      className="group p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-md transition-all duration-200 cursor-pointer"
                     >
                       <div className="flex items-center mb-3">
                         <div className={`p-2 rounded-lg ${action.color} text-white`}>
                           {action.icon}
                         </div>
-                        <ChevronRight className="h-4 w-4 text-gray-400 ml-auto group-hover:text-gray-600" />
+                        <ChevronRight className={`h-4 w-4 text-gray-400 ${lng === 'ar' ? 'mr-auto' : 'ml-auto'} group-hover:text-gray-600`} />
                       </div>
                       <h3 className="font-semibold text-gray-900 mb-1">{action.title}</h3>
                       <p className="text-sm text-gray-600">{action.description}</p>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -398,12 +402,12 @@ export default function DashboardPage() {
                   ))}
                 </div>
                 <div className="mt-6">
-                  <a
+                  <Link
                     href={`/${lng}/platform/activity`}
                     className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                   >
                     {lng === 'ar' ? 'عرض كل النشاط ←' : 'View all activity →'}
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

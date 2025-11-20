@@ -28,6 +28,8 @@ import {
   Settings as SettingsIcon,
   ChevronRight,
   ChevronLeft,
+  ChevronsLeft,
+  ChevronsRight,
   // Agents
   Bot,
   Zap,
@@ -41,6 +43,14 @@ import {
   UserPlus,
   UserCircle,
   Calendar,
+  ShoppingCart,
+  Plus,
+  AlignLeft,
+  AlignRight,
+  Phone,
+  Send,
+  Scale,
+  FileText,
 } from "lucide-react";
 
 /**
@@ -58,14 +68,37 @@ export default function SaudiStoreShell({
   const [dark, setDark] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [rightDockOpen, setRightDockOpen] = useState(true);
+  
+  // Direction state - independent of language, can be overridden
+  const [direction, setDirection] = useState<"rtl" | "ltr">(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('text-direction');
+      if (saved === 'rtl' || saved === 'ltr') return saved;
+    }
+    return initialLocale === "ar" ? "rtl" : "ltr";
+  });
 
-  const dir = locale === "ar" ? "rtl" : "ltr";
-  useEffect(() => { document.documentElement.dir = dir; }, [dir]);
+  // Update document direction
+  useEffect(() => {
+    document.documentElement.dir = direction;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('text-direction', direction);
+    }
+  }, [direction]);
+
   useEffect(() => { document.documentElement.classList.toggle("dark", dark); }, [dark]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-200 dark:from-neutral-950 dark:to-neutral-900">
-      <Header locale={locale} setLocale={setLocale} dark={dark} setDark={setDark} onToggleDrawer={()=>setDrawerOpen(v=>!v)} />
+      <Header 
+        locale={locale} 
+        setLocale={setLocale} 
+        dark={dark} 
+        setDark={setDark} 
+        direction={direction}
+        setDirection={setDirection}
+        onToggleDrawer={()=>setDrawerOpen(v=>!v)} 
+      />
       <div className="flex">
         <LeftNav locale={locale} collapsedAt={1280} drawerOpen={drawerOpen} onCloseDrawer={()=>setDrawerOpen(false)} />
         <main className="flex-1 pt-28 px-4 sm:px-6" style={{ marginInlineStart: 300, marginInlineEnd: rightDockOpen ? 360 : 24 }}>
@@ -80,10 +113,40 @@ export default function SaudiStoreShell({
 }
 
 /* --------------------- Header --------------------- */
-function Header({ locale, setLocale, dark, setDark, onToggleDrawer }:{ locale:"ar"|"en"; setLocale:(v:"ar"|"en")=>void; dark:boolean; setDark:(v:boolean)=>void; onToggleDrawer:()=>void; }){
+function Header({ 
+  locale, 
+  setLocale, 
+  dark, 
+  setDark, 
+  direction,
+  setDirection,
+  onToggleDrawer 
+}:{ 
+  locale:"ar"|"en"; 
+  setLocale:(v:"ar"|"en")=>void; 
+  dark:boolean; 
+  setDark:(v:boolean)=>void; 
+  direction:"rtl"|"ltr";
+  setDirection:(v:"rtl"|"ltr")=>void;
+  onToggleDrawer:()=>void; 
+}){
   const t = useMemo(()=>({
-    ar:{ brand:"المتجر السعودي — بوابة الأعمال الذاتية", search:"ابحث… (Ctrl/⌘K)", online:"النظام متصل", db:"قاعدة البيانات: متصلة" },
-    en:{ brand:"Saudi Store — Autonomous Business Gateway", search:"Search… (Ctrl/⌘K)", online:"System Online", db:"Database: Connected" }
+    ar:{ 
+      brand:"المتجر السعودي — بوابة الأعمال الذاتية", 
+      search:"ابحث… (Ctrl/⌘K)", 
+      online:"النظام متصل", 
+      db:"قاعدة البيانات: متصلة",
+      rtl:"اتجاه النص: من اليمين لليسار",
+      ltr:"اتجاه النص: من اليسار لليمين"
+    },
+    en:{ 
+      brand:"Saudi Store — Autonomous Business Gateway", 
+      search:"Search… (Ctrl/⌘K)", 
+      online:"System Online", 
+      db:"Database: Connected",
+      rtl:"Text Direction: Right-to-Left",
+      ltr:"Text Direction: Left-to-Right"
+    }
   } as const)[locale], [locale]);
 
   return (
@@ -107,6 +170,18 @@ function Header({ locale, setLocale, dark, setDark, onToggleDrawer }:{ locale:"a
             </div>
             <div className="ms-auto flex items-center gap-2">
               <button className="relative rounded-xl p-2 hover:bg-white/20 transition" aria-label="Notifications"><Bell className="h-5 w-5"/></button>
+              <button 
+                onClick={()=>setDirection(direction==='rtl'?'ltr':'rtl')} 
+                className="rounded-xl p-2 hover:bg-white/20 transition" 
+                aria-label={direction === 'rtl' ? t.ltr : t.rtl}
+                title={direction === 'rtl' ? t.ltr : t.rtl}
+              >
+                {direction === 'rtl' ? (
+                  <ChevronsRight className="h-5 w-5" />
+                ) : (
+                  <ChevronsLeft className="h-5 w-5" />
+                )}
+              </button>
               <button onClick={()=>setLocale(locale==='ar'?'en':'ar')} className="rounded-xl p-2 hover:bg-white/20 transition" aria-label="Language"><Globe className="h-5 w-5"/></button>
               <button onClick={()=>setDark(!dark)} className="rounded-xl p-2 hover:bg-white/20 transition" aria-label="Theme">{dark? <SunMedium className="h-5 w-5"/>:<MoonStar className="h-5 w-5"/>}</button>
             </div>
@@ -168,28 +243,75 @@ function LeftNav({ locale, collapsedAt, drawerOpen, onCloseDrawer }:{ locale:"ar
       { k:"login", ar:"تسجيل الدخول", en:"Login", icon: ShieldCheck, href:"/en/login" },
     ]},
     { key:"finance", titleAr:"المالية", titleEn:"Finance", items:[
-      { k:"transactions", ar:"المعاملات", en:"Transactions", icon: DollarSign, href:"/en/finance/transactions" },
-      { k:"accounts", ar:"الحسابات", en:"Accounts", icon: Package, href:"/en/finance/accounts" },
-      { k:"reports", ar:"التقارير", en:"Reports", icon: BarChart3, href:"/en/finance/reports" },
+      { k:"finance-dashboard", ar:"لوحة المالية", en:"Finance Dashboard", icon: LayoutDashboard, href:`/${locale}/finance` },
+      { k:"finance-analytics", ar:"تحليلات مالية", en:"Analytics", icon: BarChart3, href:`/${locale}/finance/analytics` },
+      { k:"transactions", ar:"المعاملات", en:"Transactions", icon: DollarSign, href:`/${locale}/finance/transactions` },
+      { k:"accounts", ar:"الحسابات", en:"Accounts", icon: Package, href:`/${locale}/finance/accounts` },
+      { k:"reports", ar:"التقارير", en:"Reports", icon: BarChart3, href:`/${locale}/finance/reports` },
     ]},
     { key:"sales", titleAr:"المبيعات", titleEn:"Sales", items:[
-      { k:"leads", ar:"العملاء المحتملون", en:"Leads", icon: TrendingUp, href:"/en/sales/leads" },
-      { k:"deals", ar:"الصفقات", en:"Deals", icon: Handshake, href:"/en/sales/deals" },
+      { k:"sales-dashboard", ar:"لوحة المبيعات", en:"Sales Dashboard", icon: LayoutDashboard, href:`/${locale}/sales` },
+      { k:"sales-analytics", ar:"تحليلات المبيعات", en:"Analytics", icon: BarChart3, href:`/${locale}/sales/analytics` },
+      { k:"leads", ar:"العملاء المحتملون", en:"Leads", icon: TrendingUp, href:`/${locale}/sales/leads` },
+      { k:"deals", ar:"الصفقات", en:"Deals", icon: Handshake, href:`/${locale}/sales/deals` },
+      { k:"quotes", ar:"عروض الأسعار", en:"Quotes", icon: FileText, href:`/${locale}/sales/quotes` },
+      { k:"rfqs", ar:"طلبات العروض", en:"RFQs", icon: Send, href:`/${locale}/sales/rfqs` },
+      { k:"orders", ar:"الطلبات", en:"Orders", icon: Package, href:`/${locale}/sales/orders` },
+      { k:"contracts", ar:"العقود", en:"Contracts", icon: Scale, href:`/${locale}/sales/contracts` },
+      { k:"proposals", ar:"المقترحات", en:"Proposals", icon: FileText, href:`/${locale}/sales/proposals` },
+    ]},
+    { key:"crm", titleAr:"إدارة العلاقات", titleEn:"CRM", items:[
+      { k:"crm-dashboard", ar:"لوحة CRM", en:"CRM Dashboard", icon: LayoutDashboard, href:`/${locale}/crm` },
+      { k:"crm-analytics", ar:"تحليلات CRM", en:"Analytics", icon: BarChart3, href:`/${locale}/crm/analytics` },
+      { k:"customers", ar:"العملاء", en:"Customers", icon: Users, href:`/${locale}/crm/customers` },
+      { k:"contacts", ar:"جهات الاتصال", en:"Contacts", icon: Phone, href:`/${locale}/crm/contacts` },
+      { k:"activities", ar:"الأنشطة", en:"Activities", icon: Activity, href:`/${locale}/crm/activities` },
     ]},
     { key:"hr", titleAr:"الموارد البشرية", titleEn:"HR", items:[
       { k:"hr-dashboard", ar:"لوحة الموارد البشرية", en:"HR Dashboard", icon: LayoutDashboard, href:`/${locale}/hr` },
+      { k:"hr-analytics", ar:"تحليلات الموارد البشرية", en:"Analytics", icon: BarChart3, href:`/${locale}/hr/analytics` },
       { k:"employees", ar:"الموظفون", en:"Employees", icon: UserCircle, href:`/${locale}/hr/employees` },
-      { k:"employees-create", ar:"إضافة موظف", en:"Create Employee", icon: UserPlus, href:`/hr/employees/create` },
+      { k:"employees-create", ar:"إضافة موظف", en:"Create Employee", icon: UserPlus, href:`/${locale}/hr/employees/create` },
       { k:"attendance", ar:"الحضور", en:"Attendance", icon: Calendar, href:`/${locale}/hr/attendance` },
-      { k:"attendance-log", ar:"تسجيل الحضور", en:"Log Attendance", icon: Calendar, href:`/hr/attendance/log` },
+      { k:"attendance-log", ar:"تسجيل الحضور", en:"Log Attendance", icon: Calendar, href:`/${locale}/hr/attendance/log` },
       { k:"payroll", ar:"الرواتب", en:"Payroll", icon: DollarSign, href:`/${locale}/hr/payroll` },
-      { k:"payroll-process", ar:"معالجة الرواتب", en:"Process Payroll", icon: DollarSign, href:`/hr/payroll/process` },
+      { k:"payroll-process", ar:"معالجة الرواتب", en:"Process Payroll", icon: DollarSign, href:`/${locale}/hr/payroll/process` },
+    ]},
+    { key:"procurement", titleAr:"المشتريات", titleEn:"Procurement", items:[
+      { k:"procurement-dashboard", ar:"لوحة المشتريات", en:"Procurement Dashboard", icon: LayoutDashboard, href:`/${locale}/procurement` },
+      { k:"procurement-analytics", ar:"تحليلات المشتريات", en:"Analytics", icon: BarChart3, href:`/${locale}/procurement/analytics` },
+      { k:"orders", ar:"أوامر الشراء", en:"Purchase Orders", icon: ShoppingCart, href:`/${locale}/procurement/orders` },
+      { k:"orders-create", ar:"إنشاء أمر شراء", en:"Create Order", icon: Plus, href:`/${locale}/procurement/orders/create` },
+      { k:"vendors", ar:"الموردون", en:"Vendors", icon: Building2, href:`/${locale}/procurement/vendors` },
+      { k:"vendors-create", ar:"إضافة مورد", en:"Create Vendor", icon: Plus, href:`/${locale}/procurement/vendors/create` },
+      { k:"inventory", ar:"المخزون", en:"Inventory", icon: Package, href:`/${locale}/procurement/inventory` },
+      { k:"inventory-create", ar:"إضافة عنصر", en:"Add Item", icon: Plus, href:`/${locale}/procurement/inventory/create` },
+    ]},
+    { key:"pm", titleAr:"إدارة المشاريع", titleEn:"Project Management", items:[
+      { k:"pm-dashboard", ar:"لوحة المشاريع", en:"PM Dashboard", icon: LayoutDashboard, href:`/${locale}/pm` },
+      { k:"pm-analytics", ar:"تحليلات المشاريع", en:"Analytics", icon: BarChart3, href:`/${locale}/pm/analytics` },
+      { k:"projects", ar:"المشاريع", en:"Projects", icon: ClipboardCheck, href:`/${locale}/pm/projects` },
+      { k:"tasks", ar:"المهام", en:"Tasks", icon: FileCheck, href:`/${locale}/pm/tasks` },
+      { k:"timesheets", ar:"سجلات الوقت", en:"Timesheets", icon: Timer, href:`/${locale}/pm/timesheets` },
+    ]},
+    { key:"solution", titleAr:"الحلول و RFPs", titleEn:"Solution & RFPs", items:[
+      { k:"solution-dashboard", ar:"لوحة الحلول", en:"Solution Dashboard", icon: LayoutDashboard, href:`/${locale}/solution` },
+      { k:"solution-analytics", ar:"تحليلات الحلول", en:"Analytics", icon: BarChart3, href:`/${locale}/solution/analytics` },
+      { k:"rfps", ar:"طلبات العروض", en:"RFPs", icon: FileText, href:`/${locale}/solution/rfps` },
+      { k:"proposals", ar:"الاقتراحات", en:"Proposals", icon: FileText, href:`/${locale}/solution/proposals` },
+      { k:"templates", ar:"القوالب", en:"Templates", icon: FileText, href:`/${locale}/solution/templates` },
+    ]},
+    { key:"ai", titleAr:"الذكاء الاصطناعي", titleEn:"AI & Automation", items:[
+      { k:"ai-agents", ar:"وكلاء الذكاء الاصطناعي", en:"AI Agents", icon: Bot, href:`/${locale}/ai-agents` },
+      { k:"motivation", ar:"التحفيز والذكاء", en:"Motivation & AI", icon: Zap, href:`/${locale}/motivation` },
     ]},
     { key:"admin", titleAr:"الإدارة", titleEn:"Admin", items:[
-      { k:"users", ar:"المستخدمون", en:"Users", icon: Users, href:"/en/platform/users" },
-      { k:"tenants", ar:"العملاء", en:"Tenants", icon: Building2, href:"/en/platform/tenants" },
-      { k:"settings", ar:"الإعدادات", en:"Settings", icon: SettingsIcon, href:"/en/platform/settings" },
-      { k:"audit", ar:"التدقيق", en:"Audit", icon: ScrollText, href:"/en/platform/audit" },
+      { k:"platform-dashboard", ar:"لوحة الإدارة", en:"Platform Dashboard", icon: LayoutDashboard, href:`/${locale}/platform` },
+      { k:"users", ar:"المستخدمون", en:"Users", icon: Users, href:`/${locale}/platform/users` },
+      { k:"tenants", ar:"العملاء", en:"Tenants", icon: Building2, href:`/${locale}/platform/tenants` },
+      { k:"settings", ar:"الإعدادات", en:"Settings", icon: SettingsIcon, href:`/${locale}/platform/settings` },
+      { k:"api-status", ar:"حالة API", en:"API Status", icon: DatabaseIcon, href:`/${locale}/platform/api-status` },
+      { k:"audit", ar:"التدقيق", en:"Audit", icon: ScrollText, href:`/${locale}/platform/audit` },
     ]},
   ],[]);
 

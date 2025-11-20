@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -33,6 +35,10 @@ interface Vendor {
 }
 
 export default function VendorsPage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = (params?.lng as string) || 'en';
+
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,44 +50,49 @@ export default function VendorsPage() {
 
   const fetchVendors = async () => {
     try {
+      setLoading(true);
       const response = await fetch('/api/procurement/vendors', {
-        headers: { 'tenant-id': 'default-tenant' }
+        headers: {
+          'Content-Type': 'application/json',
+          'x-tenant-id': 'default-tenant',
+        },
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      setVendors(data.vendors || []);
-    } catch (error) {
+
+      if (data.success && data.vendors) {
+        // Map API response to component state
+        const mappedVendors = data.vendors.map((vendor: any) => ({
+          id: vendor.id || '',
+          name: vendor.name || vendor.vendor_name || '',
+          contactPerson: vendor.contactPerson || vendor.contact_person || '',
+          email: vendor.email || '',
+          phone: vendor.phone || '',
+          address: vendor.address || '',
+          city: vendor.city || '',
+          country: vendor.country || '',
+          category: vendor.category || vendor.vendor_type || '',
+          status: vendor.status || 'pending',
+          rating: parseFloat(vendor.rating || 0),
+          totalOrders: parseInt(vendor.totalOrders || vendor.total_orders || 0),
+          totalValue: parseFloat(vendor.totalValue || vendor.total_value || 0),
+          lastOrder: vendor.lastOrder || vendor.last_order || '',
+          paymentTerms: vendor.paymentTerms || vendor.payment_terms || '',
+          deliveryTime: vendor.deliveryTime || '',
+          notes: vendor.notes || '',
+        }));
+        setVendors(mappedVendors);
+      } else {
+        throw new Error(data.error || 'Failed to fetch vendors');
+      }
+    } catch (error: any) {
       console.error('Error fetching vendors:', error);
-      // Mock data
-      setVendors([
-        {
-          id: '1', name: 'Office Supplies Inc', contactPerson: 'John Smith', 
-          email: 'john@officesupplies.com', phone: '+1-555-0123', address: '123 Business Ave',
-          city: 'New York', country: 'USA', category: 'Office Supplies', status: 'active',
-          rating: 4.5, totalOrders: 45, totalValue: 125000, lastOrder: '2024-01-10',
-          paymentTerms: 'Net 30', deliveryTime: '3-5 days', notes: 'Reliable supplier'
-        },
-        {
-          id: '2', name: 'Tech Equipment Co', contactPerson: 'Sarah Johnson',
-          email: 'sarah@techequip.com', phone: '+1-555-0456', address: '456 Tech Blvd',
-          city: 'San Francisco', country: 'USA', category: 'IT Equipment', status: 'active',
-          rating: 4.8, totalOrders: 28, totalValue: 350000, lastOrder: '2024-01-08',
-          paymentTerms: 'Net 15', deliveryTime: '1-2 weeks', notes: 'Premium quality'
-        },
-        {
-          id: '3', name: 'Furniture Solutions', contactPerson: 'Mike Chen',
-          email: 'mike@furniture.com', phone: '+1-555-0789', address: '789 Design St',
-          city: 'Chicago', country: 'USA', category: 'Furniture', status: 'active',
-          rating: 4.2, totalOrders: 15, totalValue: 85000, lastOrder: '2024-01-05',
-          paymentTerms: 'Net 45', deliveryTime: '2-3 weeks', notes: 'Custom designs available'
-        },
-        {
-          id: '4', name: 'Cleaning Services Pro', contactPerson: 'Lisa Anderson',
-          email: 'lisa@cleanpro.com', phone: '+1-555-0321', address: '321 Service Rd',
-          city: 'Boston', country: 'USA', category: 'Services', status: 'pending',
-          rating: 0, totalOrders: 0, totalValue: 0, lastOrder: '',
-          paymentTerms: 'Net 30', deliveryTime: 'Same day', notes: 'New vendor evaluation'
-        }
-      ]);
+      // Keep empty array on error instead of mock data
+      setVendors([]);
     } finally {
       setLoading(false);
     }
@@ -208,7 +219,7 @@ export default function VendorsPage() {
     {
       label: 'New Vendor',
       icon: Plus,
-      onClick: () => console.log('Create new vendor'),
+      onClick: () => router.push('/procurement/vendors/create'),
       variant: 'primary' as const
     }
   ];

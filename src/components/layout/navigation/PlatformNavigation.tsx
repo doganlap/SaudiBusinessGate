@@ -38,7 +38,9 @@ import {
   ArrowUp,
   Target,
   Calendar,
-  UserCircle
+  UserCircle,
+  ShoppingCart,
+  Building2
 } from 'lucide-react';
 
 interface NavigationItem {
@@ -244,6 +246,55 @@ export function PlatformNavigation() {
           titleAr: 'المشتريات',
           href: `/${lng}/procurement`,
           icon: <Package className="h-4 w-4" />,
+          description: 'Purchase orders, vendors, inventory',
+          descriptionAr: 'أوامر الشراء والموردون والمخزون',
+          children: [
+            {
+              id: 'procurement-dashboard',
+              title: 'Procurement Dashboard',
+              titleAr: 'لوحة المشتريات',
+              href: `/${lng}/procurement`,
+              icon: <BarChart3 className="h-4 w-4" />,
+              description: 'Procurement overview',
+              descriptionAr: 'نظرة عامة على المشتريات'
+            },
+            {
+              id: 'procurement-orders',
+              title: 'Purchase Orders',
+              titleAr: 'أوامر الشراء',
+              href: `/${lng}/procurement/orders`,
+              icon: <ShoppingCart className="h-4 w-4" />,
+              description: 'Manage purchase orders',
+              descriptionAr: 'إدارة أوامر الشراء'
+            },
+            {
+              id: 'procurement-vendors',
+              title: 'Vendors',
+              titleAr: 'الموردون',
+              href: `/${lng}/procurement/vendors`,
+              icon: <Building2 className="h-4 w-4" />,
+              description: 'Manage vendors',
+              descriptionAr: 'إدارة الموردين'
+            },
+            {
+              id: 'procurement-inventory',
+              title: 'Inventory',
+              titleAr: 'المخزون',
+              href: `/${lng}/procurement/inventory`,
+              icon: <Package className="h-4 w-4" />,
+              description: 'Inventory management',
+              descriptionAr: 'إدارة المخزون'
+            },
+            {
+              id: 'procurement-analytics',
+              title: 'Analytics',
+              titleAr: 'التحليلات',
+              href: `/${lng}/procurement/analytics`,
+              icon: <BarChart3 className="h-4 w-4" />,
+              description: 'Advanced analytics',
+              descriptionAr: 'تحليلات متقدمة'
+            }
+          ]
         }
       ]
     },

@@ -11,7 +11,7 @@ import {
   CheckCircle, Activity, Bell,
   FolderOpen, TrendingUp, Cpu, Globe,
   UserCheck, GitBranch, BookOpen, Award, Archive, AlertTriangle, ShieldCheck, Star, Heart, Copy, Bot,
-  Plus, Edit, RefreshCw, Search, Download, UserCircle, Calendar, DollarSign
+  Plus, Edit, RefreshCw, Search, Download, UserCircle, Calendar, DollarSign, ShoppingCart
 } from 'lucide-react';
 import { RoleActivationPanel } from './MultiTenantNavigation';
 
@@ -605,7 +605,74 @@ const Sidebar = () => {
     },
 
     // ============================================================================
-    // 8. ADMINISTRATION - System management & configuration
+    // 8. PROCUREMENT MODULE - Purchase orders, vendors, inventory
+    // ============================================================================
+    {
+      id: 'procurement',
+      name: 'Procurement',
+      icon: ShoppingCart,
+      items: [
+        {
+          id: 'procurement-dashboard',
+          name: 'Procurement Dashboard',
+          path: '/[lng]/procurement',
+          icon: Home,
+          description: 'Procurement overview and metrics',
+          badge: null
+        },
+        {
+          id: 'orders',
+          name: 'Purchase Orders',
+          path: '/[lng]/procurement/orders',
+          icon: ShoppingCart,
+          description: 'Manage purchase orders',
+          badge: null
+        },
+        {
+          id: 'orders-create',
+          name: 'Create Order',
+          path: '/procurement/orders/create',
+          icon: Plus,
+          description: 'Create new purchase order',
+          badge: null
+        },
+        {
+          id: 'vendors',
+          name: 'Vendors',
+          path: '/[lng]/procurement/vendors',
+          icon: Building2,
+          description: 'Manage vendors and suppliers',
+          badge: null
+        },
+        {
+          id: 'vendors-create',
+          name: 'Create Vendor',
+          path: '/procurement/vendors/create',
+          icon: Plus,
+          description: 'Add new vendor',
+          badge: null
+        },
+        {
+          id: 'inventory',
+          name: 'Inventory',
+          path: '/[lng]/procurement/inventory',
+          icon: Package,
+          description: 'Inventory management',
+          badge: null
+        },
+        {
+          id: 'inventory-create',
+          name: 'Add Item',
+          path: '/procurement/inventory/create',
+          icon: Plus,
+          description: 'Add new inventory item',
+          badge: null
+        }
+      ]
+    },
+
+    // ============================================================================
+    // 9. ADMINISTRATION - System management & configuration
     // ============================================================================
     {
       id: 'administration',

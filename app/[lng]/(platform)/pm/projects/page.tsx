@@ -1,14 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useLingui } from '@lingui/react';
+import { useParams } from 'next/navigation';
 import { EnterpriseToolbar } from '@/components/enterprise/EnterpriseToolbar';
 import { Plus } from 'lucide-react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Project } from '@/types/project-management';
 
 const ProjectsPage = () => {
-  const { _ } = useLingui();
+  const params = useParams();
+  const lng = (params?.lng as string) || 'en';
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,10 +31,10 @@ const ProjectsPage = () => {
   }, []);
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: _('Name'), flex: 1 },
-    { field: 'status', headerName: _('Status'), flex: 1 },
-    { field: 'start_date', headerName: _('Start Date'), flex: 1 },
-    { field: 'end_date', headerName: _('End Date'), flex: 1 },
+    { field: 'name', headerName: lng === 'ar' ? 'الاسم' : 'Name', flex: 1 },
+    { field: 'status', headerName: lng === 'ar' ? 'الحالة' : 'Status', flex: 1 },
+    { field: 'start_date', headerName: lng === 'ar' ? 'تاريخ البدء' : 'Start Date', flex: 1 },
+    { field: 'end_date', headerName: lng === 'ar' ? 'تاريخ الانتهاء' : 'End Date', flex: 1 },
   ];
 
   return (
@@ -41,7 +42,7 @@ const ProjectsPage = () => {
       <EnterpriseToolbar
         actions={[
           {
-            label: _('New Project'),
+            label: lng === 'ar' ? 'مشروع جديد' : 'New Project',
             icon: Plus,
             onClick: () => console.log('New Project')
           }

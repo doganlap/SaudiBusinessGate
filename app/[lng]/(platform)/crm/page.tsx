@@ -48,7 +48,12 @@ export default function CRMPage() {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/crm/customers');
+      const response = await fetch('/api/crm/customers', {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-tenant-id': 'default-tenant',
+        },
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch customers');
       }
@@ -123,7 +128,7 @@ export default function CRMPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -144,7 +149,7 @@ export default function CRMPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-y-auto">
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <div className="bg-white rounded-lg shadow p-6">
@@ -235,7 +240,7 @@ export default function CRMPage() {
 
         {/* Customers Table */}
         <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>

@@ -312,20 +312,161 @@ export class SalesService {
   }
 
   static async getDealsSummary(tenantId: string): Promise<any> {
-    const result = await query(
-      `SELECT 
-        COUNT(*) as total_deals,
-        COUNT(CASE WHEN stage = 'closed-won' THEN 1 END) as won_deals,
-        COUNT(CASE WHEN stage = 'closed-lost' THEN 1 END) as lost_deals,
-        SUM(value) as total_value,
-        SUM(CASE WHEN stage = 'closed-won' THEN value ELSE 0 END) as won_value,
-        AVG(probability) as avg_probability
-      FROM sales_deals 
-      WHERE tenant_id = $1`,
-      [tenantId]
-    );
+    try {
+      const result = await query(
+        `SELECT 
+          COUNT(*) as total_deals,
+          COUNT(CASE WHEN stage = 'closed-won' THEN 1 END) as won_deals,
+          COUNT(CASE WHEN stage = 'closed-lost' THEN 1 END) as lost_deals,
+          SUM(value) as total_value,
+          SUM(CASE WHEN stage = 'closed-won' THEN value ELSE 0 END) as won_value,
+          AVG(probability) as avg_probability
+        FROM sales_deals 
+        WHERE tenant_id = $1`,
+        [tenantId]
+      );
 
-    return result.rows[0];
+      return result.rows[0];
+    } catch (error) {
+      console.warn('Database not available for deals summary, using mock data:', error);
+      return {
+        total_deals: 0,
+        won_deals: 0,
+        lost_deals: 0,
+        total_value: 0,
+        won_value: 0,
+        avg_probability: 0
+      };
+    }
+  }
+
+  // ADVANCED ANALYTICS METHODS
+
+  static async getSalesAnalytics(tenantId: string, filters?: {
+    dateFrom?: string;
+    dateTo?: string;
+  }): Promise<any> {
+    try {
+      let dealsWhereClause = 'WHERE d.tenant_id = $1';
+      let leadsWhereClause = 'WHERE l.tenant_id = $1';
+      const params: any[] = [tenantId];
+      let paramIndex = 2;
+
+      if (filters?.dateFrom) {
+        dealsWhereClause += ` AND d.created_at >= $${paramIndex}`;
+        leadsWhereClause += ` AND l.created_at >= $${paramIndex}`;
+        params.push(filters.dateFrom);
+        paramIndex++;
+      }
+
+      if (filters?.dateTo) {
+        dealsWhereClause += ` AND d.created_at <= $${paramIndex}`;
+        leadsWhereClause += ` AND l.created_at <= $${paramIndex}`;
+        params.push(filters.dateTo);
+        paramIndex++;
+      }
+
+      // Monthly revenue trend
+      const monthlyTrend = await query(
+        `SELECT 
+          TO_CHAR(d.created_at, 'YYYY-MM') as month,
+          COUNT(*) as deal_count,
+          COALESCE(SUM(CASE WHEN d.stage = 'closed-won' THEN d.value ELSE 0 END), 0) as revenue
+        FROM sales_deals d
+        ${dealsWhereClause}
+        GROUP BY TO_CHAR(d.created_at, 'YYYY-MM')
+        ORDER BY month DESC
+        LIMIT 12`,
+        params
+      );
+
+      // Revenue by source
+      const sourceRevenue = await query(
+        `SELECT 
+          COALESCE(l.source, 'unknown') as source,
+          COUNT(DISTINCT d.id) as deal_count,
+          COALESCE(SUM(CASE WHEN d.stage = 'closed-won' THEN d.value ELSE 0 END), 0) as revenue,
+          AVG(CASE WHEN d.stage = 'closed-won' THEN d.value ELSE NULL END) as avg_deal_value
+        FROM sales_deals d
+        LEFT JOIN sales_leads l ON d.lead_id = l.id
+        ${dealsWhereClause}
+        GROUP BY l.source
+        ORDER BY revenue DESC`,
+        params
+      );
+
+      // Stage distribution
+      const stageDistribution = await query(
+        `SELECT 
+          d.stage,
+          COUNT(*) as count,
+          COALESCE(SUM(d.value), 0) as total_value,
+          AVG(d.probability) as avg_probability
+        FROM sales_deals d
+        ${dealsWhereClause}
+        GROUP BY d.stage
+        ORDER BY count DESC`,
+        params
+      );
+
+      // Top performers
+      const topPerformers = await query(
+        `SELECT 
+          d.assigned_to,
+          COUNT(*) as deal_count,
+          COUNT(CASE WHEN d.stage = 'closed-won' THEN 1 END) as won_count,
+          COALESCE(SUM(CASE WHEN d.stage = 'closed-won' THEN d.value ELSE 0 END), 0) as revenue,
+          AVG(CASE WHEN d.stage = 'closed-won' THEN d.probability ELSE NULL END) as avg_win_rate
+        FROM sales_deals d
+        ${dealsWhereClause}
+          AND d.assigned_to IS NOT NULL
+        GROUP BY d.assigned_to
+        ORDER BY revenue DESC
+        LIMIT 10`,
+        params
+      );
+
+      // Lead conversion funnel
+      const conversionFunnel = await query(
+        `SELECT 
+          l.status,
+          COUNT(*) as count,
+          AVG(l.score) as avg_score,
+          SUM(l.estimated_value) as total_value
+        FROM sales_leads l
+        ${leadsWhereClause}
+        GROUP BY l.status
+        ORDER BY 
+          CASE l.status
+            WHEN 'new' THEN 1
+            WHEN 'contacted' THEN 2
+            WHEN 'qualified' THEN 3
+            WHEN 'proposal' THEN 4
+            WHEN 'negotiation' THEN 5
+            WHEN 'converted' THEN 6
+            ELSE 7
+          END`,
+        params
+      );
+
+      return {
+        monthlyTrend: monthlyTrend.rows,
+        sourceRevenue: sourceRevenue.rows,
+        stageDistribution: stageDistribution.rows,
+        topPerformers: topPerformers.rows,
+        conversionFunnel: conversionFunnel.rows,
+      };
+    } catch (error) {
+      console.warn('Database not available for sales analytics, using mock data:', error);
+      // Return mock analytics data
+      return {
+        monthlyTrend: [],
+        sourceRevenue: [],
+        stageDistribution: [],
+        topPerformers: [],
+        conversionFunnel: [],
+      };
+    }
   }
 
   // MOCK DATA FALLBACK METHODS

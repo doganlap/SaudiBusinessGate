@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -31,6 +33,10 @@ interface InventoryItem {
 }
 
 export default function InventoryPage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = (params?.lng as string) || 'en';
+
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -202,13 +208,15 @@ export default function InventoryPage() {
     {
       label: 'Add Item',
       icon: Plus,
-      onClick: () => console.log('Add inventory item'),
+      onClick: () => router.push('/procurement/inventory/create'),
       variant: 'primary' as const
     },
     {
       label: 'Restock Alert',
       icon: AlertTriangle,
-      onClick: () => console.log('View restock alerts'),
+      onClick: () => {
+        setFilterStatus('low-stock');
+      },
       variant: 'outline' as const
     }
   ];

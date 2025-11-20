@@ -154,10 +154,13 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
       {
         id: 'procurement-module-platform', name: 'Procurement', icon: Package, collapsed: true, category: 'Platform',
         items: [
-          { id: 'procurement-dashboard', name: 'Procurement Dashboard', path: '/app/procurement', icon: BarChart3 },
-          { id: 'procurement-orders', name: 'Purchase Orders', path: '/app/procurement/orders', icon: FileText },
-          { id: 'procurement-vendors', name: 'Vendors', path: '/app/procurement/vendors', icon: Building2 },
-          { id: 'procurement-inventory', name: 'Inventory', path: '/app/procurement/inventory', icon: Package }
+          { id: 'procurement-dashboard', name: 'Procurement Dashboard', path: '/[lng]/procurement', icon: BarChart3 },
+          { id: 'procurement-orders', name: 'Purchase Orders', path: '/[lng]/procurement/orders', icon: FileText },
+          { id: 'procurement-orders-create', name: 'Create Order', path: '/procurement/orders/create', icon: FileText },
+          { id: 'procurement-vendors', name: 'Vendors', path: '/[lng]/procurement/vendors', icon: Building2 },
+          { id: 'procurement-vendors-create', name: 'Create Vendor', path: '/procurement/vendors/create', icon: Building2 },
+          { id: 'procurement-inventory', name: 'Inventory', path: '/[lng]/procurement/inventory', icon: Package },
+          { id: 'procurement-inventory-create', name: 'Add Item', path: '/procurement/inventory/create', icon: Package }
         ]
       }
     ],
@@ -246,10 +249,13 @@ export const getNavigationForRole = (userRole, tenantContext, stats = {}) => {
       {
         id: 'procurement-module', name: 'Procurement', icon: Package, collapsed: true, category: 'Business',
         items: [
-          { id: 'procurement-dashboard', name: 'Procurement Dashboard', path: '/app/procurement', icon: BarChart3 },
-          { id: 'procurement-orders', name: 'Purchase Orders', path: '/app/procurement/orders', icon: FileText },
-          { id: 'procurement-vendors', name: 'Vendors', path: '/app/procurement/vendors', icon: Building2 },
-          { id: 'procurement-inventory', name: 'Inventory', path: '/app/procurement/inventory', icon: Package }
+          { id: 'procurement-dashboard', name: 'Procurement Dashboard', path: '/[lng]/procurement', icon: BarChart3 },
+          { id: 'procurement-orders', name: 'Purchase Orders', path: '/[lng]/procurement/orders', icon: FileText },
+          { id: 'procurement-orders-create', name: 'Create Order', path: '/procurement/orders/create', icon: FileText },
+          { id: 'procurement-vendors', name: 'Vendors', path: '/[lng]/procurement/vendors', icon: Building2 },
+          { id: 'procurement-vendors-create', name: 'Create Vendor', path: '/procurement/vendors/create', icon: Building2 },
+          { id: 'procurement-inventory', name: 'Inventory', path: '/[lng]/procurement/inventory', icon: Package },
+          { id: 'procurement-inventory-create', name: 'Add Item', path: '/procurement/inventory/create', icon: Package }
         ]
       }
     ],

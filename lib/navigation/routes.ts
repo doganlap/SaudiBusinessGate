@@ -244,22 +244,38 @@ export const navigationRoutes: NavigationRoute[] = [
     ]
   },
 
-  // Procurement Product - PARTIAL
+  // Procurement Product - COMPLETE
   {
     id: 'procurement',
     name: 'Procurement',
     href: '/procurement',
     icon: Package,
-    description: 'Purchase orders and inventory',
+    description: 'Purchase orders, vendors, and inventory',
     category: 'products',
     defaultCollapsed: true,
     children: [
+      {
+        id: 'procurement-dashboard',
+        name: 'Procurement Dashboard',
+        href: '/procurement',
+        icon: BarChart3,
+        description: 'Procurement overview and metrics',
+        category: 'products'
+      },
       {
         id: 'procurement-orders',
         name: 'Purchase Orders',
         href: '/procurement/orders',
         icon: ShoppingCart,
         description: 'Purchase order management',
+        category: 'products'
+      },
+      {
+        id: 'procurement-orders-create',
+        name: 'Create Order',
+        href: '/procurement/orders/create',
+        icon: ShoppingCart,
+        description: 'Create new purchase order',
         category: 'products'
       },
       {
@@ -271,11 +287,35 @@ export const navigationRoutes: NavigationRoute[] = [
         category: 'products'
       },
       {
+        id: 'procurement-vendors-create',
+        name: 'Create Vendor',
+        href: '/procurement/vendors/create',
+        icon: Building2,
+        description: 'Add new vendor',
+        category: 'products'
+      },
+      {
         id: 'procurement-inventory',
         name: 'Inventory',
         href: '/procurement/inventory',
         icon: Package,
         description: 'Inventory tracking',
+        category: 'products'
+      },
+      {
+        id: 'procurement-inventory-create',
+        name: 'Add Item',
+        href: '/procurement/inventory/create',
+        icon: Package,
+        description: 'Add new inventory item',
+        category: 'products'
+      },
+      {
+        id: 'procurement-analytics',
+        name: 'Analytics',
+        href: '/procurement/analytics',
+        icon: BarChart3,
+        description: 'Advanced procurement analytics',
         category: 'products'
       }
     ]

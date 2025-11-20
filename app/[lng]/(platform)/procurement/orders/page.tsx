@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -26,6 +28,10 @@ interface PurchaseOrder {
 }
 
 export default function ProcurementOrdersPage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = (params?.lng as string) || 'en';
+
   const [orders, setOrders] = useState<PurchaseOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,33 +43,45 @@ export default function ProcurementOrdersPage() {
 
   const fetchOrders = async () => {
     try {
+      setLoading(true);
       const response = await fetch('/api/procurement/orders', {
-        headers: { 'tenant-id': 'default-tenant' }
+        headers: {
+          'Content-Type': 'application/json',
+          'x-tenant-id': 'default-tenant',
+        },
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      setOrders(data.orders || []);
-    } catch (error) {
+
+      if (data.success && data.orders) {
+        // Map API response to component state
+        const mappedOrders = data.orders.map((order: any) => ({
+          id: order.id || '',
+          orderNumber: order.orderNumber || order.po_number || '',
+          vendor: order.vendorName || order.vendor_name || '',
+          description: order.description || order.notes || '',
+          totalAmount: parseFloat(order.totalAmount || order.total_amount || 0),
+          status: order.status || 'draft',
+          priority: order.priority || 'medium',
+          requestedBy: order.requestedBy || order.created_by || '',
+          approvedBy: order.approvedBy || order.approved_by,
+          orderDate: order.orderDate || order.order_date || new Date().toISOString().split('T')[0],
+          expectedDelivery: order.expectedDelivery || order.expected_delivery_date || '',
+          category: order.category || '',
+          items: order.items || order.item_count || 0,
+        }));
+        setOrders(mappedOrders);
+      } else {
+        throw new Error(data.error || 'Failed to fetch orders');
+      }
+    } catch (error: any) {
       console.error('Error fetching orders:', error);
-      setOrders([
-        {
-          id: '1', orderNumber: 'PO-2024-001', vendor: 'Office Supplies Inc', 
-          description: 'Monthly office supplies order', totalAmount: 2500, status: 'approved',
-          priority: 'medium', requestedBy: 'Sarah Johnson', approvedBy: 'John Doe',
-          orderDate: '2024-01-15', expectedDelivery: '2024-01-22', category: 'Office Supplies', items: 15
-        },
-        {
-          id: '2', orderNumber: 'PO-2024-002', vendor: 'Tech Equipment Co', 
-          description: 'New laptops for development team', totalAmount: 15000, status: 'pending',
-          priority: 'high', requestedBy: 'Mike Chen', orderDate: '2024-01-16', 
-          expectedDelivery: '2024-01-30', category: 'IT Equipment', items: 5
-        },
-        {
-          id: '3', orderNumber: 'PO-2024-003', vendor: 'Furniture Solutions', 
-          description: 'Ergonomic chairs for new office', totalAmount: 8000, status: 'received',
-          priority: 'low', requestedBy: 'Alex Rodriguez', approvedBy: 'Jane Smith',
-          orderDate: '2024-01-10', expectedDelivery: '2024-01-18', category: 'Furniture', items: 20
-        }
-      ]);
+      // Keep empty array on error instead of mock data
+      setOrders([]);
     } finally {
       setLoading(false);
     }
@@ -176,7 +194,7 @@ export default function ProcurementOrdersPage() {
     {
       label: 'New Order',
       icon: Plus,
-      onClick: () => console.log('Create new purchase order'),
+      onClick: () => router.push('/procurement/orders/create'),
       variant: 'primary' as const
     }
   ];

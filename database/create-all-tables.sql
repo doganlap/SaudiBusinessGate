@@ -23,6 +23,7 @@ $$ language 'plpgsql';
 \i database/create-finance-tables.sql
 \i database/create-grc-tables.sql
 \i database/create-procurement-tables.sql
+\i database/create-solution-tables.sql
 
 -- Note: If running individually, execute each file separately:
 -- psql -d your_database -f database/create-crm-tables.sql
@@ -31,4 +32,5 @@ $$ language 'plpgsql';
 -- psql -d your_database -f database/create-finance-tables.sql
 -- psql -d your_database -f database/create-grc-tables.sql
 -- psql -d your_database -f database/create-procurement-tables.sql
+-- psql -d your_database -f database/create-solution-tables.sql
 

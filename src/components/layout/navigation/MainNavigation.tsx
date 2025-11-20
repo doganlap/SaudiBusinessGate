@@ -16,11 +16,13 @@ import {
   Menu,
   X,
   Building,
+  Building2,
   BarChart3,
   FileText,
   Workflow,
   Zap,
-  Shield
+  Shield,
+  ShoppingCart
 } from 'lucide-react';
 
 interface NavigationItem {
@@ -143,7 +145,44 @@ export default function MainNavigation() {
           title: 'Procurement',
           href: `/${lng}/procurement`,
           icon: <Package className="h-4 w-4" />,
-          description: 'Purchase management'
+          description: 'Purchase management',
+          children: [
+            {
+              id: 'procurement-dashboard',
+              title: 'Procurement Dashboard',
+              href: `/${lng}/procurement`,
+              icon: <BarChart3 className="h-4 w-4" />,
+              description: 'Procurement overview'
+            },
+            {
+              id: 'procurement-orders',
+              title: 'Purchase Orders',
+              href: `/${lng}/procurement/orders`,
+              icon: <ShoppingCart className="h-4 w-4" />,
+              description: 'Manage purchase orders'
+            },
+            {
+              id: 'procurement-vendors',
+              title: 'Vendors',
+              href: `/${lng}/procurement/vendors`,
+              icon: <Building2 className="h-4 w-4" />,
+              description: 'Manage vendors'
+            },
+            {
+              id: 'procurement-inventory',
+              title: 'Inventory',
+              href: `/${lng}/procurement/inventory`,
+              icon: <Package className="h-4 w-4" />,
+              description: 'Inventory management'
+            },
+            {
+              id: 'procurement-analytics',
+              title: 'Analytics',
+              href: `/${lng}/procurement/analytics`,
+              icon: <BarChart3 className="h-4 w-4" />,
+              description: 'Advanced analytics'
+            }
+          ]
         }
       ]
     },

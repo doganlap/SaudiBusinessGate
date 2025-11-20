@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -25,6 +27,10 @@ interface Employee {
 }
 
 export default function EmployeesPage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = params?.lng || 'en';
+  
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -36,30 +42,44 @@ export default function EmployeesPage() {
 
   const fetchEmployees = async () => {
     try {
+      setLoading(true);
       const response = await fetch('/api/hr/employees', {
-        headers: { 'tenant-id': 'default-tenant' }
+        headers: {
+          'Content-Type': 'application/json',
+          'x-tenant-id': 'default-tenant',
+        },
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      setEmployees(data.employees || []);
-    } catch (error) {
+      
+      if (data.success && data.employees) {
+        // Map API response to component state
+        const mappedEmployees = data.employees.map((emp: any) => ({
+          id: emp.id || emp.employee_id || '',
+          name: `${emp.first_name || ''} ${emp.last_name || ''}`.trim() || emp.name || 'Unknown',
+          email: emp.email || '',
+          phone: emp.phone || emp.phone_number || '',
+          position: emp.position || emp.job_title || '',
+          department: emp.department || '',
+          manager: emp.manager || emp.reports_to || '',
+          salary: emp.salary || emp.monthly_salary || 0,
+          startDate: emp.hire_date || emp.start_date || emp.created_at || new Date().toISOString(),
+          status: emp.status || 'active',
+          location: emp.work_location || emp.location || '',
+          employeeId: emp.employee_id || emp.employee_code || emp.id || '',
+        }));
+        setEmployees(mappedEmployees);
+      } else {
+        throw new Error(data.error || 'Failed to fetch employees');
+      }
+    } catch (error: any) {
       console.error('Error fetching employees:', error);
-      setEmployees([
-        {
-          id: '1', name: 'Sarah Johnson', email: 'sarah.johnson@company.com', phone: '+1-555-0123',
-          position: 'Sales Manager', department: 'Sales', manager: 'John Doe', salary: 85000,
-          startDate: '2023-01-15', status: 'active', location: 'New York, NY', employeeId: 'EMP001'
-        },
-        {
-          id: '2', name: 'Mike Chen', email: 'mike.chen@company.com', phone: '+1-555-0456',
-          position: 'Software Engineer', department: 'Engineering', manager: 'Jane Smith', salary: 95000,
-          startDate: '2022-08-20', status: 'active', location: 'San Francisco, CA', employeeId: 'EMP002'
-        },
-        {
-          id: '3', name: 'Alex Rodriguez', email: 'alex.rodriguez@company.com', phone: '+1-555-0789',
-          position: 'Marketing Specialist', department: 'Marketing', manager: 'Lisa Brown', salary: 65000,
-          startDate: '2023-06-10', status: 'on-leave', location: 'Austin, TX', employeeId: 'EMP003'
-        }
-      ]);
+      // Keep empty array on error instead of mock data
+      setEmployees([]);
     } finally {
       setLoading(false);
     }
@@ -164,7 +184,7 @@ export default function EmployeesPage() {
     {
       label: 'New Employee',
       icon: Plus,
-      onClick: () => console.log('Create new employee'),
+      onClick: () => router.push('/hr/employees/create'),
       variant: 'primary' as const
     }
   ];

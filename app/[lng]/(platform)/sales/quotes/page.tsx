@@ -23,7 +23,7 @@ interface QuoteWithCustomer extends Quote {
 
 export default function QuotesPage() {
   const params = useParams();
-  const lng = params.lng as string;
+  const lng = (params?.lng as string) || 'en';
   
   const [quotes, setQuotes] = useState<QuoteWithCustomer[]>([]);
   const [loading, setLoading] = useState(true);

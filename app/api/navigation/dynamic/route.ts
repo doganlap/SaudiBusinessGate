@@ -253,7 +253,78 @@ export async function GET() {
           icon: '🛒',
           badge: 0,
           available: true,
-          children: []
+          children: [
+            {
+              id: 'procurement-dashboard',
+              module: 'Procurement',
+              label: 'Procurement Dashboard',
+              titleAr: 'لوحة المشتريات',
+              path: '/procurement',
+              icon: '📊',
+              available: true,
+              description: 'Procurement overview and metrics'
+            },
+            {
+              id: 'orders',
+              module: 'Procurement',
+              label: 'Purchase Orders',
+              titleAr: 'أوامر الشراء',
+              path: '/procurement/orders',
+              icon: '🛒',
+              available: true,
+              description: 'Manage purchase orders'
+            },
+            {
+              id: 'orders-create',
+              module: 'Procurement',
+              label: 'Create Purchase Order',
+              titleAr: 'إنشاء أمر شراء',
+              path: '/procurement/orders/create',
+              icon: '➕',
+              available: true,
+              description: 'Create new purchase order'
+            },
+            {
+              id: 'vendors',
+              module: 'Procurement',
+              label: 'Vendors',
+              titleAr: 'الموردون',
+              path: '/procurement/vendors',
+              icon: '🏢',
+              available: true,
+              description: 'Manage vendors and suppliers'
+            },
+            {
+              id: 'vendors-create',
+              module: 'Procurement',
+              label: 'Create Vendor',
+              titleAr: 'إضافة مورد',
+              path: '/procurement/vendors/create',
+              icon: '➕',
+              available: true,
+              description: 'Add new vendor'
+            },
+            {
+              id: 'inventory',
+              module: 'Procurement',
+              label: 'Inventory',
+              titleAr: 'المخزون',
+              path: '/procurement/inventory',
+              icon: '📦',
+              available: true,
+              description: 'Inventory management'
+            },
+            {
+              id: 'inventory-create',
+              module: 'Procurement',
+              label: 'Add Inventory Item',
+              titleAr: 'إضافة عنصر',
+              path: '/procurement/inventory/create',
+              icon: '➕',
+              available: true,
+              description: 'Add new inventory item'
+            }
+          ]
         },
         {
           id: 'motivation',

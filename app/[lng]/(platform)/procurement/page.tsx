@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { 
   Package, 
   Plus, 
@@ -14,7 +15,8 @@ import {
   Trash2,
   CheckCircle,
   Clock,
-  XCircle
+  XCircle,
+  BarChart3
 } from 'lucide-react';
 
 interface PurchaseOrder {
@@ -32,44 +34,84 @@ interface PurchaseOrder {
 }
 
 export default function ProcurementPage() {
+  const params = useParams();
+  const locale = (params?.lng as string) || 'en';
+  
   const [orders, setOrders] = useState<PurchaseOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [kpis, setKPIs] = useState<any[]>([]);
 
   useEffect(() => {
     fetchOrders();
+    
+    // Fetch KPIs for procurement module
+    const fetchKPIs = async () => {
+      try {
+        const response = await fetch('/api/procurement/kpis', {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-tenant-id': 'default-tenant',
+          },
+        });
+        const data = await response.json();
+        if (data.success && data.kpis) {
+          setKPIs(data.kpis);
+        }
+      } catch (err) {
+        console.error('Failed to fetch KPIs:', err);
+      }
+    };
+    fetchKPIs();
+    
+    // Refresh KPIs every 30 seconds
+    const interval = setInterval(fetchKPIs, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/procurement/orders');
+      const response = await fetch('/api/procurement/orders', {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-tenant-id': 'default-tenant',
+        },
+      });
+
       if (!response.ok) {
-        throw new Error('Failed to fetch orders');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
       const data = await response.json();
+
       if (data.success && data.orders) {
         // Map API response to component format
         const mappedOrders = data.orders.map((order: any) => ({
-          id: order.id,
-          orderNumber: order.orderNumber,
-          supplier: order.vendor,
-          description: order.description || '',
-          totalAmount: order.totalAmount,
+          id: order.id || order.order_id || '',
+          orderNumber: order.orderNumber || order.po_number || order.order_number || '',
+          supplier: order.vendorName || order.vendor_name || order.vendor || '',
+          description: order.description || order.notes || '',
+          totalAmount: parseFloat(order.totalAmount || order.total_amount || 0),
           status: order.status === 'received' ? 'delivered' : 
-                  order.status === 'cancelled' ? 'rejected' : order.status,
-          requestedBy: order.requestedBy,
-          approvedBy: order.approvedBy,
-          orderDate: order.orderDate,
-          expectedDelivery: order.expectedDelivery,
-          items: order.items
+                  order.status === 'cancelled' ? 'rejected' : 
+                  order.status || 'draft',
+          priority: order.priority || 'medium',
+          requestedBy: order.requestedBy || order.created_by || '',
+          approvedBy: order.approvedBy || order.approved_by,
+          orderDate: order.orderDate || order.order_date || new Date().toISOString().split('T')[0],
+          expectedDelivery: order.expectedDelivery || order.expected_delivery || '',
+          items: order.items || order.item_count || 0,
+          category: order.category || '',
         }));
         setOrders(mappedOrders);
+      } else {
+        throw new Error(data.error || 'Failed to fetch orders');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to fetch orders:', err);
-      // Keep empty array on error
+      // Keep empty array on error instead of mock data
       setOrders([]);
     } finally {
       setLoading(false);
@@ -145,70 +187,144 @@ export default function ProcurementPage() {
                 Manage purchase orders, suppliers, and procurement processes
               </p>
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+            <a 
+              href={`/${locale}/procurement/orders/create`}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+            >
               <Plus className="h-4 w-4" />
               Create Purchase Order
-            </button>
+            </a>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Package className="h-6 w-6 text-blue-600" />
+        {/* Stats - Enhanced with KPIs */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          {kpis.length > 0 ? (
+            <>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="p-2 bg-blue-100 rounded-lg">
+                      <Package className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Total Orders</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {kpis.find(k => k.id === 'total_orders')?.value || orders.length}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-xs text-green-600">Live</span>
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Orders</p>
-                <p className="text-2xl font-bold text-gray-900">{orders.length}</p>
-              </div>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-yellow-100 rounded-lg">
-                <Clock className="h-6 w-6 text-yellow-600" />
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="p-2 bg-yellow-100 rounded-lg">
+                      <Clock className="h-6 w-6 text-yellow-600" />
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Pending Orders</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {kpis.find(k => k.id === 'pending_orders')?.value || orders.filter(o => o.status === 'pending').length}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Pending Orders</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {orders.filter(o => o.status === 'pending').length}
-                </p>
-              </div>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <DollarSign className="h-6 w-6 text-purple-600" />
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="p-2 bg-purple-100 rounded-lg">
+                      <DollarSign className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Total Spend</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {formatCurrency(kpis.find(k => k.id === 'total_spend')?.value || orders.reduce((sum, o) => sum + o.totalAmount, 0))}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Value</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {formatCurrency(orders.reduce((sum, o) => sum + o.totalAmount, 0))}
-                </p>
-              </div>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <CheckCircle className="h-6 w-6 text-green-600" />
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="p-2 bg-green-100 rounded-lg">
+                      <CheckCircle className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Active Vendors</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {kpis.find(k => k.id === 'active_vendors')?.value || 0}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Delivered</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {orders.filter(o => o.status === 'delivered').length}
-                </p>
+            </>
+          ) : (
+            <>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <Package className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Total Orders</p>
+                    <p className="text-2xl font-bold text-gray-900">{orders.length}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <div className="p-2 bg-yellow-100 rounded-lg">
+                    <Clock className="h-6 w-6 text-yellow-600" />
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Pending Orders</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {orders.filter(o => o.status === 'pending').length}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <DollarSign className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Total Value</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {formatCurrency(orders.reduce((sum, o) => sum + o.totalAmount, 0))}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <CheckCircle className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Delivered</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {orders.filter(o => o.status === 'delivered').length}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Filters */}
@@ -341,6 +457,17 @@ export default function ProcurementPage() {
               </p>
             </div>
           )}
+        </div>
+
+        {/* Analytics Link */}
+        <div className="mt-6">
+          <a
+            href={`/${locale}/procurement/analytics`}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            <BarChart3 className="h-4 w-4" />
+            View Advanced Analytics
+          </a>
         </div>
       </div>
     </div>

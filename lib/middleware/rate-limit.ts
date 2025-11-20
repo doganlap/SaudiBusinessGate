@@ -11,7 +11,6 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { Redis } from '@upstash/redis';
 
 // Rate limit configuration
 interface RateLimitConfig {
@@ -54,7 +53,7 @@ const DEFAULT_LIMIT: RateLimitConfig = {
 };
 
 class RateLimiter {
-  private redis: Redis | null = null;
+  private redis: any = null;
   private inMemoryStore: Map<string, { count: number; resetTime: number }> = new Map();
   private cleanupInterval: NodeJS.Timeout | null = null;
 
@@ -63,19 +62,26 @@ class RateLimiter {
     this.startCleanup();
   }
 
-  private initializeRedis() {
+  private async initializeRedis() {
     try {
-      if (process.env.REDIS_URL || process.env.UPSTASH_REDIS_REST_URL) {
-        this.redis = new Redis({
-          url: process.env.UPSTASH_REDIS_REST_URL || process.env.REDIS_URL || '',
-          token: process.env.UPSTASH_REDIS_REST_TOKEN || '',
-        });
-        console.log('✅ Rate Limiter: Using Redis');
+      if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+        try {
+          const { Redis } = await import('@upstash/redis');
+          this.redis = new Redis({
+            url: process.env.UPSTASH_REDIS_REST_URL,
+            token: process.env.UPSTASH_REDIS_REST_TOKEN,
+          });
+          console.log('[SUCCESS] Rate Limiter: Using Redis');
+        } catch (importError) {
+          console.warn('[WARNING] Rate Limiter: @upstash/redis not installed. Using in-memory store.');
+        }
+      } else if (process.env.REDIS_URL) {
+        console.warn('[WARNING] Rate Limiter: REDIS_URL detected but Upstash client not configured. Using in-memory store.');
       } else {
-        console.warn('⚠️ Rate Limiter: Using in-memory store (not recommended for production)');
+        console.warn('[WARNING] Rate Limiter: Using in-memory store (not recommended for production)');
       }
     } catch (error) {
-      console.error('❌ Redis initialization failed, using in-memory store:', error);
+      console.error('[ERROR] Redis initialization failed, using in-memory store:', error);
     }
   }
 
@@ -142,7 +148,8 @@ class RateLimiter {
     total: number;
   }> {
     if (!this.redis) {
-      throw new Error('Redis not initialized');
+      // Fall back to memory if Redis not available
+      return this.checkLimitMemory(key, config, now, resetTime);
     }
 
     // Increment counter
@@ -266,7 +273,7 @@ export function createRateLimitMiddleware(config?: RateLimitConfig) {
 /**
  * Get rate limit identifier from request
  */
-function getIdentifier(request: NextRequest): string {
+export function getIdentifier(request: NextRequest): string {
   // Try to get user ID from session/token
   const authHeader = request.headers.get('authorization');
   if (authHeader) {

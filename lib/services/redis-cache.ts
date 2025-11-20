@@ -37,13 +37,18 @@ class CacheService {
     try {
       // Try to initialize Redis/Upstash
       if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-        const { Redis } = await import('@upstash/redis');
-        this.redis = new Redis({
-          url: process.env.UPSTASH_REDIS_REST_URL,
-          token: process.env.UPSTASH_REDIS_REST_TOKEN,
-        });
-        this.useRedis = true;
-        console.log('✅ Cache Service: Using Upstash Redis');
+        try {
+          const { Redis } = await import('@upstash/redis');
+          this.redis = new Redis({
+            url: process.env.UPSTASH_REDIS_REST_URL,
+            token: process.env.UPSTASH_REDIS_REST_TOKEN,
+          });
+          this.useRedis = true;
+          console.log('✅ Cache Service: Using Upstash Redis');
+        } catch (importError) {
+          console.warn('⚠️ Cache Service: @upstash/redis not installed. Using in-memory cache.');
+          this.startCleanup();
+        }
       } else if (process.env.REDIS_URL) {
         console.warn('⚠️ Cache Service: REDIS_URL detected but Upstash client not configured. Using in-memory cache.');
         this.startCleanup();

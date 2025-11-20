@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +32,10 @@ interface PayrollRecord {
 }
 
 export default function PayrollPage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = params?.lng || 'en';
+  
   const [payrollRecords, setPayrollRecords] = useState<PayrollRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -41,31 +47,46 @@ export default function PayrollPage() {
 
   const fetchPayrollRecords = async () => {
     try {
+      setLoading(true);
       const response = await fetch('/api/hr/payroll', {
-        headers: { 'tenant-id': 'default-tenant' }
+        headers: {
+          'Content-Type': 'application/json',
+          'x-tenant-id': 'default-tenant',
+        },
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      setPayrollRecords(data.payroll || []);
-    } catch (error) {
+      
+      if (data.success && data.payroll) {
+        // Map API response to component state
+        const mappedRecords = data.payroll.map((record: any) => ({
+          id: record.id || record.payroll_id || '',
+          employeeId: record.employee_id || record.employee_code || '',
+          employeeName: record.employee_name || `${record.first_name || ''} ${record.last_name || ''}`.trim() || 'Unknown',
+          department: record.department || '',
+          position: record.position || record.job_title || '',
+          baseSalary: record.base_salary || record.monthly_salary || record.salary || 0,
+          overtime: record.overtime || record.overtime_pay || 0,
+          bonuses: record.bonuses || record.bonus || 0,
+          deductions: record.deductions || record.total_deductions || 0,
+          grossPay: record.gross_pay || record.total_gross || (record.base_salary || 0) + (record.overtime || 0) + (record.bonuses || 0),
+          netPay: record.net_pay || record.total_net || ((record.gross_pay || 0) - (record.deductions || 0)),
+          payPeriod: record.pay_period || record.period || '',
+          status: record.status || 'draft',
+          payDate: record.pay_date || record.payment_date || new Date().toISOString().split('T')[0],
+        }));
+        setPayrollRecords(mappedRecords);
+      } else {
+        throw new Error(data.error || 'Failed to fetch payroll records');
+      }
+    } catch (error: any) {
       console.error('Error fetching payroll records:', error);
-      // Mock data
-      setPayrollRecords([
-        {
-          id: '1', employeeId: 'EMP001', employeeName: 'Sarah Johnson', department: 'Sales',
-          position: 'Sales Manager', baseSalary: 7083, overtime: 450, bonuses: 1000, deductions: 1200,
-          grossPay: 8533, netPay: 7333, payPeriod: 'January 2024', status: 'paid', payDate: '2024-01-31'
-        },
-        {
-          id: '2', employeeId: 'EMP002', employeeName: 'Mike Chen', department: 'Engineering',
-          position: 'Software Engineer', baseSalary: 7917, overtime: 600, bonuses: 500, deductions: 1400,
-          grossPay: 9017, netPay: 7617, payPeriod: 'January 2024', status: 'paid', payDate: '2024-01-31'
-        },
-        {
-          id: '3', employeeId: 'EMP003', employeeName: 'Alex Rodriguez', department: 'Marketing',
-          position: 'Marketing Specialist', baseSalary: 5417, overtime: 200, bonuses: 300, deductions: 950,
-          grossPay: 5917, netPay: 4967, payPeriod: 'February 2024', status: 'processed', payDate: '2024-02-29'
-        }
-      ]);
+      // Keep empty array on error instead of mock data
+      setPayrollRecords([]);
     } finally {
       setLoading(false);
     }
@@ -167,13 +188,34 @@ export default function PayrollPage() {
     {
       label: 'Process Payroll',
       icon: Calculator,
-      onClick: () => console.log('Process payroll'),
+      onClick: () => router.push('/hr/payroll/process'),
       variant: 'primary' as const
     },
     {
       label: 'Export Report',
       icon: Download,
-      onClick: () => console.log('Export payroll report'),
+      onClick: async () => {
+        try {
+          const response = await fetch('/api/export', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              module: 'hr',
+              data: payrollRecords,
+              format: 'excel',
+              fields: ['employeeName', 'department', 'grossPay', 'netPay', 'payPeriod', 'status'],
+            }),
+          });
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `payroll-${new Date().toISOString().split('T')[0]}.xlsx`;
+          a.click();
+        } catch (err) {
+          console.error('Export failed:', err);
+        }
+      },
       variant: 'outline' as const
     }
   ];
